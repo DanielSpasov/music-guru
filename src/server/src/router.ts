@@ -5,6 +5,7 @@ import { IRoute } from './Interfaces';
 
 const router = Router();
 
+console.log('Router:');
 let totalRoutes: number = 0;
 readdirSync(`${__dirname}/Routes`).forEach((dir: string) => {
   let routeCounter: number = 0;
@@ -18,10 +19,10 @@ readdirSync(`${__dirname}/Routes`).forEach((dir: string) => {
       routeCounter++;
     });
   const routes = routeCounter === 1 ? 'route' : 'routes';
-  console.log(`${routeCounter} '${dir}' ${routes} loaded.`);
+  console.log(`  ${routeCounter} '${dir}' ${routes} loaded.`);
   totalRoutes += routeCounter;
 });
-console.log(`${totalRoutes} in total.`);
+console.log(` ${totalRoutes} in total.\n`);
 
 router.get('*', (_, res: Response) =>
   res.status(404).json({ message: 'Page not found' })
