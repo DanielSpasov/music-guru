@@ -1,0 +1,13 @@
+{
+  "name": "music-nerd",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielSpasov/Music-Nerd.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DanielSpasov/Music-Nerd/issues"
+  },
+  "homepage": "https://github.com/DanielSpasov/Music-Nerd#readme"
+}
