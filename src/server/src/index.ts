@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import Routes from './Routes';
+import router from './router';
 
 dotenv.config();
 const app: Application = express();
@@ -18,7 +18,7 @@ const db = mongoose.connection;
 db.once('error', () => console.error('Connection Error'));
 db.once('open', () => console.log('Database Connected'));
 
-app.use(Routes);
+app.use(router);
 
 app.listen(process.env.PORT, () =>
   console.log(`Server is running on PORT: ${process.env.PORT}...`)
