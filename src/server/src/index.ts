@@ -15,11 +15,11 @@ app.use(express.static('public'));
 
 mongoose.connect(process.env.DB_URI!, {});
 const db = mongoose.connection;
-db.once('error', () => console.error('Connection Error'));
-db.once('open', () => console.log('Database Connected'));
+db.once('error', () => console.error('Database:\n Conneciton: Error\n'));
+db.once('open', () => console.log('Database:\n Connection: Connected\n'));
 
 app.use(router);
 
 app.listen(process.env.PORT, () =>
-  console.log(`Server is running on PORT: ${process.env.PORT}...`)
+  console.log(`Server:\n Status: Running\n PORT: ${process.env.PORT}\n`)
 );
