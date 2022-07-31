@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Home",
+    "component": "Home",
+    "isPrivate": false,
+    "path": "/home",
+    "children": [
+      {
+        "component": "Home",
+        "isPrivate": false,
+        "path": "/home"
+      },
+      {
+        "component": "NotHome",
+        "isPrivate": false,
+        "path": "/home/child"
+      }
+    ]
+  },
+  {
+    "title": "Not Home",
+    "component": "NotHome",
+    "isPrivate": false,
+    "path": "/nothome"
+  },
+  {
+    "title": "Home Test",
+    "component": "NotHome",
+    "isPrivate": false,
+    "path": "/home/test"
+  }
+]
