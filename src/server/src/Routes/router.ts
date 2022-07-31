@@ -1,18 +1,19 @@
 import { Router, Response } from 'express';
 import { readdirSync } from 'fs';
 
-import { IRoute } from './Interfaces';
+import { IRoute } from '../Interfaces';
 
 const router = Router();
+let totalRoutes: number = 0;
 
 console.log('Router:');
-let totalRoutes: number = 0;
-readdirSync(`${__dirname}/Routes`).forEach((dir: string) => {
+readdirSync(__dirname).forEach((dir: string) => {
+  if (dir.endsWith('.ts')) return;
   let routeCounter: number = 0;
-  readdirSync(`${__dirname}/Routes/${dir}`)
+  readdirSync(`${__dirname}/${dir}`)
     .filter((file: string) => file.endsWith('.ts'))
     .forEach((endpoint: string) => {
-      const path = `${__dirname}/Routes/${dir}/${endpoint}`;
+      const path = `${__dirname}/${dir}/${endpoint}`;
       const { Route }: { Route: IRoute } = require(path);
       if (!Route) return;
       router[Route.type](`/api/v1/${Route.path}`, Route.run);
