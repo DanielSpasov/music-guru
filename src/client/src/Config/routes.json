@@ -1,6 +1,5 @@
 [
   {
-    "title": "Home",
     "component": "Home",
     "isPrivate": false,
     "path": "/home",
@@ -18,13 +17,11 @@
     ]
   },
   {
-    "title": "Not Home",
     "component": "NotHome",
     "isPrivate": false,
     "path": "/nothome"
   },
   {
-    "title": "Home Test",
     "component": "NotHome",
     "isPrivate": false,
     "path": "/home/test"

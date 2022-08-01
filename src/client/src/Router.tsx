@@ -6,7 +6,6 @@ import pages from './Pages';
 
 const transformRoute = (route: any): IRoute => {
   return {
-    title: route?.title || 'Title Forgotten',
     component: route?.component || 'Loader',
     isPrivate: route?.isPrivate || false,
     path: route?.path || '/home',
