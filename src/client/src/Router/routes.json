@@ -1,28 +1,22 @@
 [
   {
     "component": "Home",
-    "path": "/home",
-    "children": [
-      {
-        "component": "Home",
-        "isPrivate": true,
-        "path": "/home"
-      },
-      {
-        "component": "NotHome",
-        "isPrivate": false,
-        "path": "/home/child"
-      }
-    ]
+    "path": "/artists",
+    "isPrivate": false
   },
   {
-    "component": "NotHome",
-    "isPrivate": false,
-    "path": "/nothome"
+    "component": "Home",
+    "path": "/albums",
+    "isPrivate": false
   },
   {
-    "component": "NotHome",
-    "isPrivate": false,
-    "path": "/home/test"
+    "component": "Home",
+    "path": "/mixtapes",
+    "isPrivate": false
+  },
+  {
+    "component": "Home",
+    "path": "/singles",
+    "isPrivate": false
   }
 ]
