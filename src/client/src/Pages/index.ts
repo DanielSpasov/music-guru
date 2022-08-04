@@ -1,8 +1,8 @@
 import Home from './Home';
-import NotHome from './NotHome';
+import NotFound from './NotFound';
 
 const pages = {
-  Home: Home,
-  NotHome: NotHome
+  Home,
+  NotFound
 };
 export default pages;

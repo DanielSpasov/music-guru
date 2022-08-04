@@ -1,0 +1,7 @@
+.main {
+  position: absolute;
+  background-color: var(--dark-4);
+  top: var(--navbar-height);
+  width: 100%;
+  min-height: calc(100% - var(--navbar-height));
+}

@@ -1,3 +1,5 @@
+import { SinglePageLayout } from '../../Components';
+
 export default function Home() {
-  return <>Home</>;
+  return <SinglePageLayout title="Home"></SinglePageLayout>;
 }

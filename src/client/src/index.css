@@ -2,3 +2,21 @@ body {
   box-sizing: border-box;
   margin: 0;
 }
+
+:root {
+  --dark-1: rgb(185, 187, 190);
+  --dark-2: rgb(64, 68, 75);
+  --dark-3: rgb(54, 57, 63);
+  --dark-4: rgb(47, 49, 54);
+  --dark-5: rgb(32, 34, 37);
+
+  --blue-1: #cadeef;
+  --blue-2: #9bd4e4;
+  --blue-3: #39ace7;
+  --blue-4: #0784b5;
+
+  --red: rgb(237, 66, 69);
+  --green: rgb(66, 199, 108);
+
+  --navbar-height: 60px;
+}
