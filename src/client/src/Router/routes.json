@@ -1,0 +1,28 @@
+[
+  {
+    "component": "Home",
+    "path": "/home",
+    "children": [
+      {
+        "component": "Home",
+        "isPrivate": true,
+        "path": "/home"
+      },
+      {
+        "component": "NotHome",
+        "isPrivate": false,
+        "path": "/home/child"
+      }
+    ]
+  },
+  {
+    "component": "NotHome",
+    "isPrivate": false,
+    "path": "/nothome"
+  },
+  {
+    "component": "NotHome",
+    "isPrivate": false,
+    "path": "/home/test"
+  }
+]
