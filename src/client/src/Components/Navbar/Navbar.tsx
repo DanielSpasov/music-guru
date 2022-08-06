@@ -1,7 +1,9 @@
 import { NavLink } from 'react-router-dom';
 
-import Dropdown from './Dropdown';
 import styles from './Navbar.module.css';
+
+import Dropdown from './Dropdown';
+import Search from './Search';
 
 function Navbar() {
   return (
@@ -20,13 +22,10 @@ function Navbar() {
       </section>
 
       <section className={styles.userNav}>
-        <article>
-          <i className="fa-solid fa-magnifying-glass"></i>
-          <input type="text" placeholder="Search..." />
-        </article>
+        <Search />
 
         <Dropdown icon="fa-solid fa-gear" onClick>
-          <button>Theme</button>
+          <button onClick={() => console.log('Theme Change')}>Theme</button>
         </Dropdown>
 
         <Dropdown icon="fa-solid fa-user" onClick disableAnimations>

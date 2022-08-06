@@ -12,6 +12,8 @@
   right: 0;
 
   display: none;
+  flex-direction: column;
+  align-items: flex-start;
   top: var(--navbar-height);
 
   padding: 0.5rem;
@@ -44,4 +46,8 @@
 .icon:hover ~ .content,
 .content:hover {
   display: block;
+}
+
+.content > a {
+  padding: 0.15em;
 }
