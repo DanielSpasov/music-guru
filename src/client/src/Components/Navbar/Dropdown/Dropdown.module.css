@@ -1,0 +1,47 @@
+.menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  color: white;
+  height: 100%;
+}
+
+.content {
+  position: absolute;
+  right: 0;
+
+  display: none;
+  top: var(--navbar-height);
+
+  padding: 0.5rem;
+  transition: 0.2s;
+  border-radius: 5px;
+  background-color: var(--dark-5);
+  box-shadow: 0px 0px 5px 2px black;
+}
+
+.iconNoAnimation > i,
+.onClickIcon > i,
+.icon > i {
+  transition: 0.2s;
+  font-size: calc(var(--navbar-height) - 20px);
+  margin: 10px;
+}
+
+.iconNoAnimation:hover,
+.onClickIcon:hover,
+.icon:hover {
+  cursor: pointer;
+  color: var(--blue-4);
+}
+
+.icon:hover > i {
+  transform: rotate(180deg);
+}
+
+.iconNoAnimation:hover ~ .content,
+.icon:hover ~ .content,
+.content:hover {
+  display: block;
+}

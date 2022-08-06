@@ -1,37 +1,41 @@
 import { NavLink } from 'react-router-dom';
+
+import Dropdown from './Dropdown';
 import styles from './Navbar.module.css';
 
 function Navbar() {
   return (
     <nav className={styles.navbar}>
-      <div className={styles.logoNav}>
+      <section className={styles.logoNav}>
         <NavLink to="/">
-          <img
-            height="60px"
-            src="images/logo/blue-logo192.png"
-            alt="Music Nerd"
-          />
+          <img src="images/logo/blue-logo192.png" alt="Music Nerd" />
         </NavLink>
-      </div>
+      </section>
 
-      <div className={styles.mainNav}>
+      <section className={styles.mainNav}>
         <NavLink to="artists">Artists</NavLink>
         <NavLink to="albums">Albums</NavLink>
         <NavLink to="mixtapes">Mixtapes</NavLink>
         <NavLink to="singles">Singles</NavLink>
-      </div>
+      </section>
 
-      <div className={styles.userNav}>
-        <div>Search</div>
-        <div>
-          <i className="fa-solid fa-gear"></i>
-          <div>content</div>
-        </div>
-        <div>
-          User
-          <div>content</div>
-        </div>
-      </div>
+      <section className={styles.userNav}>
+        <article>
+          <i className="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search..." />
+        </article>
+
+        <Dropdown icon="fa-solid fa-gear" onClick>
+          <button>Theme</button>
+        </Dropdown>
+
+        <Dropdown icon="fa-solid fa-user" onClick disableAnimations>
+          <NavLink to="profile">Profile</NavLink>
+          <NavLink to="sign-in">Sign In</NavLink>
+          <NavLink to="sign-up">Sign Up</NavLink>
+          <NavLink to="sign-out">Sign Out</NavLink>
+        </Dropdown>
+      </section>
     </nav>
   );
 }
