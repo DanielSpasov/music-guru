@@ -22,7 +22,7 @@ function Navbar() {
       </section>
 
       <section className={styles.userNav}>
-        <Search />
+        {/* <Search /> */}
 
         <Dropdown icon="fa-solid fa-gear" onClick>
           <button onClick={() => console.log('Theme Change')}>Theme</button>
