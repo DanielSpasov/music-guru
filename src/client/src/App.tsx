@@ -4,7 +4,7 @@ import { Navbar } from './Components';
 import Router from './Router';
 import './App.css';
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Navbar />
@@ -12,5 +12,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;

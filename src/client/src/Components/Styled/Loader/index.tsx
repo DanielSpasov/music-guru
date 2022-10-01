@@ -1,6 +1,6 @@
-import styles from './Loader.module.css';
+import styles from './styles.module.css';
 
-function Loader() {
+export default function Loader() {
   return (
     <>
       <div className={styles.backgroundDim}></div>
@@ -19,5 +19,3 @@ function Loader() {
     </>
   );
 }
-
-export default Loader;
