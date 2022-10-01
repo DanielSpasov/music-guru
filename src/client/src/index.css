@@ -11,19 +11,22 @@ body {
 }
 
 :root {
-  --dark-1: rgb(185, 187, 190);
-  --dark-2: rgb(64, 68, 75);
-  --dark-3: rgb(54, 57, 63);
-  --dark-4: rgb(47, 49, 54);
-  --dark-5: rgb(32, 34, 37);
+  --dark-primary: #cc41ff;
+  --dark-secondary: #05bbaa;
+  --dark-base: #1b1b1b;
+  --dark-base-light: #2e2e2e;
+  --dark-base-lighter: #454545;
+  --dark-base-lightest: #5c5c5c;
 
-  --blue-1: #cadeef;
-  --blue-2: #9bd4e4;
-  --blue-3: #39ace7;
-  --blue-4: #0784b5;
+  --light-primary: #2378c3;
+  --light-secondary: #73b3e7;
+  --light-base: #919191;
+  --light-base-light: #c9c9c9;
+  --light-base-lighter: #f3f3f3;
+  --light-base-lightest: #f9f9f9;
 
-  --red: rgb(237, 66, 69);
-  --green: rgb(66, 199, 108);
-
-  --navbar-height: 50px;
+  --negative: rgb(248, 89, 77);
+  --positive: rgb(77, 217, 91);
+  --warning: rgb(242, 174, 65);
+  --info: rgb(24, 135, 232);
 }

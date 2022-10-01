@@ -1,15 +1,27 @@
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Box, Image } from '../Components';
+import { ThemeContext } from '../Contexts/Theme';
 
 export default function Navbar() {
+  const { base } = useContext(ThemeContext);
+
   return (
-    <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Box>
-        <Image
-          src="images/logo/blue-logo192.png"
-          alt="Music Nerd"
-          size="80px"
-        />
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      height="60px"
+      backgroundColor={base}
+    >
+      <Box height="60px">
+        <NavLink to="/">
+          <Image
+            src="images/logo/blue-logo192.png"
+            alt="Music Nerd"
+            size="60px"
+          />
+        </NavLink>
       </Box>
 
       <Box>
