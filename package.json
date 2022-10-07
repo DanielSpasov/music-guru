@@ -9,5 +9,9 @@
   "bugs": {
     "url": "https://github.com/DanielSpasov/Music-Nerd/issues"
   },
+  "scripts": {
+    "dev": "yarn client",
+    "client": "cd src/client && yarn start"
+  },
   "homepage": "https://github.com/DanielSpasov/Music-Nerd#readme"
 }
