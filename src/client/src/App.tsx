@@ -20,6 +20,7 @@ export default function App() {
     const theme = window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
       : 'light';
+
     setDefaultTheme({
       theme,
       primary: `var(--${theme}-primary)`,

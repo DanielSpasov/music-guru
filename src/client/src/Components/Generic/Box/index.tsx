@@ -68,7 +68,5 @@ export default function Box({
     ]
   );
 
-  console.log(style);
-
   return <div style={style}>{children}</div>;
 }

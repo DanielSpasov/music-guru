@@ -1,0 +1,21 @@
+.default {
+  text-decoration: none;
+  padding: 0.5em;
+  transition: 0.2s;
+}
+
+.default:hover {
+  color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  .default {
+    color: var(--dark-primary);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .default {
+    color: var(--light-primary);
+  }
+}
