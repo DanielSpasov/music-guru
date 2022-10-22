@@ -36,7 +36,9 @@ export default function Router() {
   return (
     <Routes>
       <Route index element={pages.Home()} />
+
       {routes.map(transformRoute).map((route: IRoute) => setupRoute(route))}
+
       <Route path="*" element={pages.NotFound()} />
     </Routes>
   );
