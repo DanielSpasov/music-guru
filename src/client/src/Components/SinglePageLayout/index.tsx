@@ -6,10 +6,12 @@ import { Box, Heading, Navbar } from '../';
 export default function SinglePageLayout({
   title,
   excludeNavbar = false,
+  excludeHeader = false,
   children
 }: {
   title: string;
   excludeNavbar?: boolean;
+  excludeHeader?: boolean;
   children?: JSX.Element | JSX.Element[] | string;
 }) {
   const { baseLight } = useContext(ThemeContext);
@@ -28,7 +30,9 @@ export default function SinglePageLayout({
       alignContent="center"
     >
       {!excludeNavbar && <Navbar />}
-      <Heading padding="60px 0 20px 0" title={title}></Heading>
+      {!excludeHeader && (
+        <Heading padding="60px 0 20px 0" title={title}></Heading>
+      )}
       {children}
     </Box>
   );
