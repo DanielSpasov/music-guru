@@ -2,7 +2,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Router from './Router';
-import { Navbar } from './Components';
 import { ThemeProvider } from './Contexts/Theme';
 
 export default function App() {
@@ -35,7 +34,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <ThemeProvider value={defaultTheme}>
-        <Navbar />
         <Router />
       </ThemeProvider>
     </BrowserRouter>

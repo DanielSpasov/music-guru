@@ -1,14 +1,16 @@
 import { useContext, useEffect } from 'react';
 
 import { ThemeContext } from '../../Contexts/Theme';
-import { Box, Heading } from '../';
+import { Box, Heading, Navbar } from '../';
 
 export default function SinglePageLayout({
   title,
+  excludeNavbar = false,
   children
 }: {
   title: string;
-  children?: JSX.Element | JSX.Element[];
+  excludeNavbar?: boolean;
+  children?: JSX.Element | JSX.Element[] | string;
 }) {
   const { baseLight } = useContext(ThemeContext);
 
@@ -18,12 +20,15 @@ export default function SinglePageLayout({
 
   return (
     <Box
-      minHeight="calc(100vh - 60px)"
+      minHeight="100vh"
       height="100%"
-      paddingTop="60px"
       backgroundColor={baseLight}
+      display="flex"
+      flexDirection="column"
+      alignContent="center"
     >
-      <Heading>{title}</Heading>
+      {!excludeNavbar && <Navbar />}
+      <Heading padding="60px 0 20px 0" title={title}></Heading>
       {children}
     </Box>
   );
