@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { ThemeContext } from '../Contexts/Theme';
 
-export default function Box({ className, children, ...rest }: any) {
+export default function Box({ children, ...rest }: any) {
   const theme = useContext(ThemeContext);
   return (
     <StyledBox {...rest} theme={theme}>
@@ -22,6 +22,7 @@ const StyledBox = styled('div')<any>`
   align-content: ${({ alignContent }) => alignContent || 'flex-start'};
   width: ${({ width }) => width || 'auto'};
   height: ${({ height }) => height || 'auto'};
-  background-color: ${({ backgroundColor, theme: { theme } }) =>
-    backgroundColor || `var(--${theme}-base)`};
+  background-color: ${({ backgroundColor, theme: { base } }) =>
+    backgroundColor || base};
+  ${props => ({ ...props })}
 `;
