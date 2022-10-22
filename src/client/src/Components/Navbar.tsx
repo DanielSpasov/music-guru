@@ -8,9 +8,13 @@ export default function Navbar() {
   return (
     <Box
       display="flex"
+      position="absolute"
       justifyContent="space-between"
       alignItems="center"
       height="60px"
+      width="100%"
+      boxShadow="rgba(0, 0, 0, 0.65) 0px 5px 15px"
+      zIndex="9999"
     >
       <Box height="60px">
         <Link to="/">
@@ -22,7 +26,6 @@ export default function Navbar() {
           />
         </Link>
       </Box>
-
       <Box height="60px" display="flex" alignContent="center">
         <Link
           to="artists"
@@ -53,7 +56,6 @@ export default function Navbar() {
           Singles
         </Link>
       </Box>
-
       <Box>
         <Box>
           <Link to="theme">Theme</Link>

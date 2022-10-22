@@ -26,9 +26,9 @@ export default function App() {
       primary: `var(--${theme}-primary)`,
       secondary: `var(--${theme}-secondary)`,
       base: `var(--${theme}-base)`,
-      baseLight: `var(--${theme}-baseLight)`,
-      baseLighter: `var(--${theme}-baseLighter)`,
-      baseLightest: `var(--${theme}-baseLightest)`
+      baseLight: `var(--${theme}-base-light)`,
+      baseLighter: `var(--${theme}-base-lighter)`,
+      baseLightest: `var(--${theme}-base-lightest)`
     });
   }, []);
 

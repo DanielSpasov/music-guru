@@ -9,11 +9,15 @@ export default function SinglePageLayout({
   title: string;
   children?: JSX.Element | JSX.Element[];
 }) {
-  const { base } = useContext(ThemeContext);
+  const { baseLight } = useContext(ThemeContext);
 
   useEffect(() => {
     document.title = title;
   }, [title]);
 
-  return <Box backgroundColor={base}>{children}</Box>;
+  return (
+    <Box height="100vh" backgroundColor={baseLight}>
+      {children}
+    </Box>
+  );
 }

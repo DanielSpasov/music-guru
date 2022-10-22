@@ -24,4 +24,5 @@ const StyledBox = styled('div')<any>`
   height: ${({ height }) => height || 'auto'};
   background-color: ${({ backgroundColor, theme: { base } }) =>
     backgroundColor || base};
+  ${props => ({ ...props })}
 `;
