@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom';
 
-import { Box, Image, Link } from '../Components';
-import Dropdown from './Dropdown';
+import { Box, Image, Link, Dropdown } from '../';
 
 export default function Navbar() {
   const { pathname } = useLocation();

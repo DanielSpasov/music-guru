@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
 
-import { ThemeContext } from '../Contexts/Theme';
+import { ThemeContext } from '../../Contexts/Theme';
 
 export default function Box({ children, ...rest }: any) {
   const theme = useContext(ThemeContext);

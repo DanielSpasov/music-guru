@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useContext } from 'react';
 
-import { ThemeContext } from '../Contexts/Theme';
+import { ThemeContext } from '../../Contexts/Theme';
 
 export default function Icon({ model, type, ...props }: any) {
   const theme = useContext(ThemeContext);

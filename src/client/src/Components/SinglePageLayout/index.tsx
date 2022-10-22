@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
-import { Box } from '../Components';
-import { ThemeContext } from '../Contexts/Theme';
-import Heading from './Heading';
+
+import { ThemeContext } from '../../Contexts/Theme';
+import { Box, Heading } from '../';
 
 export default function SinglePageLayout({
   title,

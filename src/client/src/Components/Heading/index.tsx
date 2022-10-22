@@ -4,7 +4,7 @@ export default function Heading({ children, props }: any) {
   return <StyledHeading {...props}>{children}</StyledHeading>;
 }
 
-const StyledHeading = styled.h1`
+const StyledHeading = styled.header`
   text-align: center;
   color: white;
 `;

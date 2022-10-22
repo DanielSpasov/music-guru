@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Box, Icon } from '../Components';
+import { Box, Icon } from '../';
 
 type DropdownProps = {
   children: JSX.Element | JSX.Element[] | string;

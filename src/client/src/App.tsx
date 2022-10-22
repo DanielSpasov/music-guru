@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Router from './Router';
-import { Navbar } from './Components';
+import { Navbar } from './Components/Navbar';
 import { ThemeProvider } from './Contexts/Theme';
 
 export default function App() {

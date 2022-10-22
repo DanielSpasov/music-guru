@@ -2,7 +2,7 @@ import { useContext, useMemo } from 'react';
 import styled from 'styled-components';
 import { NavLink, Link as RouterLink } from 'react-router-dom';
 
-import { ThemeContext } from '../Contexts/Theme';
+import { ThemeContext } from '../../Contexts/Theme';
 
 type LinkType = 'navlink' | 'link';
 type LinkProps = {
