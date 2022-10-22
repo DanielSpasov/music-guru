@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
-import { ThemeContext } from '../../Contexts/Theme';
+import { ThemeContext } from '../Contexts/Theme';
 
 type LinkProps = {
   children: JSX.Element | JSX.Element[] | string;
