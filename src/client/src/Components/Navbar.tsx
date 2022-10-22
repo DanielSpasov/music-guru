@@ -1,10 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { Box, Image, Link } from '../Components';
-import { ThemeContext } from '../Contexts/Theme';
 
 export default function Navbar() {
-  const { base } = useContext(ThemeContext);
+  const { pathname } = useLocation();
 
   return (
     <Box
@@ -12,7 +11,6 @@ export default function Navbar() {
       justifyContent="space-between"
       alignItems="center"
       height="60px"
-      backgroundColor={base}
     >
       <Box height="60px">
         <Link to="/">
@@ -25,12 +23,36 @@ export default function Navbar() {
         </Link>
       </Box>
 
-      <NavLinkControls>
-        <Link to="artists">Artists</Link>
-        <Link to="albums">Albums</Link>
-        <Link to="mixtapes">Mixtapes</Link>
-        <Link to="singles">Singles</Link>
-      </NavLinkControls>
+      <Box height="60px" display="flex" alignContent="center">
+        <Link
+          to="artists"
+          type="navlink"
+          isActive={pathname.includes('/artists')}
+        >
+          Artists
+        </Link>
+        <Link
+          to="albums"
+          type="navlink"
+          isActive={pathname.includes('/albums')}
+        >
+          Albums
+        </Link>
+        <Link
+          to="mixtapes"
+          type="navlink"
+          isActive={pathname.includes('/mixtapes')}
+        >
+          Mixtapes
+        </Link>
+        <Link
+          to="singles"
+          type="navlink"
+          isActive={pathname.includes('/singles')}
+        >
+          Singles
+        </Link>
+      </Box>
 
       <Box>
         <Box>
@@ -43,42 +65,6 @@ export default function Navbar() {
           <Link to="sign-out">Sign Out</Link>
         </Box>
       </Box>
-    </Box>
-  );
-}
-
-function NavLinkControls({ children }: { children: any }) {
-  const [dimensions, setDimensions] = useState({});
-  const [activeLink] = useState<string | null>(null);
-
-  useEffect(() => {
-    (() => {
-      setDimensions(
-        children.reduce(
-          (acc: Object, curr: any) => ({
-            ...acc,
-            [curr.props.to]: {
-              width: curr.clientWidth,
-              height: curr.clientHeight
-            }
-          }),
-          {}
-        )
-      );
-    })();
-  }, [children]);
-
-  return (
-    <Box>
-      <Box
-        position="absolute"
-        backgroundColor="white"
-        // @ts-ignore
-        width={activeLink && dimensions[activeLink]?.width}
-        // @ts-ignore
-        height={activeLink && dimensions[activeLink]?.height}
-      />
-      {children}
     </Box>
   );
 }

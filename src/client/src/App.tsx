@@ -1,9 +1,9 @@
 import { BrowserRouter } from 'react-router-dom';
-
-import { ThemeProvider } from './Contexts/Theme';
-import { Navbar } from './Components';
-import Router from './Router';
 import { useEffect, useState } from 'react';
+
+import Router from './Router';
+import { Navbar } from './Components';
+import { ThemeProvider } from './Contexts/Theme';
 
 export default function App() {
   const [defaultTheme, setDefaultTheme] = useState({

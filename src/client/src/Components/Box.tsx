@@ -22,6 +22,6 @@ const StyledBox = styled('div')<any>`
   align-content: ${({ alignContent }) => alignContent || 'flex-start'};
   width: ${({ width }) => width || 'auto'};
   height: ${({ height }) => height || 'auto'};
-  background-color: ${({ backgroundColor, theme: { theme } }) =>
-    backgroundColor || `var(--${theme}-base)`};
+  background-color: ${({ backgroundColor, theme: { base } }) =>
+    backgroundColor || base};
 `;
