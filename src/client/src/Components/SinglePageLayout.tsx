@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { Box } from '../Components';
 import { ThemeContext } from '../Contexts/Theme';
+import Heading from './Heading';
 
 export default function SinglePageLayout({
   title,
@@ -16,7 +17,13 @@ export default function SinglePageLayout({
   }, [title]);
 
   return (
-    <Box height="100vh" backgroundColor={baseLight}>
+    <Box
+      minHeight="calc(100vh - 60px)"
+      height="100%"
+      paddingTop="60px"
+      backgroundColor={baseLight}
+    >
+      <Heading>{title}</Heading>
       {children}
     </Box>
   );
