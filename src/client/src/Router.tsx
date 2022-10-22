@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
-import { Home, NotFound, SignUp, SignIn, SignOut } from '../Pages';
+import { Home, NotFound, SignUp, SignIn, SignOut } from './Pages';
 
 export default function Router() {
   return (
