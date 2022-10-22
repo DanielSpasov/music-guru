@@ -15,7 +15,7 @@ export default function Navbar() {
       backgroundColor={base}
     >
       <Box height="60px">
-        <Link to="/" variant="image">
+        <Link to="/">
           <Image
             src="images/logo/blue-logo192.png"
             alt="Music Nerd"
@@ -48,10 +48,9 @@ export default function Navbar() {
 
 function NavLinkControls({ children }: { children: any }) {
   const [dimensions, setDimensions] = useState({});
-  const [activeLink, setActiveLink] = useState<string | null>(null);
+  const [activeLink] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log(children[0].clientWidth);
     (() => {
       setDimensions(
         children.reduce(
@@ -67,8 +66,6 @@ function NavLinkControls({ children }: { children: any }) {
       );
     })();
   }, [children]);
-
-  console.log(dimensions);
 
   return (
     <Box>
