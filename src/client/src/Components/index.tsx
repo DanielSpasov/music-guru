@@ -1,10 +1,11 @@
-// Default Components
+// Components
 export { default as SinglePageLayout } from './SinglePageLayout';
 export { default as Navbar } from './Navbar';
 
-export { default as Loader } from './Loader';
+// CSS like Components
+export { default as Image } from './Image';
 export { default as Link } from './Link';
+export { default as Box } from './Box';
 
-// Generic Components
-export { default as Box } from './Generic/Box';
-export { default as Image } from './Generic/Image';
+// Specific Components
+export { default as Loader } from './Loader';

@@ -19,7 +19,8 @@ export default function Navbar() {
           <Image
             src="images/logo/blue-logo192.png"
             alt="Music Nerd"
-            size="60px"
+            width="60px"
+            height="60px"
           />
         </Link>
       </Box>
