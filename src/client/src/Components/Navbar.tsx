@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 
 import { Box, Image, Link } from '../Components';
+import Dropdown from './Dropdown';
 
 export default function Navbar() {
   const { pathname } = useLocation();
@@ -10,6 +11,7 @@ export default function Navbar() {
       display="flex"
       position="absolute"
       justifyContent="space-between"
+      flexWrap="no-wrap"
       alignItems="center"
       height="60px"
       width="100%"
@@ -56,16 +58,16 @@ export default function Navbar() {
           Singles
         </Link>
       </Box>
-      <Box>
-        <Box>
+      <Box display="flex" alignContent="center" height="60px">
+        <Dropdown label="Settings" icon={{ model: 'gear', type: 'solid' }}>
           <Link to="theme">Theme</Link>
-        </Box>
-        <Box>
+        </Dropdown>
+        <Dropdown label="User Settings" icon={{ model: 'user', type: 'solid' }}>
           <Link to="me">User</Link>
           <Link to="sign-in">Sign In</Link>
           <Link to="sign-up">Sign Up</Link>
           <Link to="sign-out">Sign Out</Link>
-        </Box>
+        </Dropdown>
       </Box>
     </Box>
   );

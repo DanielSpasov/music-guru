@@ -51,7 +51,7 @@ const StyledLink = styled(LinkSwitch)<LinkProps>`
   font-size: 1.25em;
   transition: 0.2s;
   height: 100%;
-  padding: 15px 0.25em;
+  padding: ${({ type }) => (type === 'navlink' ? '18px 0.25em' : '0.25em')};
 
   &:hover {
     color: ${({ theme: { primary } }) => primary};
