@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { ThemeContext } from '../Contexts/Theme';
 
-export default function Box({ className, children, ...rest }: any) {
+export default function Box({ children, ...rest }: any) {
   const theme = useContext(ThemeContext);
   return (
     <StyledBox {...rest} theme={theme}>
