@@ -21,7 +21,7 @@ const StyledInput = styled('input')<any>`
   box-sizing: border-box;
   border-radius: 5px;
   padding: 0.5em;
-  margin: 0.5em 0;
+  margin: 0.75em 0;
   outline: none;
   font-size: 1em;
   color: white;

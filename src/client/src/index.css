@@ -25,8 +25,8 @@ body {
   --light-base-lighter: #f3f3f3;
   --light-base-lightest: #f9f9f9;
 
-  --negative: rgb(248, 89, 77);
-  --positive: rgb(77, 217, 91);
+  --success: rgb(77, 217, 91);
+  --danger: rgb(248, 89, 77);
   --warning: rgb(242, 174, 65);
   --info: rgb(24, 135, 232);
 }

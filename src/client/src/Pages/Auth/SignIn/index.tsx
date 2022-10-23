@@ -1,13 +1,13 @@
 import { useContext } from 'react';
 
-import { Box, SinglePageLayout } from '../../../Components';
+import { Box, PageLayout } from '../../../Components';
 import { ThemeContext } from '../../../Contexts/Theme';
 
 export default function SignIn() {
   const { base } = useContext(ThemeContext);
 
   return (
-    <SinglePageLayout title="Sign In" excludeNavbar>
+    <PageLayout title="Sign In" excludeNavbar>
       <Box
         backgroundColor={base}
         borderRadius="10px"
@@ -17,6 +17,6 @@ export default function SignIn() {
         boxShadow="rgba(0, 0, 0, 0.65) 0px 5px 15px"
         padding="0.5em"
       ></Box>
-    </SinglePageLayout>
+    </PageLayout>
   );
 }

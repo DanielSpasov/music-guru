@@ -1,5 +1,5 @@
-import { SinglePageLayout } from '../../Components';
+import { PageLayout } from '../../Components';
 
 export default function NotFound() {
-  return <SinglePageLayout title="Page not Found"></SinglePageLayout>;
+  return <PageLayout title="Page not Found"></PageLayout>;
 }

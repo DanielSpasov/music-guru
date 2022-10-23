@@ -1,5 +1,5 @@
-import { SinglePageLayout } from '../../../Components';
+import { PageLayout } from '../../../Components';
 
 export default function SignOut() {
-  return <SinglePageLayout title="Sign Out" excludeNavbar></SinglePageLayout>;
+  return <PageLayout title="Sign Out" excludeNavbar></PageLayout>;
 }

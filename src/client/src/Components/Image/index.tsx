@@ -1,13 +1,17 @@
 import styled from 'styled-components';
 
-export default function Image(props: any) {
-  return <StyledImage {...props} />;
+export default function Image({
+  src,
+  alt,
+  ...css
+}: {
+  src: string;
+  alt?: string;
+  [css: string]: any;
+}) {
+  return <StyledImage src={src} alt={alt} {...css} />;
 }
 
 const StyledImage = styled('img')<any>`
-  src: ${({ src }) => src || 'default image url'};
-  alt: ${({ alt }) => alt || 'Image'};
-  width: ${({ width }) => width || 'auto'};
-  height: ${({ height }) => height || 'auto'};
   ${props => ({ ...props })}
 `;
