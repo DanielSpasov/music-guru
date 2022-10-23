@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
-import { Box, Icon } from '../';
+import { Box, Icon } from '../../';
 
 type DropdownProps = {
-  children: JSX.Element | JSX.Element[] | string;
-  openOnHover?: boolean;
   label: string;
+  children: ReactNode;
   icon?: {
     model: string;
     type: string;
   };
+  openOnHover?: boolean;
 };
 
 export default function Dropdown({

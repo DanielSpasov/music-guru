@@ -16,7 +16,7 @@ export default function SignIn() {
         minWidth="400px"
         boxShadow="rgba(0, 0, 0, 0.65) 0px 5px 15px"
         padding="0.5em"
-      ></Box>
+      />
     </PageLayout>
   );
 }

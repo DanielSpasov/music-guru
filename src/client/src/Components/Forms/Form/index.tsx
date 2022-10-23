@@ -25,7 +25,7 @@ export default function Form({
 
   return (
     <StyledForm onSubmit={handleSubmit} theme={theme} {...css}>
-      <Heading title={title} />
+      <Heading title={title || 'Form'} />
       {children}
     </StyledForm>
   );

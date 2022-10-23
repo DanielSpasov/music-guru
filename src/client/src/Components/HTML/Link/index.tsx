@@ -1,16 +1,16 @@
-import { useContext, useMemo } from 'react';
-import styled from 'styled-components';
 import { NavLink, Link as RouterLink } from 'react-router-dom';
+import { useContext, ReactNode } from 'react';
+import styled from 'styled-components';
 
-import { ThemeContext } from '../../Contexts/Theme';
+import { ThemeContext } from '../../../Contexts/Theme';
 
-type LinkType = 'navlink' | 'link';
 type LinkProps = {
-  children: JSX.Element | JSX.Element[] | string;
   to: string;
+  children: ReactNode;
+  type?: 'navlink' | 'link';
   isActive?: boolean;
   className?: string;
-  type?: LinkType;
+  [css: string]: any;
 };
 
 function LinkSwitch({
@@ -22,19 +22,19 @@ function LinkSwitch({
 }: LinkProps) {
   const { primary } = useContext(ThemeContext);
 
-  const activeStyle = useMemo(
-    () =>
-      isActive
-        ? {
-            borderBottom: `5px solid ${primary}`,
-            color: primary
-          }
-        : {},
-    [isActive, primary]
-  );
-
   return type === 'navlink' ? (
-    <NavLink className={className} to={to} style={activeStyle}>
+    <NavLink
+      className={className}
+      to={to}
+      style={
+        isActive
+          ? {
+              borderBottom: `5px solid ${primary}`,
+              color: primary
+            }
+          : {}
+      }
+    >
       {children}
     </NavLink>
   ) : (
@@ -56,6 +56,8 @@ const StyledLink = styled(LinkSwitch)<LinkProps>`
   &:hover {
     color: ${({ theme: { primary } }) => primary};
   }
+
+  ${css => ({ ...css })}
 `;
 
 export default function Link(props: LinkProps) {

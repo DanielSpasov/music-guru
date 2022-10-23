@@ -12,7 +12,9 @@ export default function SignUp() {
         <Input label="Email" />
         <Input label="Password" />
         <Input label="Repeat Password" />
-        <Button variant="primary" type="submit" label="Sign Up"></Button>
+        <Button variant="primary" type="submit">
+          Sign Up
+        </Button>
       </Form>
     </PageLayout>
   );

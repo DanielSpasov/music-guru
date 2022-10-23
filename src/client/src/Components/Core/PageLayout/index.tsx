@@ -1,19 +1,21 @@
-import { useContext, useEffect } from 'react';
+import { ReactNode, useContext, useEffect } from 'react';
 
-import { ThemeContext } from '../../Contexts/Theme';
-import { Box, Heading, Navbar } from '../';
+import { ThemeContext } from '../../../Contexts/Theme';
+import { Box, Header, Navbar } from '../../';
 
-export default function SinglePageLayout({
+type PageLayoutProps = {
+  title: string;
+  excludeNavbar?: boolean;
+  excludeHeader?: boolean;
+  children?: ReactNode;
+};
+
+export default function PageLayout({
   title,
   excludeNavbar = false,
   excludeHeader = false,
   children
-}: {
-  title: string;
-  excludeNavbar?: boolean;
-  excludeHeader?: boolean;
-  children?: JSX.Element | JSX.Element[] | string;
-}) {
+}: PageLayoutProps) {
   const { baseLight } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function SinglePageLayout({
     >
       {!excludeNavbar && <Navbar />}
       {!excludeHeader && (
-        <Heading padding="60px 0 20px 0" title={title}></Heading>
+        <Header padding="60px 0 20px 0" title={title}></Header>
       )}
       {children}
     </Box>
