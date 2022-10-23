@@ -1,5 +1,6 @@
 export type InputProps = {
   type: InputType;
+  error?: string;
   required?: boolean;
   dynamicLabel?: boolean;
   label?: string;
