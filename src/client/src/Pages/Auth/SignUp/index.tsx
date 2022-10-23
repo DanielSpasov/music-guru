@@ -8,10 +8,14 @@ export default function SignUp() {
   return (
     <PageLayout title="Sign Up" excludeNavbar excludeHeader>
       <Form title="Sign Up" onSubmit={onSubmit}>
-        <Input label="Username" />
-        <Input label="Email" />
-        <Input label="Password" />
-        <Input label="Repeat Password" />
+        <Input type="text" label="Username" dynamicLabel />
+        <Input type="email" label="Email" required />
+        <Input type="password" placeholder="Password" required />
+        <Input
+          type="password"
+          placeholder="Repeat Password"
+          label="Repeat Password"
+        />
         <Button variant="primary" type="submit">
           Sign Up
         </Button>

@@ -1,20 +1,22 @@
-import { useContext } from 'react';
+import { useContext, ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { Heading } from '../../';
 import { ThemeContext } from '../../../Contexts/Theme';
+
+type FormProps = {
+  onSubmit: Function;
+  title?: string;
+  children?: ReactNode;
+  [css: string]: any;
+};
 
 export default function Form({
   onSubmit = () => null,
   title,
   children,
   ...css
-}: {
-  onSubmit: Function;
-  title?: string;
-  children?: JSX.Element | JSX.Element[];
-  [css: string]: any;
-}) {
+}: FormProps) {
   const theme = useContext(ThemeContext);
 
   const handleSubmit = (e: any) => {
@@ -43,4 +45,6 @@ const StyledForm = styled('form')<any>`
   margin: auto;
   width: 35%;
   top: 50%;
+
+  ${css => ({ ...css })}
 `;
