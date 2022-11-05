@@ -1,4 +1,4 @@
-import { useContext, useState, FormEvent } from 'react';
+import { useContext, useState, FormEvent, ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { Heading } from '../../';
@@ -7,7 +7,7 @@ import { ThemeContext } from '../../../Contexts/Theme';
 type FormProps = {
   onSubmit: Function;
   title?: string;
-  children?: any;
+  children?: ReactNode;
   [css: string]: any;
 };
 
@@ -22,13 +22,14 @@ export default function Form({
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    onSubmit();
-    console.log(formData);
+    onSubmit(formData);
   };
 
-  // TODO: Change event type
-  const onChange = (event: any) =>
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+  const onChange = (event: InputEvent) => {
+    const name = (event.target as HTMLInputElement).name;
+    const value = (event.target as HTMLInputElement).value;
+    setFormData({ ...formData, [name]: value });
+  };
 
   return (
     <StyledForm

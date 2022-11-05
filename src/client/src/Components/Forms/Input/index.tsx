@@ -1,45 +1,57 @@
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { ThemeContext } from '../../../Contexts/Theme';
+import { camelCase } from 'lodash';
 
+import { ThemeContext } from '../../../Contexts/Theme';
 import { Text, Box, Label, Icon } from '../../';
 import { InputProps } from './types';
 
 export default function Input({
   type,
-  label,
-  control,
+  label = '',
   required = false,
-  dynamicLabel = false,
-  error = ' ',
   placeholder,
+  validateFn,
   ...css
 }: InputProps) {
   const theme = useContext(ThemeContext);
+
+  const [error, setError] = useState('');
+  const [touched, setTouched] = useState(false);
   const [passVisiblity, setPassVisiblity] = useState(false);
+
+  const onChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if (validateFn) validateFn(target);
+    setError(target.validationMessage);
+  };
 
   return (
     <Box position="relative" margin=".5em 0">
-      <Box display="flex" justifyContent="space-between">
-        <Label>{!dynamicLabel && label}</Label>
+      <Box display="flex" justifyContent="flex-end">
         <Text color={required ? theme.danger : 'gray'}>
           {required ? '*' : 'Optional'}
         </Text>
       </Box>
 
       <StyledInput
-        name={control}
-        required={required}
+        // Input props
+        name={camelCase(label)}
         type={passVisiblity ? 'text' : type}
-        placeholder={dynamicLabel ? ' ' : placeholder}
+        placeholder={label ? ' ' : placeholder}
+        // Touch handler
+        onBlur={() => setTouched(true)}
+        // Validations
+        required={required}
+        onChange={onChange}
+        // Styles
         theme={theme}
         {...css}
       />
-      {dynamicLabel && (
-        <Label position="absolute" top="36px" left="10px">
-          {label}
-        </Label>
-      )}
+      <Label position="absolute" top="36px" left="10px">
+        {label}
+      </Label>
+
       {type === 'password' && (
         <Icon
           model={passVisiblity ? 'eye' : 'eye-slash'}
@@ -54,7 +66,7 @@ export default function Input({
       )}
 
       <Box display="flex" justifyContent="space-between">
-        <Text color={theme.danger}>{error}</Text>
+        <Text color={theme.danger}>{touched && error}</Text>
       </Box>
     </Box>
   );

@@ -1,10 +1,10 @@
 export type InputProps = {
   type: InputType;
-  error?: string;
   required?: boolean;
   dynamicLabel?: boolean;
   label?: string;
   placeholder?: string;
+  validateFn?: Function;
   [css: string]: any;
 };
 
