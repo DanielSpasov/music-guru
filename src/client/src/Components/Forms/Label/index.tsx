@@ -12,6 +12,7 @@ export default function Label({ children, ...css }: LabelProps) {
 
 const StyledLabel = styled('label')<LabelProps>`
   font-size: 1em;
+  pointer-events: none;
 
   ${css => ({ ...css })}
 `;

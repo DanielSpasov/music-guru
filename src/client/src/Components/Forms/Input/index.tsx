@@ -1,30 +1,32 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, memo } from 'react';
 import styled from 'styled-components';
 import { camelCase } from 'lodash';
 
 import { ThemeContext } from '../../../Contexts/Theme';
 import { Text, Box, Label, Icon } from '../../';
-import { InputProps } from './types';
+import { InputType } from '../../../Types';
 
-export default function Input({
+export type InputProps = {
+  type: InputType;
+  required?: boolean;
+  label?: string;
+  placeholder?: string;
+  error?: string;
+  [css: string]: any;
+};
+
+function Input({
   type,
   label = '',
   required = false,
   placeholder,
-  validateFn,
+  error,
   ...css
 }: InputProps) {
   const theme = useContext(ThemeContext);
 
-  const [error, setError] = useState('');
   const [touched, setTouched] = useState(false);
   const [passVisiblity, setPassVisiblity] = useState(false);
-
-  const onChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    if (validateFn) validateFn(target);
-    setError(target.validationMessage);
-  };
 
   return (
     <Box position="relative" margin=".5em 0">
@@ -35,16 +37,11 @@ export default function Input({
       </Box>
 
       <StyledInput
-        // Input props
         name={camelCase(label)}
         type={passVisiblity ? 'text' : type}
         placeholder={label ? ' ' : placeholder}
-        // Touch handler
         onBlur={() => setTouched(true)}
-        // Validations
         required={required}
-        onChange={onChange}
-        // Styles
         theme={theme}
         {...css}
       />
@@ -71,6 +68,8 @@ export default function Input({
     </Box>
   );
 }
+
+export default memo(Input);
 
 const StyledInput = styled('input')<any>`
   background-color: ${({ theme }) => theme.baseLight};

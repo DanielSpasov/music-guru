@@ -13,5 +13,8 @@
     "dev": "yarn client",
     "client": "cd src/client && yarn start"
   },
-  "homepage": "https://github.com/DanielSpasov/Music-Nerd#readme"
+  "homepage": "https://github.com/DanielSpasov/Music-Nerd#readme",
+  "dependencies": {
+    "react-hook-form": "^7.39.4"
+  }
 }

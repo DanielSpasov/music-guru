@@ -1,5 +1,5 @@
-import { Button, Form, Input, PageLayout } from '../../../Components';
-import { validateUsername } from './helpers';
+import { Form, PageLayout } from '../../../Components';
+import schema from './schema';
 
 type FormData = {
   username?: string;
@@ -11,8 +11,7 @@ type FormData = {
 export default function SignUp() {
   const onSubmit = (formData: FormData) => {
     try {
-      console.log({ formData });
-      console.log('Signing Up...');
+      console.log('Signing Up...', { formData });
     } catch (error: any) {
       // TODO: Notification service
       console.error(error);
@@ -21,16 +20,12 @@ export default function SignUp() {
 
   return (
     <PageLayout title="Sign Up" excludeNavbar excludeHeader>
-      <Form title="Sign Up" onSubmit={onSubmit}>
-        <Input type="text" label="Username" validateFn={validateUsername} />
-        <Input type="email" label="Email" required />
-        <Input type="password" label="Password" required />
-        <Input type="password" label="Repeat Password" required />
-
-        <Button variant="primary" type="submit">
-          Sign Up
-        </Button>
-      </Form>
+      <Form
+        title="Sign Up"
+        schema={schema}
+        submitFn={onSubmit}
+        defaultValues={{}}
+      />
     </PageLayout>
   );
 }

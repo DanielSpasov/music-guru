@@ -1,50 +1,52 @@
-import { useContext, useState, FormEvent, ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import styled from 'styled-components';
 
-import { Heading } from '../../';
 import { ThemeContext } from '../../../Contexts/Theme';
+import { Heading, Button } from '../../../Components';
+import { FormSchema } from '../../../Types';
 
 type FormProps = {
-  onSubmit: Function;
+  submitFn: any;
+  schema: FormSchema;
+  defaultValues: any;
   title?: string;
   children?: ReactNode;
   [css: string]: any;
 };
 
 export default function Form({
-  onSubmit = () => null,
+  submitFn = () => null,
+  schema,
+  defaultValues,
   title,
   children,
   ...css
 }: FormProps) {
   const theme = useContext(ThemeContext);
-  const [formData, setFormData] = useState({});
-
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    onSubmit(formData);
-  };
-
-  const onChange = (event: InputEvent) => {
-    const name = (event.target as HTMLInputElement).name;
-    const value = (event.target as HTMLInputElement).value;
-    setFormData({ ...formData, [name]: value });
-  };
 
   return (
-    <StyledForm
-      onSubmit={handleSubmit}
-      onChange={onChange}
-      theme={theme}
-      {...css}
-    >
+    <StyledForm theme={theme} {...css}>
       <Heading title={title || 'Form'} />
-      {children}
+      {schema.fields.map(field => {
+        return (
+          <field.Component
+            key={field.key}
+            label={field.label}
+            type={field?.type}
+            required={field?.validation?.required}
+            minlength={field?.validation?.minlength}
+            maxlength={field?.validation?.maxlength}
+          />
+        );
+      })}
+      <Button variant="primary" type="submit">
+        {schema.buttonText}
+      </Button>
     </StyledForm>
   );
 }
 
-const StyledForm = styled('form')<any>`
+const StyledForm = styled('form')<FormProps>`
   background-color: ${({ backgrondColor, theme: { base } }) =>
     backgrondColor || base};
   box-shadow: rgba(0, 0, 0, 0.65) 0px 0px 15px;
