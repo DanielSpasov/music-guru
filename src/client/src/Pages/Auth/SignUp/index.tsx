@@ -20,12 +20,7 @@ export default function SignUp() {
 
   return (
     <PageLayout title="Sign Up" excludeNavbar excludeHeader>
-      <Form
-        title="Sign Up"
-        schema={schema}
-        submitFn={onSubmit}
-        defaultValues={{}}
-      />
+      <Form header="Sign Up" schema={schema} onSubmit={onSubmit} />
     </PageLayout>
   );
 }

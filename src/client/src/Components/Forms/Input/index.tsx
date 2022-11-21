@@ -67,7 +67,7 @@ function Input({ register, type, label, error, validators = {} }: InputProps) {
 
 export default memo(Input);
 
-const StyledInput = styled('input')<any>`
+const StyledInput = styled('input')`
   background-color: ${({ theme }) => theme.baseLight};
   border: 2px solid ${({ theme }) => theme.baseLighter};
   box-sizing: border-box;
