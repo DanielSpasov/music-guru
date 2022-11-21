@@ -15,7 +15,7 @@ const schema: FormSchema = {
       type: 'email',
       Component: Input,
       validation: {
-        required: true
+        required: false
       }
     },
     {
@@ -24,7 +24,7 @@ const schema: FormSchema = {
       type: 'password',
       Component: Input,
       validation: {
-        required: true
+        required: false
       }
     },
     {
@@ -33,7 +33,7 @@ const schema: FormSchema = {
       type: 'password',
       Component: Input,
       validation: {
-        required: true
+        required: false
       }
     }
   ],

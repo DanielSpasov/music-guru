@@ -1,3 +1,4 @@
+import { UseFormRegister } from 'react-hook-form/dist/types';
 import { useContext, useState, memo } from 'react';
 import styled from 'styled-components';
 import { camelCase } from 'lodash';
@@ -7,43 +8,38 @@ import { Text, Box, Label, Icon } from '../../';
 import { InputType } from '../../../Types';
 
 export type InputProps = {
+  register: UseFormRegister<any>;
   type: InputType;
-  required?: boolean;
-  label?: string;
-  placeholder?: string;
+  label: string;
   error?: string;
-  [css: string]: any;
+  validators?: {
+    required?: boolean;
+    minlength?: number;
+    maxlength?: number;
+  };
 };
 
-function Input({
-  type,
-  label = '',
-  required = false,
-  placeholder,
-  error,
-  ...css
-}: InputProps) {
+function Input({ register, type, label, error, validators = {} }: InputProps) {
   const theme = useContext(ThemeContext);
 
-  const [touched, setTouched] = useState(false);
   const [passVisiblity, setPassVisiblity] = useState(false);
 
   return (
     <Box position="relative" margin=".5em 0">
       <Box display="flex" justifyContent="flex-end">
-        <Text color={required ? theme.danger : 'gray'}>
-          {required ? '*' : 'Optional'}
+        <Text color={validators.required ? theme.danger : 'gray'}>
+          {validators.required ? '*' : 'Optional'}
         </Text>
       </Box>
 
       <StyledInput
+        {...register(camelCase(label), {
+          ...validators
+        })}
         name={camelCase(label)}
         type={passVisiblity ? 'text' : type}
-        placeholder={label ? ' ' : placeholder}
-        onBlur={() => setTouched(true)}
-        required={required}
+        placeholder=" "
         theme={theme}
-        {...css}
       />
       <Label position="absolute" top="36px" left="10px">
         {label}
@@ -63,7 +59,7 @@ function Input({
       )}
 
       <Box display="flex" justifyContent="space-between">
-        <Text color={theme.danger}>{touched && error}</Text>
+        <Text color={theme.danger}>{error}</Text>
       </Box>
     </Box>
   );
@@ -101,6 +97,4 @@ const StyledInput = styled('input')<any>`
     top: 0;
     left: 0;
   }
-
-  ${css => ({ ...css })}
 `;

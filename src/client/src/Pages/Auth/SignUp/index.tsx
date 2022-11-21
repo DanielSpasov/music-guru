@@ -9,9 +9,9 @@ type FormData = {
 };
 
 export default function SignUp() {
-  const onSubmit = (formData: FormData) => {
+  const onSubmit = (data: FormData) => {
     try {
-      console.log('Signing Up...', { formData });
+      console.log('Signing Up...', { data });
     } catch (error: any) {
       // TODO: Notification service
       console.error(error);

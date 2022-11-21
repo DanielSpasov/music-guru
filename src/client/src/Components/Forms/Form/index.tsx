@@ -1,44 +1,43 @@
-import { ReactNode, useContext } from 'react';
 import styled from 'styled-components';
+import { useContext } from 'react';
 
 import { ThemeContext } from '../../../Contexts/Theme';
 import { Heading, Button } from '../../../Components';
 import { FormSchema } from '../../../Types';
+import { useForm } from 'react-hook-form';
 
 type FormProps = {
   submitFn: any;
   schema: FormSchema;
   defaultValues: any;
   title?: string;
-  children?: ReactNode;
   [css: string]: any;
 };
 
 export default function Form({
-  submitFn = () => null,
-  schema,
-  defaultValues,
   title,
-  children,
+  schema,
+  submitFn = () => null,
+  defaultValues,
   ...css
 }: FormProps) {
   const theme = useContext(ThemeContext);
+  const { register, handleSubmit } = useForm({ defaultValues });
 
   return (
-    <StyledForm theme={theme} {...css}>
+    <StyledForm onSubmit={handleSubmit(submitFn)} theme={theme} {...css}>
       <Heading title={title || 'Form'} />
-      {schema.fields.map(field => {
-        return (
-          <field.Component
-            key={field.key}
-            label={field.label}
-            type={field?.type}
-            required={field?.validation?.required}
-            minlength={field?.validation?.minlength}
-            maxlength={field?.validation?.maxlength}
-          />
-        );
-      })}
+      {schema.fields.map(field => (
+        <field.Component
+          key={field.key}
+          register={register}
+          label={field.label}
+          type={field?.type}
+          required={field?.validation?.required}
+          minlength={field?.validation?.minlength}
+          maxlength={field?.validation?.maxlength}
+        />
+      ))}
       <Button variant="primary" type="submit">
         {schema.buttonText}
       </Button>
@@ -47,8 +46,7 @@ export default function Form({
 }
 
 const StyledForm = styled('form')<FormProps>`
-  background-color: ${({ backgrondColor, theme: { base } }) =>
-    backgrondColor || base};
+  background-color: ${({ theme: { base } }) => base};
   box-shadow: rgba(0, 0, 0, 0.65) 0px 0px 15px;
   flex-direction: column;
   border-radius: 10px;
@@ -58,6 +56,4 @@ const StyledForm = styled('form')<FormProps>`
   margin: auto;
   width: 35%;
   top: 50%;
-
-  ${css => ({ ...css })}
 `;
