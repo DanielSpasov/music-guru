@@ -17,5 +17,4 @@ export type FormField = {
 
 export type FormSchema = {
   fields: FormField[];
-  buttonText: string;
 };

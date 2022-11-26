@@ -38,7 +38,7 @@ export default function Form({
         />
       ))}
       <Button variant="primary" type="submit">
-        {schema.buttonText}
+        {header || 'Submit'}
       </Button>
     </StyledForm>
   );

@@ -36,8 +36,7 @@ const schema: FormSchema = {
         required: false
       }
     }
-  ],
-  buttonText: 'Sign Up'
+  ]
 };
 
 export default schema;
