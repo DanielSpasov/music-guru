@@ -1,17 +1,17 @@
 import { Form, PageLayout } from '../../../Components';
+import Api from '../../../Api';
 import schema from './schema';
 
-type FormData = {
-  username?: string;
-  email: string;
-  password: string;
-  repeatPassword: string;
-};
-
 export default function SignUp() {
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: {
+    username: string;
+    email: string;
+    password: string;
+    repeatPassword: string;
+  }) => {
     try {
-      console.log('Signing Up...', { data });
+      const res = await Api.auth.signUp(data);
+      console.log(res);
     } catch (error: any) {
       // TODO: Notification service
       console.error(error);
