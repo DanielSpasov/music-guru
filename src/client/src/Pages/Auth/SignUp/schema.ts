@@ -1,13 +1,16 @@
 import { Input } from '../../../Components';
 import { FormSchema } from '../../../Types';
 
+import { username } from './validators';
+
 const schema: FormSchema = {
   fields: [
     {
       key: 'username',
       label: 'Username',
       type: 'text',
-      Component: Input
+      Component: Input,
+      validate: username
     },
     {
       key: 'email',

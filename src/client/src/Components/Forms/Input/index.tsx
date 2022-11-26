@@ -23,7 +23,6 @@ export type InputProps = {
 
 function Input({ register, type, label, error, required = false }: InputProps) {
   const theme = useContext(ThemeContext);
-
   const [passVisiblity, setPassVisiblity] = useState(false);
 
   return (
@@ -36,7 +35,7 @@ function Input({ register, type, label, error, required = false }: InputProps) {
 
       <StyledInput
         {...register(camelCase(label), {
-          required //: `${label} is required`
+          required
         })}
         name={camelCase(label)}
         type={passVisiblity ? 'text' : type}
@@ -67,7 +66,6 @@ function Input({ register, type, label, error, required = false }: InputProps) {
 
 function ErrorMessage({ error }: { error?: Error }) {
   const theme = useContext(ThemeContext);
-  console.log(error);
   return (
     <Box display="flex" justifyContent="space-between">
       {error && <Text color={theme.danger}>{error?.message}</Text>}

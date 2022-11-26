@@ -2,11 +2,11 @@ import { SubmitHandler } from 'react-hook-form/dist/types';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { useContext } from 'react';
+import { camelCase } from 'lodash';
 
 import { ThemeContext } from '../../../Contexts/Theme';
+import { FormField, FormSchema } from '../../../Types';
 import { Heading, Button } from '../../../Components';
-import { FormSchema } from '../../../Types';
-import { camelCase } from 'lodash';
 
 type FormProps = {
   onSubmit: SubmitHandler<any>;
@@ -24,9 +24,17 @@ export default function Form({
   const theme = useContext(ThemeContext);
   const {
     register,
+    getValues,
     handleSubmit,
     formState: { errors }
-  } = useForm({ defaultValues, mode: 'onBlur' });
+  } = useForm({ defaultValues, mode: 'onChange' });
+
+  const validate = (field: FormField) => {
+    const values = getValues();
+    const key = camelCase(field.key);
+    const message = field?.validate ? field.validate(values?.[key]) : '';
+    return errors?.[key] || { type: 'custom', message };
+  };
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)} theme={theme}>
@@ -38,7 +46,7 @@ export default function Form({
           label={field.label}
           type={field?.type}
           required={field?.required}
-          error={errors?.[camelCase(field.key)]}
+          error={validate(field)}
         />
       ))}
       <Button variant="primary" type="submit">
