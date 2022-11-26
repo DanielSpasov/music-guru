@@ -14,27 +14,21 @@ const schema: FormSchema = {
       label: 'Email',
       type: 'email',
       Component: Input,
-      validation: {
-        required: false
-      }
+      required: true
     },
     {
       key: 'password',
       label: 'Password',
       type: 'password',
       Component: Input,
-      validation: {
-        required: false
-      }
+      required: true
     },
     {
       key: 'repeat-password',
       label: 'Repeat Password',
       type: 'password',
       Component: Input,
-      validation: {
-        required: false
-      }
+      required: true
     }
   ]
 };

@@ -1,4 +1,4 @@
-import { UseFormRegister } from 'react-hook-form/dist/types';
+import { Ref, UseFormRegister } from 'react-hook-form/dist/types';
 import { useContext, useState, memo } from 'react';
 import styled from 'styled-components';
 import { camelCase } from 'lodash';
@@ -7,19 +7,21 @@ import { ThemeContext } from '../../../Contexts/Theme';
 import { Text, Box, Label, Icon } from '../../';
 import { InputType } from '../../../Types';
 
+type Error = {
+  type: string;
+  message: string;
+  ref: Ref;
+};
+
 export type InputProps = {
   register: UseFormRegister<any>;
   type: InputType;
   label: string;
-  error?: string;
-  validators?: {
-    required?: boolean;
-    minlength?: number;
-    maxlength?: number;
-  };
+  error?: Error;
+  required?: boolean;
 };
 
-function Input({ register, type, label, error, validators = {} }: InputProps) {
+function Input({ register, type, label, error, required = false }: InputProps) {
   const theme = useContext(ThemeContext);
 
   const [passVisiblity, setPassVisiblity] = useState(false);
@@ -27,14 +29,14 @@ function Input({ register, type, label, error, validators = {} }: InputProps) {
   return (
     <Box position="relative" margin=".5em 0">
       <Box display="flex" justifyContent="flex-end">
-        <Text color={validators.required ? theme.danger : 'gray'}>
-          {validators.required ? '*' : 'Optional'}
+        <Text color={required ? theme.danger : 'gray'}>
+          {required ? '*' : 'Optional'}
         </Text>
       </Box>
 
       <StyledInput
         {...register(camelCase(label), {
-          ...validators
+          required //: `${label} is required`
         })}
         name={camelCase(label)}
         type={passVisiblity ? 'text' : type}
@@ -58,9 +60,17 @@ function Input({ register, type, label, error, validators = {} }: InputProps) {
         />
       )}
 
-      <Box display="flex" justifyContent="space-between">
-        <Text color={theme.danger}>{error}</Text>
-      </Box>
+      <ErrorMessage error={error} />
+    </Box>
+  );
+}
+
+function ErrorMessage({ error }: { error?: Error }) {
+  const theme = useContext(ThemeContext);
+  console.log(error);
+  return (
+    <Box display="flex" justifyContent="space-between">
+      {error && <Text color={theme.danger}>{error?.message}</Text>}
     </Box>
   );
 }

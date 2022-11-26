@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../../Contexts/Theme';
 import { Heading, Button } from '../../../Components';
 import { FormSchema } from '../../../Types';
+import { camelCase } from 'lodash';
 
 type FormProps = {
   onSubmit: SubmitHandler<any>;
@@ -21,7 +22,11 @@ export default function Form({
   defaultValues = {}
 }: FormProps) {
   const theme = useContext(ThemeContext);
-  const { register, handleSubmit } = useForm({ defaultValues });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({ defaultValues, mode: 'onBlur' });
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)} theme={theme}>
@@ -32,9 +37,8 @@ export default function Form({
           register={register}
           label={field.label}
           type={field?.type}
-          required={field?.validation?.required}
-          minlength={field?.validation?.minlength}
-          maxlength={field?.validation?.maxlength}
+          required={field?.required}
+          error={errors?.[camelCase(field.key)]}
         />
       ))}
       <Button variant="primary" type="submit">

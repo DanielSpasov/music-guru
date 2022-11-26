@@ -7,12 +7,7 @@ export type FormField = {
   label: string;
   Component: FC<any>;
   type?: InputType;
-  validation?: {
-    required?: boolean;
-    minlength?: number;
-    maxlength?: number;
-    custom?: Function;
-  };
+  required?: boolean;
 };
 
 export type FormSchema = {
