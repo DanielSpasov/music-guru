@@ -1,5 +1,5 @@
-import Auth from './Auth';
+import UserAPI from './models/User';
 
 export default class Api {
-  static auth: Auth = new Auth();
+  static user: UserAPI = new UserAPI({});
 }

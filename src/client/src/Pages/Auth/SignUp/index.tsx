@@ -1,20 +1,30 @@
+import * as z from 'zod';
+
 import { Form, PageLayout } from '../../../Components';
+import { errorHandler } from '../../../Handlers';
+import { User } from '../../../Types/User';
 import Api from '../../../Api';
 import schema from './schema';
 
+const UserSchema = z.object({
+  username: z
+    .string()
+    .min(2, { message: 'Username is too short.' })
+    .max(16, { message: 'Username is too long.' })
+    .optional(),
+  email: z.string().email({ message: 'Invalid email.' }),
+  password: z.string(),
+  repeatPassword: z.string()
+});
+
 export default function SignUp() {
-  const onSubmit = async (data: {
-    username: string;
-    email: string;
-    password: string;
-    repeatPassword: string;
-  }) => {
+  const onSubmit = async (data: User) => {
     try {
-      const res = await Api.auth.signUp(data);
+      const user = UserSchema.parse(data);
+      const res = await Api.user.post({ body: user });
       console.log(res);
     } catch (error: any) {
-      // TODO: Notification service
-      console.error(error);
+      errorHandler(error);
     }
   };
 
