@@ -1,11 +1,4 @@
-import axios from 'axios';
-
-import { devLog } from './helpers';
-
-type Config = {
-  headers?: { [key: string]: any };
-  params?: { [key: string]: any };
-};
+import { get, post, put, patch, del } from './requests';
 
 export class CrudBase {
   baseUrl: string;
@@ -17,79 +10,27 @@ export class CrudBase {
 }
 
 export default class Crud<T> extends CrudBase {
-  async get({
-    id = '0',
-    config = {}
-  }: {
-    id: string;
-    config?: Config;
-  }): Promise<T> {
-    const url = `${this.baseUrl}/${this.model}/${id}/`;
-    const res = await axios.get(url, config);
-    devLog('GET', url, res.data);
-    return res.data;
+  get({ id = '0', config = {} }): Promise<T> {
+    return get({ url: `${this.baseUrl}/${this.model}/${id}/`, config });
   }
 
-  async fetch({ config = {} }: { config?: Config }) {
-    const url = `${this.baseUrl}/${this.model}/`;
-    const res = await axios.get(url, config);
-    devLog('FETCH', url, res.data);
-    return res.data;
+  fetch({ config = {} }): Promise<T> {
+    return get({ url: `${this.baseUrl}/${this.model}/`, config });
   }
 
-  async post({
-    body = {},
-    config = {}
-  }: {
-    body: any;
-    config?: Config;
-  }): Promise<T> {
-    const url = `${this.baseUrl}/${this.model}/`;
-    const res = await axios.post(url, body, config);
-    devLog('POST', url, res.data);
-    return res.data;
+  post({ body = {}, config = {} }): Promise<T> {
+    return post({ url: `${this.baseUrl}/${this.model}/`, body, config });
   }
 
-  async patch({
-    id = '0',
-    body = {},
-    config = {}
-  }: {
-    id: string;
-    body: any;
-    config?: Config;
-  }): Promise<T> {
-    const url = `${this.baseUrl}/${this.model}/${id}/`;
-    const res = await axios.patch(url, body, config);
-    devLog('PATCH', url, res.data);
-    return res.data;
+  patch({ id = '0', body = {}, config = {} }): Promise<T> {
+    return patch({ url: `${this.baseUrl}/${this.model}/${id}/`, body, config });
   }
 
-  async del({
-    id = '0',
-    config = {}
-  }: {
-    id: string;
-    config?: Config;
-  }): Promise<T> {
-    const url = `${this.baseUrl}/${this.model}/${id}/`;
-    const res = await axios.delete(url, config);
-    devLog('DELETE', url, res.data);
-    return res.data;
+  del({ id = '0', config = {} }): Promise<T> {
+    return del({ url: `${this.baseUrl}/${this.model}/${id}/`, config });
   }
 
-  async put({
-    id = '0',
-    body = {},
-    config = {}
-  }: {
-    id: string;
-    body: any;
-    config?: Config;
-  }): Promise<T> {
-    const url = `${this.baseUrl}/${this.model}/${id}/`;
-    const res = await axios.put(url, body, config);
-    devLog('PUT', url, res.data);
-    return res.data;
+  put({ id = '0', body = {}, config = {} }): Promise<T> {
+    return put({ url: `${this.baseUrl}/${this.model}/${id}/`, body, config });
   }
 }

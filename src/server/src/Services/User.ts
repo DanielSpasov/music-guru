@@ -34,3 +34,7 @@ export function SignUp(req: Request, res: Response) {
     res.status(500).json({ message: 'Unexpected Server Error' });
   }
 }
+
+export function Post(req: Request, res: Response) {
+  res.status(200).json('POST');
+}

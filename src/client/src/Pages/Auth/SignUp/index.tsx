@@ -2,7 +2,7 @@ import * as z from 'zod';
 
 import { Form, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
-import { User } from '../../../Types/User';
+import { User } from '../../../Types';
 import Api from '../../../Api';
 import schema from './schema';
 
@@ -30,7 +30,7 @@ export default function SignUp() {
   const onSubmit = async (data: User) => {
     try {
       const user = UserSchema.parse(data);
-      const res = await Api.user.post({ body: user });
+      const res = await Api.user.signUp(user);
       console.log(res);
     } catch (error: any) {
       errorHandler(error);
