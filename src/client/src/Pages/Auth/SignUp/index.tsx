@@ -6,16 +6,25 @@ import { User } from '../../../Types/User';
 import Api from '../../../Api';
 import schema from './schema';
 
-const UserSchema = z.object({
-  username: z
-    .string()
-    .min(2, { message: 'Username is too short.' })
-    .max(16, { message: 'Username is too long.' })
-    .optional(),
-  email: z.string().email({ message: 'Invalid email.' }),
-  password: z.string(),
-  repeatPassword: z.string()
-});
+const UserSchema = z
+  .object({
+    username: z
+      .string()
+      .min(2, { message: 'Username is too short.' })
+      .max(16, { message: 'Username is too long.' })
+      .optional(),
+    email: z.string().email({ message: 'Invalid email.' }),
+    password: z.string(),
+    repeatPassword: z.string()
+  })
+  .superRefine(({ repeatPassword, password }, context) => {
+    if (repeatPassword !== password) {
+      context.addIssue({
+        code: 'custom',
+        message: "Passwords doesn't match."
+      });
+    }
+  });
 
 export default function SignUp() {
   const onSubmit = async (data: User) => {
