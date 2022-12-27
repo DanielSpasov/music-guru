@@ -8,11 +8,13 @@ export interface IAuth {
 export type AuthContextType = {
   auth: IAuth;
   setAuth: Dispatch<SetStateAction<IAuth>>;
+  updateAuth: Function;
 };
 
 export const defaultAuth = {
   auth: { uid: null, isAuthenticated: null },
-  setAuth: () => {}
+  setAuth: () => {},
+  updateAuth: () => {}
 };
 
 export const AuthContext = createContext<AuthContextType>(defaultAuth);
