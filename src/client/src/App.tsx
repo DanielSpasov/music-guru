@@ -6,8 +6,9 @@ import { ThemeProvider, defaultTheme } from './Contexts/Theme';
 import { Loader } from './Components';
 import Api from './Api';
 
-import PrivateRouter from './Router/Private';
-import PublicRouter from './Router/Public';
+// import PrivateRouter from './Router/Private';
+// import PublicRouter from './Router/Public';
+import Router from './Router';
 
 export default function App() {
   const [theme, setTheme] = useState(defaultTheme);
@@ -59,7 +60,8 @@ export default function App() {
       <AuthProvider value={{ auth, setAuth }}>
         <ThemeProvider value={theme}>
           {auth.isAuthenticated === null && <Loader />}
-          {auth.isAuthenticated ? <PrivateRouter /> : <PublicRouter />}
+          <Router />
+          {/* {auth.isAuthenticated ? <PrivateRouter /> : <PublicRouter />} */}
         </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
