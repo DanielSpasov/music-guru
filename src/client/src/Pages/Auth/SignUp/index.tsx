@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import * as z from 'zod';
+import { z } from 'zod';
 
 import { Form, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';

@@ -1,13 +1,19 @@
-import { createContext } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 
-export type Auth = {
-  uid: null | string;
-  isAuthenticated: null | boolean;
+export interface IAuth {
+  uid: string | null;
+  isAuthenticated: boolean | null;
+}
+
+export type AuthContextType = {
+  auth: IAuth;
+  setAuth: Dispatch<SetStateAction<IAuth>>;
 };
 
-export const AuthContext = createContext<Auth>({
-  uid: null,
-  isAuthenticated: null
-});
+export const defaultAuth = {
+  auth: { uid: null, isAuthenticated: null },
+  setAuth: () => {}
+};
 
+export const AuthContext = createContext<AuthContextType>(defaultAuth);
 export const AuthProvider = AuthContext.Provider;

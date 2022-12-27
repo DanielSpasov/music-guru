@@ -1,8 +1,8 @@
 import { BrowserRouter } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
+import { AuthProvider, defaultAuth, IAuth } from './Contexts/Auth';
 import { ThemeProvider, defaultTheme } from './Contexts/Theme';
-import { AuthProvider, Auth } from './Contexts/Auth';
 import { Loader } from './Components';
 import Api from './Api';
 
@@ -11,7 +11,7 @@ import PublicRouter from './Router/Public';
 
 export default function App() {
   const [theme, setTheme] = useState(defaultTheme);
-  const [auth, setAuth] = useState<Auth>({ uid: null, isAuthenticated: null });
+  const [auth, setAuth] = useState<IAuth>(defaultAuth.auth);
 
   useEffect(() => {
     (async () => {
@@ -56,7 +56,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AuthProvider value={auth}>
+      <AuthProvider value={{ auth, setAuth }}>
         <ThemeProvider value={theme}>
           {auth.isAuthenticated === null && <Loader />}
           {auth.isAuthenticated ? <PrivateRouter /> : <PublicRouter />}
