@@ -1,34 +1,67 @@
 import { BrowserRouter } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-import Router from './Router';
-import { ThemeProvider, defaultValue } from './Contexts/Theme';
+import { ThemeProvider, defaultTheme } from './Contexts/Theme';
+import { AuthProvider, Auth } from './Contexts/Auth';
+import { Loader } from './Components';
+import Api from './Api';
+
+import PrivateRouter from './Router/Private';
+import PublicRouter from './Router/Public';
 
 export default function App() {
-  const [defaultTheme, setDefaultTheme] = useState(defaultValue);
+  const [theme, setTheme] = useState(defaultTheme);
+  const [auth, setAuth] = useState<Auth>({ uid: null, isAuthenticated: null });
 
   useEffect(() => {
-    const theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+    (async () => {
+      if (auth.isAuthenticated !== null) return;
+      try {
+        const token = localStorage.getItem('AUTH') || '';
+        if (!token) {
+          setAuth({ isAuthenticated: false, uid: null });
+          return;
+        }
+
+        const { uid } = await Api.user.validateToken(token);
+        if (!uid) {
+          setAuth({ isAuthenticated: false, uid: null });
+          return;
+        }
+
+        setAuth({ isAuthenticated: true, uid });
+      } catch (error) {
+        setAuth({ isAuthenticated: false, uid: null });
+      }
+    })();
+  }, [auth]);
+
+  useEffect(() => {
+    const preferedTheme = window.matchMedia('(prefers-color-scheme: dark)')
+      .matches
       ? 'dark'
       : 'light';
 
-    setDefaultTheme(prev => ({
+    setTheme(prev => ({
       ...prev,
-      theme,
-      primary: `var(--${theme}-primary)`,
-      secondary: `var(--${theme}-secondary)`,
-      base: `var(--${theme}-base)`,
-      baseLight: `var(--${theme}-base-light)`,
-      baseLighter: `var(--${theme}-base-lighter)`,
-      baseLightest: `var(--${theme}-base-lightest)`
+      preferedTheme,
+      primary: `var(--${preferedTheme}-primary)`,
+      secondary: `var(--${preferedTheme}-secondary)`,
+      base: `var(--${preferedTheme}-base)`,
+      baseLight: `var(--${preferedTheme}-base-light)`,
+      baseLighter: `var(--${preferedTheme}-base-lighter)`,
+      baseLightest: `var(--${preferedTheme}-base-lightest)`
     }));
   }, []);
 
   return (
     <BrowserRouter>
-      <ThemeProvider value={defaultTheme}>
-        <Router />
-      </ThemeProvider>
+      <AuthProvider value={auth}>
+        <ThemeProvider value={theme}>
+          {auth.isAuthenticated === null && <Loader />}
+          {auth.isAuthenticated ? <PrivateRouter /> : <PublicRouter />}
+        </ThemeProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

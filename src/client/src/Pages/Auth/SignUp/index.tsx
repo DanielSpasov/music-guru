@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import * as z from 'zod';
 
 import { Form, PageLayout } from '../../../Components';
@@ -27,11 +28,14 @@ const UserSchema = z
   });
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const onSubmit = async (data: User) => {
     try {
       const user = UserSchema.parse(data);
       const res = await Api.user.signUp(user);
-      console.log(res);
+      localStorage.setItem('AUTH', res.token);
+      navigate('/');
     } catch (error: any) {
       errorHandler(error);
     }

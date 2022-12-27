@@ -1,7 +1,7 @@
 import Crud from '../crud';
 import { User } from '../../Types/User';
 import { applyPrefix } from '../helpers';
-import { post } from '../requests';
+import { get, post } from '../requests';
 
 export default class UserAPI extends Crud<User> {
   model = 'user';
@@ -15,6 +15,17 @@ export default class UserAPI extends Crud<User> {
     return post({
       url: `${this.baseUrl}/${this.model}/sign-up`,
       body: user
+    });
+  }
+
+  validateToken(token: string) {
+    return get({
+      url: `${this.baseUrl}/${this.model}/validate-jwt`,
+      config: {
+        params: {
+          token
+        }
+      }
     });
   }
 }

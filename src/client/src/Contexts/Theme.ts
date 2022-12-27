@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-export const defaultValue = {
+export const defaultTheme = {
   theme: '',
   primary: '',
   secondary: '',
@@ -13,5 +13,6 @@ export const defaultValue = {
   warning: 'var(--warning)',
   info: 'var(--info)'
 };
-export const ThemeContext = createContext(defaultValue);
+
+export const ThemeContext = createContext(defaultTheme);
 export const ThemeProvider = ThemeContext.Provider;

@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
-import { Home, NotFound, SignUp, SignIn, SignOut } from './Pages';
+import { Home, NotFound, SignOut } from '../Pages';
 
 export default function Router() {
   return (
@@ -21,8 +21,6 @@ export default function Router() {
       <Route path="/singles" element={Home()} />
 
       {/* Authentication Related Routes */}
-      <Route path="/sign-in" element={SignIn()} />
-      <Route path="/sign-up" element={SignUp()} />
       <Route path="/sign-out" element={SignOut()} />
 
       {/* Not Found */}
