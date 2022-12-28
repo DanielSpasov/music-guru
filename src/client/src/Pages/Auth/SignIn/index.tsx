@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Form, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { User, userSchemaSignIn as userSchema } from '../../../Types';
+import { User, SignInSchema } from '../../../Types';
 import { errorHandler } from '../../../Handlers';
 import Api from '../../../Api';
 import schema from './schema';
@@ -16,14 +16,14 @@ export default function SignIn() {
   const onSubmit = useCallback(
     async (data: Partial<User>) => {
       try {
-        const user = userSchema.parse(data);
+        const user = SignInSchema.parse(data);
         const { token, uid } = await Api.user.signIn(user);
         localStorage.setItem('AUTH', token);
         setAuth({ isAuthenticated: true, uid });
         navigate('/');
       } catch (error: any) {
         const handledErrors = errorHandler(error);
-        setErrors(handledErrors);
+        if (handledErrors.length) setErrors(handledErrors);
       }
     },
     [navigate, setAuth]
