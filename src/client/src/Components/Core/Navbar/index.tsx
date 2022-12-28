@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Box, Image, Link, Dropdown } from '../../';
+import { AuthContext } from '../../../Contexts/Auth';
 
 export default function Navbar() {
   const { pathname } = useLocation();
+  const { auth } = useContext(AuthContext);
 
   return (
     <Box
@@ -63,9 +66,9 @@ export default function Navbar() {
         </Dropdown>
         <Dropdown label="User Settings" icon={{ model: 'user', type: 'solid' }}>
           <Link to="/me">User</Link>
-          <Link to="/sign-in">Sign In</Link>
-          <Link to="/sign-up">Sign Up</Link>
-          <Link to="/sign-out">Sign Out</Link>
+          {!auth.isAuthenticated && <Link to="/sign-in">Sign In</Link>}
+          {!auth.isAuthenticated && <Link to="/sign-up">Sign Up</Link>}
+          {auth.isAuthenticated && <Link to="/sign-out">Sign Out</Link>}
         </Dropdown>
       </Box>
     </Box>

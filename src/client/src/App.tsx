@@ -1,5 +1,5 @@
 import { BrowserRouter } from 'react-router-dom';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AuthProvider, defaultAuth, IAuth } from './Contexts/Auth';
 import { ThemeProvider, defaultTheme } from './Contexts/Theme';
@@ -14,31 +14,29 @@ export default function App() {
   const [theme, setTheme] = useState(defaultTheme);
   const [auth, setAuth] = useState<IAuth>(defaultAuth.auth);
 
-  const updateAuth = useCallback(async () => {
-    try {
-      if (auth.isAuthenticated !== null) return;
-
-      const token = localStorage.getItem('AUTH') || '';
-      if (!token) {
-        setAuth({ isAuthenticated: false, uid: null });
-        return;
-      }
-
-      const { uid } = await Api.user.validateToken(token);
-      if (!uid) {
-        setAuth({ isAuthenticated: false, uid: null });
-        return;
-      }
-
-      setAuth({ isAuthenticated: true, uid });
-    } catch (error) {
-      setAuth({ isAuthenticated: false, uid: null });
-    }
-  }, [auth]);
-
   useEffect(() => {
-    updateAuth();
-  }, [updateAuth]);
+    (async () => {
+      try {
+        if (auth.isAuthenticated !== null) return;
+
+        const token = localStorage.getItem('AUTH') || '';
+        if (!token) {
+          setAuth({ isAuthenticated: false, uid: null });
+          return;
+        }
+
+        const { uid } = await Api.user.validateToken(token);
+        if (!uid) {
+          setAuth({ isAuthenticated: false, uid: null });
+          return;
+        }
+
+        setAuth({ isAuthenticated: true, uid });
+      } catch (error) {
+        setAuth({ isAuthenticated: false, uid: null });
+      }
+    })();
+  }, [auth]);
 
   useEffect(() => {
     const preferedTheme = window.matchMedia('(prefers-color-scheme: dark)')
@@ -60,7 +58,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AuthProvider value={{ auth, setAuth, updateAuth }}>
+      <AuthProvider value={{ auth, setAuth }}>
         <ThemeProvider value={theme}>
           {auth.isAuthenticated === null && <Loader />}
           <Router />

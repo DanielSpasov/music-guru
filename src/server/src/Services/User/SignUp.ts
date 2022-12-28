@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import jwt, { JsonWebTokenError } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { z } from 'zod';
 
-import { UserModel } from '../Database/Schemas';
+import { UserModel } from '../../Database/Schemas';
 
 const UserSchema = z
   .object({
@@ -66,35 +66,9 @@ export async function SignUp(req: Request, res: Response) {
     const jwtSecret = String(process.env.JWT_SECRET);
     const token = jwt.sign({ uid }, jwtSecret);
 
-    res.status(200).json({ token });
+    res.status(200).json({ token, uid });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Unexpected Server Error' });
   }
-}
-
-export function ValidateToken(req: Request, res: Response) {
-  try {
-    const token = req.query?.token?.toString() || '';
-    if (!token) res.status(400).json({ message: 'No token was found.' });
-
-    const secret = process.env.JWT_SECRET || '';
-    const verifiedToken = jwt.verify(token, secret);
-
-    res.status(200).json(verifiedToken);
-  } catch (error) {
-    if (error instanceof JsonWebTokenError) {
-      if (error.name === 'JsonWebTokenError') {
-        res.status(400).json({ message: 'Invalid token' });
-        return;
-      }
-      res.status(400).json({ message: 'JWT Error' });
-      return;
-    }
-    res.status(500).json({ message: 'Unexpected Server Error' });
-  }
-}
-
-export function Post(req: Request, res: Response) {
-  res.status(200).json('POST');
 }

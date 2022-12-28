@@ -11,9 +11,16 @@ export default class UserAPI extends Crud<User> {
     applyPrefix(this, props);
   }
 
-  signUp(user: any) {
+  signUp(user: User) {
     return post({
       url: `${this.baseUrl}/${this.model}/sign-up`,
+      body: user
+    });
+  }
+
+  signIn(user: Partial<User>) {
+    return post({
+      url: `${this.baseUrl}/${this.model}/sign-in`,
       body: user
     });
   }
