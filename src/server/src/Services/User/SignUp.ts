@@ -57,7 +57,7 @@ export async function SignUp(req: Request, res: Response) {
     };
     const uid = await generateUID();
 
-    // CREATE DATABASE ENTRY FOR THE USET
+    // CREATE DATABASE ENTRY FOR THE USER
     const user = new UserModel({
       uid,
       username,
