@@ -31,6 +31,7 @@ const StyledButton = styled('button')<ButtonProps>`
   border: 2px solid transparent;
   padding: 0.75em 1.25em;
   border-radius: 10px;
+  font-weight: bold;
   margin: 0.75em 0;
   transition: 0.2s;
   font-size: 1em;
@@ -38,7 +39,12 @@ const StyledButton = styled('button')<ButtonProps>`
 
   &:hover {
     cursor: pointer;
-    opacity: 75%;
+    opacity: 85%;
+  }
+
+  &:disabled {
+    cursor: auto;
+    opacity: 50%;
   }
 
   ${css => ({ ...css })};

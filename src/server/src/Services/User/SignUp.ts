@@ -10,8 +10,17 @@ import { CustomError } from '../../Error/CustomError';
 
 const UserSchema = z
   .object({
-    username: z.string().max(16).min(2),
-    email: z.string().email(),
+    username: z
+      .union([
+        z
+          .string()
+          .min(2, { message: 'Username is too short.' })
+          .max(16, { message: 'Username is too long.' }),
+        z.string().length(0) // Empty string
+      ])
+      .optional()
+      .transform(e => (e === '' ? undefined : e)),
+    email: z.string().email({ message: 'Invalid email.' }),
     password: z.string(),
     repeatPassword: z.string()
   })
@@ -19,7 +28,8 @@ const UserSchema = z
     if (repeatPassword !== password) {
       context.addIssue({
         code: 'custom',
-        message: "Passwords doesn't match."
+        message: "Passwords doesn't match.",
+        path: ['password', 'repeat-password']
       });
     }
   });
@@ -33,6 +43,8 @@ export async function SignUp(req: Request, res: Response) {
       password: req.body?.password,
       repeatPassword: req.body?.repeatPassword
     });
+
+    console.log(username);
 
     // CHECK IF THE EMAIL IS ALREADY SIGNED UP
     const usedEmail = await UserModel.findOne({ email });

@@ -1,11 +1,12 @@
 import { SubmitHandler } from 'react-hook-form/dist/types';
+import { useContext, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { useContext } from 'react';
 
 import { ThemeContext } from '../../../Contexts/Theme';
 import { Heading, Button } from '../../../Components';
 import { FormSchema } from '../../../Types';
+import { errorHandler } from '../../../Handlers';
 
 type FormError = {
   code: string;
@@ -32,14 +33,31 @@ export default function Form({
   defaultValues = {},
   errors = []
 }: FormProps) {
+  const [disableSubmit, setDisableSubmit] = useState(false);
   const theme = useContext(ThemeContext);
   const { register, handleSubmit } = useForm({
     defaultValues,
     mode: 'onChange'
   });
 
+  const submitFn = useCallback(
+    async (e: any) => {
+      try {
+        setDisableSubmit(true);
+        await onSubmit(e);
+        console.log('IN SUBMIT FN');
+      } catch (error) {
+        console.log('IN SUBMIT FN ERR');
+        errorHandler(error);
+      } finally {
+        setDisableSubmit(false);
+      }
+    },
+    [onSubmit]
+  );
+
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)} theme={theme}>
+    <StyledForm onSubmit={handleSubmit(submitFn)} theme={theme}>
       <Heading title={header || 'Form'} />
       {schema.fields.map(field => (
         <field.Component
@@ -51,7 +69,7 @@ export default function Form({
           error={errors.find(x => x.path.includes(field.key))}
         />
       ))}
-      <Button variant="primary" type="submit">
+      <Button variant="primary" type="submit" disabled={disableSubmit}>
         {header || 'Submit'}
       </Button>
     </StyledForm>
