@@ -3,9 +3,13 @@ import { z } from 'zod';
 export const SignUpSchema = z
   .object({
     username: z
-      .string()
-      .min(2, { message: 'Username is too short.' })
-      .max(16, { message: 'Username is too long.' })
+      .union([
+        z
+          .string()
+          .min(2, { message: 'Username is too short.' })
+          .max(16, { message: 'Username is too long.' }),
+        z.string().length(0) // Empty string
+      ])
       .optional(),
     email: z.string().email({ message: 'Invalid email.' }),
     password: z.string(),

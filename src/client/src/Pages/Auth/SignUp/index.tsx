@@ -21,9 +21,10 @@ export default function SignUp() {
         localStorage.setItem('AUTH', token);
         setAuth({ isAuthenticated: true, uid: uid });
         navigate('/');
+        setErrors([]);
       } catch (error: any) {
         const handledErrors = errorHandler(error);
-        if (handledErrors.length) setErrors(handledErrors);
+        setErrors(handledErrors);
       }
     },
     [navigate, setAuth]
