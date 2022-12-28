@@ -10,7 +10,7 @@ interface JwtPayload {
 
 export function ValidateToken(req: Request, res: Response) {
   try {
-    const token = req.query?.token?.toString() || '';
+    const token = req.headers?.authorization;
     if (!token) {
       throw new CustomError({ message: 'No Token was found.', code: 400 });
     }
