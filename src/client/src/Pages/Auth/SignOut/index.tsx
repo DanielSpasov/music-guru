@@ -13,5 +13,5 @@ export default function SignOut() {
     navigate('/');
   }, [setAuth, navigate]);
 
-  return <PageLayout title="Sign Out" excludeNavbar></PageLayout>;
+  return <PageLayout title=""></PageLayout>;
 }
