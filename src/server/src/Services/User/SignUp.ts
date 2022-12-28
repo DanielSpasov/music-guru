@@ -44,8 +44,6 @@ export async function SignUp(req: Request, res: Response) {
       repeatPassword: req.body?.repeatPassword
     });
 
-    console.log(username);
-
     // CHECK IF THE EMAIL IS ALREADY SIGNED UP
     const usedEmail = await UserModel.findOne({ email });
     if (usedEmail) {
