@@ -3,16 +3,14 @@ import { ReactNode } from 'react';
 
 type TextProps = {
   children: ReactNode;
-  [css: string]: any;
+  color: string;
 };
 
-export default function Text({ children, ...css }: TextProps) {
-  return <StyledText {...css}>{children}</StyledText>;
+export default function Text({ children, color }: TextProps) {
+  return <StyledText color={color}>{children}</StyledText>;
 }
 
 const StyledText = styled('span')<TextProps>`
-  color: white;
   font-size: 1em;
-
-  ${css => ({ ...css })};
+  color: ${({ color }) => color};
 `;

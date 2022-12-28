@@ -1,7 +1,8 @@
-import { PageLayout } from '../../../Components';
-import { useContext, useEffect } from 'react';
-import { AuthContext } from '../../../Contexts/Auth';
 import { useNavigate } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+
+import { AuthContext } from '../../../Contexts/Auth';
+import { PageLayout } from '../../../Components';
 
 export default function SignOut() {
   const { setAuth } = useContext(AuthContext);

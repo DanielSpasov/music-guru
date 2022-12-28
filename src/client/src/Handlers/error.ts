@@ -2,7 +2,9 @@ import { ZodError } from 'zod';
 
 export function errorHandler(error: any) {
   try {
-    if (error instanceof ZodError) handleZodError(error);
+    if (error instanceof ZodError) {
+      return handleZodError(error);
+    }
   } catch (error) {
     console.error('Unhandled Error');
   }
@@ -10,8 +12,7 @@ export function errorHandler(error: any) {
 
 function handleZodError(error: ZodError) {
   try {
-    const issues = JSON.parse(error.toString());
-    console.error(issues?.[0]?.message);
+    return JSON.parse(error.toString());
   } catch {
     console.error('Unhandled Zod Error');
   }
