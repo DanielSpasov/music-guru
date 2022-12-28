@@ -28,11 +28,7 @@ export default class UserAPI extends Crud<User> {
   validateToken(token: string) {
     return get({
       url: `${this.baseUrl}/${this.model}/validate-jwt`,
-      config: {
-        params: {
-          token
-        }
-      }
+      config: { params: { token } }
     });
   }
 }

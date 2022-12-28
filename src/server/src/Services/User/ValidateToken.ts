@@ -1,24 +1,25 @@
-import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+
+import { CustomError } from '../../Error/CustomError';
+import { errorHandler } from '../../Error';
+
+interface JwtPayload {
+  uid: string;
+}
 
 export function ValidateToken(req: Request, res: Response) {
   try {
     const token = req.query?.token?.toString() || '';
-    if (!token) res.status(400).json({ message: 'No token was found.' });
+    if (!token) {
+      throw new CustomError({ message: 'No Token was found.', code: 400 });
+    }
 
     const secret = process.env.JWT_SECRET || '';
-    const verifiedToken = jwt.verify(token, secret);
+    const { uid } = jwt.verify(token, secret) as JwtPayload;
 
-    res.status(200).json(verifiedToken);
+    res.status(200).json({ uid });
   } catch (error) {
-    if (error instanceof JsonWebTokenError) {
-      if (error.name === 'JsonWebTokenError') {
-        res.status(400).json({ message: 'Invalid token' });
-        return;
-      }
-      res.status(400).json({ message: 'JWT Error' });
-      return;
-    }
-    res.status(500).json({ message: 'Unexpected Server Error' });
+    errorHandler(req, res, error);
   }
 }

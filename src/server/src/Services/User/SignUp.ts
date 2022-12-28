@@ -5,6 +5,8 @@ import crypto from 'crypto';
 import { z } from 'zod';
 
 import { UserModel } from '../../Database/Schemas';
+import { errorHandler } from '../../Error';
+import { CustomError } from '../../Error/CustomError';
 
 const UserSchema = z
   .object({
@@ -35,8 +37,10 @@ export async function SignUp(req: Request, res: Response) {
     // CHECK IF THE EMAIL IS ALREADY SIGNED UP
     const usedEmail = await UserModel.findOne({ email });
     if (usedEmail) {
-      res.status(400).json({ message: 'This email is alredy used.' });
-      return;
+      throw new CustomError({
+        message: 'This email is alredy signed up.',
+        code: 400
+      });
     }
 
     // HASHING THE PASSWORD
@@ -68,7 +72,6 @@ export async function SignUp(req: Request, res: Response) {
 
     res.status(200).json({ token, uid });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Unexpected Server Error' });
+    errorHandler(req, res, error);
   }
 }
