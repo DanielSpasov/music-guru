@@ -1,119 +1,84 @@
 import styled, { keyframes } from 'styled-components';
+import { getCssProps, LoaderProps } from './helpers';
+import { Box } from '../../HTML';
 
-export default function Loader() {
+export default function Loader({
+  fullscreen = false,
+  dim = false,
+  rainbow = false,
+  color = 'white',
+  size = 'b'
+}: LoaderProps) {
+  if (!fullscreen) {
+    return <Spinner rainbow={rainbow} color={color} size={size} />;
+  }
+
   return (
-    <>
-      <BackgroundDim />
-      <SpinnerWrapper>
-        <Spinner>
-          <SpinnerDot
-            delay="-0.036s"
-            bgColor="#eb4034"
-            top="63px"
-            left="63px"
-          />
-          <SpinnerDot
-            delay="-0.072s"
-            bgColor="#eb9334"
-            top="68px"
-            left="56px"
-          />
-          <SpinnerDot
-            delay="-0.108s"
-            bgColor="#ebdf34"
-            top="71px"
-            left="48px"
-          />
-          <SpinnerDot
-            delay="-0.144s"
-            bgColor="#aeeb34"
-            top="72px"
-            left="40px"
-          />
-          <SpinnerDot
-            delay="-0.180s"
-            bgColor="#53eb34"
-            top="71px"
-            left="32px"
-          />
-          <SpinnerDot
-            delay="-0.216s"
-            bgColor="#34eba2"
-            top="68px"
-            left="24px"
-          />
-          <SpinnerDot
-            delay="-0.252s"
-            bgColor="#34d0eb"
-            top="63px"
-            left="17px"
-          />
-          <SpinnerDot
-            delay="-0.288s"
-            bgColor="#484bf0"
-            top="56px"
-            left="12px"
-          />
-        </Spinner>
-      </SpinnerWrapper>
-    </>
+    <Box
+      width="100vw"
+      height="100vh"
+      position="fixed"
+      top="0"
+      left="0"
+      display="flex"
+      alignContent="center"
+      justifyContent="center"
+      opacity={dim ? '0.85' : '1'}
+      zIndex="9999"
+    >
+      <Spinner rainbow={rainbow} color={color} size={size} />
+    </Box>
   );
 }
 
-const BackgroundDim = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
+function Spinner({
+  rainbow = false,
+  color = 'white',
+  size = 'b'
+}: Partial<LoaderProps>) {
+  return (
+    <Box
+      display="inline-block"
+      position="relative"
+      width={size === 's' ? '0px' : '80px'}
+      height={size === 's' ? '0px' : '80px'}
+      backgroundColor="transparent"
+    >
+      {getCssProps({ size, color, rainbow }).map((css, i) => (
+        <Dot key={i} {...css} />
+      ))}
+    </Box>
+  );
+}
 
-  background-color: black;
-  opacity: 80%;
-  z-index: 99;
+const animation = keyframes`
+  0%,
+  20%,
+  80%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
 `;
 
-const SpinnerWrapper = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 99;
-`;
-
-const Spinner = styled.div`
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-`;
-
-const spinAnimation = keyframes`
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-`;
-
-type SpinnerDotProps = {
+type DotProps = {
   delay: string;
-  bgColor: string;
+  color: string;
   top: string;
   left: string;
+  size: string;
 };
 
-const SpinnerDot = styled('div')<SpinnerDotProps>`
-  animation: ${spinAnimation} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  transform-origin: 40px 40px;
+const Dot = styled('div')<DotProps>`
+  position: absolute;
+  border-radius: 50%;
+  animation: ${animation} 1.2s linear infinite;
+  width: ${({ size }) => size || '6px'};
+  height: ${({ size }) => size || '6px'};
+  background: ${({ color }) => color || 'white'};
+  top: ${({ top }) => top || '0px'};
+  left: ${({ left }) => left || '0px'};
   animation-delay: ${({ delay }) => delay || '0s'};
-
-  &:after {
-    content: ' ';
-    display: block;
-    position: absolute;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background-color: ${({ bgColor }) => bgColor || 'white'};
-    margin: -4px 0 0 -4px;
-    top: ${({ top }) => top || '0px'};
-    left: ${({ left }) => left || '0px'};
-  }
 `;
