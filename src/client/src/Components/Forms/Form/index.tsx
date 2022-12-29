@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 import { ThemeContext } from '../../../Contexts/Theme';
 import { Heading, Button } from '../../../Components';
-import { FormSchema } from '../../../Types';
 import { errorHandler } from '../../../Handlers';
+import { FormSchema } from '../../../Types';
 
 type FormError = {
   code: string;
@@ -45,9 +45,7 @@ export default function Form({
       try {
         setDisableSubmit(true);
         await onSubmit(e);
-        console.log('IN SUBMIT FN');
       } catch (error) {
-        console.log('IN SUBMIT FN ERR');
         errorHandler(error);
       } finally {
         setDisableSubmit(false);
