@@ -1,17 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { lazy, Suspense, useContext } from 'react';
+import { Suspense, useContext, lazy } from 'react';
 
-import { AuthContext } from './Contexts/Auth';
-import routes from './Config/routes.json';
-import { Loader } from './Components';
+import { AuthContext } from '../Contexts/Auth';
+import { Loader } from '../Components';
+import routes from './routes.json';
+import { IRoute } from '../Types';
 
-type IRoute = {
-  path: string;
-  filePath: string;
-  private: boolean;
-};
-
-const lazyLoad = (path: string) => lazy(() => import(`./${path}`));
+export const lazyLoad = (path: string) => lazy(() => import(`/src/${path}`));
 
 export default function Router() {
   return (

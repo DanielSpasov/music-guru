@@ -1,7 +1,8 @@
 import { ReactNode, useContext, useEffect } from 'react';
 
-import { ThemeContext } from '../../../Contexts/Theme';
 import { Box, BreadCrumb, Header, Navbar } from '../../';
+import { ThemeContext } from '../../../Contexts/Theme';
+import { Action } from '../../../Types';
 
 type PageLayoutProps = {
   title: string;
@@ -9,6 +10,7 @@ type PageLayoutProps = {
   showBreadCrumb?: boolean;
   showHeader?: boolean;
   children?: ReactNode;
+  actions?: Action[];
 };
 
 export default function PageLayout({
@@ -16,7 +18,8 @@ export default function PageLayout({
   showNavbar = true,
   showBreadCrumb = true,
   showHeader = true,
-  children
+  children,
+  actions = []
 }: PageLayoutProps) {
   const { baseLight } = useContext(ThemeContext);
 
@@ -34,7 +37,7 @@ export default function PageLayout({
       alignContent="center"
     >
       {showNavbar && <Navbar />}
-      {showBreadCrumb && <BreadCrumb />}
+      {showBreadCrumb && <BreadCrumb actions={actions} />}
       {showHeader && <Header padding="60px 0 20px 0" title={title}></Header>}
       {children}
     </Box>

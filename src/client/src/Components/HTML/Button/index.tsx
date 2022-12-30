@@ -30,7 +30,7 @@ const StyledButton = styled('button')<ButtonProps>`
     variant ? theme[variant] : theme.base};
   border: 2px solid transparent;
   padding: 0.75em 1.25em;
-  border-radius: 10px;
+  border-radius: 6px;
   font-weight: bold;
   margin: 0.75em 0;
   transition: 0.2s;
