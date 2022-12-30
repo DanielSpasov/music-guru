@@ -4,9 +4,10 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
 import { ThemeContext } from '../../../Contexts/Theme';
-import { Heading, Button } from '../../../Components';
+import { Heading, Button, Box } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import { FormSchema } from '../../../Types';
+import { useNavigate } from 'react-router-dom';
 
 type FormError = {
   code: string;
@@ -24,6 +25,7 @@ type FormProps = {
   defaultValues?: any;
   header?: string;
   errors?: FormError[];
+  additionalInfo?: JSX.Element;
 };
 
 export default function Form({
@@ -31,9 +33,11 @@ export default function Form({
   schema,
   onSubmit = () => null,
   defaultValues = {},
-  errors = []
+  errors = [],
+  additionalInfo
 }: FormProps) {
   const [disableSubmit, setDisableSubmit] = useState(false);
+  const navigate = useNavigate();
   const theme = useContext(ThemeContext);
   const { register, handleSubmit } = useForm({
     defaultValues,
@@ -67,9 +71,15 @@ export default function Form({
           error={errors.find(x => x.path.includes(field.key))}
         />
       ))}
-      <Button variant="primary" type="submit" disabled={disableSubmit}>
-        {header || 'Submit'}
-      </Button>
+      <Box display="flex" justifyContent="space-between">
+        <Button variant="danger" type="button" onClick={() => navigate(-1)}>
+          Go Back
+        </Button>
+        <Button variant="primary" type="submit" disabled={disableSubmit}>
+          Submit
+        </Button>
+      </Box>
+      {additionalInfo}
     </StyledForm>
   );
 }

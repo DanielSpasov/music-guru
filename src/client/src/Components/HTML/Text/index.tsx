@@ -3,10 +3,10 @@ import { ReactNode } from 'react';
 
 type TextProps = {
   children: ReactNode;
-  color: string;
+  color?: string;
 };
 
-export default function Text({ children, color }: TextProps) {
+export default function Text({ children, color = 'white' }: TextProps) {
   return <StyledText color={color}>{children}</StyledText>;
 }
 

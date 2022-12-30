@@ -1,7 +1,7 @@
 import { useCallback, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Form, PageLayout } from '../../../Components';
+import { Form, PageLayout, Box, Link, Text } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { User, SignInSchema } from '../../../Types';
 import { errorHandler } from '../../../Handlers';
@@ -43,6 +43,15 @@ export default function SignIn() {
         schema={schema}
         onSubmit={onSubmit}
         errors={errors}
+        additionalInfo={
+          <Box fontSize="1em" textAlign="center" padding="1em">
+            <Text>Or</Text>
+            <Link to="/sign-up" fontSize="1em" textDecoration="underline">
+              sign up
+            </Link>
+            <Text>if you don't have an account yet.</Text>
+          </Box>
+        }
       />
     </PageLayout>
   );
