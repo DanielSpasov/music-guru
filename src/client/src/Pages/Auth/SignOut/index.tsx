@@ -11,7 +11,7 @@ export default function SignOut() {
   useEffect(() => {
     localStorage.removeItem('AUTH');
     setAuth({ isAuthenticated: false, uid: null });
-    navigate('/');
+    navigate(-1);
   }, [setAuth, navigate]);
 
   return <PageLayout title=""></PageLayout>;

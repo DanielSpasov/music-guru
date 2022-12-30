@@ -20,8 +20,9 @@ export default function SignUp() {
         const { token, uid } = await Api.user.signUp(user);
         localStorage.setItem('AUTH', token);
         setAuth({ isAuthenticated: true, uid: uid });
-        navigate('/');
         setErrors([]);
+        if (window.history.length > 2) navigate(-1);
+        else navigate('/');
       } catch (error: any) {
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);

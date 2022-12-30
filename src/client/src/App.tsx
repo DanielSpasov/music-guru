@@ -60,9 +60,11 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider value={{ auth, setAuth }}>
         <ThemeProvider value={theme}>
-          {auth.isAuthenticated === null && <Loader />}
-          <Router />
-          {/* {auth.isAuthenticated ? <PrivateRouter /> : <PublicRouter />} */}
+          {auth.isAuthenticated === null ? (
+            <Loader fullscreen rainbow />
+          ) : (
+            <Router />
+          )}
         </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
