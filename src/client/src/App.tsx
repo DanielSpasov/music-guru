@@ -4,11 +4,8 @@ import { useEffect, useState } from 'react';
 import { AuthProvider, defaultAuth, IAuth } from './Contexts/Auth';
 import { ThemeProvider, defaultTheme } from './Contexts/Theme';
 import { Loader } from './Components';
-import Api from './Api';
-
-// import PrivateRouter from './Router/Private';
-// import PublicRouter from './Router/Public';
 import Router from './Router';
+import Api from './Api';
 
 export default function App() {
   const [theme, setTheme] = useState(defaultTheme);

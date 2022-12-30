@@ -1,8 +1,6 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
 import { Home, NotFound, SignUp, SignIn, SignOut } from './Pages';
-import { AuthContext } from './Contexts/Auth';
 
 export default function Router() {
   return (
@@ -10,7 +8,7 @@ export default function Router() {
       <Route index element={<Home />} />
 
       {/* Artist Routes */}
-      <Route path="/artists" element={<Private route={<Home />} />} />
+      <Route path="/artists" element={<Home />} />
 
       {/* Album Routes */}
       <Route path="/albums" element={<Home />} />
@@ -30,10 +28,4 @@ export default function Router() {
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
-}
-
-function Private({ route }: { route: JSX.Element }) {
-  const { auth } = useContext(AuthContext);
-  if (!auth.isAuthenticated) return <Navigate to="/sign-in" />;
-  return route;
 }

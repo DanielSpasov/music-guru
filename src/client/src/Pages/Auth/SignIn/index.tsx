@@ -32,12 +32,7 @@ export default function SignIn() {
   );
 
   return (
-    <PageLayout
-      title="Sign In"
-      showNavbar={false}
-      showHeader={false}
-      showBreadCrumb={false}
-    >
+    <PageLayout title="Sign In" showHeader={false}>
       <Form
         header="Sign In"
         schema={schema}
