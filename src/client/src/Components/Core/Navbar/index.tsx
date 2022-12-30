@@ -11,13 +11,12 @@ export default function Navbar() {
   return (
     <Box
       display="flex"
-      position="absolute"
       justifyContent="space-between"
       flexWrap="no-wrap"
       alignItems="center"
       height="60px"
       width="100%"
-      boxShadow="rgba(0, 0, 0, 0.65) 0px 5px 15px"
+      boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
       zIndex="9999"
     >
       <Box height="60px">

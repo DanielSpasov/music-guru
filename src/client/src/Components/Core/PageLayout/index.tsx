@@ -1,19 +1,21 @@
 import { ReactNode, useContext, useEffect } from 'react';
 
 import { ThemeContext } from '../../../Contexts/Theme';
-import { Box, Header, Navbar } from '../../';
+import { Box, BreadCrumb, Header, Navbar } from '../../';
 
 type PageLayoutProps = {
   title: string;
-  excludeNavbar?: boolean;
-  excludeHeader?: boolean;
+  showNavbar?: boolean;
+  showBreadCrumb?: boolean;
+  showHeader?: boolean;
   children?: ReactNode;
 };
 
 export default function PageLayout({
   title,
-  excludeNavbar = false,
-  excludeHeader = false,
+  showNavbar = true,
+  showBreadCrumb = true,
+  showHeader = true,
   children
 }: PageLayoutProps) {
   const { baseLight } = useContext(ThemeContext);
@@ -31,10 +33,9 @@ export default function PageLayout({
       flexDirection="column"
       alignContent="center"
     >
-      {!excludeNavbar && <Navbar />}
-      {!excludeHeader && (
-        <Header padding="60px 0 20px 0" title={title}></Header>
-      )}
+      {showNavbar && <Navbar />}
+      {showBreadCrumb && <BreadCrumb />}
+      {showHeader && <Header padding="60px 0 20px 0" title={title}></Header>}
       {children}
     </Box>
   );

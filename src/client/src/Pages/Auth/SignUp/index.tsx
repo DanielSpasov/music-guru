@@ -32,7 +32,12 @@ export default function SignUp() {
   );
 
   return (
-    <PageLayout title="Sign Up" excludeNavbar excludeHeader>
+    <PageLayout
+      title="Sign Up"
+      showNavbar={false}
+      showHeader={false}
+      showBreadCrumb={false}
+    >
       <Form
         header="Sign Up"
         schema={schema}
