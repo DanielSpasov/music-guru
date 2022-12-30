@@ -1,31 +1,35 @@
 import { Routes, Route } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 
-import { Home, NotFound, SignUp, SignIn, SignOut } from './Pages';
+import routes from './Config/routes.json';
+import { Loader } from './Components';
+
+type IRoute = {
+  path: string;
+  filePath: string;
+  private: boolean;
+};
+
+const getLazyComponent = (path: string) => lazy(() => import(`./${path}`));
 
 export default function Router() {
+  console.log('IN ROUTER');
   return (
-    <Routes>
-      <Route index element={<Home />} />
-
-      {/* Artist Routes */}
-      <Route path="/artists" element={<Home />} />
-
-      {/* Album Routes */}
-      <Route path="/albums" element={<Home />} />
-
-      {/* Mixtape Routes */}
-      <Route path="/mixtapes" element={<Home />} />
-
-      {/* Single Routes */}
-      <Route path="/singles" element={<Home />} />
-
-      {/* Authentication Related Routes */}
-      <Route path="/sign-in" element={<SignIn />} />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route path="/sign-out" element={<SignOut />} />
-
-      {/* Not Found */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <Suspense fallback={<Loader fullscreen rainbow />}>
+      <Routes>
+        {routes.map((route: IRoute) => {
+          const Component = getLazyComponent(route.filePath);
+          return (
+            <Route
+              {...(route.path === 'index'
+                ? { index: true }
+                : { path: route.path })}
+              key={route.path}
+              element={<Component />}
+            />
+          );
+        })}
+      </Routes>
+    </Suspense>
   );
 }

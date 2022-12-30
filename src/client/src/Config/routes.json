@@ -1,0 +1,47 @@
+[
+  {
+    "path": "index",
+    "filePath": "Pages/Home",
+    "private": false
+  },
+  {
+    "path": "/artists",
+    "filePath": "Pages/Home",
+    "private": true
+  },
+  {
+    "path": "/albums",
+    "filePath": "Pages/Home",
+    "private": false
+  },
+  {
+    "path": "/mixtapes",
+    "filePath": "Pages/Home",
+    "private": false
+  },
+  {
+    "path": "/singles",
+    "filePath": "Pages/Home",
+    "private": false
+  },
+  {
+    "path": "/sign-in",
+    "filePath": "Pages/Auth/SignIn",
+    "private": false
+  },
+  {
+    "path": "/sign-up",
+    "filePath": "Pages/Auth/SignUp",
+    "private": false
+  },
+  {
+    "path": "/sign-out",
+    "filePath": "Pages/Auth/SignOut",
+    "private": false
+  },
+  {
+    "path": "*",
+    "filePath": "Pages/NotFound",
+    "private": false
+  }
+]
