@@ -21,8 +21,7 @@ export default function SignIn() {
         localStorage.setItem('AUTH', token);
         setAuth({ isAuthenticated: true, uid });
         setErrors([]);
-        if (window.history.length > 2) navigate(-1);
-        else navigate('/');
+        navigate('/');
       } catch (error: any) {
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);

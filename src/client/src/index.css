@@ -10,6 +10,12 @@ body {
   margin: 0;
 }
 
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--dark-base);
+  }
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
