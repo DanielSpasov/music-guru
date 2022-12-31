@@ -5,11 +5,10 @@ export type IRoute = {
 };
 
 export type Action = {
-  perform: Function;
-  disabled?: boolean;
-  label?: string;
-  icon?: {
+  icon: {
     model: string;
     type: string;
   };
+  perform: Function;
+  disabled?: boolean;
 };

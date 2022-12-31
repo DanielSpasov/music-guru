@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { Action } from '../../../Types';
 
-import { Box, Button, Icon } from '../../HTML';
+import { Action } from '../../../Types';
+import { Box, Icon } from '../../HTML';
 
 export default function BreadCrumb({ actions }: { actions: Action[] }) {
   const navigate = useNavigate();
-
-  console.log(actions);
 
   return (
     <Box
@@ -37,24 +35,16 @@ export default function BreadCrumb({ actions }: { actions: Action[] }) {
             onClick={() => navigate('/')}
           />
         </Box>
-        <Box position="relative">
-          {actions.map((action: Action) => (
-            <Button
+        <Box position="relative" display="flex" flex-direction="row-reverse">
+          {actions.map((action: Action, i: number) => (
+            <Icon
+              key={i}
+              model={action.icon.model}
+              type={action.icon.type}
+              onClick={action.perform}
               disabled={action.disabled}
-              onClick={action?.perform}
-              variant="secondary"
-              margin="0 .3em"
-              padding=".5em"
-            >
-              {action?.icon && (
-                <Icon
-                  model={action.icon.model}
-                  type={action.icon.type}
-                  font-size="1em"
-                />
-              )}
-              {action?.label}
-            </Button>
+              padding="8px"
+            />
           ))}
         </Box>
       </Box>

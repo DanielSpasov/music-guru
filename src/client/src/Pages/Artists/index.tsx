@@ -1,11 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import { PageLayout } from '../../Components';
-import { getActions } from './helpers';
+import useActions from './useActions';
 
 export default function Artists() {
-  const navigate = useNavigate();
+  const actions = useActions();
 
-  return (
-    <PageLayout title="Artists" actions={getActions({ navigate })}></PageLayout>
-  );
+  return <PageLayout title="Artists" actions={actions}></PageLayout>;
 }
