@@ -7,12 +7,11 @@
   {
     "path": "/artists",
     "filePath": "Pages/NotFound",
-    "private": true,
     "routes": [
       {
         "path": "index",
         "filePath": "Pages/Artists",
-        "private": true
+        "private": false
       },
       {
         "path": "add",

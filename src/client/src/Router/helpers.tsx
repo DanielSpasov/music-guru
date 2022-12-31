@@ -4,7 +4,7 @@ import { lazy } from 'react';
 export type IRoute = {
   path: string;
   filePath: string;
-  private: boolean;
+  private?: boolean;
   routes?: IRoute[];
 };
 
@@ -16,7 +16,7 @@ const Private = ({
 }: {
   route: JSX.Element;
   isAuth: boolean | null;
-}): JSX.Element => (isAuth ? route : <Navigate to="/sign-in" />);
+}): JSX.Element => (isAuth ? route : <Navigate to="/sign-in" replace />);
 
 export function setupRoute(route: IRoute, isAuth: boolean | null) {
   if (route?.routes) {
