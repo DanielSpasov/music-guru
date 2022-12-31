@@ -6,8 +6,20 @@
   },
   {
     "path": "/artists",
-    "filePath": "Pages/Artists",
-    "private": true
+    "filePath": "Pages/NotFound",
+    "private": true,
+    "routes": [
+      {
+        "path": "index",
+        "filePath": "Pages/Artists",
+        "private": true
+      },
+      {
+        "path": "add",
+        "filePath": "Pages/Home",
+        "private": true
+      }
+    ]
   },
   {
     "path": "/albums",

@@ -5,6 +5,7 @@ export type IRoute = {
   path: string;
   filePath: string;
   private: boolean;
+  routes?: IRoute[];
 };
 
 const lazyLoad = (path: string) => lazy(() => import(`/src/${path}`));
@@ -18,13 +19,20 @@ const Private = ({
 }): JSX.Element => (isAuth ? route : <Navigate to="/sign-in" />);
 
 export function setupRoute(route: IRoute, isAuth: boolean | null) {
+  if (route?.routes) {
+    return (
+      <Route path={route.path} key={route.path}>
+        {route.routes.map((route: IRoute) => setupRoute(route, isAuth))}
+      </Route>
+    );
+  }
+
   const Page = lazyLoad(route.filePath);
-  const isIndex = route.path === 'index';
   return (
     <Route
-      index={isIndex}
-      path={!isIndex ? route.path : undefined}
       key={route.path}
+      index={route.path === 'index'}
+      path={route.path !== 'index' ? route.path : undefined}
       element={
         route.private ? <Private isAuth={isAuth} route={<Page />} /> : <Page />
       }
