@@ -1,35 +1,19 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { Suspense, useContext, lazy } from 'react';
+import { Routes } from 'react-router-dom';
+import { Suspense, useContext } from 'react';
 
 import { AuthContext } from '../Contexts/Auth';
+import { IRoute, setupRoute } from './helpers';
 import { Loader } from '../Components';
 import routes from './routes.json';
-import { IRoute } from '../Types';
-
-export const lazyLoad = (path: string) => lazy(() => import(`/src/${path}`));
 
 export default function Router() {
+  const { auth } = useContext(AuthContext);
+
   return (
     <Suspense fallback={<Loader fullscreen rainbow />}>
       <Routes>
-        {routes.map((route: IRoute) => {
-          const Page = lazyLoad(route.filePath);
-          return (
-            <Route
-              index={route.path === 'index'}
-              path={route.path !== 'index' ? route.path : undefined}
-              key={route.path}
-              element={route.private ? <Private route={<Page />} /> : <Page />}
-            />
-          );
-        })}
+        {routes.map((route: IRoute) => setupRoute(route, auth.isAuthenticated))}
       </Routes>
     </Suspense>
   );
-}
-
-function Private({ route }: { route: JSX.Element }) {
-  const { auth } = useContext(AuthContext);
-  if (!auth.isAuthenticated) return <Navigate to="/sign-in" />;
-  return route;
 }

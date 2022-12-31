@@ -11,6 +11,7 @@ export default function App() {
   const [theme, setTheme] = useState(defaultTheme);
   const [auth, setAuth] = useState<IAuth>(defaultAuth.auth);
 
+  // TODO: Refactor so the useEffect doesn't fire requests non stop
   useEffect(() => {
     (async () => {
       try {

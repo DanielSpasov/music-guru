@@ -1,9 +1,3 @@
-export type IRoute = {
-  path: string;
-  filePath: string;
-  private: boolean;
-};
-
 export type Action = {
   icon: {
     model: string;

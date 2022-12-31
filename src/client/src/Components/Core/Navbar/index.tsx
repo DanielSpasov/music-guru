@@ -22,7 +22,7 @@ export default function Navbar() {
       <Box height="60px">
         <Link to="/">
           <Image
-            src="images/logo/blue-logo192.png"
+            src="/images/logo/blue-logo192.png"
             alt="Music Nerd"
             width="60px"
             height="60px"
