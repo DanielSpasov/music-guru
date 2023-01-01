@@ -1,7 +1,6 @@
 import { Ref, UseFormRegister } from 'react-hook-form/dist/types';
 import { useContext, useState, memo } from 'react';
 import styled from 'styled-components';
-import { camelCase } from 'lodash';
 
 import { ThemeContext } from '../../../Contexts/Theme';
 import { Text, Box, Label, Icon } from '../../';
@@ -17,11 +16,19 @@ export type InputProps = {
   register: UseFormRegister<any>;
   type: InputType;
   label: string;
+  name: string;
   error?: Error;
   required?: boolean;
 };
 
-function Input({ register, type, label, error, required = false }: InputProps) {
+function Input({
+  register,
+  name,
+  type,
+  label,
+  error,
+  required = false
+}: InputProps) {
   const theme = useContext(ThemeContext);
   const [passVisiblity, setPassVisiblity] = useState(false);
 
@@ -34,10 +41,10 @@ function Input({ register, type, label, error, required = false }: InputProps) {
       </Box>
 
       <StyledInput
-        {...register(camelCase(label), {
+        {...register(name, {
           required
         })}
-        name={camelCase(label)}
+        name={name}
         type={passVisiblity ? 'text' : type}
         placeholder=" "
         theme={theme}

@@ -8,7 +8,6 @@ export type FormField = {
   Component: FC<any>;
   type?: InputType;
   required?: boolean;
-  validate?: Function;
 };
 
 export type FormSchema = {
