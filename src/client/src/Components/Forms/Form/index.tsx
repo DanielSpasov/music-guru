@@ -39,7 +39,7 @@ export default function Form({
   const [disableSubmit, setDisableSubmit] = useState(false);
   const navigate = useNavigate();
   const theme = useContext(ThemeContext);
-  const { register, handleSubmit } = useForm({ defaultValues });
+  const { getValues, register, handleSubmit } = useForm({ defaultValues });
 
   const submitFn = useCallback(
     async (e: any) => {
@@ -66,6 +66,7 @@ export default function Form({
           name={field.key}
           type={field?.type}
           required={field?.required}
+          value={getValues(field.key)}
           error={errors.find(x => x.path.includes(field.key))}
         />
       ))}

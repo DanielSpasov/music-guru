@@ -9,6 +9,13 @@ export const schema: FormSchema = {
       label: 'Name',
       required: true,
       Component: Input
+    },
+    {
+      key: 'image',
+      type: 'file',
+      label: 'Image',
+      required: true,
+      Component: Input
     }
   ]
 };

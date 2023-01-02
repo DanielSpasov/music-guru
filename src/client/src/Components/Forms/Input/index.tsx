@@ -1,25 +1,10 @@
-import { Ref, UseFormRegister } from 'react-hook-form/dist/types';
 import { useContext, useState, memo } from 'react';
 import styled from 'styled-components';
 
 import { ThemeContext } from '../../../Contexts/Theme';
+import { InputProps, ErrorMessage } from './helpers';
 import { Text, Box, Label, Icon } from '../../';
-import { InputType } from '../../../Types';
-
-type Error = {
-  type: string;
-  message: string;
-  ref: Ref;
-};
-
-export type InputProps = {
-  register: UseFormRegister<any>;
-  type: InputType;
-  label: string;
-  name: string;
-  error?: Error;
-  required?: boolean;
-};
+import FileInput from './File';
 
 function Input({
   register,
@@ -27,6 +12,7 @@ function Input({
   type,
   label,
   error,
+  value,
   required = false
 }: InputProps) {
   const theme = useContext(ThemeContext);
@@ -40,18 +26,23 @@ function Input({
         </Text>
       </Box>
 
-      <StyledInput
-        {...register(name, {
-          required
-        })}
-        name={name}
-        type={passVisiblity ? 'text' : type}
-        placeholder=" "
-        theme={theme}
-      />
-      <Label position="absolute" top="36px" left="10px">
-        {label}
-      </Label>
+      {type === 'file' && (
+        <FileInput register={register} name={name} value={value} />
+      )}
+      {type !== 'file' && (
+        <>
+          <StyledInput
+            {...register(name, { required })}
+            name={name}
+            type={passVisiblity ? 'text' : type}
+            placeholder=" "
+            theme={theme}
+          />
+          <Label position="absolute" top="36px" left="10px">
+            {label}
+          </Label>
+        </>
+      )}
 
       {type === 'password' && (
         <Icon
@@ -67,15 +58,6 @@ function Input({
       )}
 
       <ErrorMessage error={error} />
-    </Box>
-  );
-}
-
-function ErrorMessage({ error }: { error?: Error }) {
-  const theme = useContext(ThemeContext);
-  return (
-    <Box display="flex" justifyContent="space-between">
-      {error && <Text color={theme.danger}>{error?.message}</Text>}
     </Box>
   );
 }
