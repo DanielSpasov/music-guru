@@ -17,6 +17,6 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use(router);
 
-db.connect(DB_URI);
+db.run(DB_URI);
 
 app.listen(PORT, () => console.log(`Server running on PORT: ${PORT}`));
