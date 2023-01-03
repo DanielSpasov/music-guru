@@ -12,7 +12,6 @@ function Input({
   type,
   label,
   error,
-  value,
   required = false
 }: InputProps) {
   const theme = useContext(ThemeContext);
@@ -27,7 +26,7 @@ function Input({
       </Box>
 
       {type === 'file' && (
-        <FileInput register={register} name={name} value={value} />
+        <FileInput register={register} name={name} label={label} />
       )}
       {type !== 'file' && (
         <>

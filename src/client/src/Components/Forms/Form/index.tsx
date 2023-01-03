@@ -1,15 +1,15 @@
 import { SubmitHandler } from 'react-hook-form/dist/types';
 import { useContext, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
-import { ThemeContext } from '../../../Contexts/Theme';
 import { Heading, Button, Box } from '../../../Components';
+import { ThemeContext } from '../../../Contexts/Theme';
 import { errorHandler } from '../../../Handlers';
 import { FormSchema } from '../../../Types';
-import { useNavigate } from 'react-router-dom';
 
-type FormError = {
+export type FormError = {
   code: string;
   message: string;
   path: string[];
@@ -39,7 +39,7 @@ export default function Form({
   const [disableSubmit, setDisableSubmit] = useState(false);
   const navigate = useNavigate();
   const theme = useContext(ThemeContext);
-  const { getValues, register, handleSubmit } = useForm({ defaultValues });
+  const { register, handleSubmit } = useForm({ defaultValues });
 
   const submitFn = useCallback(
     async (e: any) => {
@@ -66,7 +66,6 @@ export default function Form({
           name={field.key}
           type={field?.type}
           required={field?.required}
-          value={getValues(field.key)}
           error={errors.find(x => x.path.includes(field.key))}
         />
       ))}

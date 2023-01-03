@@ -16,7 +16,6 @@ export type InputProps = {
   type: InputType;
   label: string;
   name: string;
-  value: any;
   error?: Error;
   required?: boolean;
 };
@@ -25,7 +24,7 @@ export type FileInputProps = {
   register: UseFormRegister<any>;
   required?: boolean;
   name: string;
-  value: FileList;
+  label: string;
 };
 
 export type File = {
