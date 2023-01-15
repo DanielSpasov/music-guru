@@ -13,14 +13,14 @@ export const SignUpSchema = z
       .optional(),
     email: z.string().email({ message: 'Invalid email.' }),
     password: z.string(),
-    repeatPassword: z.string()
+    repeat_password: z.string()
   })
-  .superRefine(({ repeatPassword, password }, context) => {
-    if (repeatPassword !== password) {
+  .superRefine(({ repeat_password, password }, context) => {
+    if (repeat_password !== password) {
       context.addIssue({
         code: 'custom',
         message: "Passwords doesn't match.",
-        path: ['password', 'repeat-password']
+        path: ['password', 'repeat_password']
       });
     }
   });

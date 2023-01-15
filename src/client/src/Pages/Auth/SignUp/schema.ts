@@ -24,7 +24,7 @@ const schema: FormSchema = {
       required: true
     },
     {
-      key: 'repeat-password',
+      key: 'repeat_password',
       label: 'Repeat Password',
       type: 'password',
       Component: Input,

@@ -22,14 +22,14 @@ const UserSchema = z
       .transform(e => (e === '' ? undefined : e)),
     email: z.string().email({ message: 'Invalid email.' }),
     password: z.string(),
-    repeatPassword: z.string()
+    repeat_password: z.string()
   })
-  .superRefine(({ repeatPassword, password }, context) => {
-    if (repeatPassword !== password) {
+  .superRefine(({ repeat_password, password }, context) => {
+    if (repeat_password !== password) {
       context.addIssue({
         code: 'custom',
         message: "Passwords doesn't match.",
-        path: ['password', 'repeat-password']
+        path: ['password', 'repeat_password']
       });
     }
   });
@@ -41,7 +41,7 @@ export async function SignUp(req: Request, res: Response) {
       username: req.body?.username,
       email: req.body?.email,
       password: req.body?.password,
-      repeatPassword: req.body?.repeatPassword
+      repeat_password: req.body?.repeat_password
     });
 
     // CHECK IF THE EMAIL IS ALREADY SIGNED UP
