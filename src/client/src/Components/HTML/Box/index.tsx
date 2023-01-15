@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { ReactNode, useContext } from 'react';
+import { ReactNode } from 'react';
 
-import { ThemeContext } from '../../../Contexts/Theme';
+import { essentials, shadows, colors, flex, text } from '../../helpers';
 
 type BoxProps = {
   children?: ReactNode;
@@ -9,19 +9,13 @@ type BoxProps = {
 };
 
 export default function Box({ children, ...css }: BoxProps) {
-  const theme = useContext(ThemeContext);
-  return (
-    <StyledBox {...css} theme={theme}>
-      {children}
-    </StyledBox>
-  );
+  return <StyledBox {...css}>{children}</StyledBox>;
 }
 
 const StyledBox = styled('div')<BoxProps>`
-  flex-wrap: wrap;
-  color: white;
-  background-color: ${({ backgroundColor, theme: { base } }) =>
-    backgroundColor || base};
-
-  ${css => ({ ...css })}
+  ${essentials};
+  ${shadows};
+  ${colors};
+  ${flex};
+  ${text};
 `;

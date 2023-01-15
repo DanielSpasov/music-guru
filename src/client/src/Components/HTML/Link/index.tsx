@@ -1,8 +1,8 @@
 import { NavLink, Link as RouterLink } from 'react-router-dom';
-import { useContext, ReactNode } from 'react';
 import styled from 'styled-components';
+import { ReactNode } from 'react';
 
-import { ThemeContext } from '../../../Contexts/Theme';
+import { colors, font, padding, text } from '../../helpers';
 
 type LinkProps = {
   to: string;
@@ -17,24 +17,10 @@ function LinkSwitch({
   children,
   className,
   to = '/',
-  type = 'link',
-  isActive = false
+  type = 'link'
 }: LinkProps) {
-  const { primary } = useContext(ThemeContext);
-
   return type === 'navlink' ? (
-    <NavLink
-      className={className}
-      to={to}
-      style={
-        isActive
-          ? {
-              borderBottom: `5px solid ${primary}`,
-              color: primary
-            }
-          : {}
-      }
-    >
+    <NavLink className={className} to={to}>
       {children}
     </NavLink>
   ) : (
@@ -45,22 +31,25 @@ function LinkSwitch({
 }
 
 const StyledLink = styled(LinkSwitch)<LinkProps>`
-  color: white;
   box-sizing: border-box;
-  text-decoration: none;
-  font-size: 1.25em;
+
+  ${padding};
+  ${colors};
+  ${font};
+  ${text};
+
+  border-bottom: ${({ isActive, theme: { colors } }) =>
+    isActive && `5px solid ${colors.primary}`};
+  color: ${({ isActive, theme: { colors } }) => isActive && colors.primary};
+  padding: ${({ type }) => (type === 'navlink' ? '18px 0.25em' : '0.25em')};
   transition: 0.2s;
   height: 100%;
-  padding: ${({ type }) => (type === 'navlink' ? '18px 0.25em' : '0.25em')};
 
   &:hover {
-    color: ${({ theme: { primary } }) => primary};
+    color: ${({ theme: { colors } }) => colors.primary};
   }
-
-  ${css => ({ ...css })}
 `;
 
 export default function Link(props: LinkProps) {
-  const theme = useContext(ThemeContext);
-  return <StyledLink theme={theme} {...props} />;
+  return <StyledLink fontSize="1.25em" {...props} />;
 }

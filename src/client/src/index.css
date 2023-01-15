@@ -24,6 +24,7 @@ input:-webkit-autofill:focus {
 }
 
 :root {
+  --dark-text: white;
   --dark-primary: #cc41ff;
   --dark-secondary: #05bbaa;
   --dark-base: #1b1b1b;
@@ -31,6 +32,7 @@ input:-webkit-autofill:focus {
   --dark-base-lighter: #454545;
   --dark-base-lightest: #5c5c5c;
 
+  --light-text: black;
   --light-primary: #2378c3;
   --light-secondary: #73b3e7;
   --light-base: #919191;

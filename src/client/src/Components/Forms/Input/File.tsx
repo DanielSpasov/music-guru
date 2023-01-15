@@ -1,9 +1,9 @@
-import { useCallback, useContext, useState, useMemo } from 'react';
-import styled from 'styled-components';
+import { useCallback, useState, useContext } from 'react';
+import styled, { ThemeContext } from 'styled-components';
 
-import { ThemeContext } from '../../../Contexts/Theme';
 import { FileInputProps } from './helpers';
 import { Box, Icon } from '../../HTML';
+import { border } from '../../helpers';
 import Label from '../Label';
 
 export default function FileInput({
@@ -12,22 +12,9 @@ export default function FileInput({
   name,
   label
 }: FileInputProps) {
-  const theme = useContext(ThemeContext);
+  const { colors } = useContext(ThemeContext);
   const [fileName, setFileName] = useState('');
   const [dragOver, setDragOver] = useState<boolean>(false);
-
-  const dragCss = useMemo(
-    () => (dragOver ? { border: `2px ${theme.baseLightest} dashed` } : {}),
-    [theme.baseLightest, dragOver]
-  );
-
-  const inputHoverCss = useMemo(
-    () => ({
-      'pointer-events': 'none',
-      '&:hover': { cursor: dragOver ? '' : 'pointer' }
-    }),
-    [dragOver]
-  );
 
   const handleFileChange = useCallback((e: any) => {
     if (!e.target.files.length) {
@@ -47,31 +34,19 @@ export default function FileInput({
       <Label position="absolute" top="0" left="0">
         {label}
       </Label>
-      <StyledLabel
-        theme={theme}
+      <DropZone
         onDragEnter={() => setDragOver(true)}
         onDragLeave={() => setDragOver(false)}
         onDrop={handleFileDrop}
-        {...dragCss}
+        {...(dragOver ? { border: `2px ${colors.baseLightest} dashed` } : {})}
       >
-        <Label
-          position="absolute"
-          zIndex="2"
-          inline-size="96%"
-          overflow="hidden"
-          text-overflow="ellipsis"
-        >
-          {fileName}
-        </Label>
+        <Label>{fileName}</Label>
         <Box background="transparent" display="flex" justifyContent="center">
           <Icon
             model="cloud-upload"
             type="solid"
-            color={theme.baseLighter}
-            font-size="34px"
-            position="absolute"
-            zIndex="1"
-            {...inputHoverCss}
+            color={colors.baseLighter}
+            fontSize="34px"
           />
         </Box>
         <StyledUpload
@@ -79,33 +54,31 @@ export default function FileInput({
           name={name}
           type="file"
           accept="img/png"
-          theme={theme}
           multiple={false}
         />
-      </StyledLabel>
+      </DropZone>
     </Box>
   );
 }
 
-const StyledLabel = styled('label')<any>`
-  background-color: ${({ theme }) => theme.baseLight};
-  border: 2px ${({ theme }) => theme.baseLighter} solid;
-  box-sizing: border-box;
+const DropZone = styled('label')`
+  border: 2px ${({ theme: { colors } }) => colors.baseLighter} solid;
+  background-color: ${({ theme: { colors } }) => colors.baseLight};
   border-radius: 5px;
-  margin: 0.5em 0;
   padding: 0.5em;
   height: 60px;
   width: 100%;
+  max-width: 95.5%;
+
+  ${border}
 
   &:hover {
-    border: 2px ${({ theme }) => theme.baseLightest} dashed;
+    border: 2px ${({ theme: { colors } }) => colors.baseLightest} dashed;
     cursor: pointer;
   }
-
-  ${css => ({ ...css })}
 `;
 
-const StyledUpload = styled('input')<{ theme: typeof ThemeContext }>`
+const StyledUpload = styled('input')`
   &[type='file'] {
     display: none;
   }

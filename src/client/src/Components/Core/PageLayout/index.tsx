@@ -1,7 +1,7 @@
-import { ReactNode, useContext, useEffect } from 'react';
+import { ReactNode, useEffect, useContext } from 'react';
+import { ThemeContext } from 'styled-components';
 
 import { Box, BreadCrumb, Header, Navbar } from '../../';
-import { ThemeContext } from '../../../Contexts/Theme';
 import { Action } from '../../../Types';
 
 type PageLayoutProps = {
@@ -21,8 +21,7 @@ export default function PageLayout({
   children,
   actions = []
 }: PageLayoutProps) {
-  const { baseLight } = useContext(ThemeContext);
-
+  const { colors } = useContext(ThemeContext);
   useEffect(() => {
     document.title = title;
   }, [title]);
@@ -31,7 +30,7 @@ export default function PageLayout({
     <Box
       minHeight="100vh"
       height="100%"
-      backgroundColor={baseLight}
+      backgroundColor={colors.baseLight}
       display="flex"
       flexDirection="column"
       alignContent="center"

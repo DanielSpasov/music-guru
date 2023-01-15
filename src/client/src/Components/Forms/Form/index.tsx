@@ -1,11 +1,10 @@
 import { SubmitHandler } from 'react-hook-form/dist/types';
-import { useContext, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
 import { Heading, Button, Box } from '../../../Components';
-import { ThemeContext } from '../../../Contexts/Theme';
 import { errorHandler } from '../../../Handlers';
 import { FormSchema } from '../../../Types';
 
@@ -36,10 +35,9 @@ export default function Form({
   errors = [],
   additionalInfo
 }: FormProps) {
+  const { register, handleSubmit } = useForm({ defaultValues });
   const [disableSubmit, setDisableSubmit] = useState(false);
   const navigate = useNavigate();
-  const theme = useContext(ThemeContext);
-  const { register, handleSubmit } = useForm({ defaultValues });
 
   const submitFn = useCallback(
     async (e: any) => {
@@ -56,7 +54,7 @@ export default function Form({
   );
 
   return (
-    <StyledForm onSubmit={handleSubmit(submitFn)} theme={theme}>
+    <StyledForm onSubmit={handleSubmit(submitFn)}>
       <Heading title={header || 'Form'} />
       {schema.fields.map(field => (
         <field.Component
@@ -83,8 +81,8 @@ export default function Form({
 }
 
 const StyledForm = styled('form')`
-  background-color: ${({ theme: { base } }) => base};
-  box-shadow: rgba(0, 0, 0, 0.65) 0px 0px 15px;
+  background-color: ${({ theme: { colors } }) => colors.base};
+  box-shadow: rgba(0, 0, 0, 0.65) 0px 0px 5px;
   flex-direction: column;
   border-radius: 10px;
   min-width: 400px;

@@ -1,14 +1,13 @@
+import { useEffect, useState, useMemo } from 'react';
+import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 
 import { AuthProvider, defaultAuth, IAuth } from './Contexts/Auth';
-import { ThemeProvider, defaultTheme } from './Contexts/Theme';
 import { Loader } from './Components';
 import Router from './Router';
 import Api from './Api';
 
 export default function App() {
-  const [theme, setTheme] = useState(defaultTheme);
   const [auth, setAuth] = useState<IAuth>(defaultAuth.auth);
 
   // TODO: Refactor so the useEffect doesn't fire requests non stop
@@ -36,28 +35,35 @@ export default function App() {
     })();
   }, [auth]);
 
-  useEffect(() => {
-    const preferedTheme = window.matchMedia('(prefers-color-scheme: dark)')
-      .matches
+  const theme = useMemo(() => {
+    const pref = window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
       : 'light';
 
-    setTheme(prev => ({
-      ...prev,
-      preferedTheme,
-      primary: `var(--${preferedTheme}-primary)`,
-      secondary: `var(--${preferedTheme}-secondary)`,
-      base: `var(--${preferedTheme}-base)`,
-      baseLight: `var(--${preferedTheme}-base-light)`,
-      baseLighter: `var(--${preferedTheme}-base-lighter)`,
-      baseLightest: `var(--${preferedTheme}-base-lightest)`
-    }));
+    return {
+      colors: {
+        // Indicator colors
+        success: 'var(--success)',
+        danger: 'var(--danger)',
+        warning: 'var(--warning)',
+        info: 'var(--info)',
+        // Main colors
+        text: `var(--${pref}-text)`,
+        primary: `var(--${pref}-primary)`,
+        secondary: `var(--${pref}-secondary)`,
+        // Base colors
+        base: `var(--${pref}-base)`,
+        baseLight: `var(--${pref}-base-light)`,
+        baseLighter: `var(--${pref}-base-lighter)`,
+        baseLightest: `var(--${pref}-base-lightest)`
+      }
+    };
   }, []);
 
   return (
     <BrowserRouter>
       <AuthProvider value={{ auth, setAuth }}>
-        <ThemeProvider value={theme}>
+        <ThemeProvider theme={theme}>
           {auth.isAuthenticated === null ? (
             <Loader fullscreen rainbow />
           ) : (

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { dimensions } from '../../helpers';
+
 type ImageProps = {
   src: string;
   alt?: string;
@@ -11,5 +13,5 @@ export default function Image({ src, alt, ...css }: ImageProps) {
 }
 
 const StyledImage = styled('img')<ImageProps>`
-  ${css => ({ ...css })}
+  ${dimensions}
 `;

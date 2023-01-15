@@ -38,7 +38,7 @@ export default function SignUp() {
         onSubmit={onSubmit}
         errors={errors}
         additionalInfo={
-          <Box fontSize="1em" textAlign="center" padding="1em">
+          <Box textAlign="center" padding="1em">
             <Text>Or</Text>
             <Link to="/sign-in" fontSize="1em" textDecoration="underline">
               sign in

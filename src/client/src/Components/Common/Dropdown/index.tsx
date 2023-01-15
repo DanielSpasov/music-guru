@@ -1,4 +1,5 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useContext } from 'react';
+import { ThemeContext } from 'styled-components';
 
 import { Box, Icon } from '../../';
 
@@ -19,12 +20,14 @@ export default function Dropdown({
   openOnHover = false
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { colors } = useContext(ThemeContext);
 
   return (
     <Box>
       {icon ? (
         <Icon
           padding="15px 10px"
+          fontSize="26px"
           model={icon.model}
           type={icon.type}
           onClick={!openOnHover ? () => setIsOpen(!isOpen) : () => null}
@@ -35,14 +38,16 @@ export default function Dropdown({
         label
       )}
       <Box
+        minWidth="90px"
+        display={isOpen ? 'flex' : 'none'}
+        backgroundColor={colors.base}
+        flexDirection="column"
         position="absolute"
-        borderRadius="10px"
-        padding="0.5em"
         top="60px"
         right="0px"
-        boxShadow="rgba(0, 0, 0, 0.65) 0px 0px 10px"
-        display={isOpen ? 'flex' : 'none'}
-        flexDirection="column"
+        boxShadow="rgba(0, 0, 0, 0.45) 0px 0px 5px 3px"
+        borderRadius="10px"
+        padding="0.5em"
         onMouseOver={openOnHover ? () => setIsOpen(true) : () => null}
         onMouseOut={openOnHover ? () => setIsOpen(false) : () => null}
       >

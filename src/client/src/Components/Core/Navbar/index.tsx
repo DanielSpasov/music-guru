@@ -1,10 +1,12 @@
-import { useContext } from 'react';
+import { ThemeContext } from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import { useContext } from 'react';
 
 import { Box, Image, Link, Dropdown } from '../../';
 import { AuthContext } from '../../../Contexts/Auth';
 
 export default function Navbar() {
+  const { colors } = useContext(ThemeContext);
   const { pathname } = useLocation();
   const { auth } = useContext(AuthContext);
 
@@ -16,7 +18,8 @@ export default function Navbar() {
       alignItems="center"
       height="60px"
       width="100%"
-      boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
+      backgroundColor={colors.base}
+      boxShadow="rgba(0, 0, 0, 0.45) 0px 3px 4px"
       zIndex="9999"
     >
       <Box height="60px">

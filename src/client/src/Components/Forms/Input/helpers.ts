@@ -1,9 +1,6 @@
-import { useContext } from 'react';
 import { Ref, UseFormRegister } from 'react-hook-form/dist/types';
-import { ThemeContext } from '../../../Contexts/Theme';
 
 import { InputType } from '../../../Types';
-import { Box, Text } from '../../HTML';
 
 type Error = {
   type: string;
@@ -35,12 +32,3 @@ export type File = {
   type: string;
   webkitRelativePath: string;
 };
-
-export function ErrorMessage({ error }: { error?: Error }) {
-  const theme = useContext(ThemeContext);
-  return (
-    <Box display="flex" justifyContent="space-between">
-      {error && <Text color={theme.danger}>{error?.message}</Text>}
-    </Box>
-  );
-}

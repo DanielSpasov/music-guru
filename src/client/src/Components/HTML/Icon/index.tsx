@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { useContext } from 'react';
 
-import { ThemeContext } from '../../../Contexts/Theme';
+import { colors, dimensions, font, padding, positioning } from '../../helpers';
 
 type IconProps = {
   model: string;
@@ -10,24 +9,27 @@ type IconProps = {
 };
 
 export default function Icon({ model, type, ...css }: IconProps) {
-  const theme = useContext(ThemeContext);
   return (
-    <StyledIcon {...css} theme={theme}>
+    <StyledIcon {...css}>
       <i className={`fa-${type} fa-${model}`} />
     </StyledIcon>
   );
 }
 
 const StyledIcon = styled('i')<IconProps>`
-  color: white;
-  font-size: 30px;
   cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
   transition: 0.2s;
+  font-size: 30px;
+
+  ${positioning};
+  ${dimensions};
+  ${padding};
+  ${colors};
+  ${font};
 
   &:hover {
-    color: ${({ onClick, theme: { primary } }) =>
-      onClick ? primary : 'white'};
+    cursor: pointer;
+    color: ${({ onClick, theme: { colors }, color }) =>
+      onClick ? colors.primary : color || 'white'};
   }
-
-  ${css => ({ ...css })};
 `;

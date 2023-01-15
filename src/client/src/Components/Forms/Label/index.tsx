@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { ReactNode } from 'react';
 
+import { essentials, font } from '../../helpers';
+
 type LabelProps = {
   children?: ReactNode;
   [css: string]: any;
@@ -11,8 +13,12 @@ export default function Label({ children, ...css }: LabelProps) {
 }
 
 const StyledLabel = styled('label')<LabelProps>`
-  font-size: 1em;
   pointer-events: none;
 
-  ${css => ({ ...css })}
+  ${essentials};
+  ${font};
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  inline-size: 96%;
 `;

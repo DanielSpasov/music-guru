@@ -1,9 +1,9 @@
-import { useContext, useState, memo } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
+import { useState, memo, useContext } from 'react';
 
-import { ThemeContext } from '../../../Contexts/Theme';
-import { InputProps, ErrorMessage } from './helpers';
+import { colors, essentials, font } from '../../helpers';
 import { Text, Box, Label, Icon } from '../../';
+import { InputProps } from './helpers';
 import FileInput from './File';
 
 function Input({
@@ -14,13 +14,13 @@ function Input({
   error,
   required = false
 }: InputProps) {
-  const theme = useContext(ThemeContext);
+  const { colors } = useContext(ThemeContext);
   const [passVisiblity, setPassVisiblity] = useState(false);
 
   return (
     <Box position="relative" margin=".5em 0">
       <Box display="flex" justifyContent="flex-end">
-        <Text color={required ? theme.danger : 'gray'}>
+        <Text color={required ? colors.danger : 'gray'}>
           {required ? '*' : 'Optional'}
         </Text>
       </Box>
@@ -28,6 +28,7 @@ function Input({
       {type === 'file' && (
         <FileInput register={register} name={name} label={label} />
       )}
+
       {type !== 'file' && (
         <>
           <StyledInput
@@ -35,7 +36,6 @@ function Input({
             name={name}
             type={passVisiblity ? 'text' : type}
             placeholder=" "
-            theme={theme}
           />
           <Label position="absolute" top="36px" left="10px">
             {label}
@@ -49,39 +49,40 @@ function Input({
           type="solid"
           position="absolute"
           fontSize="20px"
-          color="lightgray"
+          color={passVisiblity ? colors.primary : 'lightgray'}
           top="33px"
           right="10px"
           onClick={() => setPassVisiblity(!passVisiblity)}
         />
       )}
 
-      <ErrorMessage error={error} />
+      {error && <Text color={colors.danger}>{error?.message}</Text>}
     </Box>
   );
 }
 
 export default memo(Input);
 
-const StyledInput = styled('input')`
-  background-color: ${({ theme }) => theme.baseLight};
-  border: 2px solid ${({ theme }) => theme.baseLighter};
+const StyledInput = styled('input')<any>`
   box-sizing: border-box;
-  border-radius: 5px;
 
+  ${essentials}
+  ${colors}
+  ${font}
+
+  background-color: ${({ theme: { colors } }) => colors.baseLight};
+  border: 2px solid ${({ theme: { colors } }) => colors.baseLighter};
   margin: 0.5em 0;
-  font-size: 1em;
   padding: 0.5em;
   outline: none;
-  color: white;
   width: 100%;
 
   &:hover {
-    border: 2px solid ${({ theme }) => theme.baseLightest};
+    border: 2px solid ${({ theme: { colors } }) => colors.baseLightest};
   }
 
   &:focus {
-    border: 2px solid ${({ theme }) => theme.primary};
+    border: 2px solid ${({ theme: { colors } }) => colors.primary};
   }
 
   & ~ label {

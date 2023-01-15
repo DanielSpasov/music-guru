@@ -1,9 +1,12 @@
+import { ThemeContext } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 
 import { Action } from '../../../Types';
 import { Box, Icon } from '../../HTML';
 
 export default function BreadCrumb({ actions }: { actions: Action[] }) {
+  const { colors } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   return (
@@ -11,7 +14,8 @@ export default function BreadCrumb({ actions }: { actions: Action[] }) {
       width="100%"
       height="50px"
       position="relative"
-      boxShadow="rgba(0, 0, 0, 0.45) 0px 5px 15px"
+      backgroundColor={colors.base}
+      boxShadow="rgba(0, 0, 0, 0.45) 0px 3px 4px"
       zIndex="9998"
     >
       <Box
@@ -20,11 +24,12 @@ export default function BreadCrumb({ actions }: { actions: Action[] }) {
         justifyContent="space-between"
         height="100%"
       >
-        <Box>
+        <Box display="flex">
           <Icon
             model="arrow-left"
             type="solid"
             padding="8px"
+            fontSize="1.5em"
             onClick={() => navigate(-1)}
           />
           <Icon
@@ -43,6 +48,7 @@ export default function BreadCrumb({ actions }: { actions: Action[] }) {
               type={action.icon.type}
               onClick={action.perform}
               disabled={action.disabled}
+              fontSize="1.5em"
               padding="8px"
             />
           ))}

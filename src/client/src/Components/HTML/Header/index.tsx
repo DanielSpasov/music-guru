@@ -19,10 +19,7 @@ export default function Header({ children, title, ...css }: HeaderProps) {
 }
 
 const StyledHeader = styled('header')<HeaderProps>`
+  display: flex;
   flex-direction: column;
   text-align: center;
-  display: flex;
-  color: white;
-
-  ${css => ({ ...css })};
 `;

@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { ReactNode } from 'react';
 
+import { colors, font } from '../../helpers';
+
 type TextProps = {
   children: ReactNode;
   [css: string]: any;
@@ -11,8 +13,8 @@ export default function Text({ children, ...css }: TextProps) {
 }
 
 const StyledText = styled('span')<TextProps>`
-  font-size: 1em;
-  color: ${({ color }) => color};
+  fontsize: inherit;
 
-  ${css => ({ ...css })}
+  ${colors};
+  ${font};
 `;
