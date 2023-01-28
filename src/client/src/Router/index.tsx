@@ -7,12 +7,12 @@ import { Loader } from '../Components';
 import routes from './routes.json';
 
 export default function Router() {
-  const { auth } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <Suspense fallback={<Loader fullscreen rainbow />}>
       <Routes>
-        {routes.map((route: IRoute) => setupRoute(route, auth.isAuthenticated))}
+        {routes.map((route: IRoute) => setupRoute(route, isAuthenticated))}
       </Routes>
     </Suspense>
   );

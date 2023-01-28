@@ -5,17 +5,19 @@ import { Form, PageLayout, Box, Link, Text } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { User } from '../../../Types';
+import Api from '../../../Api';
 import schema from './schema';
 
 export default function SignIn() {
-  const { signIn } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (data: Partial<User>) => {
       try {
-        await signIn(data);
+        const { uid, token } = await Api.user.signIn(data);
+        dispatch({ type: 'SIGNIN', payload: { uid, token } });
         setErrors([]);
         navigate('/');
       } catch (error: any) {
@@ -23,7 +25,7 @@ export default function SignIn() {
         setErrors(handledErrors);
       }
     },
-    [navigate, signIn]
+    [navigate, dispatch]
   );
 
   return (

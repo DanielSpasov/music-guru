@@ -6,12 +6,12 @@ import { PageLayout } from '../../../Components';
 
 export default function SignOut() {
   const navigate = useNavigate();
-  const { signOut } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
 
   useEffect(() => {
-    signOut();
+    dispatch({ type: 'SIGNOUT' });
     navigate('/');
-  }, [navigate, signOut]);
+  }, [navigate, dispatch]);
 
   return <PageLayout title=""></PageLayout>;
 }

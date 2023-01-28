@@ -7,7 +7,7 @@ import { AuthContext } from '../../Contexts/Auth';
 export default function useActions(): Action[] {
   const navigate = useNavigate();
   const location = useLocation();
-  const { auth } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   switch (location.pathname) {
     case '/artists':
@@ -15,7 +15,7 @@ export default function useActions(): Action[] {
         {
           icon: { model: 'plus', type: 'solid' },
           perform: () => navigate('add'),
-          disabled: !auth.isAuthenticated
+          disabled: !isAuthenticated
         }
       ];
     default:

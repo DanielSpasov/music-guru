@@ -7,7 +7,7 @@ import { AuthContext } from '../../../Contexts/Auth';
 
 export default function Navbar() {
   const { colors } = useContext(ThemeContext);
-  const { auth } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
   const { pathname } = useLocation();
 
   return (
@@ -68,9 +68,9 @@ export default function Navbar() {
         </Dropdown>
         <Dropdown label="User Settings" icon={{ model: 'user', type: 'solid' }}>
           <Link to="/me">User</Link>
-          {!auth.isAuthenticated && <Link to="/sign-in">Sign In</Link>}
-          {!auth.isAuthenticated && <Link to="/sign-up">Sign Up</Link>}
-          {auth.isAuthenticated && <Link to="/sign-out">Sign Out</Link>}
+          {!isAuthenticated && <Link to="/sign-in">Sign In</Link>}
+          {!isAuthenticated && <Link to="/sign-up">Sign Up</Link>}
+          {isAuthenticated && <Link to="/sign-out">Sign Out</Link>}
         </Dropdown>
       </Box>
     </Box>

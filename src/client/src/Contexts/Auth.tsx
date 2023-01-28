@@ -1,32 +1,58 @@
-import { createContext, Dispatch, SetStateAction } from 'react';
-import useAuth from '../Hooks/useAuth';
-import { User } from '../Types';
+import { createContext, Dispatch, useReducer, useEffect } from 'react';
+import Api from '../Api';
 
 export interface IAuth {
   uid: string | null;
   isAuthenticated: boolean | null;
 }
 
-export type AuthContextType = {
-  auth: IAuth;
-  loading: boolean;
-  setAuth: Dispatch<SetStateAction<IAuth>>;
-  signIn: (data: Partial<User>) => Promise<void>;
-  signUp: (data: User) => Promise<void>;
-  signOut: () => void;
+type Action = {
+  type: 'SIGNUP' | 'SIGNIN' | 'SIGNOUT';
+  payload?: any;
 };
 
-export const defaultAuth: AuthContextType = {
-  auth: { uid: null, isAuthenticated: null },
-  loading: true,
-  setAuth: () => {},
-  signIn: async () => {},
-  signUp: async () => {},
-  signOut: () => {}
-};
+export interface AuthContextType extends IAuth {
+  dispatch: Dispatch<Action>;
+}
 
-export const AuthContext = createContext<AuthContextType>(defaultAuth);
+function authReducer(state: IAuth, action: Action): IAuth {
+  switch (action.type) {
+    case 'SIGNUP':
+    case 'SIGNIN':
+      localStorage.setItem('AUTH', action?.payload?.token);
+      return { uid: action?.payload?.uid, isAuthenticated: true };
+    case 'SIGNOUT':
+      localStorage.removeItem('AUTH');
+      return { uid: null, isAuthenticated: null };
+    default:
+      return state;
+  }
+}
+
+export const defaultAuth = { uid: null, isAuthenticated: null };
+export const AuthContext = createContext<AuthContextType>({
+  ...defaultAuth,
+  dispatch: () => ({ uid: null, isAuthenticated: null })
+});
+
 export function AuthProvider({ children }: any) {
-  const state = useAuth();
-  return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
+  const [state, dispatch] = useReducer(authReducer, defaultAuth);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = localStorage.getItem('AUTH') || '';
+        const { uid } = await Api.user.validateToken(token);
+        dispatch({ type: 'SIGNIN', payload: { uid } });
+      } catch (error) {
+        dispatch({ type: 'SIGNOUT' });
+      }
+    })();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ ...state, dispatch }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
