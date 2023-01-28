@@ -1,25 +1,21 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Form, PageLayout, Box, Link, Text } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { User, SignInSchema } from '../../../Types';
 import { errorHandler } from '../../../Handlers';
-import Api from '../../../Api';
+import { User } from '../../../Types';
 import schema from './schema';
 
 export default function SignIn() {
-  const { setAuth } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (data: Partial<User>) => {
       try {
-        const user = SignInSchema.parse(data);
-        const { token, uid } = await Api.user.signIn(user);
-        localStorage.setItem('AUTH', token);
-        setAuth({ isAuthenticated: true, uid });
+        await signIn(data);
         setErrors([]);
         navigate('/');
       } catch (error: any) {
@@ -27,7 +23,7 @@ export default function SignIn() {
         setErrors(handledErrors);
       }
     },
-    [navigate, setAuth]
+    [navigate, signIn]
   );
 
   return (

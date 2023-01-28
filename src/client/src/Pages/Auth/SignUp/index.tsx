@@ -3,23 +3,19 @@ import { useNavigate } from 'react-router-dom';
 
 import { Box, Form, Link, PageLayout, Text } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { User, SignUpSchema } from '../../../Types';
 import { errorHandler } from '../../../Handlers';
-import Api from '../../../Api';
+import { User } from '../../../Types';
 import schema from './schema';
 
 export default function SignUp() {
-  const { setAuth } = useContext(AuthContext);
+  const { signUp } = useContext(AuthContext);
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (data: User) => {
       try {
-        const user = SignUpSchema.parse(data);
-        const { token, uid } = await Api.user.signUp(user);
-        localStorage.setItem('AUTH', token);
-        setAuth({ isAuthenticated: true, uid: uid });
+        await signUp(data);
         setErrors([]);
         navigate('/');
       } catch (error: any) {
@@ -27,7 +23,7 @@ export default function SignUp() {
         setErrors(handledErrors);
       }
     },
-    [navigate, setAuth]
+    [navigate, signUp]
   );
 
   return (

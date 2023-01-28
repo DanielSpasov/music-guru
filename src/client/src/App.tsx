@@ -1,40 +1,11 @@
-import { useEffect, useState, useMemo } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
+import { useMemo } from 'react';
 
-import { AuthProvider, defaultAuth, IAuth } from './Contexts/Auth';
-import { Loader } from './Components';
+import { AuthProvider } from './Contexts/Auth';
 import Router from './Router';
-import Api from './Api';
 
 export default function App() {
-  const [auth, setAuth] = useState<IAuth>(defaultAuth.auth);
-
-  // TODO: Refactor so the useEffect doesn't fire requests non stop
-  useEffect(() => {
-    (async () => {
-      try {
-        if (auth.isAuthenticated !== null) return;
-
-        const token = localStorage.getItem('AUTH') || '';
-        if (!token) {
-          setAuth({ isAuthenticated: false, uid: null });
-          return;
-        }
-
-        const { uid } = await Api.user.validateToken(token);
-        if (!uid) {
-          setAuth({ isAuthenticated: false, uid: null });
-          return;
-        }
-
-        setAuth({ isAuthenticated: true, uid });
-      } catch (error) {
-        setAuth({ isAuthenticated: false, uid: null });
-      }
-    })();
-  }, [auth]);
-
   const theme = useMemo(() => {
     const pref = window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
@@ -62,13 +33,9 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AuthProvider value={{ auth, setAuth }}>
+      <AuthProvider>
         <ThemeProvider theme={theme}>
-          {auth.isAuthenticated === null ? (
-            <Loader fullscreen rainbow />
-          ) : (
-            <Router />
-          )}
+          <Router />
         </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>

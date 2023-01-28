@@ -1,18 +1,17 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 
 import { AuthContext } from '../../../Contexts/Auth';
 import { PageLayout } from '../../../Components';
 
 export default function SignOut() {
-  const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { signOut } = useContext(AuthContext);
 
   useEffect(() => {
-    localStorage.removeItem('AUTH');
-    setAuth({ isAuthenticated: false, uid: null });
-    navigate(-1);
-  }, [setAuth, navigate]);
+    signOut();
+    navigate('/');
+  }, [navigate, signOut]);
 
   return <PageLayout title=""></PageLayout>;
 }

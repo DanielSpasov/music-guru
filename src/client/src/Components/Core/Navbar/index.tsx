@@ -7,8 +7,8 @@ import { AuthContext } from '../../../Contexts/Auth';
 
 export default function Navbar() {
   const { colors } = useContext(ThemeContext);
-  const { pathname } = useLocation();
   const { auth } = useContext(AuthContext);
+  const { pathname } = useLocation();
 
   return (
     <Box
