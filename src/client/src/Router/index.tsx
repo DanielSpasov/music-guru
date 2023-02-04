@@ -30,7 +30,7 @@ export default function Router() {
             path="add"
             element={
               <PrivateRoute isAuth={isAuthenticated}>
-                <Route path="add" element={<CreateArtist />} />
+                <CreateArtist />
               </PrivateRoute>
             }
           />
