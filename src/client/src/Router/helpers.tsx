@@ -18,7 +18,7 @@ const Private = ({
   isAuth: boolean | null;
 }): JSX.Element => (isAuth ? route : <Navigate to="/sign-in" replace />);
 
-export function setupRoute(route: IRoute, isAuth: boolean | null) {
+export const setupRoute = (route: IRoute, isAuth: boolean | null) => {
   if (route?.routes) {
     return (
       <Route path={route.path} key={route.path}>
@@ -38,4 +38,4 @@ export function setupRoute(route: IRoute, isAuth: boolean | null) {
       }
     />
   );
-}
+};

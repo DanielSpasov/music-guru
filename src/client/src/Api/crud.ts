@@ -5,7 +5,7 @@ export class CrudBase {
   model!: string;
 
   constructor() {
-    this.baseUrl = process.env.REACT_APP_API_URL || '';
+    this.baseUrl = import.meta.env.VITE_APP_API_URL || '';
   }
 }
 

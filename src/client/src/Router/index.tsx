@@ -1,8 +1,8 @@
-import { Routes } from 'react-router-dom';
 import { Suspense, useContext } from 'react';
+import { Routes } from 'react-router-dom';
 
 import { AuthContext } from '../Contexts/Auth';
-import { IRoute, setupRoute } from './helpers';
+import { setupRoute } from './helpers';
 import { Loader } from '../Components';
 import routes from './routes.json';
 
@@ -11,9 +11,7 @@ export default function Router() {
 
   return (
     <Suspense fallback={<Loader fullscreen rainbow />}>
-      <Routes>
-        {routes.map((route: IRoute) => setupRoute(route, isAuthenticated))}
-      </Routes>
+      <Routes>{routes.map(route => setupRoute(route, isAuthenticated))}</Routes>
     </Suspense>
   );
 }
