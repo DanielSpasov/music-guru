@@ -1,58 +1,37 @@
-import { Suspense, useContext } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 
-import { AuthContext } from '../Contexts/Auth';
-import { PrivateRoute } from './helpers';
 import { Loader } from '../Components';
-
-// Pages
-import CreateArtist from '../Pages/Artists/create';
-import SignOut from '../Pages/Auth/SignOut';
-import SignIn from '../Pages/Auth/SignIn';
-import SignUp from '../Pages/Auth/SignUp';
-import NotFound from '../Pages/NotFound';
-import Artists from '../Pages/Artists';
-import Home from '../Pages/Home';
+import { IRoute } from './helpers';
+import routes from './routes.json';
 
 export default function Router() {
-  const { isAuthenticated } = useContext(AuthContext);
-
+  // TODO: Fix relading when using auth context
   return (
     <Suspense fallback={<Loader fullscreen rainbow />}>
-      <Routes>
-        {/* Index Route */}
-        <Route index element={<Home />} />
-
-        {/* Artist Routes */}
-        <Route path="/artists">
-          <Route index element={<Artists />} />
-          <Route
-            path="add"
-            element={
-              <PrivateRoute isAuth={isAuthenticated}>
-                <CreateArtist />
-              </PrivateRoute>
-            }
-          />
-        </Route>
-
-        {/* Album Routes */}
-        <Route path="/albums" element={<Home />} />
-
-        {/* Mixtape Routes */}
-        <Route path="/mixtapes" element={<Home />} />
-
-        {/* Single Routes */}
-        <Route path="/singles" element={<Home />} />
-
-        {/* Auth Routes */}
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/sign-out" element={<SignOut />} />
-
-        {/* WildCard Route */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Routes>{routes.map(setupRoute)}</Routes>
     </Suspense>
   );
 }
+
+const setupRoute = (route: IRoute) => {
+  if (route?.routes) {
+    return (
+      <Route key={route.path} path={route.path}>
+        {route.routes.map(setupRoute)}
+      </Route>
+    );
+  }
+
+  const importPath = '../'.concat(route.filePath);
+  const Element = lazy(() => import(/* @vite-ignore */ importPath));
+  return (
+    <Route
+      key={route.path}
+      index={route.path === 'index'}
+      path={route.path !== 'index' ? route.path : undefined}
+      // TODO: Private Routes
+      element={<Element />}
+    />
+  );
+};
