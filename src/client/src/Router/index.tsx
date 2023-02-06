@@ -1,45 +1,44 @@
-import { Routes, Route } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { lazy, Suspense, useContext, useMemo } from 'react';
 
-import { IRoute } from '../Interfaces';
-import routes from './routes.json';
-import pages from '../Pages';
-
-const transformRoute = (route: any): IRoute => {
-  return {
-    component: route?.component || 'NotFound',
-    isPrivate: route.hasOwnProperty('isPrivate') ? route.isPrivate : false,
-    path: route?.path || '/home',
-    children: route?.children || null
-  };
-};
-
-const renderChildren = (routes: IRoute[]): JSX.Element[] => {
-  return routes.map(transformRoute).map((x: IRoute) => setupRoute(x));
-};
-
-const setupRoute = (route: IRoute): JSX.Element => {
-  const component = !!pages[route.component]
-    ? pages[route.component]()
-    : pages.NotFound();
-  return route.children ? (
-    <Route key={route.path} path={route.path}>
-      {route.children ? renderChildren(route.children) : null}
-    </Route>
-  ) : (
-    <Route key={route.path} path={route.path} element={component}>
-      {route.children ? renderChildren(route.children) : null}
-    </Route>
-  );
-};
+import { AuthContext } from '../Contexts/Auth';
+import routesConfig from './routes.json';
+import { Loader } from '../Components';
+import { attachComponents, IRoute } from './helpers';
 
 export default function Router() {
+  const routes = useMemo(() => attachComponents(routesConfig), []);
+
   return (
-    <Routes>
-      <Route index element={pages.Home()} />
-
-      {routes.map(transformRoute).map((route: IRoute) => setupRoute(route))}
-
-      <Route path="*" element={pages.NotFound()} />
-    </Routes>
+    <Suspense fallback={<Loader fullscreen rainbow />}>
+      <Routes>{routes.map(setupRoute)}</Routes>
+    </Suspense>
   );
 }
+
+const setupRoute = (route: IRoute) => {
+  const { isAuthenticated } = useContext(AuthContext);
+
+  if (route?.routes) {
+    return (
+      <Route key={route.path} path={route.path}>
+        {route.routes.map(setupRoute)}
+      </Route>
+    );
+  }
+
+  return (
+    <Route
+      key={route.path}
+      index={route.path === 'index'}
+      path={route.path !== 'index' ? route.path : undefined}
+      element={
+        route.private && !isAuthenticated ? (
+          <Navigate to="/sign-in" replace />
+        ) : (
+          <route.Component />
+        )
+      }
+    />
+  );
+};

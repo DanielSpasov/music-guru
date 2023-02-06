@@ -10,7 +10,21 @@ body {
   margin: 0;
 }
 
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--dark-base);
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 :root {
+  --dark-text: white;
   --dark-primary: #cc41ff;
   --dark-secondary: #05bbaa;
   --dark-base: #1b1b1b;
@@ -18,6 +32,7 @@ body {
   --dark-base-lighter: #454545;
   --dark-base-lightest: #5c5c5c;
 
+  --light-text: black;
   --light-primary: #2378c3;
   --light-secondary: #73b3e7;
   --light-base: #919191;
@@ -25,8 +40,8 @@ body {
   --light-base-lighter: #f3f3f3;
   --light-base-lightest: #f9f9f9;
 
-  --negative: rgb(248, 89, 77);
-  --positive: rgb(77, 217, 91);
+  --success: rgb(77, 217, 91);
+  --danger: rgb(237, 61, 48);
   --warning: rgb(242, 174, 65);
   --info: rgb(24, 135, 232);
 }

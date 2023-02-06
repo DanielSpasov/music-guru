@@ -1,5 +1,5 @@
-import { SinglePageLayout } from '../../Components';
+import { PageLayout } from '../../Components';
 
 export default function Home() {
-  return <SinglePageLayout title="Home"></SinglePageLayout>;
+  return <PageLayout title="Home"></PageLayout>;
 }

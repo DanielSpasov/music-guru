@@ -11,7 +11,9 @@
   },
   "scripts": {
     "dev": "yarn client",
-    "client": "cd src/client && yarn start"
+    "client": "cd src/client && yarn start",
+    "server": "cd src/server && yarn start"
   },
-  "homepage": "https://github.com/DanielSpasov/Music-Nerd#readme"
+  "homepage": "https://github.com/DanielSpasov/Music-Nerd#readme",
+  "dependencies": {}
 }

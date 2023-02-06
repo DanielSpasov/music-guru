@@ -1,43 +1,43 @@
+import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 
+import { AuthProvider } from './Contexts/Auth';
 import Router from './Router';
-import { Navbar } from './Components';
-import { ThemeProvider } from './Contexts/Theme';
 
 export default function App() {
-  const [defaultTheme, setDefaultTheme] = useState({
-    theme: '',
-    primary: '',
-    secondary: '',
-    base: '',
-    baseLight: '',
-    baseLighter: '',
-    baseLightest: ''
-  });
-
-  useEffect(() => {
-    const theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+  const theme = useMemo(() => {
+    const pref = window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
       : 'light';
 
-    setDefaultTheme({
-      theme,
-      primary: `var(--${theme}-primary)`,
-      secondary: `var(--${theme}-secondary)`,
-      base: `var(--${theme}-base)`,
-      baseLight: `var(--${theme}-base-light)`,
-      baseLighter: `var(--${theme}-base-lighter)`,
-      baseLightest: `var(--${theme}-base-lightest)`
-    });
+    return {
+      colors: {
+        // Indicator colors
+        success: 'var(--success)',
+        danger: 'var(--danger)',
+        warning: 'var(--warning)',
+        info: 'var(--info)',
+        // Main colors
+        text: `var(--${pref}-text)`,
+        primary: `var(--${pref}-primary)`,
+        secondary: `var(--${pref}-secondary)`,
+        // Base colors
+        base: `var(--${pref}-base)`,
+        baseLight: `var(--${pref}-base-light)`,
+        baseLighter: `var(--${pref}-base-lighter)`,
+        baseLightest: `var(--${pref}-base-lightest)`
+      }
+    };
   }, []);
 
   return (
     <BrowserRouter>
-      <ThemeProvider value={defaultTheme}>
-        <Navbar />
-        <Router />
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <Router />
+        </ThemeProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
