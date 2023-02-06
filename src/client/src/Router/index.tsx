@@ -1,12 +1,14 @@
-import { Route, Routes } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { lazy, Suspense, useContext, useMemo } from 'react';
 
+import { AuthContext } from '../Contexts/Auth';
+import routesConfig from './routes.json';
 import { Loader } from '../Components';
-import { IRoute } from './helpers';
-import routes from './routes.json';
+import { attachComponents, IRoute } from './helpers';
 
 export default function Router() {
-  // TODO: Fix relading when using auth context
+  const routes = useMemo(() => attachComponents(routesConfig), []);
+
   return (
     <Suspense fallback={<Loader fullscreen rainbow />}>
       <Routes>{routes.map(setupRoute)}</Routes>
@@ -15,6 +17,8 @@ export default function Router() {
 }
 
 const setupRoute = (route: IRoute) => {
+  const { isAuthenticated } = useContext(AuthContext);
+
   if (route?.routes) {
     return (
       <Route key={route.path} path={route.path}>
@@ -23,15 +27,18 @@ const setupRoute = (route: IRoute) => {
     );
   }
 
-  const importPath = '../'.concat(route.filePath);
-  const Element = lazy(() => import(/* @vite-ignore */ importPath));
   return (
     <Route
       key={route.path}
       index={route.path === 'index'}
       path={route.path !== 'index' ? route.path : undefined}
-      // TODO: Private Routes
-      element={<Element />}
+      element={
+        route.private && !isAuthenticated ? (
+          <Navigate to="/sign-in" replace />
+        ) : (
+          <route.Component />
+        )
+      }
     />
   );
 };

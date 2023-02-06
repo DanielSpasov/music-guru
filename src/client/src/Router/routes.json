@@ -1,58 +1,58 @@
 [
   {
     "path": "index",
-    "filePath": "Pages/Home",
+    "filePath": "/Home",
     "private": false
   },
   {
     "path": "/artists",
-    "filePath": "Pages/NotFound",
+    "filePath": "/NotFound",
     "routes": [
       {
         "path": "index",
-        "filePath": "Pages/Artists",
+        "filePath": "/Artists",
         "private": false
       },
       {
         "path": "add",
-        "filePath": "Pages/Artists/create",
+        "filePath": "/Artists/create",
         "private": true
       }
     ]
   },
   {
     "path": "/albums",
-    "filePath": "Pages/Home",
+    "filePath": "/Home",
     "private": false
   },
   {
     "path": "/mixtapes",
-    "filePath": "Pages/Home",
+    "filePath": "/Home",
     "private": false
   },
   {
     "path": "/singles",
-    "filePath": "Pages/Home",
+    "filePath": "/Home",
     "private": false
   },
   {
     "path": "/sign-in",
-    "filePath": "Pages/Auth/SignIn",
+    "filePath": "/Auth/SignIn",
     "private": false
   },
   {
     "path": "/sign-up",
-    "filePath": "Pages/Auth/SignUp",
+    "filePath": "/Auth/SignUp",
     "private": false
   },
   {
     "path": "/sign-out",
-    "filePath": "Pages/Auth/SignOut",
+    "filePath": "/Auth/SignOut",
     "private": false
   },
   {
     "path": "*",
-    "filePath": "Pages/NotFound",
+    "filePath": "/NotFound",
     "private": false
   }
 ]
