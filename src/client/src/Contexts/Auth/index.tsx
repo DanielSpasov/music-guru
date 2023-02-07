@@ -11,7 +11,7 @@ function authReducer(state: IAuth, action: Action): IAuth {
       return { uid: action?.payload?.uid, isAuthenticated: true };
     case 'SIGNOUT':
       localStorage.removeItem('AUTH');
-      return { uid: null, isAuthenticated: null };
+      return { uid: null, isAuthenticated: false };
     default:
       return state;
   }
