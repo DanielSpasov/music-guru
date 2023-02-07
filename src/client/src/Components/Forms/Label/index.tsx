@@ -1,12 +1,7 @@
 import styled from 'styled-components';
-import { ReactNode } from 'react';
 
 import { essentials, font } from '../../helpers';
-
-type LabelProps = {
-  children?: ReactNode;
-  [css: string]: any;
-};
+import { LabelProps } from './helpers';
 
 export default function Label({ children, ...css }: LabelProps) {
   return <StyledLabel {...css}>{children}</StyledLabel>;

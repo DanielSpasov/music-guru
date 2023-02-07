@@ -1,17 +1,8 @@
 import { NavLink, Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { ReactNode } from 'react';
 
 import { colors, font, padding, text } from '../../helpers';
-
-type LinkProps = {
-  to: string;
-  children: ReactNode;
-  type?: 'navlink' | 'link';
-  isActive?: boolean;
-  className?: string;
-  [css: string]: any;
-};
+import { LinkProps } from './helpers';
 
 function LinkSwitch({
   children,

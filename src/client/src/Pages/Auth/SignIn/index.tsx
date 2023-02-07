@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, PageLayout, Box, Link, Text } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { User } from '../../../Types';
+import { User } from '../helpers';
 import Api from '../../../Api';
 import schema from './schema';
 

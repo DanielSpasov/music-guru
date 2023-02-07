@@ -1,10 +1,6 @@
 import styled from 'styled-components';
 
-type HeadingProps = {
-  size?: 'small' | 'medium' | 'big';
-  title: string;
-  [css: string]: any;
-};
+import { HeadingProps } from './helpers';
 
 export default function Heading({ size = 'big', title, ...css }: HeadingProps) {
   switch (size) {

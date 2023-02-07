@@ -1,17 +1,8 @@
-import { ReactNode, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 
 import { Box, BreadCrumb, Header, Navbar } from '../../';
-import { Action } from '../../../Types';
-
-type PageLayoutProps = {
-  title: string;
-  showNavbar?: boolean;
-  showBreadCrumb?: boolean;
-  showHeader?: boolean;
-  children?: ReactNode;
-  actions?: Action[];
-};
+import { PageLayoutProps } from './helpers';
 
 export default function PageLayout({
   title,
@@ -22,6 +13,7 @@ export default function PageLayout({
   actions = []
 }: PageLayoutProps) {
   const { colors } = useContext(ThemeContext);
+
   useEffect(() => {
     document.title = title;
   }, [title]);

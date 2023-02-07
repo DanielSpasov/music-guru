@@ -1,14 +1,7 @@
 import styled from 'styled-components';
-import { ReactNode } from 'react';
 
 import { border, colors, font } from '../../helpers';
-
-type ButtonProps = {
-  type?: 'button' | 'submit' | 'reset';
-  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
-  children?: ReactNode;
-  [css: string]: any;
-};
+import { ButtonProps } from './helpers';
 
 export default function Button({
   variant,

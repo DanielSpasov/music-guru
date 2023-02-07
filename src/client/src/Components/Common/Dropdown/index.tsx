@@ -1,17 +1,8 @@
-import { ReactNode, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 
+import { DropdownProps } from './helpers';
 import { Box, Icon } from '../../';
-
-type DropdownProps = {
-  label: string;
-  children: ReactNode;
-  icon?: {
-    model: string;
-    type: string;
-  };
-  openOnHover?: boolean;
-};
 
 export default function Dropdown({
   children,

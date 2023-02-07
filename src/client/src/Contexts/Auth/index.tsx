@@ -1,19 +1,7 @@
-import { createContext, Dispatch, useReducer, useEffect } from 'react';
-import Api from '../Api';
+import { createContext, useReducer, useEffect } from 'react';
 
-export interface IAuth {
-  uid: string | null;
-  isAuthenticated: boolean | null;
-}
-
-type Action = {
-  type: 'SIGNUP' | 'SIGNIN' | 'SIGNOUT';
-  payload?: any;
-};
-
-export interface AuthContextType extends IAuth {
-  dispatch: Dispatch<Action>;
-}
+import { Action, AuthContextType, defaultAuth, IAuth } from './helpers';
+import Api from '../../Api';
 
 function authReducer(state: IAuth, action: Action): IAuth {
   switch (action.type) {
@@ -29,7 +17,6 @@ function authReducer(state: IAuth, action: Action): IAuth {
   }
 }
 
-export const defaultAuth = { uid: null, isAuthenticated: null };
 export const AuthContext = createContext<AuthContextType>({
   ...defaultAuth,
   dispatch: () => ({ uid: null, isAuthenticated: null })

@@ -1,12 +1,7 @@
 import styled from 'styled-components';
 
 import { colors, dimensions, font, padding, positioning } from '../../helpers';
-
-type IconProps = {
-  model: string;
-  type: string;
-  [css: string]: any;
-};
+import { IconProps } from './helpers';
 
 export default function Icon({ model, type, ...css }: IconProps) {
   return (

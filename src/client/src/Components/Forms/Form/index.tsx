@@ -1,4 +1,3 @@
-import { SubmitHandler } from 'react-hook-form/dist/types';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -6,26 +5,7 @@ import styled from 'styled-components';
 
 import { Heading, Button, Box } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
-import { FormSchema } from '../../../Types';
-
-export type FormError = {
-  code: string;
-  message: string;
-  path: string[];
-  exact?: boolean;
-  inclusive?: boolean;
-  minimum?: number;
-  type?: string;
-};
-
-type FormProps = {
-  onSubmit: SubmitHandler<any>;
-  schema: FormSchema;
-  defaultValues?: any;
-  header?: string;
-  errors?: FormError[];
-  additionalInfo?: JSX.Element;
-};
+import { FormProps } from './helpers';
 
 export default function Form({
   header,

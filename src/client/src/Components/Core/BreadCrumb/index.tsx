@@ -2,8 +2,8 @@ import { ThemeContext } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
-import { Action } from '../../../Types';
 import { Box, Icon } from '../../HTML';
+import { Action } from './helpers';
 
 export default function BreadCrumb({ actions }: { actions: Action[] }) {
   const { colors } = useContext(ThemeContext);

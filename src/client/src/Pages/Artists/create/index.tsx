@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { FormError } from '../../../Components/Forms/Form';
+import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import { schema } from './schema';

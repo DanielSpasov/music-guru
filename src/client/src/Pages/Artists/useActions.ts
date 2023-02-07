@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
-import { Action } from '../../Types';
+import { Action } from '../../Components/Core/BreadCrumb/helpers';
 import { AuthContext } from '../../Contexts/Auth';
 
 export default function useActions(): Action[] {

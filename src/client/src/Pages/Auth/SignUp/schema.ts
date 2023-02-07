@@ -1,5 +1,5 @@
 import { Input } from '../../../Components';
-import { FormSchema } from '../../../Types';
+import { FormSchema } from '../../../Components/Forms/Form/helpers';
 
 const schema: FormSchema = {
   fields: [

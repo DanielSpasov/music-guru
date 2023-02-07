@@ -1,6 +1,6 @@
 import { Ref, UseFormRegister } from 'react-hook-form/dist/types';
 
-import { InputType } from '../../../Types';
+export type InputType = 'password' | 'text' | 'email' | 'file';
 
 type Error = {
   type: string;

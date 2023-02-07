@@ -6,7 +6,7 @@ import {
   PatchProps,
   PostProps,
   PutProps
-} from '../Types';
+} from './helpers';
 
 export async function post({
   url = '',

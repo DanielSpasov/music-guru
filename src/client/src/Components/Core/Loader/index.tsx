@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { getCssProps, LoaderProps } from './helpers';
+import { getCssProps, LoaderProps, DotProps } from './helpers';
 import { Box } from '../../HTML';
 
 export default function Loader({
@@ -62,14 +62,6 @@ const animation = keyframes`
     transform: scale(1.5);
   }
 `;
-
-type DotProps = {
-  delay: string;
-  color: string;
-  top: string;
-  left: string;
-  size: string;
-};
 
 const Dot = styled('div')<DotProps>`
   position: absolute;

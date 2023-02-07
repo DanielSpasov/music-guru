@@ -1,13 +1,7 @@
-import { ReactNode } from 'react';
 import styled from 'styled-components';
 
+import { HeaderProps } from './helpers';
 import { Heading } from '../../';
-
-type HeaderProps = {
-  title: string;
-  children?: ReactNode;
-  [css: string]: any;
-};
 
 export default function Header({ children, title, ...css }: HeaderProps) {
   return (
