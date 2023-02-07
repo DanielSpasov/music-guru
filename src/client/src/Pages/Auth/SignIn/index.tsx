@@ -2,9 +2,9 @@ import { useCallback, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Form, PageLayout, Box, Link, Text } from '../../../Components';
+import { SignInData, SignInSchema } from '../helpers';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { User } from '../helpers';
 import Api from '../../../Api';
 import schema from './schema';
 
@@ -14,9 +14,10 @@ export default function SignIn() {
   const navigate = useNavigate();
 
   const onSubmit = useCallback(
-    async (data: Partial<User>) => {
+    async (data: SignInData) => {
       try {
-        const { uid, token } = await Api.user.signIn(data);
+        const validatedData = SignInSchema.parse(data);
+        const { uid, token } = await Api.user.signIn(validatedData);
         dispatch({ type: 'SIGNIN', payload: { uid, token } });
         setErrors([]);
         navigate('/');
