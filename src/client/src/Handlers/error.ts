@@ -30,6 +30,11 @@ function handleAxiosError(error: AxiosError) {
       toast.error(resData.message);
       return;
     }
+
+    if (error.message) {
+      toast.error(error.message);
+      return;
+    }
   } catch {
     console.error('Unhandled Axios Error');
   }

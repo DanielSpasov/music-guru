@@ -5,7 +5,6 @@ import { Form, PageLayout, Box, Link, Text } from '../../../Components';
 import { SignInData, SignInSchema } from '../helpers';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { toast } from 'react-toastify';
 import Api from '../../../Api';
 import schema from './schema';
 
