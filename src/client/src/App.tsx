@@ -1,9 +1,12 @@
+import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import { useMemo } from 'react';
 
 import { AuthProvider } from './Contexts/Auth';
 import Router from './Router';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
   const theme = useMemo(() => {
@@ -38,6 +41,15 @@ export default function App() {
           <Router />
         </ThemeProvider>
       </AuthProvider>
+
+      <ToastContainer
+        position="bottom-right"
+        hideProgressBar={true}
+        autoClose={3000}
+        newestOnTop
+        pauseOnFocusLoss={false}
+        theme="dark"
+      />
     </BrowserRouter>
   );
 }
