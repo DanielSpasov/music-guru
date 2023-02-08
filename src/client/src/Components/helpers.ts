@@ -47,7 +47,7 @@ export const positioning = css<any>`
 `;
 
 export const colors = css<any>`
-  color: ${({ color, theme: { colors } }) => color || colors.text};
+  color: ${({ color, theme: { colors } }) => color || colors?.text};
   background-color: ${({ backgroundColor }) =>
     backgroundColor || 'transparent'};
 `;
@@ -97,4 +97,9 @@ export const text = css<any>`
   text-orientation: ${({ textOrientation }) => textOrientation};
   text-shadow: ${({ textShadow }) => textShadow};
   text-transform: ${({ textTransform }) => textTransform};
+`;
+
+export const pointer = css<any>`
+  pointer: ${({ pointer }) => pointer};
+  pointer-events: ${({ pointerEvents }) => pointerEvents};
 `;

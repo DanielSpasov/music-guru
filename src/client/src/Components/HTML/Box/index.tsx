@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 
-import { essentials, shadows, colors, flex, text } from '../../helpers';
+import {
+  essentials,
+  shadows,
+  colors,
+  flex,
+  text,
+  pointer
+} from '../../helpers';
 import { BoxProps } from './helpers';
 
 export default function Box({ children, ...css }: BoxProps) {
@@ -9,6 +16,7 @@ export default function Box({ children, ...css }: BoxProps) {
 
 const StyledBox = styled('div')<BoxProps>`
   ${essentials};
+  ${pointer};
   ${shadows};
   ${colors};
   ${flex};
