@@ -2,42 +2,16 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
-import { z } from 'zod';
 
+import { SignUpSchema } from '../../Validations/User';
+import { CustomError } from '../../Error/CustomError';
 import { UserModel } from '../../Database/Schemas';
 import { errorHandler } from '../../Error';
-import { CustomError } from '../../Error/CustomError';
-
-const UserSchema = z
-  .object({
-    username: z
-      .union([
-        z
-          .string()
-          .min(2, { message: 'Username is too short.' })
-          .max(16, { message: 'Username is too long.' }),
-        z.string().length(0) // Empty string
-      ])
-      .optional()
-      .transform(e => (e === '' ? undefined : e)),
-    email: z.string().email({ message: 'Invalid email.' }),
-    password: z.string(),
-    repeat_password: z.string()
-  })
-  .superRefine(({ repeat_password, password }, context) => {
-    if (repeat_password !== password) {
-      context.addIssue({
-        code: 'custom',
-        message: "Passwords doesn't match.",
-        path: ['password', 'repeat_password']
-      });
-    }
-  });
 
 export async function SignUp(req: Request, res: Response) {
   try {
     // VALIDATE WITH ZOD
-    const { email, username, password } = UserSchema.parse({
+    const { email, username, password } = SignUpSchema.parse({
       username: req.body?.username,
       email: req.body?.email,
       password: req.body?.password,

@@ -1,21 +1,16 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { z } from 'zod';
 
+import { SignInSchema } from '../../Validations/User';
+import { CustomError } from '../../Error/CustomError';
 import { UserModel } from '../../Database/Schemas';
 import { errorHandler } from '../../Error';
-import { CustomError } from '../../Error/CustomError';
-
-const UserSchema = z.object({
-  email: z.string().email(),
-  password: z.string()
-});
 
 export async function SignIn(req: Request, res: Response) {
   try {
     // VALIDATE WITH ZOD
-    const { email, password } = UserSchema.parse({
+    const { email, password } = SignInSchema.parse({
       email: req.body?.email,
       password: req.body?.password
     });
