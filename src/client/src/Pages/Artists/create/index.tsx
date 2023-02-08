@@ -2,27 +2,19 @@ import { useCallback, useState } from 'react';
 
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, PageLayout } from '../../../Components';
+import { Artist, artistSchema } from '../helpers';
 import { errorHandler } from '../../../Handlers';
 import { schema } from './schema';
-
-const imageRequired = {
-  code: '400',
-  message: 'Image is required',
-  path: ['image']
-};
+import Api from '../../../Api';
 
 export default function CreateArtist() {
   const [errors, setErrors] = useState<FormError[]>([]);
 
-  const onSubmit = useCallback((data: any) => {
+  const onSubmit = useCallback(async (data: Artist) => {
     try {
-      if (!data.image[0]) {
-        setErrors([imageRequired]);
-        return;
-      }
-
-      console.log(data);
-
+      const validData = artistSchema.parse(data);
+      const res = await Api.artists.post({ body: validData });
+      console.log(res);
       setErrors([]);
     } catch (error) {
       const handledErrors = errorHandler(error);

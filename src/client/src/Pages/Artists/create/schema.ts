@@ -12,8 +12,8 @@ export const schema: FormSchema = {
     },
     {
       key: 'image',
-      type: 'file',
-      label: 'Image',
+      type: 'text',
+      label: 'Image URL',
       required: true,
       Component: Input
     }
