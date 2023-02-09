@@ -86,7 +86,7 @@ const StyledInput = styled('input')<any>`
   }
 
   & ~ label {
-    transition: 0.4s;
+    transition: 0.3s;
   }
 
   &:focus ~ label,

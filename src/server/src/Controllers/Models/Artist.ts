@@ -1,9 +1,10 @@
 import { Router } from 'express';
 
-import { Create } from '../../Services/Artist';
+import { create, fetch } from '../../Services/Artist';
 
 const router = Router();
 
-router.post('/', Create);
+router.post('/', create);
+router.get('/', fetch);
 
 export default router;

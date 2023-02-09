@@ -14,7 +14,7 @@ export default class Crud<T> extends CrudBase {
     return get({ url: `${this.baseUrl}/${this.model}/${id}/`, config });
   }
 
-  fetch({ config = {} }): Promise<T> {
+  fetch({ config = {} }): Promise<{ data: T[] }> {
     return get({ url: `${this.baseUrl}/${this.model}/`, config });
   }
 

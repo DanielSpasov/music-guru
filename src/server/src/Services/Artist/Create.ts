@@ -5,7 +5,7 @@ import { artistSchema } from '../../Validations/Artist';
 import { ArtistModel } from '../../Database/Schemas';
 import { errorHandler } from '../../Error';
 
-export async function Create(req: Request, res: Response) {
+export async function create(req: Request, res: Response) {
   try {
     // VALIDATE FE DATA WITH ZOD
     const validData = artistSchema.parse({

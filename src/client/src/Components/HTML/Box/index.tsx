@@ -21,4 +21,8 @@ const StyledBox = styled('div')<BoxProps>`
   ${colors};
   ${flex};
   ${text};
+
+  &:hover {
+    cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
+  }
 `;

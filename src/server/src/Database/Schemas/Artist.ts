@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
+import { Artist } from '../../Validations/Artist';
 
-const schema = new Schema({
+const schema = new Schema<Artist>({
   uid: {
     type: String,
     required: true,
@@ -22,15 +23,15 @@ const schema = new Schema({
     readonly: true
   },
   albums: {
-    type: Array,
+    type: [],
     default: []
   },
   mixtapes: {
-    type: Array,
+    type: [],
     default: []
   },
   singles: {
-    type: Array,
+    type: [],
     default: []
   }
 });

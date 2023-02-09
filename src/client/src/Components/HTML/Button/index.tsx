@@ -26,7 +26,7 @@ const StyledButton = styled('button')<ButtonProps>`
   padding: 0.75em 1.25em;
   font-weight: bold;
   margin: 0.75em 0;
-  transition: 0.2s;
+  transition: 0.3s;
 
   &:hover {
     cursor: pointer;

@@ -23,7 +23,7 @@ export default function Navbar() {
       zIndex="9999"
     >
       <Box height="60px">
-        <Link to="/">
+        <Link to="/" height="60px" padding="0">
           <Image
             src="/images/logo/blue-logo192.png"
             alt="Music Nerd"

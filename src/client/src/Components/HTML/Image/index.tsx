@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { dimensions } from '../../helpers';
+import { border, dimensions, positioning } from '../../helpers';
 import { ImageProps } from './helpers';
 
 export default function Image({ src, alt, ...css }: ImageProps) {
@@ -8,5 +8,14 @@ export default function Image({ src, alt, ...css }: ImageProps) {
 }
 
 const StyledImage = styled('img')<ImageProps>`
-  ${dimensions}
+  ${positioning};
+  ${dimensions};
+  ${border};
+
+  transition: 0.3s;
+
+  &:hover {
+    cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
+    ${({ hoverEffects }) => hoverEffects}
+  }
 `;
