@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useMatches, useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Api from '../../../Api';
-import { Box, Image, Loader, PageLayout } from '../../../Components';
+import { Box, Image, PageLayout } from '../../../Components';
 import { Artist } from '../helpers';
 
 export default function SingleArtist() {
@@ -13,13 +13,12 @@ export default function SingleArtist() {
       const { data } = await Api.artists.get({ id });
       setArtist(data);
     })();
-  }, []);
+  }, [id]);
 
   return (
-    <PageLayout title={artist?.name || 'Loading...'}>
+    <PageLayout title={artist?.name || ''} loading={!artist}>
       <Box width="100%" display="flex" justifyContent="center">
-        {!artist && <Loader rainbow />}
-        {artist && <Image src={artist.image} alt={artist.name} width="350px" />}
+        <Image src={artist?.image || ''} alt={artist?.name} width="350px" />
       </Box>
     </PageLayout>
   );
