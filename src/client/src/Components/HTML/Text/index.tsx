@@ -8,7 +8,7 @@ export default function Text({ children, ...css }: TextProps) {
 }
 
 const StyledText = styled('span')<TextProps>`
-  fontsize: inherit;
+  font-size: inherit;
   transition: 0.3s;
 
   ${padding};

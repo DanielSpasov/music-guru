@@ -39,7 +39,12 @@ export default function SignIn() {
         additionalInfo={
           <Box textAlign="center" padding="1em">
             <Text>Or</Text>
-            <Link to="/sign-up" fontSize="1em" textDecoration="underline">
+            <Link
+              to="/sign-up"
+              fontSize="1em"
+              textDecoration="underline"
+              display="inline"
+            >
               sign up
             </Link>
             <Text>if you don't have an account yet.</Text>
