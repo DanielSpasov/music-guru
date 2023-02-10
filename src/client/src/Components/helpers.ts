@@ -47,6 +47,7 @@ export const positioning = css<any>`
 `;
 
 export const colors = css<any>`
+  opacity: ${({ opacity }) => opacity};
   color: ${({ color, theme: { colors } }) => color || colors?.text};
   background-color: ${({ backgroundColor }) =>
     backgroundColor || 'transparent'};

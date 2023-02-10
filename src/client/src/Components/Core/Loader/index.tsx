@@ -18,11 +18,10 @@ export default function Loader({
       width="100vw"
       height="100vh"
       position="fixed"
-      top="0"
-      left="0"
       display="flex"
-      alignContent="center"
+      alignItems="center"
       justifyContent="center"
+      backgroundColor={dim ? 'black' : 'transparent'}
       opacity={dim ? '0.85' : '1'}
       zIndex="9999"
     >
