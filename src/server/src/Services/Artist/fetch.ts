@@ -8,7 +8,7 @@ export async function fetch(req: Request, res: Response) {
   try {
     const artists = await ArtistModel.find()
       .limit(25)
-      .transform(transformArtist);
+      .transform(x => x.map(transformArtist));
     res.status(200).json({ data: artists });
   } catch (error) {
     errorHandler(req, res, error);

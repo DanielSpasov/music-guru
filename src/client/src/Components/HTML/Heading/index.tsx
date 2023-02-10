@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { margin, padding } from '../../helpers';
 
 import { HeadingProps } from './helpers';
 
@@ -17,16 +18,25 @@ const H1 = styled('h1')<HeadingProps>`
   text-align: center;
   color: white;
   margin: 10px;
+
+  ${padding};
+  ${margin};
 `;
 
 const H2 = styled('h2')<HeadingProps>`
   text-align: center;
   color: white;
   margin: 10px;
+
+  ${padding};
+  ${margin};
 `;
 
 const H3 = styled('h3')<HeadingProps>`
   text-align: center;
   color: white;
   margin: 10px;
+
+  ${padding};
+  ${margin};
 `;

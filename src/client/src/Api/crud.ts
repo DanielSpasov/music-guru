@@ -10,7 +10,7 @@ export class CrudBase {
 }
 
 export default class Crud<T> extends CrudBase {
-  get({ id = '0', config = {} }): Promise<T> {
+  get({ id = '0', config = {} }): Promise<{ data: T }> {
     return get({ url: `${this.baseUrl}/${this.model}/${id}/`, config });
   }
 

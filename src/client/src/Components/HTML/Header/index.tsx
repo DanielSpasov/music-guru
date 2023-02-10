@@ -6,7 +6,7 @@ import { Heading } from '../../';
 export default function Header({ children, title, ...css }: HeaderProps) {
   return (
     <StyledHeader {...css}>
-      <Heading title={title} />
+      <Heading title={title} margin="1em 0" />
       {children}
     </StyledHeader>
   );
