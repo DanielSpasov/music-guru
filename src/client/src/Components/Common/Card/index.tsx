@@ -9,10 +9,10 @@ export default function Card({ title, image, onClick }: CardProps) {
 
   return (
     <Box margin="1em" display="flex" flexDirection="column" alignItems="center">
-      <Box width="200px" height="200px">
+      <Box width="200px" height="200px" display="flex" justifyContent="center">
         <Box
           height="100%"
-          width="100%"
+          width="99%"
           position="absolute"
           top="0"
           borderRadius="15px"
