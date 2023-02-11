@@ -38,7 +38,7 @@ export default function FileInput({
         onDragEnter={() => setDragOver(true)}
         onDragLeave={() => setDragOver(false)}
         onDrop={handleFileDrop}
-        {...(dragOver ? { border: `2px ${colors.baseLightest} dashed` } : {})}
+        border={dragOver ? `2px ${colors.baseLightest} dashed` : null}
       >
         <Label>{fileName}</Label>
         <Box background="transparent" display="flex" justifyContent="center">
@@ -61,7 +61,7 @@ export default function FileInput({
   );
 }
 
-const DropZone = styled('label')`
+const DropZone = styled('label')<any>`
   border: 2px ${({ theme: { colors } }) => colors.baseLighter} solid;
   background-color: ${({ theme: { colors } }) => colors.baseLight};
   border-radius: 5px;

@@ -21,12 +21,10 @@ export default function Dropdown({
           fontSize="1.5em"
           model={icon.model}
           type={icon.type}
-          {...(!disabled && {
-            onClick: !openOnHover ? () => setIsOpen(!isOpen) : () => null,
-            onMouseOver: openOnHover ? () => setIsOpen(true) : () => null,
-            onMouseOut: openOnHover ? () => setIsOpen(false) : () => null
-          })}
-          color={disabled && 'gray'}
+          onClick={!disabled && !openOnHover ? () => setIsOpen(!isOpen) : null}
+          onMouseOver={!disabled && openOnHover ? () => setIsOpen(true) : null}
+          onMouseOut={!disabled && openOnHover ? () => setIsOpen(false) : null}
+          color={disabled ? 'gray' : null}
         />
       ) : (
         label

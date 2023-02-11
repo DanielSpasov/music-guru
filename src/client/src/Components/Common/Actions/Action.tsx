@@ -7,8 +7,8 @@ export default function Action({ action }: ActionProps) {
       <Icon
         model={action.icon.model}
         type={action.icon.type}
-        {...(!action?.disabled && { onClick: action.perform })}
-        color={action.disabled && 'gray'}
+        onClick={!action.disabled ? action.perform : null}
+        color={action.disabled ? 'gray' : null}
         fontSize="1.5em"
       />
     </Box>

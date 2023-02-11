@@ -6,8 +6,8 @@ export default function SubAction({ action }: SubActionProps) {
     <Box height="100%" padding="0.25em">
       <Text
         fontSize="1.25em"
-        {...(!action?.disabled && { onClick: action.perform })}
-        color={action?.disabled && 'gray'}
+        onClick={!action?.disabled ? action.perform : null}
+        color={action?.disabled ? 'gray' : null}
       >
         {action.label}
       </Text>
