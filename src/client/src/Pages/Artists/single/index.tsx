@@ -1,5 +1,5 @@
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 import {
   Box,
@@ -9,25 +9,33 @@ import {
   Summary,
   Text
 } from '../../../Components';
+import useActions from '../useActions';
 import { Artist } from '../helpers';
 import Api from '../../../Api';
-import useActions from '../useActions';
+import { errorHandler } from '../../../Handlers';
 
 export default function SingleArtist() {
-  const [artist, setArtist] = useState<Artist>();
   const actions = useActions({ model: 'single-artist' });
-  const { id } = useParams();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [artist, setArtist] = useState<Artist>();
+  const navigate = useNavigate();
+  const { id = 0 } = useParams();
 
   useEffect(() => {
     (async () => {
-      if (!id) return;
-      const { data } = await Api.artists.get({ id });
-      setArtist(data);
+      try {
+        const { data } = await Api.artists.get({ id });
+        setArtist(data);
+      } catch (error) {
+        errorHandler(error, navigate);
+      } finally {
+        setLoading(false);
+      }
     })();
-  }, [id]);
+  }, [id, navigate]);
 
   return (
-    <PageLayout title={artist?.name || ''} loading={!artist} actions={actions}>
+    <PageLayout title={artist?.name || ''} loading={loading} actions={actions}>
       <Box
         display="flex"
         flexDirection="column"
@@ -39,8 +47,8 @@ export default function SingleArtist() {
         <Box width="100%" margin="0.5em">
           <Summary label="Discography" open>
             <Summary label="Albums">
-              {!artist?.albums.length ? (
-                <Text>{artist?.name} doesn't have any albums yet.</Text>
+              {!artist?.albums?.length ? (
+                <Text>{artist?.name} haven't released any albums yet.</Text>
               ) : (
                 artist?.albums?.map(() => (
                   <Card image="Placeholder" title="Placeholder" />
@@ -48,8 +56,8 @@ export default function SingleArtist() {
               )}
             </Summary>
             <Summary label="Singles">
-              {!artist?.singles.length ? (
-                <Text>{artist?.name} doesn't have any singles yet.</Text>
+              {!artist?.singles?.length ? (
+                <Text>{artist?.name} haven't released any singles yet.</Text>
               ) : (
                 artist?.singles?.map(() => (
                   <Card image="Placeholder" title="Placeholder" />
@@ -57,8 +65,8 @@ export default function SingleArtist() {
               )}
             </Summary>
             <Summary label="Mixtapes">
-              {!artist?.mixtapes.length ? (
-                <Text>{artist?.name} doesn't have any mixtapes yet.</Text>
+              {!artist?.mixtapes?.length ? (
+                <Text>{artist?.name} haven't released any mixtapes yet.</Text>
               ) : (
                 artist?.mixtapes?.map(() => (
                   <Card image="Placeholder" title="Placeholder" />

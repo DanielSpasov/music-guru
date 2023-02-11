@@ -14,26 +14,24 @@ export default function EditArtist() {
   const [loading, setLoading] = useState<boolean>(true);
   const [errors, setErrors] = useState<FormError[]>([]);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id = 0 } = useParams();
 
   useEffect(() => {
     (async () => {
       try {
-        if (!id) return;
         const { data } = await Api.artists.get({ id });
         setDefaultData(data);
       } catch (error) {
-        console.error('Failed to fetch default values.');
+        errorHandler(error, navigate);
       } finally {
         setLoading(false);
       }
     })();
-  }, [id]);
+  }, [id, navigate]);
 
   const onSubmit = useCallback(
     async (data: Artist) => {
       try {
-        if (!id) return;
         const validData = artistSchema.parse(data);
         const { data: updated } = await Api.artists.patch({
           id,

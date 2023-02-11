@@ -9,12 +9,12 @@ export class CrudBase {
   }
 }
 
-type Get = { id: string; config?: any };
+type Get = { id: string | number; config?: any };
 type Fetch = { config?: any };
 type Post = { body: any; config?: any };
-type Patch = { id: string; body: any; config?: any };
-type Del = { id: string; config?: any };
-type Put = { id: string; body: any; config?: any };
+type Patch = { id: string | number; body: any; config?: any };
+type Del = { id: string | number; config?: any };
+type Put = { id: string | number; body: any; config?: any };
 
 export default class Crud<T> extends CrudBase {
   get({ id, config = {} }: Get): Promise<{ data: T }> {
