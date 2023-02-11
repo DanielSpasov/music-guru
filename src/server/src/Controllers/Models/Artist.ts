@@ -1,11 +1,12 @@
 import { Router } from 'express';
 
-import { create, fetch, get } from '../../Services/Artist';
+import { create, fetch, get, patch } from '../../Services/Artist';
 
 const router = Router();
 
 router.post('/', create);
 router.get('/', fetch);
 router.get('/:id', get);
+router.patch('/:id', patch);
 
 export default router;

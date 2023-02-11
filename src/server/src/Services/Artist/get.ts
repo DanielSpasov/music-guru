@@ -1,8 +1,8 @@
-import { raw, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 import { ArtistModel } from '../../Database/Schemas';
-import { errorHandler } from '../../Error';
 import { transformArtist } from '../../Transforms';
+import { errorHandler } from '../../Error';
 
 export async function get(req: Request, res: Response) {
   try {

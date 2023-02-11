@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { Box, Card, PageLayout } from '../../../Components';
 import useActions from '../useActions';
-import { Artist } from './helpers';
+import { Artist } from '../helpers';
 import Api from '../../../Api';
 
 export default function Artists() {
-  const actions = useActions();
+  const actions = useActions({ model: 'artists-list' });
   const [artists, setArtists] = useState<Artist[]>([]);
   const navigate = useNavigate();
 

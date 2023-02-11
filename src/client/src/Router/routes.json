@@ -20,8 +20,19 @@
       },
       {
         "path": ":id",
-        "filePath": "/artists/single",
-        "private": false
+        "filePath": "/not-found",
+        "routes": [
+          {
+            "path": "index",
+            "filePath": "/artists/single",
+            "private": false
+          },
+          {
+            "path": "edit",
+            "filePath": "/artists/edit",
+            "private": true
+          }
+        ]
       }
     ]
   },

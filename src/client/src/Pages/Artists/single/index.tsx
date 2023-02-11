@@ -9,22 +9,25 @@ import {
   Summary,
   Text
 } from '../../../Components';
-import { Artist } from '../list/helpers';
+import { Artist } from '../helpers';
 import Api from '../../../Api';
+import useActions from '../useActions';
 
 export default function SingleArtist() {
   const [artist, setArtist] = useState<Artist>();
+  const actions = useActions({ model: 'single-artist' });
   const { id } = useParams();
 
   useEffect(() => {
     (async () => {
+      if (!id) return;
       const { data } = await Api.artists.get({ id });
       setArtist(data);
     })();
   }, [id]);
 
   return (
-    <PageLayout title={artist?.name || ''} loading={!artist}>
+    <PageLayout title={artist?.name || ''} loading={!artist} actions={actions}>
       <Box
         display="flex"
         flexDirection="column"

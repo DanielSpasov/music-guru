@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, PageLayout } from '../../../Components';
-import { Artist, artistSchema } from '../list/helpers';
+import { Artist, artistSchema } from '../helpers';
 import { errorHandler } from '../../../Handlers';
 import { schema } from './schema';
 import Api from '../../../Api';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 export default function CreateArtist() {
   const [errors, setErrors] = useState<FormError[]>([]);
