@@ -22,6 +22,7 @@ export default function Card({ title, image, onClick }: CardProps) {
           src={image}
           onClick={onClick}
           width="100%"
+          height="100%"
           position="absolute"
           top="0"
           borderRadius="15px"
