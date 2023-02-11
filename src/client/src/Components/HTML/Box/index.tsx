@@ -15,6 +15,9 @@ export default function Box({ children, ...css }: BoxProps) {
 }
 
 const StyledBox = styled('div')<BoxProps>`
+  box-sizing: border-box;
+  transition: 0.3s;
+
   ${essentials};
   ${pointer};
   ${shadows};
@@ -24,5 +27,6 @@ const StyledBox = styled('div')<BoxProps>`
 
   &:hover {
     cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
+    ${({ hoverEffects }) => hoverEffects}
   }
 `;

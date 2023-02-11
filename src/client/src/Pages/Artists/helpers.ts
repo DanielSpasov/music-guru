@@ -9,7 +9,7 @@ export type ArtistModel = z.infer<typeof artistSchema>;
 export interface Artist extends ArtistModel {
   uid: string;
   created: Date;
-  artists: [];
+  albums: [];
   mixtapes: [];
   singles: [];
 }
