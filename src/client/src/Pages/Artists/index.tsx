@@ -25,7 +25,7 @@ export default function Artists() {
 
   return (
     <PageLayout title="Artists" actions={actions} loading={!artists.length}>
-      <Box display="flex" margin="0 5%">
+      <Box display="flex" margin="0 5%" flexWrap="wrap">
         {artists.map(artist => (
           <Card
             key={artist.uid}
