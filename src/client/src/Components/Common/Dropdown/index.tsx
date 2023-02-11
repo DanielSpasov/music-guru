@@ -8,28 +8,32 @@ export default function Dropdown({
   children,
   label,
   icon,
-  openOnHover = false
+  openOnHover = false,
+  disabled = false
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { colors } = useContext(ThemeContext);
 
   return (
-    <Box>
+    <Box height="100%" display="flex" alignItems="center" margin="0 0.75em">
       {icon ? (
         <Icon
-          padding="15px 10px"
-          fontSize="26px"
+          fontSize="1.5em"
           model={icon.model}
           type={icon.type}
-          onClick={!openOnHover ? () => setIsOpen(!isOpen) : () => null}
-          onMouseOver={openOnHover ? () => setIsOpen(true) : () => null}
-          onMouseOut={openOnHover ? () => setIsOpen(false) : () => null}
+          {...(!disabled && {
+            onClick: !openOnHover ? () => setIsOpen(!isOpen) : () => null,
+            onMouseOver: openOnHover ? () => setIsOpen(true) : () => null,
+            onMouseOut: openOnHover ? () => setIsOpen(false) : () => null
+          })}
+          color={disabled && 'gray'}
         />
       ) : (
         label
       )}
       <Box
         minWidth="110px"
+        width="auto"
         display={isOpen ? 'flex' : 'none'}
         backgroundColor={colors.base}
         flexDirection="column"

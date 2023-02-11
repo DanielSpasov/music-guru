@@ -1,12 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
-import { Action } from '../../Components/Core/BreadCrumb/helpers';
+import { Action } from '../../Components/Common/Actions/helpers';
 import { AuthContext } from '../../Contexts/Auth';
-
-type UseActionsProps = {
-  model: string;
-};
+import { UseActionsProps } from './helpers';
 
 export default function useActions({ model }: UseActionsProps): Action[] {
   const navigate = useNavigate();
@@ -23,6 +20,29 @@ export default function useActions({ model }: UseActionsProps): Action[] {
       ];
     case 'single-artist':
       return [
+        {
+          icon: { model: 'plus', type: 'solid' },
+          type: 'menu',
+          subActions: [
+            {
+              label: 'Album',
+              perform: () => navigate('add-album'),
+              disabled: !isAuthenticated
+            },
+            {
+              label: 'Mixtape',
+              perform: () => navigate('add-mixtape'),
+              disabled: !isAuthenticated
+            },
+            {
+              label: 'Single',
+              perform: () => navigate('add-single'),
+              disabled: !isAuthenticated
+            }
+          ],
+          perform: () => navigate('edit'),
+          disabled: !isAuthenticated
+        },
         {
           icon: { model: 'pen-to-square', type: 'regular' },
           perform: () => navigate('edit'),
