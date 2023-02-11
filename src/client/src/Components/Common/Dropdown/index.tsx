@@ -29,7 +29,7 @@ export default function Dropdown({
         label
       )}
       <Box
-        minWidth="90px"
+        minWidth="110px"
         display={isOpen ? 'flex' : 'none'}
         backgroundColor={colors.base}
         flexDirection="column"
