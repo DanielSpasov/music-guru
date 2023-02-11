@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Box, Card, PageLayout } from '../../Components';
-import useActions from './useActions';
+import { Box, Card, PageLayout } from '../../../Components';
+import useActions from '../useActions';
 import { Artist } from './helpers';
-import Api from '../../Api';
+import Api from '../../../Api';
 
 export default function Artists() {
   const actions = useActions();

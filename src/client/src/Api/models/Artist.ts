@@ -1,4 +1,4 @@
-import { Artist } from '../../Pages/Artists/helpers';
+import { Artist } from '../../Pages/artists/list/helpers';
 import { applyPrefix } from '../helpers';
 import Crud from '../crud';
 

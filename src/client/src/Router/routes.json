@@ -1,63 +1,63 @@
 [
   {
     "path": "index",
-    "filePath": "/Home",
+    "filePath": "/home",
     "private": false
   },
   {
     "path": "/artists",
-    "filePath": "/NotFound",
+    "filePath": "/not-found",
     "routes": [
       {
         "path": "index",
-        "filePath": "/Artists",
+        "filePath": "/artists/list",
         "private": false
       },
       {
         "path": "add",
-        "filePath": "/Artists/create",
+        "filePath": "/artists/create",
         "private": true
       },
       {
         "path": ":id",
-        "filePath": "/Artists/single",
-        "private": true
+        "filePath": "/artists/single",
+        "private": false
       }
     ]
   },
   {
     "path": "/albums",
-    "filePath": "/Home",
+    "filePath": "/home",
     "private": false
   },
   {
     "path": "/mixtapes",
-    "filePath": "/Home",
+    "filePath": "/home",
     "private": false
   },
   {
     "path": "/singles",
-    "filePath": "/Home",
+    "filePath": "/home",
     "private": false
   },
   {
     "path": "/sign-in",
-    "filePath": "/Auth/SignIn",
+    "filePath": "/auth/sign-in",
     "private": false
   },
   {
     "path": "/sign-up",
-    "filePath": "/Auth/SignUp",
+    "filePath": "/auth/sign-up",
     "private": false
   },
   {
     "path": "/sign-out",
-    "filePath": "/Auth/SignOut",
+    "filePath": "/auth/sign-out",
     "private": false
   },
   {
     "path": "*",
-    "filePath": "/NotFound",
+    "filePath": "/not-found",
     "private": false
   }
 ]

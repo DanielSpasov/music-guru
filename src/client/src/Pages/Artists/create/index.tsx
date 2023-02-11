@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, PageLayout } from '../../../Components';
-import { Artist, artistSchema } from '../helpers';
+import { Artist, artistSchema } from '../list/helpers';
 import { errorHandler } from '../../../Handlers';
 import { schema } from './schema';
 import Api from '../../../Api';

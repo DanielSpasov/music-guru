@@ -9,7 +9,7 @@ import {
   Summary,
   Text
 } from '../../../Components';
-import { Artist } from '../helpers';
+import { Artist } from '../list/helpers';
 import Api from '../../../Api';
 
 export default function SingleArtist() {
