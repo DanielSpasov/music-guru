@@ -23,6 +23,11 @@ export default function SearchBox() {
       return;
     }
 
+    if (!search) {
+      setResults([]);
+      return;
+    }
+
     (async () => {
       try {
         setLoading(true);
