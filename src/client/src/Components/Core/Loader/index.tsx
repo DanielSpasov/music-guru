@@ -39,8 +39,8 @@ function Spinner({
     <Box
       display="inline-block"
       position="relative"
-      width={size === 's' ? '0px' : '80px'}
-      height={size === 's' ? '0px' : '80px'}
+      width={size === 's' ? '40px' : '80px'}
+      height={size === 's' ? '40px' : '80px'}
       backgroundColor="transparent"
     >
       {getCssProps({ size, color, rainbow }).map((css, i) => (

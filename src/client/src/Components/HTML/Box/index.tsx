@@ -6,7 +6,8 @@ import {
   colors,
   flex,
   text,
-  pointer
+  pointer,
+  animations
 } from '../../helpers';
 import { BoxProps } from './helpers';
 
@@ -16,8 +17,8 @@ export default function Box({ children, ...css }: BoxProps) {
 
 const StyledBox = styled('div')<BoxProps>`
   box-sizing: border-box;
-  transition: 0.3s;
 
+  ${animations};
   ${essentials};
   ${pointer};
   ${shadows};

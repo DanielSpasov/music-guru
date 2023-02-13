@@ -104,3 +104,8 @@ export const pointer = css<any>`
   pointer: ${({ pointer }) => pointer};
   pointer-events: ${({ pointerEvents }) => pointerEvents};
 `;
+
+export const animations = css<any>`
+  transform: ${({ transform }) => transform};
+  transition: ${({ transition }) => transition || '0.3s'};
+`;
