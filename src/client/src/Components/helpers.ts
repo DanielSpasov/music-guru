@@ -98,17 +98,12 @@ export const text = css<any>`
   text-orientation: ${({ textOrientation }) => textOrientation};
   text-shadow: ${({ textShadow }) => textShadow};
   text-transform: ${({ textTransform }) => textTransform};
+  white-space: ${({ whiteSpace }) => whiteSpace};
 `;
 
 export const pointer = css<any>`
   pointer: ${({ pointer }) => pointer};
   pointer-events: ${({ pointerEvents }) => pointerEvents};
-`;
-
-export const onHover = css<any>`
-  &:hover: {
-    ${({ onHover }) => onHover}
-  }
 `;
 
 export const animations = css<any>`

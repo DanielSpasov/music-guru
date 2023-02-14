@@ -7,8 +7,7 @@ import {
   flex,
   text,
   pointer,
-  animations,
-  onHover
+  animations
 } from '../../helpers';
 import { BoxProps } from './helpers';
 
@@ -21,7 +20,6 @@ const StyledBox = styled('div')<BoxProps>`
 
   ${animations};
   ${essentials};
-  ${onHover};
   ${pointer};
   ${shadows};
   ${colors};
@@ -30,5 +28,6 @@ const StyledBox = styled('div')<BoxProps>`
 
   &:hover {
     cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
+    ${({ hoverCSS }) => hoverCSS};
   }
 `;

@@ -1,8 +1,7 @@
-import { useState, useContext, useCallback } from 'react';
-import { ThemeContext } from 'styled-components';
+import { useState, useCallback } from 'react';
 
+import { Box, Icon, Popover } from '../../';
 import { DropdownProps } from './helpers';
-import { Box, Icon } from '../../';
 
 export default function Dropdown({
   children,
@@ -11,7 +10,6 @@ export default function Dropdown({
   openOnHover = false,
   disabled = false
 }: DropdownProps) {
-  const { colors } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
 
   const onClick = useCallback(() => {
@@ -34,7 +32,7 @@ export default function Dropdown({
       height="100%"
       display="flex"
       alignItems="center"
-      margin="0 0.75em"
+      padding="0 0.75em"
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
@@ -49,21 +47,9 @@ export default function Dropdown({
       ) : (
         label
       )}
-      <Box
-        minWidth="110px"
-        width="auto"
-        display={open ? 'flex' : 'none'}
-        backgroundColor={colors.base}
-        flexDirection="column"
-        position="absolute"
-        top="60px"
-        right="0px"
-        boxShadow="rgba(0, 0, 0, 0.45) 0px 0px 5px 3px"
-        borderRadius="10px"
-        padding="0.5em"
-      >
+      <Popover open={open} whiteSpace="nowrap">
         {children}
-      </Box>
+      </Popover>
     </Box>
   );
 }
