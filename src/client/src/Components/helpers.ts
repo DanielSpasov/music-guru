@@ -105,6 +105,12 @@ export const pointer = css<any>`
   pointer-events: ${({ pointerEvents }) => pointerEvents};
 `;
 
+export const onHover = css<any>`
+  &:hover: {
+    ${({ onHover }) => onHover}
+  }
+`;
+
 export const animations = css<any>`
   transform: ${({ transform }) => transform};
   transition: ${({ transition }) => transition || '0.3s'};

@@ -47,13 +47,13 @@ export default function Results({
                 padding="0.25em"
                 alignItems="center"
                 key={x.uid}
-                hoverEffects={{ backgroundColor: colors.baseLight }}
+                onHover={{ backgroundColor: colors.baseLight }}
                 onClick={(e: any) => onResultClick(e, x)}
               >
                 <Image
                   src={x.image}
                   height="40px"
-                  hoverEffects={{ cursor: 'pointer' }}
+                  onHover={{ cursor: 'pointer' }}
                 />
                 <Text padding="0 0.5em" fontSize="1em">
                   {x.name}

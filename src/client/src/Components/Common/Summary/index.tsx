@@ -17,7 +17,7 @@ export default function Summary({
   return (
     <Box
       width="100%"
-      hoverEffects={{ backgroundColor: colors.baseLighter }}
+      onHover={{ backgroundColor: colors.baseLighter }}
       padding="0.5em"
       position="relative"
     >

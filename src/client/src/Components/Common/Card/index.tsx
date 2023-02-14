@@ -26,7 +26,7 @@ export default function Card({ title, image, onClick }: CardProps) {
           position="absolute"
           top="0"
           borderRadius="15px"
-          hoverEffects={{ top: '-10px' }}
+          onHover={{ top: '-10px' }}
         />
       </Box>
       <Text padding="10px" fontSize="18px" onClick={onClick}>
