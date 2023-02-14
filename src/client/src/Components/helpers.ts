@@ -114,4 +114,15 @@ export const onHover = css<any>`
 export const animations = css<any>`
   transform: ${({ transform }) => transform};
   transition: ${({ transition }) => transition || '0.3s'};
+  animation: ${({ animation }) => animation};
+  animation-delay: ${({ animationDelay }) => animationDelay};
+  animation-direction: ${({ animationDirection }) => animationDirection};
+  animation-duration: ${({ animationDuration }) => animationDuration};
+  animation-fill-mode: ${({ animationFillMode }) => animationFillMode};
+  animation-iteration-count: ${({ animationIterationCount }) =>
+    animationIterationCount};
+  animation-name: ${({ animationName }) => animationName};
+  animation-play-state: ${({ animationPlayState }) => animationPlayState};
+  animation-timing-function: ${({ animationTimingFunction }) =>
+    animationTimingFunction};
 `;
