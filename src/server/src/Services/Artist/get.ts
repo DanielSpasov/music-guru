@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 
 import { CustomError } from '../../Error/CustomError';
 import { ArtistModel } from '../../Database/Schemas';
-import { transformArtist } from '../../Transforms';
 import { errorHandler } from '../../Error';
 
 export async function get(req: Request, res: Response) {
