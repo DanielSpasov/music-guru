@@ -121,3 +121,8 @@ export const animations = css<any>`
   animation-timing-function: ${({ animationTimingFunction }) =>
     animationTimingFunction};
 `;
+
+export const overflow = css<any>`
+  overflow-y: ${({ overflowY }) => overflowY};
+  overflow-x: ${({ overflowX }) => overflowX};
+`;
