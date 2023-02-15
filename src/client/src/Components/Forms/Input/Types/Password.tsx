@@ -1,7 +1,7 @@
 import { ThemeContext } from 'styled-components';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
-import { PassInputProps } from '../helpers';
+import { InputProps } from '../helpers';
 import { Icon } from '../../../HTML';
 import Text from './Text';
 
@@ -10,10 +10,9 @@ export default function Password({
   name,
   required,
   type,
-  label,
-  passVisibility,
-  setPassVisibility
-}: PassInputProps) {
+  label
+}: InputProps) {
+  const [passVisibility, setPassVisibility] = useState(false);
   const { colors } = useContext(ThemeContext);
 
   return (

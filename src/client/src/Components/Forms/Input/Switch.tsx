@@ -1,44 +1,21 @@
-import FileInput from './Types/File';
-import { TypeSwitchProps } from './helpers';
-import Text from './Types/Text';
 import Password from './Types/Password';
+import Select from './Types/Select';
+import File from './Types/File';
+import Text from './Types/Text';
 
-export default function TypeSwitch({
-  type,
-  register,
-  name,
-  label,
-  passVisibility,
-  setPassVisibility
-}: TypeSwitchProps) {
-  switch (type) {
+import { InputProps } from './helpers';
+
+export default function TypeSwitch(props: InputProps) {
+  switch (props.type) {
     case 'file':
-      return (
-        <FileInput register={register} name={name} label={label} type={type} />
-      );
+      return <File {...props} />;
     case 'password':
-      return (
-        <Password
-          type={type}
-          register={register}
-          name={name}
-          label={label}
-          setPassVisibility={setPassVisibility}
-          passVisibility={passVisibility}
-        />
-      );
+      return <Password {...props} />;
     case 'select':
+      return <Select {...props} />;
     case 'text':
     case 'email':
     default:
-      return (
-        <Text
-          type={type}
-          register={register}
-          name={name}
-          label={label}
-          passVisibility={passVisibility}
-        />
-      );
+      return <Text {...props} />;
   }
 }

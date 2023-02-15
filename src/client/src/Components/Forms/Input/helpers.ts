@@ -1,4 +1,3 @@
-import { Dispatch } from 'react';
 import { Ref, UseFormRegister } from 'react-hook-form/dist/types';
 
 type Error = {
@@ -27,16 +26,6 @@ export type InputProps = {
   required?: boolean;
 };
 
-export interface TypeSwitchProps extends InputProps {
-  passVisibility: boolean;
-  setPassVisibility: Dispatch<boolean>;
-}
-
 export interface TextInputProps extends InputProps {
-  passVisibility: boolean;
-}
-
-export interface PassInputProps extends InputProps {
-  passVisibility: boolean;
-  setPassVisibility: Dispatch<boolean>;
+  passVisibility?: boolean;
 }

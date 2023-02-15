@@ -1,5 +1,5 @@
 import { ThemeContext } from 'styled-components';
-import { useState, memo, useContext } from 'react';
+import { memo, useContext } from 'react';
 
 import { InputProps } from './helpers';
 import { Text, Box } from '../../';
@@ -14,7 +14,6 @@ function Input({
   required = false
 }: InputProps) {
   const { colors } = useContext(ThemeContext);
-  const [passVisiblity, setPassVisiblity] = useState(false);
 
   return (
     <Box position="relative" margin=".5em 0">
@@ -24,14 +23,7 @@ function Input({
         </Text>
       </Box>
 
-      <TypeSwitch
-        type={type}
-        register={register}
-        name={name}
-        label={label}
-        passVisibility={passVisiblity}
-        setPassVisibility={setPassVisiblity}
-      />
+      <TypeSwitch type={type} register={register} name={name} label={label} />
 
       {error && <Text color={colors.danger}>{error?.message}</Text>}
     </Box>
