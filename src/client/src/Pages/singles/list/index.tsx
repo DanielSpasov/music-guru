@@ -1,23 +1,21 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Api from '../../../Api';
 
 import { Box, Card, PageLayout } from '../../../Components';
-import useActions from '../useActions';
-import { Artist } from '../helpers';
-import Api from '../../../Api';
 import { errorHandler } from '../../../Handlers';
+import { Single } from '../helpers';
 
-export default function Artists() {
-  const actions = useActions({ model: 'artists-list' });
-  const [artists, setArtists] = useState<Artist[]>([]);
+export default function Singles() {
+  const [singles, setSingles] = useState<Single[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.artists.fetch({});
-        setArtists(data);
+        const { data } = await Api.singles.fetch({});
+        setSingles(data);
       } catch (error) {
         errorHandler(error, navigate);
       } finally {
@@ -27,19 +25,19 @@ export default function Artists() {
   }, [navigate]);
 
   const onClick = useCallback(
-    (uid: string) => navigate(`/artists/${uid}`),
+    (uid: string) => navigate(`/singles/${uid}`),
     [navigate]
   );
 
   return (
-    <PageLayout title="Artists" actions={actions} loading={loading}>
+    <PageLayout title="Singles" loading={loading}>
       <Box display="flex" margin="0 5%" flexWrap="wrap">
-        {artists.map(artist => (
+        {singles.map(single => (
           <Card
-            key={artist.uid}
-            title={artist.name}
-            image={artist.image}
-            onClick={() => onClick(artist.uid)}
+            key={single.uid}
+            title={single.name}
+            image={single.image}
+            onClick={() => onClick(single.uid)}
           />
         ))}
       </Box>
