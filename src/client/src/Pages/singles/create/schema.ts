@@ -1,5 +1,5 @@
-import { Input } from '../../../Components';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
+import { Input } from '../../../Components';
 
 export const schema: FormSchema = {
   fields: [
@@ -14,6 +14,13 @@ export const schema: FormSchema = {
       key: 'image',
       type: 'text',
       label: 'Image URL',
+      required: true,
+      Component: Input
+    },
+    {
+      key: 'artist',
+      type: 'select',
+      label: 'Artist',
       required: true,
       Component: Input
     }

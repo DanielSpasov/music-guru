@@ -1,17 +1,17 @@
 import { useCallback, useState, useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import { FileInputProps } from './helpers';
-import { Box, Icon } from '../../HTML';
-import { border } from '../../helpers';
-import Label from '../Label';
+import { Box, Icon } from '../../../HTML';
+import { border } from '../../../helpers';
+import { InputProps } from '../helpers';
+import Label from '../../Label';
 
 export default function FileInput({
   register,
   required = false,
   name,
   label
-}: FileInputProps) {
+}: InputProps) {
   const { colors } = useContext(ThemeContext);
   const [fileName, setFileName] = useState('');
   const [dragOver, setDragOver] = useState<boolean>(false);

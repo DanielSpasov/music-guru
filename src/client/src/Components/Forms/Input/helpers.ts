@@ -1,27 +1,10 @@
+import { Dispatch } from 'react';
 import { Ref, UseFormRegister } from 'react-hook-form/dist/types';
-
-export type InputType = 'password' | 'text' | 'email' | 'file';
 
 type Error = {
   type: string;
   message: string;
   ref: Ref;
-};
-
-export type InputProps = {
-  register: UseFormRegister<any>;
-  type: InputType;
-  label: string;
-  name: string;
-  error?: Error;
-  required?: boolean;
-};
-
-export type FileInputProps = {
-  register: UseFormRegister<any>;
-  required?: boolean;
-  name: string;
-  label: string;
 };
 
 export type File = {
@@ -32,3 +15,28 @@ export type File = {
   type: string;
   webkitRelativePath: string;
 };
+
+export type InputType = 'password' | 'text' | 'email' | 'file' | 'select';
+
+export type InputProps = {
+  register: UseFormRegister<any>;
+  type: InputType;
+  label: string;
+  name: string;
+  error?: Error;
+  required?: boolean;
+};
+
+export interface TypeSwitchProps extends InputProps {
+  passVisibility: boolean;
+  setPassVisibility: Dispatch<boolean>;
+}
+
+export interface TextInputProps extends InputProps {
+  passVisibility: boolean;
+}
+
+export interface PassInputProps extends InputProps {
+  passVisibility: boolean;
+  setPassVisibility: Dispatch<boolean>;
+}
