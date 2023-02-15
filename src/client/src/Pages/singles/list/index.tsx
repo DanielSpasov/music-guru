@@ -5,8 +5,10 @@ import Api from '../../../Api';
 import { Box, Card, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import { Single } from '../helpers';
+import useActions from '../useActions';
 
 export default function Singles() {
+  const actions = useActions({ model: 'singles-list' });
   const [singles, setSingles] = useState<Single[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -30,7 +32,7 @@ export default function Singles() {
   );
 
   return (
-    <PageLayout title="Singles" loading={loading}>
+    <PageLayout title="Singles" loading={loading} actions={actions}>
       <Box display="flex" margin="0 5%" flexWrap="wrap">
         {singles.map(single => (
           <Card

@@ -54,6 +54,11 @@
         "path": "index",
         "filePath": "/singles/list",
         "private": false
+      },
+      {
+        "path": "add",
+        "filePath": "/singles/create",
+        "private": true
       }
     ]
   },
