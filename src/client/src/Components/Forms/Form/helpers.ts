@@ -9,6 +9,7 @@ export type FormField = {
   Component: FC<any>;
   type?: InputType;
   required?: boolean;
+  fetchFn?: Function;
 };
 
 export type FormError = {

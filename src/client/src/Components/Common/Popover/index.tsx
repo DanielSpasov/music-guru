@@ -13,7 +13,7 @@ export default function Popover({ children, open, ...css }: PopoverProps) {
       backgroundColor={colors.base}
       opacity={open ? '1' : '0'}
       position="absolute"
-      overflowY="scroll"
+      overflowY="auto"
       maxHeight="200px"
       padding="0.5em"
       zIndex="9999"

@@ -7,7 +7,8 @@ import {
   flex,
   text,
   pointer,
-  animations
+  animations,
+  overflow
 } from '../../helpers';
 import { BoxProps } from './helpers';
 
@@ -20,6 +21,7 @@ const StyledBox = styled('div')<BoxProps>`
 
   ${animations};
   ${essentials};
+  ${overflow};
   ${pointer};
   ${shadows};
   ${colors};

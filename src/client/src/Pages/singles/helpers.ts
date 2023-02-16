@@ -2,8 +2,12 @@ import { z } from 'zod';
 import { Artist } from '../artists/helpers';
 
 export const singleSchema = z.object({
-  name: z.string(),
-  image: z.string().url({ message: 'Invalid url.' })
+  name: z
+    .string()
+    .min(1, { message: 'Name is required.' })
+    .max(128, { message: 'Name is too long.' }),
+  image: z.string().url({ message: 'Invalid url.' }),
+  artist: z.object({ uid: z.string({ required_error: 'Artist is required.' }) })
 });
 
 type SingleModel = z.infer<typeof singleSchema>;

@@ -1,4 +1,4 @@
-import { SignInData, SignUpData, User } from '../../Pages/Auth/helpers';
+import { SignInData, SignUpData, User } from '../../Pages/auth/helpers';
 import { applyPrefix } from '../helpers';
 import { get, post } from '../requests';
 import Crud from '../crud';

@@ -15,7 +15,9 @@ export default function Form({
   errors = [],
   additionalInfo
 }: FormProps) {
-  const { register, handleSubmit } = useForm({ defaultValues });
+  const { register, handleSubmit, setValue, getValues } = useForm({
+    defaultValues
+  });
   const [disableSubmit, setDisableSubmit] = useState(false);
   const navigate = useNavigate();
 
@@ -39,11 +41,14 @@ export default function Form({
       {schema.fields.map(field => (
         <field.Component
           key={field.key}
+          setFormValue={setValue}
+          getValues={getValues}
           register={register}
           label={field.label}
           name={field.key}
           type={field?.type}
           required={field?.required}
+          fetchFn={field?.fetchFn}
           error={errors.find(x => x.path.includes(field.key))}
         />
       ))}

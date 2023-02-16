@@ -36,6 +36,7 @@ export default function CreateSingle() {
         onSubmit={onSubmit}
         schema={schema}
         errors={errors}
+        defaultValues={{ artist: {} }}
       />
     </PageLayout>
   );

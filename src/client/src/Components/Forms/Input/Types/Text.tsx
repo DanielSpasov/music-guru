@@ -27,7 +27,7 @@ export default function Text({
   );
 }
 
-const StyledInput = styled('input')<any>`
+export const StyledInput = styled('input')<any>`
   box-sizing: border-box;
   transition: 0.3s;
 

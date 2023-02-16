@@ -8,16 +8,15 @@ export type InputProps = {
   [css: string]: any;
 };
 
-type Models = Exclude<keyof typeof Api, 'prototype'>;
+type ModelKeys = Exclude<keyof typeof Api, 'prototype'>;
 
 export type SearchBoxProps = {
-  models: Models[];
+  models: ModelKeys[];
 };
 
 export type ResultProps<T> = {
   data: T;
-  toggleOpen: Function;
-  model: Exclude<keyof typeof Api, 'prototype'>;
+  onClick: Function;
 };
 
-export type Results = [Models, any[]][];
+export type Results = [ModelKeys, any[]][];

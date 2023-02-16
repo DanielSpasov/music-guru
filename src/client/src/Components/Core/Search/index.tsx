@@ -18,6 +18,8 @@ import Api from '../../../Api';
 import Input from './Input';
 
 export default function SearchBox({ models }: SearchBoxProps) {
+  const navigate = useNavigate();
+
   const [results, setResults] = useState<Results>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -97,8 +99,10 @@ export default function SearchBox({ models }: SearchBoxProps) {
                     <Result
                       key={obj.uid}
                       data={obj}
-                      model={model}
-                      toggleOpen={toggleOpen}
+                      onClick={() => {
+                        navigate(`/${model}/${obj.uid}`);
+                        toggleOpen();
+                      }}
                     />
                   ))}
                 </Box>
@@ -111,14 +115,8 @@ export default function SearchBox({ models }: SearchBoxProps) {
   );
 }
 
-function Result({ toggleOpen, data, model }: ResultProps<any>) {
+export function Result({ data, onClick }: ResultProps<any>) {
   const { colors } = useContext(ThemeContext);
-  const navigate = useNavigate();
-
-  const onResultClick = useCallback(() => {
-    navigate(`/${model}/${data.uid}`);
-    toggleOpen();
-  }, [toggleOpen, navigate, data, model]);
 
   return (
     <Box
@@ -127,7 +125,7 @@ function Result({ toggleOpen, data, model }: ResultProps<any>) {
       alignItems="center"
       key={data.uid}
       hoverCSS={{ backgroundColor: colors.baseLight }}
-      onClick={onResultClick}
+      onClick={onClick}
     >
       <Image src={data.image} height="40px" hoverCSS={{ cursor: 'pointer' }} />
       <Text padding="0 0.5em" fontSize="1em">
