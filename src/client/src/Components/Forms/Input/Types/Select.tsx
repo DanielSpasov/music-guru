@@ -1,12 +1,11 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { ThemeContext } from 'styled-components';
+import { useCallback, useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
 
 import useDebounce from '../../../../Hooks/useDebounce';
 import { Label, Icon, Box, Popover } from '../../../';
 import { Result } from '../../../Core/Search';
 import { InputProps } from '../helpers';
 import { StyledInput } from './Text';
-import { isEmpty } from 'lodash';
 
 export default function Select({
   name,
@@ -15,8 +14,6 @@ export default function Select({
   setFormValue,
   getValues
 }: InputProps) {
-  const { colors } = useContext(ThemeContext);
-
   const [searchTerm, setSearch] = useState<string>('');
   const [options, setOptions] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -35,38 +32,37 @@ export default function Select({
   const toggleOpen = useCallback(() => {
     // In case you wondering what this is:
     // if onBlur event triggers before the onResultClick, no result is saved
-    // sadge
-    if (!isEmpty(getValues()?.artist)) return;
+    if (!isEmpty(getValues()[name])) return;
     setTimeout(() => setOpen(prev => !prev), 100);
-  }, [getValues]);
+  }, [getValues, name]);
 
   const onResultClick = useCallback(
     (option: any) => {
       setValue(option.name);
-      setFormValue('artist', option);
+      setFormValue(name, option);
     },
-    [setFormValue]
+    [setFormValue, name]
   );
 
   const onClear = useCallback(() => {
     setValue('');
-    setFormValue('artist', null);
-  }, [setFormValue]);
+    setFormValue(name, null);
+  }, [setFormValue, name]);
 
   const onChange = useCallback(
     (e: any) => {
-      if (isEmpty(getValues()?.artist)) {
+      if (isEmpty(getValues()[name])) {
         setSearch(e?.target?.value);
         setValue(e?.target?.value);
       }
     },
-    [getValues]
+    [getValues, name]
   );
 
   return (
     <>
       <StyledInput
-        disabled={!isEmpty(getValues()?.artist)}
+        disabled={!isEmpty(getValues()[name])}
         onFocus={toggleOpen}
         onBlur={toggleOpen}
         onChange={onChange}
@@ -82,7 +78,7 @@ export default function Select({
       <Icon
         model="x"
         type="solid"
-        color={colors.danger}
+        variant="danger"
         onClick={onClear}
         position="absolute"
         fontSize="1em"

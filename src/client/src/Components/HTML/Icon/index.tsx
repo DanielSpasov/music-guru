@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { colors, dimensions, font, padding, positioning } from '../../helpers';
 import { IconProps } from './helpers';
 
-export default function Icon({ model, type, ...css }: IconProps) {
+export default function Icon({ model, type, variant, ...css }: IconProps) {
   return (
-    <StyledIcon {...css}>
+    <StyledIcon variant={variant} {...css}>
       <i className={`fa-${type} fa-${model}`} />
     </StyledIcon>
   );
@@ -22,9 +22,12 @@ const StyledIcon = styled('i')<IconProps>`
   ${colors};
   ${font};
 
+  color: ${({ variant, theme: { colors } }) =>
+    variant ? colors[variant] : colors.text};
+
   &:hover {
     cursor: pointer;
     color: ${({ onClick, theme: { colors }, color }) =>
-      onClick ? colors.primary : color || 'white'};
+      onClick ? colors.primary : color || colors.text};
   }
 `;
