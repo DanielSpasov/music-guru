@@ -59,6 +59,11 @@
         "path": "add",
         "filePath": "/singles/create",
         "private": true
+      },
+      {
+        "path": ":id",
+        "filePath": "/singles/single",
+        "private": false
       }
     ]
   },
