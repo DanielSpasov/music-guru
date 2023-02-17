@@ -50,32 +50,38 @@ export default function SingleArtist() {
               {!artist?.albums.length ? (
                 <Text>{artist?.name} haven't released any albums yet.</Text>
               ) : (
-                artist.albums.map(() => (
-                  <Card image="Placeholder" title="Placeholder" />
-                ))
+                <Box display="flex">
+                  {artist.albums.map(() => (
+                    <Card image="Placeholder" title="Placeholder" />
+                  ))}
+                </Box>
               )}
             </Summary>
             <Summary label="Singles">
               {!artist?.singles.length ? (
                 <Text>{artist?.name} haven't released any singles yet.</Text>
               ) : (
-                artist.singles.map(single => (
-                  <Card
-                    key={single.uid}
-                    image={single.image}
-                    title={single.name}
-                    onClick={() => navigate(`/singles/${single.uid}`)}
-                  />
-                ))
+                <Box display="flex">
+                  {artist.singles.map(single => (
+                    <Card
+                      key={single.uid}
+                      image={single.image}
+                      title={single.name}
+                      onClick={() => navigate(`/singles/${single.uid}`)}
+                    />
+                  ))}
+                </Box>
               )}
             </Summary>
             <Summary label="Mixtapes">
               {!artist?.mixtapes.length ? (
                 <Text>{artist?.name} haven't released any mixtapes yet.</Text>
               ) : (
-                artist.mixtapes.map(() => (
-                  <Card image="Placeholder" title="Placeholder" />
-                ))
+                <Box display="flex">
+                  {artist.mixtapes.map(() => (
+                    <Card image="Placeholder" title="Placeholder" />
+                  ))}
+                </Box>
               )}
             </Summary>
           </Summary>

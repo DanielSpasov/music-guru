@@ -25,7 +25,7 @@ export default function Summary({
         <Icon model={isOpen ? 'chevron-up' : 'chevron-down'} type="solid" />
         <Heading title={label} size="medium" textAlign="start" />
       </Box>
-      {isOpen && <Box>{children}</Box>}
+      {isOpen && children}
     </Box>
   );
 }
