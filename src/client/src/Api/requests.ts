@@ -13,12 +13,18 @@ export async function post({
   body,
   config = {}
 }: PostProps): Promise<any> {
-  const response = await axios.post(url, body, config);
+  const response = await axios.post(url, body, {
+    headers: { Authorization: localStorage.getItem('AUTH') },
+    ...config
+  });
   return response.data;
 }
 
 export async function get({ url = '', config = {} }: GetProps): Promise<any> {
-  const response = await axios.get(url, config);
+  const response = await axios.get(url, {
+    headers: { Authorization: localStorage.getItem('AUTH') },
+    ...config
+  });
   return response.data;
 }
 
@@ -27,7 +33,10 @@ export async function patch({
   body,
   config = {}
 }: PatchProps): Promise<any> {
-  const response = await axios.patch(url, body, config);
+  const response = await axios.patch(url, body, {
+    headers: { Authorization: localStorage.getItem('AUTH') },
+    ...config
+  });
   return response.data;
 }
 
@@ -36,7 +45,10 @@ export async function put({
   body,
   config = {}
 }: PutProps): Promise<any> {
-  const response = await axios.put(url, body, config);
+  const response = await axios.put(url, body, {
+    headers: { Authorization: localStorage.getItem('AUTH') },
+    ...config
+  });
   return response.data;
 }
 
@@ -44,6 +56,9 @@ export async function del({
   url = '',
   config = {}
 }: DeleteProps): Promise<any> {
-  const response = await axios.delete(url, config);
+  const response = await axios.delete(url, {
+    headers: { Authorization: localStorage.getItem('AUTH') },
+    ...config
+  });
   return response;
 }
