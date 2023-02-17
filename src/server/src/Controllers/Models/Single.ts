@@ -1,9 +1,10 @@
 import { Router } from 'express';
 
-import { fetch } from '../../Services/Single';
+import { fetch, post } from '../../Services/Single';
 
 const router = Router();
 
 router.get('/', fetch);
+router.post('/', post);
 
 export default router;

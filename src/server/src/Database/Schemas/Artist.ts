@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 
 import { transformArtist } from '../../Transforms';
 import { Artist } from '../../Validations/Artist';
@@ -25,24 +25,37 @@ const schema = new Schema<Artist>(
       required: true,
       readonly: true
     },
-    albums: {
-      type: [],
-      default: []
-    },
-    mixtapes: {
-      type: [],
-      default: []
-    },
-    singles: {
-      type: [],
-      default: []
-    }
+    albums: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'album'
+      }
+    ],
+    mixtapes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'mixtape'
+      }
+    ],
+    singles: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'single'
+      }
+    ]
   },
   {
     toJSON: {
       transform: transformArtist
+    },
+    methods: {
+      async addSingle(singleId: Types.ObjectId) {
+        if (this.singles.includes(singleId)) return;
+        this.singles.push(singleId);
+        await this.save();
+      }
     }
   }
 );
 
-export default model('artist', schema);
+export default model<Artist>('artist', schema);

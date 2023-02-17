@@ -1,9 +1,13 @@
 import { z } from 'zod';
 import { Artist } from './Artist';
 
-export const schema = z.object({
+const schema = z.object({
   name: z.string(),
   image: z.string().url({ message: 'Invalid url.' })
+});
+
+export const singleSchema = schema.extend({
+  artist: z.object({ uid: z.string().min(8).max(8) })
 });
 
 type SingleModel = z.infer<typeof schema>;

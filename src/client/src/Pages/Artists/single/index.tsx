@@ -9,10 +9,10 @@ import {
   Summary,
   Text
 } from '../../../Components';
+import { errorHandler } from '../../../Handlers';
 import useActions from '../useActions';
 import { Artist } from '../helpers';
 import Api from '../../../Api';
-import { errorHandler } from '../../../Handlers';
 
 export default function SingleArtist() {
   const actions = useActions({ model: 'single-artist' });
@@ -47,28 +47,33 @@ export default function SingleArtist() {
         <Box width="100%" margin="0.5em">
           <Summary label="Discography" open>
             <Summary label="Albums">
-              {!artist?.albums?.length ? (
+              {!artist?.albums.length ? (
                 <Text>{artist?.name} haven't released any albums yet.</Text>
               ) : (
-                artist?.albums?.map(() => (
+                artist.albums.map(() => (
                   <Card image="Placeholder" title="Placeholder" />
                 ))
               )}
             </Summary>
             <Summary label="Singles">
-              {!artist?.singles?.length ? (
+              {!artist?.singles.length ? (
                 <Text>{artist?.name} haven't released any singles yet.</Text>
               ) : (
-                artist?.singles?.map(() => (
-                  <Card image="Placeholder" title="Placeholder" />
+                artist.singles.map(single => (
+                  <Card
+                    key={single.uid}
+                    image={single.image}
+                    title={single.name}
+                    onClick={() => navigate(`/singles/${single.uid}`)}
+                  />
                 ))
               )}
             </Summary>
             <Summary label="Mixtapes">
-              {!artist?.mixtapes?.length ? (
+              {!artist?.mixtapes.length ? (
                 <Text>{artist?.name} haven't released any mixtapes yet.</Text>
               ) : (
-                artist?.mixtapes?.map(() => (
+                artist.mixtapes.map(() => (
                   <Card image="Placeholder" title="Placeholder" />
                 ))
               )}

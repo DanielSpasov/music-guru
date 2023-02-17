@@ -1,3 +1,4 @@
+import { Document, Types } from 'mongoose';
 import { z } from 'zod';
 
 export const artistSchema = z.object({
@@ -6,10 +7,13 @@ export const artistSchema = z.object({
 });
 
 export type ArtistModel = z.infer<typeof artistSchema>;
-export interface Artist extends ArtistModel {
+
+export interface Artist extends ArtistModel, Document {
   uid: string;
-  albums: any[];
-  mixtapes: any[];
-  singles: any[];
+  albums: Types.ObjectId[];
+  mixtapes: Types.ObjectId[];
+  singles: Types.ObjectId[];
   created: Date;
+
+  addSingle: (singleId: Types.ObjectId) => Promise<void>;
 }

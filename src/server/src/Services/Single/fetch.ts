@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { getMongoSearchQuery } from '../../Utils/getSearchQuery';
-import { SingleModel } from '../../Database/Schemas';
+import { ArtistModel, SingleModel } from '../../Database/Schemas';
 import { transformSingle } from '../../Transforms';
 import { errorHandler } from '../../Error';
 
@@ -15,6 +15,7 @@ export async function fetch(req: Request, res: Response) {
 
     const singles = await SingleModel.find(search)
       .limit(25)
+      .populate('artist')
       .transform(x => x.map(transformSingle));
 
     res.status(200).json({ data: singles });
