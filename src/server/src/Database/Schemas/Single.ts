@@ -29,6 +29,12 @@ const schema = new Schema<Single>(
       type: Schema.Types.ObjectId,
       ref: 'artist'
     },
+    features: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'artist'
+      }
+    ],
     album: {
       type: {},
       default: {}

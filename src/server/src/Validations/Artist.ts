@@ -13,6 +13,7 @@ export interface Artist extends ArtistModel, Document {
   albums: Types.ObjectId[];
   mixtapes: Types.ObjectId[];
   singles: Types.ObjectId[];
+  features: Types.ObjectId[];
   created: Date;
 
   addSingle: (singleId: Types.ObjectId) => Promise<void>;

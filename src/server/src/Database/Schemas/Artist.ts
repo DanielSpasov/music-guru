@@ -42,6 +42,12 @@ const schema = new Schema<Artist>(
         type: Schema.Types.ObjectId,
         ref: 'single'
       }
+    ],
+    features: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'single'
+      }
     ]
   },
   {

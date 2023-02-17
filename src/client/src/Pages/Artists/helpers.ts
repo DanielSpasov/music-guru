@@ -13,6 +13,7 @@ export interface Artist extends ArtistModel {
   albums: [];
   mixtapes: [];
   singles: Single[];
+  features: Single[];
 }
 
 export type UseActionsProps = {
