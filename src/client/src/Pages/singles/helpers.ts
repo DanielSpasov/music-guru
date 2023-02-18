@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Artist } from '../artists/helpers';
+import { User } from '../auth/helpers';
 
 export const singleSchema = z.object({
   name: z
@@ -14,6 +15,7 @@ type SingleModel = z.infer<typeof singleSchema>;
 export interface Single extends SingleModel {
   uid: string;
   created: Date;
+  created_by: User;
   artist: Artist;
   features: Artist[];
   album: any; // TODO: Replace with Album Model when its ready

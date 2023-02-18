@@ -25,6 +25,10 @@ const schema = new Schema<ISingle>(
       required: true,
       readonly: true
     },
+    created_by: {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    },
     artist: {
       type: Schema.Types.ObjectId,
       ref: 'artist'

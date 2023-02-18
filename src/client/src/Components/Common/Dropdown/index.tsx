@@ -42,7 +42,7 @@ export default function Dropdown({
           model={icon.model}
           type={icon.type}
           onClick={onClick}
-          color={disabled ? 'gray' : null}
+          disabled={disabled}
         />
       ) : (
         label

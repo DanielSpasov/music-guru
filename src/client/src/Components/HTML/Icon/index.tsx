@@ -22,12 +22,19 @@ const StyledIcon = styled('i')<IconProps>`
   ${colors};
   ${font};
 
-  color: ${({ variant, theme: { colors } }) =>
-    variant ? colors[variant] : colors.text};
+  color: ${({ variant, theme: { colors }, color, disabled }) => {
+    if (disabled) return 'gray';
+    return variant ? colors[variant] : color || colors.text;
+  }};
 
   &:hover {
-    cursor: pointer;
-    color: ${({ onClick, theme: { colors }, color }) =>
-      onClick ? colors.primary : color || colors.text};
+    cursor: ${({ disabled, onClick }) => {
+      if (disabled) return 'auto';
+      return onClick ? 'pointer' : 'auto';
+    }};
+    color: ${({ onClick, theme: { colors }, color, disabled }) => {
+      if (disabled) return 'gray';
+      return onClick ? colors.primary : color || colors.text;
+    }};
   }
 `;

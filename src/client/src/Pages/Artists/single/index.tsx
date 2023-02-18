@@ -15,9 +15,10 @@ import { Artist } from '../helpers';
 import Api from '../../../Api';
 
 export default function SingleArtist() {
-  const actions = useActions({ model: 'single-artist' });
   const [loading, setLoading] = useState<boolean>(true);
   const [artist, setArtist] = useState<Artist>();
+
+  const actions = useActions({ model: 'single-artist', data: artist });
   const navigate = useNavigate();
   const { id = 0 } = useParams();
 

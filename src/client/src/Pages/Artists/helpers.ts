@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { User } from '../auth/helpers';
 import { Single } from '../singles/helpers';
 
 export const artistSchema = z.object({
@@ -10,6 +11,7 @@ export type ArtistModel = z.infer<typeof artistSchema>;
 export interface Artist extends ArtistModel {
   uid: string;
   created: Date;
+  created_by: User;
   albums: [];
   mixtapes: [];
   singles: Single[];
@@ -18,4 +20,5 @@ export interface Artist extends ArtistModel {
 
 export type UseActionsProps = {
   model: string;
+  data?: Artist;
 };

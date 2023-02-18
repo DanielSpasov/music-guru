@@ -5,9 +5,9 @@ import { Action } from '../../Components/Common/Actions/helpers';
 import { AuthContext } from '../../Contexts/Auth';
 import { UseActionsProps } from './helpers';
 
-export default function useActions({ model }: UseActionsProps): Action[] {
+export default function useActions({ model, data }: UseActionsProps): Action[] {
   const navigate = useNavigate();
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, uid } = useContext(AuthContext);
 
   switch (model) {
     case 'artists-list':
@@ -23,30 +23,30 @@ export default function useActions({ model }: UseActionsProps): Action[] {
         {
           icon: { model: 'plus', type: 'solid' },
           type: 'menu',
+          perform: () => null,
+          disabled: uid !== data?.created_by.uid,
           subActions: [
             {
               label: 'Album',
               perform: () => navigate('add-album'),
-              disabled: !isAuthenticated
+              disabled: uid !== data?.created_by.uid
             },
             {
               label: 'Mixtape',
               perform: () => navigate('add-mixtape'),
-              disabled: !isAuthenticated
+              disabled: uid !== data?.created_by.uid
             },
             {
               label: 'Single',
               perform: () => navigate('add-single'),
-              disabled: !isAuthenticated
+              disabled: uid !== data?.created_by.uid
             }
-          ],
-          perform: () => navigate('edit'),
-          disabled: !isAuthenticated
+          ]
         },
         {
           icon: { model: 'pen-to-square', type: 'regular' },
           perform: () => navigate('edit'),
-          disabled: !isAuthenticated
+          disabled: uid !== data?.created_by.uid
         }
       ];
     default:

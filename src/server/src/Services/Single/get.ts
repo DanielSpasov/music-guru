@@ -6,9 +6,9 @@ import { errorHandler } from '../../Error';
 
 export async function get(req: Request, res: Response) {
   try {
-    const single = await SingleModel.findOne({ uid: req.params.id }).populate(
-      'artist'
-    );
+    const single = await SingleModel.findOne({ uid: req.params.id })
+      .populate('artist')
+      .populate('created_by');
     if (!single) {
       throw new CustomError({ message: 'Single not Found.', code: 404 });
     }

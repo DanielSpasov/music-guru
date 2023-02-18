@@ -7,7 +7,7 @@ import { UseActionsProps } from './helpers';
 import Api from '../../Api';
 
 export default function useActions({ model, data }: UseActionsProps): Action[] {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, uid } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const deleteSingle = useCallback(async () => {
@@ -30,12 +30,12 @@ export default function useActions({ model, data }: UseActionsProps): Action[] {
         {
           icon: { model: 'pen-to-square', type: 'regular' },
           perform: () => navigate('edit'),
-          disabled: !isAuthenticated
+          disabled: uid !== data?.created_by.uid
         },
         {
           icon: { model: 'trash', type: 'solid' },
           perform: deleteSingle,
-          disabled: !isAuthenticated
+          disabled: uid !== data?.created_by.uid
         }
       ];
     default:

@@ -1,6 +1,7 @@
 import { Document, Types } from 'mongoose';
 import { z } from 'zod';
 import { Artist } from './Artist';
+import { User } from './User';
 
 const schema = z.object({
   name: z.string(),
@@ -15,6 +16,7 @@ type SingleModel = z.infer<typeof schema>;
 export interface Single extends SingleModel {
   uid: string;
   created: Date;
+  created_by: User;
   artist: Artist;
   features: Artist[];
   album: any; // TODO: Replace with Album Model when its ready
@@ -24,6 +26,7 @@ export interface Single extends SingleModel {
 export interface ISingle extends SingleModel, Document {
   uid: string;
   created: Date;
+  created_by: Types.ObjectId;
   artist: Types.ObjectId;
   features: Types.ObjectId[];
   album: Types.ObjectId;

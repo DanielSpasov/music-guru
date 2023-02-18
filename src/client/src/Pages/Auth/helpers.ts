@@ -31,5 +31,12 @@ export type SignUpData = z.infer<typeof SignUpSchema>;
 export const SignInSchema = schema.pick({ email: true, password: true });
 export type SignInData = z.infer<typeof SignInSchema>;
 
-export const UserSchema = schema.omit({ repeat_password: true });
-export type User = z.infer<typeof UserSchema>;
+export const UserSchema = schema.omit({
+  repeat_password: true,
+  password: true
+});
+export type UserModel = z.infer<typeof UserSchema>;
+
+export interface User extends UserModel {
+  uid: string;
+}

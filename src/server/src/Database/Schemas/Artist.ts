@@ -25,6 +25,10 @@ const schema = new Schema<IArtist>(
       required: true,
       readonly: true
     },
+    created_by: {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    },
     albums: [
       {
         type: Schema.Types.ObjectId,
