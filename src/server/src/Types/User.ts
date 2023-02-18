@@ -35,12 +35,13 @@ export const UserSchema = schema.omit({
   password: true
 });
 export type UserModel = z.infer<typeof UserSchema>;
-
 export interface User extends UserModel {
   uid: string;
   created: Date;
 }
-export interface IUser extends UserModel, Document {
+
+export type FullUserModel = z.infer<typeof schema>;
+export interface IUser extends FullUserModel, Document {
   uid: string;
   created: Date;
 }

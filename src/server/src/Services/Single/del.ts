@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { CustomError } from '../../Error/CustomError';
 import { SingleModel } from '../../Database/Schemas';
-import { Single } from '../../Validations/Single';
+import { Single } from '../../Types/Single';
 import { errorHandler } from '../../Error';
 import getUser from '../../Utils/getUser';
 

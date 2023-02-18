@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose';
-import transformUser from '../../Transforms/User';
 
-const schema = new Schema(
+import { IUser } from '../../Types/User';
+
+const UserSchema = new Schema<IUser>(
   {
     uid: {
       type: String,
@@ -32,8 +33,15 @@ const schema = new Schema(
     }
   },
   {
-    toJSON: { transform: transformUser }
+    toJSON: {
+      transform: (_, data) => {
+        delete data.password;
+        delete data._id;
+        delete data.__v;
+        return data;
+      }
+    }
   }
 );
 
-export default model('user', schema);
+export default model<IUser>('user', UserSchema);

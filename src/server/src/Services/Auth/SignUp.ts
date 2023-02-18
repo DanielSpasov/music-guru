@@ -3,9 +3,9 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
-import { SignUpSchema } from '../../Validations/User';
 import { CustomError } from '../../Error/CustomError';
 import { UserModel } from '../../Database/Schemas';
+import { SignUpSchema } from '../../Types/User';
 import { errorHandler } from '../../Error';
 
 export async function SignUp(req: Request, res: Response) {

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import authorization from '../../Middleware/authorization';
 import { fetch, post, get, del } from '../../Services/Single';
+import authorization from '../../Middleware/authorization';
 
 const router = Router();
 

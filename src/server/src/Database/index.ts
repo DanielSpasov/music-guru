@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 import gridfs from 'gridfs-stream';
 
-import { errorHandler } from '../Error';
-
 function run(DB_URI: string) {
   try {
     mongoose.set('strictQuery', false);

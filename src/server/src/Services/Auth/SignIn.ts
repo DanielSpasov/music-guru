@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-import { SignInSchema } from '../../Validations/User';
 import { CustomError } from '../../Error/CustomError';
 import { UserModel } from '../../Database/Schemas';
+import { SignInSchema } from '../../Types/User';
 import { errorHandler } from '../../Error';
 
 export async function SignIn(req: Request, res: Response) {

@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import crypto from 'crypto';
 
 import { ArtistModel, SingleModel } from '../../Database/Schemas';
-import { singleSchema } from '../../Validations/Single';
 import { CustomError } from '../../Error/CustomError';
+import { singleSchema } from '../../Types/Single';
 import { errorHandler } from '../../Error';
 import getUser from '../../Utils/getUser';
 

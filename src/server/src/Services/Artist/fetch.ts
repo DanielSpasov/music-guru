@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 
 import { getMongoSearchQuery } from '../../Utils/getSearchQuery';
 import { ArtistModel } from '../../Database/Schemas';
-import { transformArtist } from '../../Transforms';
 import { errorHandler } from '../../Error';
 
 export async function fetch(req: Request, res: Response) {
@@ -13,9 +12,7 @@ export async function fetch(req: Request, res: Response) {
       return;
     }
 
-    const artists = await ArtistModel.find(search)
-      .limit(25)
-      .transform(x => x.map(transformArtist));
+    const artists = await ArtistModel.find(search).limit(25);
 
     res.status(200).json({ data: artists });
   } catch (error) {

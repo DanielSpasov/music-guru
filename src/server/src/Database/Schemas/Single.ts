@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose';
 
-import { transformSingle } from '../../Transforms';
-import { ISingle } from '../../Validations/Single';
+import { defaultTransform } from '../helpers';
+import { ISingle } from '../../Types/Single';
 
-const schema = new Schema<ISingle>(
+const SingleSchema = new Schema<ISingle>(
   {
     uid: {
       type: String,
@@ -49,11 +49,11 @@ const schema = new Schema<ISingle>(
     }
   },
   {
-    toJSON: { transform: transformSingle }
+    toJSON: { transform: defaultTransform }
   }
 );
 
-schema.pre('findOneAndRemove', async function (next) {
+SingleSchema.pre('findOneAndRemove', async function (next) {
   const single = await this.model.findOne(this.getFilter()).populate('artist');
   if (!single) return next();
 
@@ -66,4 +66,4 @@ schema.pre('findOneAndRemove', async function (next) {
   next();
 });
 
-export default model<ISingle>('single', schema);
+export default model<ISingle>('single', SingleSchema);

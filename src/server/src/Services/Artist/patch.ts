@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { Artist, artistSchema } from '../../Validations/Artist';
+import { Artist, artistSchema } from '../../Types/Artist';
 import { CustomError } from '../../Error/CustomError';
 import { ArtistModel } from '../../Database/Schemas';
 import { errorHandler } from '../../Error';

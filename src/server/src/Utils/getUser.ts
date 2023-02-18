@@ -2,11 +2,11 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { CustomError } from '../Error/CustomError';
 import { UserModel } from '../Database/Schemas';
-import { IUser } from '../Validations/User';
+import { User } from '../Types/User';
 
 export default async function getUser(
   token: string | undefined
-): Promise<IUser> {
+): Promise<User> {
   if (!token) {
     throw new CustomError({ message: 'Unauthorized.', code: 401 });
   }

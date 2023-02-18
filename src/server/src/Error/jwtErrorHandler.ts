@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
 import { JsonWebTokenError } from 'jsonwebtoken';
+import { Request, Response } from 'express';
 
 export function jwtErrorHandler(
   req: Request,

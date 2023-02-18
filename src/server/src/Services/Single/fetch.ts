@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 
 import { getMongoSearchQuery } from '../../Utils/getSearchQuery';
-import { ArtistModel, SingleModel } from '../../Database/Schemas';
-import { transformSingle } from '../../Transforms';
+import { SingleModel } from '../../Database/Schemas';
 import { errorHandler } from '../../Error';
 
 export async function fetch(req: Request, res: Response) {
@@ -13,10 +12,7 @@ export async function fetch(req: Request, res: Response) {
       return;
     }
 
-    const singles = await SingleModel.find(search)
-      .limit(25)
-      .populate('artist')
-      .transform(x => x.map(transformSingle));
+    const singles = await SingleModel.find(search).limit(25).populate('artist');
 
     res.status(200).json({ data: singles });
   } catch (error) {

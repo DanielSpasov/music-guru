@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import crypto from 'crypto';
 
-import { artistSchema } from '../../Validations/Artist';
+import { artistSchema } from '../../Types/Artist';
 import { ArtistModel } from '../../Database/Schemas';
 import { errorHandler } from '../../Error';
 import getUser from '../../Utils/getUser';
