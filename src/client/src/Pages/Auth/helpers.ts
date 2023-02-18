@@ -6,7 +6,7 @@ export const schema = z.object({
       z
         .string()
         .min(2, { message: 'Username is too short.' })
-        .max(16, { message: 'Username is too long.' }),
+        .max(30, { message: 'Username is too long.' }),
       z.string().length(0) // Optional/empty string
     ])
     .optional(),

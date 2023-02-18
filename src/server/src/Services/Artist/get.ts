@@ -6,9 +6,9 @@ import { errorHandler } from '../../Error';
 
 export async function get(req: Request, res: Response) {
   try {
-    const artist = await ArtistModel.findOne({ uid: req.params.id }).populate(
-      'singles'
-    );
+    const artist = await ArtistModel.findOne({ uid: req.params.id })
+      .populate('singles')
+      .populate('created_by');
     if (!artist) {
       throw new CustomError({ message: 'Artist not Found.', code: 404 });
     }

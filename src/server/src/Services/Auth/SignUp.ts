@@ -11,8 +11,9 @@ import { errorHandler } from '../../Error';
 export async function SignUp(req: Request, res: Response) {
   try {
     // VALIDATE WITH ZOD
+    const defaultUsername = req.body?.email?.split('@')[0];
     const { email, username, password } = SignUpSchema.parse({
-      username: req.body?.username,
+      username: req.body?.username || defaultUsername,
       email: req.body?.email,
       password: req.body?.password,
       repeat_password: req.body?.repeat_password
@@ -57,6 +58,7 @@ export async function SignUp(req: Request, res: Response) {
 
     res.status(200).json({ token, uid });
   } catch (error) {
+    console.log(error);
     errorHandler(req, res, error);
   }
 }

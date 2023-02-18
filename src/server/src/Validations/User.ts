@@ -1,15 +1,13 @@
 import { z } from 'zod';
 
 export const schema = z.object({
-  username: z
-    .union([
-      z
-        .string()
-        .min(2, { message: 'Username is too short.' })
-        .max(16, { message: 'Username is too long.' }),
-      z.string().length(0) // Optional/empty string
-    ])
-    .optional(),
+  username: z.union([
+    z
+      .string()
+      .min(2, { message: 'Username is too short.' })
+      .max(30, { message: 'Username is too long.' }),
+    z.string().length(0) // empty string
+  ]),
   email: z.string().email({ message: 'Invalid email.' }),
   password: z.string(),
   repeat_password: z.string()

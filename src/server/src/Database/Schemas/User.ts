@@ -12,9 +12,9 @@ const schema = new Schema(
     },
     username: {
       type: String,
-      required: false,
+      required: true,
       minlength: 2,
-      maxlength: 16
+      maxlength: 30
     },
     email: {
       type: String,
