@@ -22,4 +22,5 @@ export interface Single extends SingleModel {
 
 export type UseActionsProps = {
   model: string;
+  data?: Single;
 };

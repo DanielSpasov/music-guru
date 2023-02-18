@@ -1,13 +1,20 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 
 import { Action } from '../../Components/Common/Actions/helpers';
 import { AuthContext } from '../../Contexts/Auth';
 import { UseActionsProps } from './helpers';
+import Api from '../../Api';
 
-export default function useActions({ model }: UseActionsProps): Action[] {
-  const navigate = useNavigate();
+export default function useActions({ model, data }: UseActionsProps): Action[] {
   const { isAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const deleteSingle = useCallback(async () => {
+    if (!data?.uid) return;
+    await Api.singles.del({ id: data.uid });
+    navigate('/singles');
+  }, [data, navigate]);
 
   switch (model) {
     case 'singles-list':
@@ -23,6 +30,11 @@ export default function useActions({ model }: UseActionsProps): Action[] {
         {
           icon: { model: 'pen-to-square', type: 'regular' },
           perform: () => navigate('edit'),
+          disabled: !isAuthenticated
+        },
+        {
+          icon: { model: 'trash', type: 'solid' },
+          perform: deleteSingle,
           disabled: !isAuthenticated
         }
       ];

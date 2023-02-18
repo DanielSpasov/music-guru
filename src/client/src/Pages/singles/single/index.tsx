@@ -8,9 +8,10 @@ import { Single } from '../helpers';
 import Api from '../../../Api';
 
 export default function SingleSingle() {
-  const actions = useActions({ model: 'single-single' });
   const [loading, setLoading] = useState<boolean>(true);
   const [single, setSingle] = useState<Single>();
+
+  const actions = useActions({ model: 'single-single', data: single });
   const navigate = useNavigate();
   const { id = 0 } = useParams();
 

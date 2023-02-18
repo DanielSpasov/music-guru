@@ -1,9 +1,9 @@
 import { Schema, model, Types } from 'mongoose';
 
 import { transformArtist } from '../../Transforms';
-import { Artist } from '../../Validations/Artist';
+import { IArtist } from '../../Validations/Artist';
 
-const schema = new Schema<Artist>(
+const schema = new Schema<IArtist>(
   {
     uid: {
       type: String,
@@ -51,9 +51,7 @@ const schema = new Schema<Artist>(
     ]
   },
   {
-    toJSON: {
-      transform: transformArtist
-    },
+    toJSON: { transform: transformArtist },
     methods: {
       async addSingle(singleId: Types.ObjectId) {
         if (this.singles.includes(singleId)) return;
@@ -64,4 +62,4 @@ const schema = new Schema<Artist>(
   }
 );
 
-export default model<Artist>('artist', schema);
+export default model<IArtist>('artist', schema);
