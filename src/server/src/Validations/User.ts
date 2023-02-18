@@ -1,3 +1,4 @@
+import { Document } from 'mongoose';
 import { z } from 'zod';
 
 export const schema = z.object({
@@ -36,6 +37,10 @@ export const UserSchema = schema.omit({
 export type UserModel = z.infer<typeof UserSchema>;
 
 export interface User extends UserModel {
+  uid: string;
+  created: Date;
+}
+export interface IUser extends UserModel, Document {
   uid: string;
   created: Date;
 }
