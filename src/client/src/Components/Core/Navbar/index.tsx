@@ -63,7 +63,7 @@ export default function Navbar() {
         </Link>
       </Box>
       <Box display="flex" alignContent="center" height="60px">
-        <Search models={['artists']} />
+        <Search models={['artists', 'singles']} />
         <Dropdown label="Settings" icon={{ model: 'gear', type: 'solid' }}>
           <Link to="/theme">Theme</Link>
         </Dropdown>
