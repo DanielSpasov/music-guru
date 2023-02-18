@@ -45,3 +45,36 @@ input:-webkit-autofill:focus {
   --warning: rgb(242, 174, 65);
   --info: rgb(24, 135, 232);
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    background: var(--dark-base-lighter);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--dark-base-lightest);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-primary);
+  }
+}
+
+/* TODO: WHEN LIGHT THEME IS ADVANCED FIX SCROLLBAR COLORS FOR IT */
+@media (prefers-color-scheme: light) {
+  ::-webkit-scrollbar-track {
+    background: var(--light-base-light);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--light-base-lighter);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--light-primary);
+  }
+}
