@@ -9,35 +9,44 @@ export class CrudBase {
   }
 }
 
-type Get = { id: string | number; config?: any };
-type Fetch = { config?: any };
-type Post = { body: any; config?: any };
-type Patch = { id: string | number; body: any; config?: any };
-type Del = { id: string | number; config?: any };
-type Put = { id: string | number; body: any; config?: any };
-
 export default class Crud<T> extends CrudBase {
-  get({ id, config = {} }: Get): Promise<{ data: T }> {
+  get({ id, config = {} }: { id: string; config?: any }): Promise<{ data: T }> {
     return get({ url: `${this.baseUrl}/${this.model}/${id}/`, config });
   }
 
-  fetch({ config = {} }: Fetch): Promise<{ data: T[] }> {
+  fetch({ config = {} }: { config?: any }): Promise<{ data: T[] }> {
     return get({ url: `${this.baseUrl}/${this.model}/`, config });
   }
 
-  post({ body = {}, config = {} }: Post): Promise<T> {
+  post({ body = {}, config = {} }: { body: any; config?: any }): Promise<T> {
     return post({ url: `${this.baseUrl}/${this.model}/`, body, config });
   }
 
-  patch({ id, body = {}, config = {} }: Patch): Promise<{ data: T }> {
+  patch({
+    id,
+    body = {},
+    config = {}
+  }: {
+    id: string;
+    body: any;
+    config?: any;
+  }): Promise<{ data: T }> {
     return patch({ url: `${this.baseUrl}/${this.model}/${id}/`, body, config });
   }
 
-  del({ id, config = {} }: Del): Promise<T> {
+  del({ id, config = {} }: { id: string; config?: any }): Promise<{ data: T }> {
     return del({ url: `${this.baseUrl}/${this.model}/${id}/`, config });
   }
 
-  put({ id, body = {}, config = {} }: Put): Promise<T> {
+  put({
+    id,
+    body = {},
+    config = {}
+  }: {
+    id: string;
+    body: any;
+    config?: any;
+  }): Promise<{ data: T }> {
     return put({ url: `${this.baseUrl}/${this.model}/${id}/`, body, config });
   }
 }
