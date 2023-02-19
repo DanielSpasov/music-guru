@@ -19,13 +19,16 @@ export default function SingleArtist() {
   const [artist, setArtist] = useState<Artist>();
 
   const actions = useActions({ model: 'single-artist', data: artist });
+  const { id = '0' } = useParams();
   const navigate = useNavigate();
-  const { id = 0 } = useParams();
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.artists.get({ id });
+        const { data } = await Api.artists.get({
+          id,
+          config: { params: { populate: 'singles,created_by' } }
+        });
         setArtist(data);
       } catch (error) {
         errorHandler(error, navigate);

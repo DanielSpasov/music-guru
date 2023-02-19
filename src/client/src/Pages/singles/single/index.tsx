@@ -38,7 +38,10 @@ export default function SingleSingle() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.singles.get({ id });
+        const { data } = await Api.singles.get({
+          id,
+          config: { params: { populate: 'artist,created_by' } }
+        });
         setSingle(data);
       } catch (error) {
         errorHandler(error, navigate);
