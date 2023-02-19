@@ -11,10 +11,7 @@ function Input({
   type,
   label,
   error,
-  required = false,
-  fetchFn,
-  setFormValue,
-  getValues
+  required = false
 }: InputProps) {
   const { colors } = useContext(ThemeContext);
 
@@ -26,15 +23,7 @@ function Input({
         </Text>
       </Box>
 
-      <TypeSwitch
-        setFormValue={setFormValue}
-        getValues={getValues}
-        register={register}
-        fetchFn={fetchFn}
-        label={label}
-        type={type}
-        name={name}
-      />
+      <TypeSwitch register={register} label={label} type={type} name={name} />
 
       {error && <Text color={colors.danger}>{error?.message}</Text>}
     </Box>

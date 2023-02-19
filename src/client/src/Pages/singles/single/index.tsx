@@ -13,7 +13,7 @@ export default function SingleSingle() {
 
   const actions = useActions({ model: 'single-single', data: single });
   const navigate = useNavigate();
-  const { id = 0 } = useParams();
+  const { id = '0' } = useParams();
 
   useEffect(() => {
     (async () => {

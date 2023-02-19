@@ -1,5 +1,4 @@
 import Password from './Types/Password';
-import Select from './Types/Select';
 import File from './Types/File';
 import Text from './Types/Text';
 
@@ -11,8 +10,6 @@ export default function TypeSwitch(props: InputProps) {
       return <File {...props} />;
     case 'password':
       return <Password {...props} />;
-    case 'select':
-      return <Select {...props} />;
     case 'text':
     case 'email':
     default:

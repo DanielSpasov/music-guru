@@ -1,9 +1,4 @@
-import {
-  Ref,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue
-} from 'react-hook-form/dist/types';
+import { Ref, UseFormRegister } from 'react-hook-form/dist/types';
 
 type Error = {
   type: string;
@@ -20,18 +15,15 @@ export type File = {
   webkitRelativePath: string;
 };
 
-export type InputType = 'password' | 'text' | 'email' | 'file' | 'select';
+export type InputType = 'password' | 'text' | 'email' | 'file';
 
 export type InputProps = {
   register: UseFormRegister<any>;
-  setFormValue: UseFormSetValue<any>;
-  getValues: UseFormGetValues<any>;
+  required?: boolean;
   type: InputType;
   label: string;
   name: string;
   error?: Error;
-  required?: boolean;
-  fetchFn?: Function;
 };
 
 export interface TextInputProps extends InputProps {

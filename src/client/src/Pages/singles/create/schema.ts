@@ -1,5 +1,5 @@
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
-import { Input } from '../../../Components';
+import { Input, Select } from '../../../Components';
 import Api from '../../../Api';
 
 export const schema: FormSchema = {
@@ -20,11 +20,10 @@ export const schema: FormSchema = {
     },
     {
       key: 'artist',
-      type: 'select',
       label: 'Artist',
       fetchFn: ({ params }: any) => Api.artists.fetch({ config: { params } }),
-      required: true,
-      Component: Input
+      Component: Select,
+      required: true
     }
   ]
 };
