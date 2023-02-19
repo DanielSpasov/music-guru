@@ -15,6 +15,11 @@ const StyledText = styled('span')<TextProps>`
   ${colors};
   ${font};
 
+  color: ${({ variant, theme: { colors }, color }) => {
+    if (variant) return colors[variant];
+    return color || colors.text;
+  }};
+
   &:hover {
     cursor: ${({ onClick }) => onClick && 'pointer'};
     color: ${({ onClick, theme: { colors } }) => onClick && colors.primary};

@@ -1,6 +1,11 @@
 import { FC } from 'react';
 
-import { SubmitHandler } from 'react-hook-form/dist/types';
+import {
+  SubmitHandler,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue
+} from 'react-hook-form/dist/types';
 import { InputType } from '../Input/helpers';
 
 export type FormField = {
@@ -33,4 +38,12 @@ export type FormProps = {
   header?: string;
   errors?: FormError[];
   additionalInfo?: JSX.Element;
+};
+
+export type FieldProps = {
+  register: UseFormRegister<any>;
+  getValues: UseFormGetValues<any>;
+  setValue: UseFormSetValue<any>;
+  field: FormField;
+  error?: FormError;
 };

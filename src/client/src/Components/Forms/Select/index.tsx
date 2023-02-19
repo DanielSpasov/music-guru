@@ -1,9 +1,8 @@
-import { memo, useCallback, useContext, useEffect, useState } from 'react';
-import { ThemeContext } from 'styled-components';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { isEmpty } from 'lodash';
 
 import useDebounce from '../../../Hooks/useDebounce';
-import { Label, Icon, Box, Popover, Text } from '../../';
+import { Label, Icon, Box, Popover } from '../../';
 import { StyledInput } from '../Input/Styled';
 import { Result } from '../../Core/Search';
 import { SelectProps } from './helpers';
@@ -11,10 +10,8 @@ import { SelectProps } from './helpers';
 function Select({
   setFormValue,
   getValues,
-  required,
   fetchFn,
   label,
-  error,
   name
 }: SelectProps) {
   const [searchTerm, setSearch] = useState<string>('');
@@ -23,7 +20,6 @@ function Select({
   const [value, setValue] = useState<string>('');
 
   const search = useDebounce({ value: searchTerm, delay: 500 });
-  const { colors } = useContext(ThemeContext);
 
   useEffect(() => {
     (async () => {
@@ -63,52 +59,42 @@ function Select({
   );
 
   return (
-    <Box position="relative" margin=".5em 0">
-      <Box display="flex" justifyContent="flex-end">
-        <Text color={required ? colors.danger : 'gray'}>
-          {required ? '*' : 'Optional'}
-        </Text>
-      </Box>
+    <>
+      <StyledInput
+        onFocus={toggleOpen}
+        onBlur={toggleOpen}
+        onChange={onChange}
+        value={value}
+        placeholder=" "
+        name={name}
+        type="text"
+      />
+      <Label position="absolute" top="36px" left="10px">
+        {label}
+      </Label>
 
-      <>
-        <StyledInput
-          onFocus={toggleOpen}
-          onBlur={toggleOpen}
-          onChange={onChange}
-          value={value}
-          placeholder=" "
-          name={name}
-          type="text"
-        />
-        <Label position="absolute" top="36px" left="10px">
-          {label}TYEST
-        </Label>
+      <Icon
+        model="x"
+        type="solid"
+        variant="danger"
+        onClick={onClear}
+        position="absolute"
+        fontSize="1em"
+        right=".75em"
+        top="2.25em"
+      />
 
-        <Icon
-          model="x"
-          type="solid"
-          variant="danger"
-          onClick={onClear}
-          position="absolute"
-          fontSize="1em"
-          right=".75em"
-          top="2.25em"
-        />
-
-        <Popover open={open} width="100%" top="65px">
-          {!options.length && <Box textAlign="center">No Results.</Box>}
-          {options.map((option: any) => (
-            <Result
-              key={option.uid}
-              data={option}
-              onClick={() => onResultClick(option)}
-            />
-          ))}
-        </Popover>
-      </>
-
-      {error && <Text color={colors.danger}>{error?.message}</Text>}
-    </Box>
+      <Popover open={open} width="100%" top="65px">
+        {!options.length && <Box textAlign="center">No Results.</Box>}
+        {options.map((option: any) => (
+          <Result
+            key={option.uid}
+            data={option}
+            onClick={() => onResultClick(option)}
+          />
+        ))}
+      </Popover>
+    </>
   );
 }
 

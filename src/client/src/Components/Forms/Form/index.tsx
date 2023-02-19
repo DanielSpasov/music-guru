@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Heading, Button, Box } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import { FormProps } from './helpers';
+import Field from './Field';
 
 export default function Form({
   header,
@@ -39,16 +40,12 @@ export default function Form({
     <StyledForm onSubmit={handleSubmit(submitFn)}>
       <Heading title={header || 'Form'} />
       {schema.fields.map(field => (
-        <field.Component
-          key={field.key}
-          setFormValue={setValue}
-          getValues={getValues}
+        <Field
           register={register}
-          label={field.label}
-          name={field.key}
-          type={field?.type}
-          required={field?.required}
-          fetchFn={field?.fetchFn}
+          setValue={setValue}
+          getValues={getValues}
+          key={field.key}
+          field={field}
           error={errors.find(x => x.path.includes(field.key))}
         />
       ))}

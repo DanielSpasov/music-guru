@@ -1,10 +1,4 @@
-import { Ref, UseFormRegister } from 'react-hook-form/dist/types';
-
-type Error = {
-  type: string;
-  message: string;
-  ref: Ref;
-};
+import { UseFormRegister } from 'react-hook-form/dist/types';
 
 export type File = {
   lastModified: number;
@@ -23,7 +17,6 @@ export type InputProps = {
   type: InputType;
   label: string;
   name: string;
-  error?: Error;
 };
 
 export interface TextInputProps extends InputProps {
