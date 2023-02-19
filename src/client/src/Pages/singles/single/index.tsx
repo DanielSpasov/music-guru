@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { toast } from 'react-toastify';
 
 import { Box, Card, Heading, Image, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
@@ -11,9 +12,28 @@ export default function SingleSingle() {
   const [loading, setLoading] = useState<boolean>(true);
   const [single, setSingle] = useState<Single>();
 
-  const actions = useActions({ model: 'single-single', data: single });
-  const navigate = useNavigate();
   const { id = '0' } = useParams();
+  const navigate = useNavigate();
+
+  const deleteSingle = useCallback(async () => {
+    try {
+      setLoading(true);
+      if (!single?.uid) return;
+      await Api.singles.del({ id: single.uid });
+      navigate('/singles');
+    } catch (error) {
+      errorHandler(error, navigate);
+    } finally {
+      setLoading(false);
+      toast.success(`Successfully deleted single: ${single?.name}`);
+    }
+  }, [single, navigate]);
+
+  const actions = useActions({
+    model: 'single-single',
+    data: single,
+    deleteSingle
+  });
 
   useEffect(() => {
     (async () => {
