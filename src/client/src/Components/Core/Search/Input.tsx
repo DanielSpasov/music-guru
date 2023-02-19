@@ -9,6 +9,7 @@ export default function Input({
   open,
   value,
   type = 'text',
+  width,
   ...css
 }: InputProps) {
   return (
@@ -16,7 +17,7 @@ export default function Input({
       onChange={onChange}
       disabled={!open}
       placeholder={open ? placeholder : ''}
-      width={open ? '200px' : '40px'}
+      width={open ? width : '40px'}
       opacity={open ? '1' : '0'}
       type={type}
       value={!open ? '' : value}
@@ -26,17 +27,19 @@ export default function Input({
 }
 
 const StyledInput = styled('input')<InputProps>`
+  border: 2px solid ${({ theme: { colors } }) => colors.baseLighter};
+  background-color: ${({ theme: { colors } }) => colors.baseLight};
+  color: ${({ theme: { colors } }) => colors.text};
   box-sizing: border-box;
   transition: 0.3s;
+  font-size: 1em;
+  padding: 0.5em;
+  outline: none;
 
   ${essentials}
   ${colors}
   ${font}
 
-  background-color: ${({ theme: { colors } }) => colors.baseLight};
-  border: 2px solid ${({ theme: { colors } }) => colors.baseLighter};
-  padding: 0.5em;
-  outline: none;
 
   &:hover {
     border: 2px solid

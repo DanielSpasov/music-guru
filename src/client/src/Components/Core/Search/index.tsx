@@ -17,7 +17,7 @@ import Popover from '../../Common/Popover';
 import Api from '../../../Api';
 import Input from './Input';
 
-export default function SearchBox({ models }: SearchBoxProps) {
+export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
   const navigate = useNavigate();
 
   const [results, setResults] = useState<Results>([]);
@@ -79,12 +79,13 @@ export default function SearchBox({ models }: SearchBoxProps) {
         open={open}
         placeholder="Search..."
         position="absolute"
+        width={width}
         right="0px"
       />
 
       <Icon model="search" type="solid" onClick={toggleOpen} />
 
-      <Popover open={open} width="200px" textAlign="center">
+      <Popover open={open} width={width} textAlign="center">
         {loading && <Loader size="s" rainbow />}
         {!loading && !hasResults && <Text>No Results.</Text>}
         {!loading && hasResults && (
@@ -92,7 +93,7 @@ export default function SearchBox({ models }: SearchBoxProps) {
             {results.map(([model, data]) => (
               <Box key={model}>
                 <Text fontSize="1.2em" fontWeight="bold">
-                  {startCase(model)}
+                  {data.length ? startCase(model) : null}
                 </Text>
                 <Box marginTop=".25em">
                   {data.map(obj => (

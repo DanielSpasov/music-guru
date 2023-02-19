@@ -12,6 +12,7 @@ type ModelKeys = Exclude<keyof typeof Api, 'prototype'>;
 
 export type SearchBoxProps = {
   models: ModelKeys[];
+  width?: string;
 };
 
 export type ResultProps<T> = {
