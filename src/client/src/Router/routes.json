@@ -62,8 +62,20 @@
       },
       {
         "path": ":id",
-        "filePath": "/singles/single",
-        "private": false
+        "filePath": "/not-found",
+        "private": false,
+        "routes": [
+          {
+            "path": "index",
+            "filePath": "/singles/single",
+            "private": false
+          },
+          {
+            "path": "edit",
+            "filePath": "/singles/edit",
+            "private": true
+          }
+        ]
       }
     ]
   },

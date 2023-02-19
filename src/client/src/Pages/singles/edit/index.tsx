@@ -4,13 +4,13 @@ import { toast } from 'react-toastify';
 
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, Loader, PageLayout } from '../../../Components';
-import { Artist, artistSchema } from '../helpers';
+import { Single, singleSchema } from '../helpers';
 import { errorHandler } from '../../../Handlers';
 import { schema } from './schema';
 import Api from '../../../Api';
 
-export default function EditArtist() {
-  const [defaultData, setDefaultData] = useState<Partial<Artist>>({});
+export default function EditSingle() {
+  const [defaultData, setDefaultData] = useState<Partial<Single>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [errors, setErrors] = useState<FormError[]>([]);
   const { id = '0' } = useParams();
@@ -19,7 +19,7 @@ export default function EditArtist() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.artists.get({ id });
+        const { data } = await Api.singles.get({ id });
         setDefaultData(data);
       } catch (error) {
         errorHandler(error, navigate);
@@ -30,18 +30,18 @@ export default function EditArtist() {
   }, [id, navigate]);
 
   const onSubmit = useCallback(
-    async (data: Artist) => {
+    async (data: Single) => {
       try {
-        const validData = artistSchema.parse(data);
-        const { data: updated } = await Api.artists.patch({
+        const validData = singleSchema.parse(data);
+        const { data: updated } = await Api.singles.patch({
           id,
           body: validData
         });
         setErrors([]);
         toast.success(
-          `Successfully updated information about artist: ${updated.name}`
+          `Successfully updated information about single: ${updated.name}`
         );
-        navigate(`/artists/${updated.uid}`);
+        navigate(`/singles/${updated.uid}`);
       } catch (error) {
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);
@@ -51,12 +51,12 @@ export default function EditArtist() {
   );
 
   return (
-    <PageLayout title="Edit Artist" showHeader={false}>
+    <PageLayout title="Edit Single" showHeader={false}>
       {loading ? (
         <Loader rainbow fullscreen />
       ) : (
         <Form
-          header="Edit Artist"
+          header="Edit Single"
           defaultValues={defaultData}
           onSubmit={onSubmit}
           schema={schema}
