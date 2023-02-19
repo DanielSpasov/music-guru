@@ -21,11 +21,11 @@ export default function SingleSingle() {
       if (!single?.uid) return;
       await Api.singles.del({ id: single.uid });
       navigate('/singles');
+      toast.success(`Successfully deleted single: ${single?.name}`);
     } catch (error) {
       errorHandler(error, navigate);
     } finally {
       setLoading(false);
-      toast.success(`Successfully deleted single: ${single?.name}`);
     }
   }, [single, navigate]);
 
