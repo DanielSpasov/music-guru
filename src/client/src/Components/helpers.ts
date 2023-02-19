@@ -48,17 +48,16 @@ export const positioning = css<any>`
 
 export const colors = css<any>`
   opacity: ${({ opacity }) => opacity};
-  color: ${({ color, theme: { colors } }) => color || colors?.text};
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor || 'transparent'};
+  color: ${({ color }) => color};
+  background-color: ${({ backgroundColor }) => backgroundColor};
 `;
 
 export const essentials = css<any>`
-  ${positioning}
-  ${dimensions}
-  ${padding}
-  ${margin}
-  ${border}
+  ${positioning};
+  ${dimensions};
+  ${padding};
+  ${margin};
+  ${border};
 `;
 
 export const flex = css<any>`
@@ -84,7 +83,7 @@ export const shadows = css<any>`
 `;
 
 export const font = css<any>`
-  font-size: ${({ fontSize }) => fontSize || '1em'};
+  font-size: ${({ fontSize }) => fontSize};
   font-variant: ${({ fontVariant }) => fontVariant};
   font-weight: ${({ fontWeight }) => fontWeight};
   font-family: ${({ fontFamily }) => fontFamily || "'Maven Pro', sans-serif"};

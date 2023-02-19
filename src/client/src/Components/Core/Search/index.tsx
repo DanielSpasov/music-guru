@@ -82,7 +82,7 @@ export default function SearchBox({ models }: SearchBoxProps) {
         right="0px"
       />
 
-      <Icon model="search" type="solid" fontSize="1.5em" onClick={toggleOpen} />
+      <Icon model="search" type="solid" onClick={toggleOpen} />
 
       <Popover open={open} width="200px" textAlign="center">
         {loading && <Loader size="s" rainbow />}

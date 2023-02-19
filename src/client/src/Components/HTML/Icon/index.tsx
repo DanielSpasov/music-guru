@@ -14,7 +14,7 @@ export default function Icon({ model, type, variant, ...css }: IconProps) {
 const StyledIcon = styled('i')<IconProps>`
   cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
   transition: 0.3s;
-  font-size: 30px;
+  font-size: 1.5em;
 
   ${positioning};
   ${dimensions};

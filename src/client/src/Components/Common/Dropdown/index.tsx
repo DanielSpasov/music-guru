@@ -38,11 +38,10 @@ export default function Dropdown({
     >
       {icon ? (
         <Icon
-          fontSize="1.5em"
-          model={icon.model}
-          type={icon.type}
-          onClick={onClick}
           disabled={disabled}
+          model={icon.model}
+          onClick={onClick}
+          type={icon.type}
         />
       ) : (
         label

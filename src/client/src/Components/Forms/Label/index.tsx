@@ -8,12 +8,12 @@ export default function Label({ children, ...css }: LabelProps) {
 }
 
 const StyledLabel = styled('label')<LabelProps>`
+  color: ${({ theme: { colors } }) => colors.text};
+  text-overflow: ellipsis;
   pointer-events: none;
+  overflow: hidden;
+  inline-size: 96%;
 
   ${essentials};
   ${font};
-
-  text-overflow: ellipsis;
-  overflow: hidden;
-  inline-size: 96%;
 `;

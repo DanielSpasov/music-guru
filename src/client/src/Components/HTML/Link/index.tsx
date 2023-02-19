@@ -31,7 +31,8 @@ function LinkSwitch({
 const StyledLink = styled(LinkSwitch)<LinkProps>`
   box-sizing: border-box;
 
-  color: ${({ isActive, theme: { colors } }) => isActive && colors.primary};
+  color: ${({ isActive, theme: { colors } }) =>
+    isActive ? colors.primary : colors.text};
   padding: ${({ type }) => (type === 'navlink' ? '18px 0.25em' : '0.25em')};
   transition: 0.3s;
 

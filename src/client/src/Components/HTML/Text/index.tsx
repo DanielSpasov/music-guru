@@ -10,15 +10,14 @@ export default function Text({ children, ...css }: TextProps) {
 const StyledText = styled('span')<TextProps>`
   font-size: inherit;
   transition: 0.3s;
-
-  ${padding};
-  ${colors};
-  ${font};
-
   color: ${({ variant, theme: { colors }, color }) => {
     if (variant) return colors[variant];
     return color || colors.text;
   }};
+
+  ${padding};
+  ${colors};
+  ${font};
 
   &:hover {
     cursor: ${({ onClick }) => onClick && 'pointer'};

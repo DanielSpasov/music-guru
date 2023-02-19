@@ -26,14 +26,14 @@ export default function Password({
         passVisibility={passVisibility}
       />
       <Icon
+        color={passVisibility ? colors.primary : 'lightgray'}
+        onClick={() => setPassVisibility(!passVisibility)}
         model={passVisibility ? 'eye' : 'eye-slash'}
         type="solid"
         position="absolute"
-        fontSize="20px"
-        color={passVisibility ? colors.primary : 'lightgray'}
-        top="33px"
+        fontSize="1.3em"
         right="10px"
-        onClick={() => setPassVisibility(!passVisibility)}
+        top="33px"
       />
     </>
   );

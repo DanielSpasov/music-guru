@@ -17,16 +17,18 @@ export default function Button({
 }
 
 const StyledButton = styled('button')<ButtonProps>`
-  ${colors};
-  ${border};
-  ${font};
-
   background-color: ${({ variant, theme: { colors } }) => colors[variant!]};
+  color: ${({ theme: { colors }, color }) => color || colors.text};
   border: 2px solid transparent;
   padding: 0.75em 1.25em;
   font-weight: bold;
   margin: 0.75em 0;
   transition: 0.3s;
+  font-size: 1em;
+
+  ${colors};
+  ${border};
+  ${font};
 
   &:hover {
     cursor: pointer;

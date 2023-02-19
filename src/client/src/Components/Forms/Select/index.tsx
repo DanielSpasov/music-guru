@@ -60,6 +60,7 @@ function Select({
 
   return (
     <>
+      {/* This input is just a search bar, this is why it's not registered in the form */}
       <StyledInput
         onFocus={toggleOpen}
         onBlur={toggleOpen}
@@ -80,8 +81,8 @@ function Select({
         onClick={onClear}
         position="absolute"
         fontSize="1em"
-        right=".75em"
-        top="2.25em"
+        right=".75rem"
+        top="2.25rem"
       />
 
       <Popover open={open} width="100%" top="65px">
