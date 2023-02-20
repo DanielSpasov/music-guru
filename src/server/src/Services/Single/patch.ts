@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { ArtistModel, SingleModel } from '../../Database/Schemas';
-import { Single, singleSchema } from '../../Types/Single';
+import { Single, SingleSchema } from '../../Types/Single';
 import { CustomError } from '../../Error/CustomError';
 import { errorHandler } from '../../Error';
 import getUser from '../../Utils/getUser';
@@ -23,7 +23,7 @@ export async function patch(req: Request, res: Response) {
       return;
     }
 
-    const validData = singleSchema.parse({
+    const validData = SingleSchema.parse({
       name: req.body?.name,
       image: req.body?.image,
       artist: req.body?.artist
