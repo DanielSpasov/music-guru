@@ -19,7 +19,10 @@ export default function EditSingle() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.singles.get({ id });
+        const { data } = await Api.singles.get({
+          id,
+          config: { params: { populate: 'artist' } }
+        });
         setDefaultData(data);
       } catch (error) {
         errorHandler(error, navigate);

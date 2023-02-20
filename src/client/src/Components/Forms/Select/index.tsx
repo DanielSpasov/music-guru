@@ -17,7 +17,7 @@ function Select({
   const [searchTerm, setSearch] = useState<string>('');
   const [options, setOptions] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>(getValues()[name]?.name);
 
   const search = useDebounce({ value: searchTerm, delay: 500 });
 
