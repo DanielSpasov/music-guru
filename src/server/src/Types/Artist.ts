@@ -30,4 +30,5 @@ export interface IArtist extends ArtistModel, Document {
   features: Types.ObjectId[];
 
   addSingle: (singleId: Types.ObjectId) => Promise<void>;
+  removeSingle: (singleId: Types.ObjectId) => Promise<void>;
 }

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
 import { ArtistModel, SingleModel } from '../../Database/Schemas';
-import { Single, SingleSchema } from '../../Types/Single';
 import { CustomError } from '../../Error/CustomError';
+import { SingleSchema } from '../../Types/Single';
 import { errorHandler } from '../../Error';
 import getUser from '../../Utils/getUser';
 
@@ -12,8 +12,10 @@ export async function patch(req: Request, res: Response) {
 
     const singleDoc = await SingleModel.findOne({
       uid: req.params.id
-    }).populate('created_by');
-    const single = singleDoc as unknown as Single;
+    })
+      .populate('created_by')
+      .populate('artist');
+    const single = singleDoc as any;
     if (!single) {
       throw new CustomError({ message: 'Single not found.', code: 404 });
     }
@@ -29,22 +31,28 @@ export async function patch(req: Request, res: Response) {
       artist: req.body?.artist
     });
 
-    const artist = await ArtistModel.findOne({ uid: validData.artist.uid });
-    if (!artist) {
+    const newArtist = await ArtistModel.findOne({ uid: validData.artist.uid });
+    const oldArtist = await ArtistModel.findOne({ uid: single.artist.uid });
+    if (!newArtist || !oldArtist) {
       throw new CustomError({ message: 'Artist not found.', code: 404 });
     }
 
     const updated = await SingleModel.findOneAndUpdate(
       { uid: req.params.id },
-      validData,
+      {
+        ...validData,
+        artist: newArtist._id
+      },
       { new: true }
     );
 
-    // await artist.addSingle(single._id);
+    if (oldArtist.uid !== newArtist.uid) {
+      await oldArtist.removeSingle(single._id);
+      await newArtist.addSingle(single._id);
+    }
 
     res.status(200).json({ data: updated });
   } catch (error) {
-    console.log(error);
     errorHandler(req, res, error);
   }
 }
