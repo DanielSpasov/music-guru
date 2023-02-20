@@ -53,10 +53,12 @@ const SingleSchema = new Schema<ISingle>(
   }
 );
 
+// On delete single
 SingleSchema.pre('findOneAndRemove', async function (next) {
   const single = await this.model.findOne(this.getFilter()).populate('artist');
   if (!single) return next();
 
+  // Remove single ref from artist
   const artist = await model('artist').findById(single.artist._id);
   if (!artist) return next();
 

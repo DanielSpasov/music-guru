@@ -3,16 +3,16 @@ import { z } from 'zod';
 import { Artist } from './Artist';
 import { User } from './User';
 
-const schema = z.object({
+const Schema = z.object({
   name: z.string(),
   image: z.string().url({ message: 'Invalid url.' })
 });
 
-export const singleSchema = schema.extend({
+export const SingleSchema = Schema.extend({
   artist: z.object({ uid: z.string().min(8).max(8) })
 });
 
-type SingleModel = z.infer<typeof schema>;
+type SingleModel = z.infer<typeof Schema>;
 export interface Single extends SingleModel {
   uid: string;
   created: Date;

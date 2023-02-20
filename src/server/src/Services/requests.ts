@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import { Document, Model } from 'mongoose';
+import { ZodSchema } from 'zod';
 
-import { getMongoSearchQuery } from '../Utils/getSearchQuery';
+import { generateUID, getUser, getMongoSearchQuery } from '../Utils';
 import { CustomError } from '../Error/CustomError';
 import { errorHandler } from '../Error';
-import getUser from '../Utils/getUser';
+import { PostProps } from './helpers';
 
 export async function fetch<T>(req: Request, res: Response, Model: Model<T>) {
   try {
@@ -59,6 +60,42 @@ export async function del<T>(req: Request, res: Response, Model: Model<T>) {
 
     await Model.findOneAndRemove({ uid: req.params.id });
     res.status(200).json({ message: 'Success' });
+  } catch (error) {
+    errorHandler(req, res, error);
+  }
+}
+
+export async function post<T>({
+  req,
+  res,
+  Model,
+  ValidationSchema,
+  preCreateFn,
+  postCreateFn
+}: PostProps<T>) {
+  try {
+    const user = await getUser(req.headers?.authorization);
+    const validData = ValidationSchema.parse(req.body);
+    const uid = await generateUID(Model);
+
+    const { data } = preCreateFn ? await preCreateFn(validData) : { data: {} };
+
+    const doc = new Model({
+      uid,
+      created: Date.now(),
+      created_by: user._id,
+      ...validData,
+      ...data
+    });
+
+    if (postCreateFn) await postCreateFn(doc);
+
+    doc.save();
+
+    // There is no need to send the whole object,
+    // since the FE redirects to the single view (uid)
+    // and displays a toast notification (name)
+    res.status(200).json({ message: 'Success', uid, name: validData.name });
   } catch (error) {
     errorHandler(req, res, error);
   }
