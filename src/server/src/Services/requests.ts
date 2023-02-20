@@ -1,13 +1,11 @@
-import { Request, Response } from 'express';
-import { Document, Model } from 'mongoose';
-import { ZodSchema } from 'zod';
+import { Document } from 'mongoose';
 
 import { generateUID, getUser, getMongoSearchQuery } from '../Utils';
+import { PostProps, DelProps, GetProps, FetchProps } from './helpers';
 import { CustomError } from '../Error/CustomError';
 import { errorHandler } from '../Error';
-import { PostProps } from './helpers';
 
-export async function fetch<T>(req: Request, res: Response, Model: Model<T>) {
+export async function fetch<T>({ req, res, Model }: FetchProps<T>) {
   try {
     // Searching
     const search = getMongoSearchQuery(req.query.search);
@@ -24,7 +22,7 @@ export async function fetch<T>(req: Request, res: Response, Model: Model<T>) {
   }
 }
 
-export async function get<T>(req: Request, res: Response, Model: Model<T>) {
+export async function get<T>({ req, res, Model }: GetProps<T>) {
   try {
     const found = await Model.findOne({ uid: req.params.id });
     if (!found) {
@@ -42,7 +40,7 @@ export async function get<T>(req: Request, res: Response, Model: Model<T>) {
   }
 }
 
-export async function del<T>(req: Request, res: Response, Model: Model<T>) {
+export async function del<T>({ req, res, Model }: DelProps<T>) {
   try {
     const found = await Model.findOne({ uid: req.params.id }).populate(
       'created_by'
