@@ -1,12 +1,4 @@
-import {
-  Schema,
-  model,
-  InferSchemaType,
-  PopulatedDoc,
-  Document,
-  ObjectId
-} from 'mongoose';
-import { Artist } from '../../Types/Artist';
+import { Schema, model, InferSchemaType } from 'mongoose';
 
 import { defaultTransform } from '../helpers';
 
@@ -75,4 +67,4 @@ SingleSchema.pre('findOneAndRemove', async function (next) {
   next();
 });
 
-export default model<ISingle>('single', SingleSchema);
+export default model<ISingle>('Single', SingleSchema);

@@ -1,7 +1,12 @@
 import { HydratedDocument } from 'mongoose';
 import { Router } from 'express';
 
-import { ArtistModel, SingleModel, ISingle } from '../../Database/Schemas';
+import {
+  ArtistModel,
+  SingleModel,
+  ISingle,
+  IArtist
+} from '../../Database/Schemas';
 import { fetch, get, del, post, patch } from '../../Services/requests';
 import { Single, SingleSchema } from '../../Types/Single';
 import { CustomError } from '../../Error/CustomError';

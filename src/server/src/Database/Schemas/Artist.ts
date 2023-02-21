@@ -1,16 +1,16 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model, Types, InferSchemaType, Model } from 'mongoose';
 
 import { defaultTransform } from '../helpers';
-import { IArtist } from '../../Types/Artist';
 
-const ArtistSchema = new Schema<IArtist>(
+const ArtistSchema = new Schema(
   {
     uid: {
       type: String,
       required: true,
       unique: true,
       minlength: 8,
-      maxlength: 8
+      maxlength: 8,
+      immutable: true
     },
     name: {
       type: String,
@@ -20,12 +20,16 @@ const ArtistSchema = new Schema<IArtist>(
       type: String,
       required: true
     },
-    created: {
+    created_at: {
       type: Date,
       required: true,
-      readonly: true
+      readonly: true,
+      immutable: true,
+      default: () => Date.now()
     },
     created_by: {
+      immutable: true,
+      required: true,
       type: Schema.Types.ObjectId,
       ref: 'user'
     },
@@ -57,19 +61,28 @@ const ArtistSchema = new Schema<IArtist>(
   {
     toJSON: { transform: defaultTransform },
     methods: {
-      async addSingle(singleId: Types.ObjectId) {
-        if (this.singles.includes(singleId)) return;
-        this.singles.push(singleId);
+      async addSingle(single_id: Types.ObjectId) {
+        if (this.singles.includes(single_id)) return;
+        this.singles.push(single_id);
         await this.save();
       },
 
-      async removeSingle(singleId: Types.ObjectId) {
-        if (!this.singles.includes(singleId)) return;
-        this.singles.pull(singleId);
+      async removeSingle(single_id: Types.ObjectId) {
+        if (!this.singles.includes(single_id)) return;
+        this.singles.filter(x => x !== single_id);
         await this.save();
       }
     }
   }
 );
 
-export default model<IArtist>('artist', ArtistSchema);
+export type IArtist = InferSchemaType<typeof ArtistSchema>;
+export type IArtistMethods = {
+  addSingle: (single_id: Types.ObjectId) => Promise<void>;
+  removeSingle: (single_id: Types.ObjectId) => Promise<void>;
+};
+
+export default model<IArtist, Model<IArtist, {}, IArtistMethods>>(
+  'Artist',
+  ArtistSchema
+);
