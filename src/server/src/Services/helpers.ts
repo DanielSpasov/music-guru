@@ -28,3 +28,12 @@ export type PostProps<T> = {
   preCreateFn?: (doc: any) => Promise<{ data: any }>;
   postCreateFn?: (doc: any) => Promise<void>;
 };
+
+export type PatchProps<T> = {
+  req: Request;
+  res: Response;
+  Model: Model<T>;
+  ValidationSchema: ZodSchema;
+  preUpdateFn?: (doc: any) => Promise<{ data: any }>;
+  postUpdateFn?: (oldDoc: any, newDoc: any) => Promise<void>;
+};

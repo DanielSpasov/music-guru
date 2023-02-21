@@ -1,10 +1,9 @@
 import { Router } from 'express';
 
-import { fetch, get, post } from '../../Services/requests';
+import { fetch, get, post, patch } from '../../Services/requests';
 import { ArtistSchema, IArtist } from '../../Types/Artist';
 import { ArtistModel } from '../../Database/Schemas';
 import { authorization } from '../../Middleware';
-import { patch } from '../../Services/Artist';
 
 const router = Router();
 
@@ -20,6 +19,13 @@ router.post('/', authorization, (req, res) =>
     ValidationSchema: ArtistSchema
   })
 );
-router.patch('/:id', authorization, patch);
+router.patch('/:id', authorization, (req, res) =>
+  patch<IArtist>({
+    req,
+    res,
+    Model: ArtistModel,
+    ValidationSchema: ArtistSchema
+  })
+);
 
 export default router;

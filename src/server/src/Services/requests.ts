@@ -1,9 +1,15 @@
 import { Document } from 'mongoose';
 
 import { generateUID, getUser, getMongoSearchQuery } from '../Utils';
-import { PostProps, DelProps, GetProps, FetchProps } from './helpers';
 import { CustomError } from '../Error/CustomError';
 import { errorHandler } from '../Error';
+import {
+  PostProps,
+  DelProps,
+  GetProps,
+  FetchProps,
+  PatchProps
+} from './helpers';
 
 export async function fetch<T>({ req, res, Model }: FetchProps<T>) {
   try {
@@ -95,6 +101,61 @@ export async function post<T>({
     // and displays a toast notification (name)
     res.status(200).json({ message: 'Success', uid, name: validData.name });
   } catch (error) {
+    errorHandler(req, res, error);
+  }
+}
+
+export async function patch<T>({
+  req,
+  res,
+  Model,
+  ValidationSchema,
+  preUpdateFn,
+  postUpdateFn
+}: PatchProps<T>) {
+  try {
+    const user = await getUser(req.headers?.authorization);
+
+    const found = await Model.findOne({ uid: req.params.id }).populate(
+      'created_by'
+    );
+    if (!found) {
+      throw new CustomError({ message: 'Document not found.', code: 404 });
+    }
+    const doc = found as any;
+
+    if (doc.created_by.uid !== user.uid) {
+      throw new CustomError({ message: 'Permission denied.', code: 401 });
+    }
+
+    const validData = ValidationSchema.parse(req.body);
+
+    const { data } = preUpdateFn ? await preUpdateFn(validData) : { data: {} };
+
+    const updated = await Model.findOneAndUpdate(
+      { uid: req.params.id },
+      {
+        ...validData,
+        ...data
+      },
+      { new: true }
+    );
+
+    if (postUpdateFn) await postUpdateFn(doc, updated);
+
+    doc.save();
+
+    // There is no need to send the whole object,
+    // since the FE redirects to the single view (uid)
+    // and displays a toast notification (name)
+    res
+      .status(200)
+      .json({
+        message: 'Success',
+        data: { uid: req.params.id, name: validData.name }
+      });
+  } catch (error) {
+    console.log(error);
     errorHandler(req, res, error);
   }
 }

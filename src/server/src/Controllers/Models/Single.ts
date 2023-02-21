@@ -1,11 +1,10 @@
 import { Router } from 'express';
 
+import { fetch, get, del, post, patch } from '../../Services/requests';
 import { ArtistModel, SingleModel } from '../../Database/Schemas';
-import { fetch, get, del, post } from '../../Services/requests';
 import { ISingle, SingleSchema } from '../../Types/Single';
 import { CustomError } from '../../Error/CustomError';
 import { authorization } from '../../Middleware';
-import { patch } from '../../Services/Single';
 
 async function preCreateFn(data: any) {
   const artist = await ArtistModel.findOne({ uid: data?.artist?.uid });
@@ -23,6 +22,26 @@ async function postCreateFn(data: ISingle) {
   }
 
   await artist.addSingle(data._id);
+}
+
+async function preUpdateFn(data: any) {
+  const artist = await ArtistModel.findOne({ uid: data?.artist?.uid });
+  if (!artist) {
+    throw new CustomError({ message: 'Artist not found.', code: 404 });
+  }
+
+  return { data: { artist: artist._id } };
+}
+
+async function postUpdateFn(oldDoc: any, newDoc: any) {
+  await oldDoc.populate('artist');
+  await newDoc.populate('artist');
+  if (oldDoc.artist.uid !== newDoc.artist.uid) {
+    const oldArtist = await ArtistModel.findOne({ uid: oldDoc.artist.uid });
+    if (oldArtist) oldArtist.removeSingle(newDoc._id);
+    const newArtist = await ArtistModel.findOne({ uid: newDoc.artist.uid });
+    if (newArtist) newArtist.addSingle(newDoc._id);
+  }
 }
 
 const router = Router();
@@ -44,6 +63,15 @@ router.post('/', authorization, (req, res) =>
     postCreateFn
   })
 );
-router.patch('/:id', authorization, patch);
+router.patch('/:id', authorization, (req, res) =>
+  patch({
+    req,
+    res,
+    Model: SingleModel,
+    ValidationSchema: SingleSchema,
+    preUpdateFn,
+    postUpdateFn
+  })
+);
 
 export default router;
