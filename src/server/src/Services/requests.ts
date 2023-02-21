@@ -86,7 +86,6 @@ export async function post<T>({
 
     const doc = new Model({
       uid,
-      created: Date.now(),
       created_by: user._id,
       ...validData,
       ...data
@@ -115,7 +114,6 @@ export async function patch<T>({
 }: PatchProps<T>) {
   try {
     const user = await getUser(req.headers?.authorization);
-
     const found = await Model.findOne({ uid: req.params.id }).populate(
       'created_by'
     );
@@ -123,7 +121,6 @@ export async function patch<T>({
       throw new CustomError({ message: 'Document not found.', code: 404 });
     }
     const doc = found as any;
-
     if (doc.created_by.uid !== user.uid) {
       throw new CustomError({ message: 'Permission denied.', code: 401 });
     }
@@ -148,12 +145,10 @@ export async function patch<T>({
     // There is no need to send the whole object,
     // since the FE redirects to the single view (uid)
     // and displays a toast notification (name)
-    res
-      .status(200)
-      .json({
-        message: 'Success',
-        data: { uid: req.params.id, name: validData.name }
-      });
+    res.status(200).json({
+      message: 'Success',
+      data: { uid: req.params.id, name: validData.name }
+    });
   } catch (error) {
     console.log(error);
     errorHandler(req, res, error);

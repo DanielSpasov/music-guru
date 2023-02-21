@@ -25,8 +25,8 @@ export type PostProps<T> = {
   res: Response;
   Model: Model<T>;
   ValidationSchema: ZodSchema;
-  preCreateFn?: (doc: any) => Promise<{ data: any }>;
-  postCreateFn?: (doc: any) => Promise<void>;
+  preCreateFn?: Function;
+  postCreateFn?: Function;
 };
 
 export type PatchProps<T> = {
@@ -34,6 +34,6 @@ export type PatchProps<T> = {
   res: Response;
   Model: Model<T>;
   ValidationSchema: ZodSchema;
-  preUpdateFn?: (doc: any) => Promise<{ data: any }>;
-  postUpdateFn?: (oldDoc: any, newDoc: any) => Promise<void>;
+  preUpdateFn?: Function;
+  postUpdateFn?: Function;
 };

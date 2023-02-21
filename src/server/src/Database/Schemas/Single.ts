@@ -1,16 +1,24 @@
-import { Schema, model } from 'mongoose';
+import {
+  Schema,
+  model,
+  InferSchemaType,
+  PopulatedDoc,
+  Document,
+  ObjectId
+} from 'mongoose';
+import { Artist } from '../../Types/Artist';
 
 import { defaultTransform } from '../helpers';
-import { ISingle } from '../../Types/Single';
 
-const SingleSchema = new Schema<ISingle>(
+const SingleSchema = new Schema(
   {
     uid: {
       type: String,
       required: true,
       unique: true,
       minlength: 8,
-      maxlength: 8
+      maxlength: 8,
+      immutable: true
     },
     name: {
       type: String,
@@ -20,16 +28,21 @@ const SingleSchema = new Schema<ISingle>(
       type: String,
       required: true
     },
-    created: {
+    created_at: {
       type: Date,
       required: true,
-      readonly: true
+      readonly: true,
+      immutable: true,
+      default: () => Date.now()
     },
     created_by: {
+      immutable: true,
+      required: true,
       type: Schema.Types.ObjectId,
       ref: 'user'
     },
     artist: {
+      required: true,
       type: Schema.Types.ObjectId,
       ref: 'artist'
     },
@@ -38,20 +51,14 @@ const SingleSchema = new Schema<ISingle>(
         type: Schema.Types.ObjectId,
         ref: 'artist'
       }
-    ],
-    album: {
-      type: Schema.Types.ObjectId,
-      ref: 'album'
-    },
-    mixtape: {
-      type: Schema.Types.ObjectId,
-      ref: 'mixtape'
-    }
+    ]
   },
   {
     toJSON: { transform: defaultTransform }
   }
 );
+
+export type ISingle = InferSchemaType<typeof SingleSchema>;
 
 // On delete single
 SingleSchema.pre('findOneAndRemove', async function (next) {
