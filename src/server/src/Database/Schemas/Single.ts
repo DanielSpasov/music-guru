@@ -22,8 +22,6 @@ const SingleSchema = new Schema(
     },
     created_at: {
       type: Date,
-      required: true,
-      readonly: true,
       immutable: true,
       default: () => Date.now()
     },
@@ -31,17 +29,17 @@ const SingleSchema = new Schema(
       immutable: true,
       required: true,
       type: Schema.Types.ObjectId,
-      ref: 'user'
+      ref: 'User'
     },
     artist: {
       required: true,
       type: Schema.Types.ObjectId,
-      ref: 'artist'
+      ref: 'Artist'
     },
     features: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'artist'
+        ref: 'Artist'
       }
     ]
   },
@@ -54,11 +52,11 @@ export type ISingle = InferSchemaType<typeof SingleSchema>;
 
 // On delete single
 SingleSchema.pre('findOneAndRemove', async function (next) {
-  const single = await this.model.findOne(this.getFilter()).populate('artist');
+  const single = await this.model.findOne(this.getFilter()).populate('Artist');
   if (!single) return next();
 
   // Remove single ref from artist
-  const artist = await model('artist').findById(single.artist._id);
+  const artist = await model('Artist').findById(single.artist._id);
   if (!artist) return next();
 
   artist.singles.pull(single._id);

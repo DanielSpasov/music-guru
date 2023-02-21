@@ -22,8 +22,6 @@ const ArtistSchema = new Schema(
     },
     created_at: {
       type: Date,
-      required: true,
-      readonly: true,
       immutable: true,
       default: () => Date.now()
     },
@@ -31,30 +29,30 @@ const ArtistSchema = new Schema(
       immutable: true,
       required: true,
       type: Schema.Types.ObjectId,
-      ref: 'user'
+      ref: 'User'
     },
     albums: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'album'
+        ref: 'Album'
       }
     ],
     mixtapes: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'mixtape'
+        ref: 'Mixtape'
       }
     ],
     singles: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'single'
+        ref: 'Single'
       }
     ],
     features: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'single'
+        ref: 'Single'
       }
     ]
   },
@@ -69,7 +67,7 @@ const ArtistSchema = new Schema(
 
       async removeSingle(single_id: Types.ObjectId) {
         if (!this.singles.includes(single_id)) return;
-        this.singles.filter(x => x !== single_id);
+        this.singles = this.singles.filter(x => x === single_id);
         await this.save();
       }
     }

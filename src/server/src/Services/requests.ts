@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, HydratedDocument } from 'mongoose';
 
 import { generateUID, getUser, getMongoSearchQuery } from '../Utils';
 import { CustomError } from '../Error/CustomError';

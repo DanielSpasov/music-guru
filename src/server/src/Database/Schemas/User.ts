@@ -1,15 +1,14 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, InferSchemaType } from 'mongoose';
 
-import { IUser } from '../../Types/User';
-
-const UserSchema = new Schema<IUser>(
+const UserSchema = new Schema(
   {
     uid: {
       type: String,
       required: true,
       unique: true,
       minlength: 8,
-      maxlength: 8
+      maxlength: 8,
+      immutable: true
     },
     username: {
       type: String,
@@ -26,10 +25,10 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true
     },
-    created: {
+    created_at: {
       type: Date,
-      required: true,
-      readonly: true
+      immutable: true,
+      default: () => Date.now()
     }
   },
   {
@@ -43,5 +42,7 @@ const UserSchema = new Schema<IUser>(
     }
   }
 );
+
+type IUser = InferSchemaType<typeof UserSchema>;
 
 export default model<IUser>('User', UserSchema);

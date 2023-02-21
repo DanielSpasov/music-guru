@@ -47,8 +47,7 @@ export async function SignUp(req: Request, res: Response) {
       uid,
       username,
       email,
-      password: passwordHash,
-      created: Date.now()
+      password: passwordHash
     });
     await user.save();
 
