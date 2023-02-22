@@ -50,7 +50,7 @@ export default function SingleArtist() {
 
         <Box width="100%" margin="0.5em">
           <Summary label="Discography" open>
-            <Summary label="Albums">
+            <Summary label="Albums" open>
               {!artist?.albums.length ? (
                 <Text>{artist?.name} haven't released any albums yet.</Text>
               ) : (
@@ -62,7 +62,7 @@ export default function SingleArtist() {
               )}
             </Summary>
 
-            <Summary label="Singles">
+            <Summary label="Singles" open>
               {!artist?.singles.length ? (
                 <Text>{artist?.name} haven't released any singles yet.</Text>
               ) : (
@@ -79,7 +79,7 @@ export default function SingleArtist() {
               )}
             </Summary>
 
-            <Summary label="Mixtapes">
+            <Summary label="Mixtapes" open>
               {!artist?.mixtapes.length ? (
                 <Text>{artist?.name} haven't released any mixtapes yet.</Text>
               ) : (
@@ -91,7 +91,7 @@ export default function SingleArtist() {
               )}
             </Summary>
 
-            <Summary label="Features">
+            <Summary label="Features" open>
               {!artist?.features.length ? (
                 <Text>
                   {artist?.name} haven't been featured on any songs yet.
