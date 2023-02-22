@@ -2,16 +2,22 @@ import { z } from 'zod';
 import { Artist } from '../artists/helpers';
 import { User } from '../auth/helpers';
 
-export const singleSchema = z.object({
+export const Schema = z.object({
   name: z
     .string()
     .min(1, { message: 'Name is required.' })
     .max(128, { message: 'Name is too long.' }),
-  image: z.string().url({ message: 'Invalid url.' }),
-  artist: z.object({ uid: z.string({ required_error: 'Artist is required.' }) })
+  image: z.string().url({ message: 'Invalid url.' })
 });
 
-type SingleModel = z.infer<typeof singleSchema>;
+export const SingleSchema = Schema.extend({
+  artist: z
+    .string({ required_error: 'Artist is required.' })
+    .min(8, { message: 'Invalid Artist.' })
+    .max(8, { message: 'Invalid Artist.' })
+});
+
+type SingleModel = z.infer<typeof Schema>;
 export interface Single extends SingleModel {
   uid: string;
   created: Date;

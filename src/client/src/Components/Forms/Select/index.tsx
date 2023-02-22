@@ -14,12 +14,16 @@ function Select({
   label,
   name
 }: SelectProps) {
+  const [value, setValue] = useState<string>(getValues()[name]?.name || '');
   const [searchTerm, setSearch] = useState<string>('');
   const [options, setOptions] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string>(getValues()[name]?.name);
 
   const search = useDebounce({ value: searchTerm, delay: 500 });
+
+  useEffect(() => {
+    setFormValue('artist', getValues()[name]?.uid);
+  }, [setFormValue, getValues, name]);
 
   useEffect(() => {
     (async () => {
@@ -38,14 +42,14 @@ function Select({
   const onResultClick = useCallback(
     (option: any) => {
       setValue(option.name);
-      setFormValue(name, option);
+      setFormValue(name, option.uid);
     },
     [setFormValue, name]
   );
 
   const onClear = useCallback(() => {
     setValue('');
-    setFormValue(name, null);
+    setFormValue(name, undefined);
   }, [setFormValue, name]);
 
   const onChange = useCallback(

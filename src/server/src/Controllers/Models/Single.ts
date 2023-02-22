@@ -1,12 +1,7 @@
 import { HydratedDocument } from 'mongoose';
 import { Router } from 'express';
 
-import {
-  ArtistModel,
-  SingleModel,
-  ISingle,
-  IArtist
-} from '../../Database/Schemas';
+import { ArtistModel, SingleModel, ISingle } from '../../Database/Schemas';
 import { fetch, get, del, post, patch } from '../../Services/requests';
 import { Single, SingleSchema } from '../../Types/Single';
 import { CustomError } from '../../Error/CustomError';
@@ -31,7 +26,7 @@ router.post('/', authorization, (req, res) =>
     Model: SingleModel,
     ValidationSchema: SingleSchema,
     preCreateFn: async (data: Single) => {
-      const artist = await ArtistModel.findOne({ uid: data.artist.uid });
+      const artist = await ArtistModel.findOne({ uid: data.artist });
       if (!artist) {
         throw new CustomError({ message: 'Artist not found.', code: 404 });
       }
@@ -56,7 +51,7 @@ router.patch('/:id', authorization, (req, res) =>
     Model: SingleModel,
     ValidationSchema: SingleSchema,
     preUpdateFn: async (data: Single) => {
-      const artist = await ArtistModel.findOne({ uid: data.artist.uid });
+      const artist = await ArtistModel.findOne({ uid: data.artist });
       if (!artist) {
         throw new CustomError({ message: 'Artist not found.', code: 404 });
       }

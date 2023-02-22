@@ -9,7 +9,7 @@ const Schema = z.object({
 });
 
 export const SingleSchema = Schema.extend({
-  artist: z.object({ uid: z.string().min(8).max(8) })
+  artist: z.string().min(8).max(8)
 });
 
 type SingleSchemaType = z.infer<typeof Schema>;

@@ -1,20 +1,22 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, Loader, PageLayout } from '../../../Components';
-import { Single, singleSchema } from '../helpers';
+import { Single, SingleSchema } from '../helpers';
 import { errorHandler } from '../../../Handlers';
 import { schema } from './schema';
 import Api from '../../../Api';
 
 export default function EditSingle() {
-  const [defaultData, setDefaultData] = useState<Partial<Single>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [errors, setErrors] = useState<FormError[]>([]);
+  const [single, setSingle] = useState<Single>();
   const { id = '0' } = useParams();
   const navigate = useNavigate();
+
+  const defaultValues = useMemo(() => single, [single]);
 
   useEffect(() => {
     (async () => {
@@ -23,7 +25,7 @@ export default function EditSingle() {
           id,
           config: { params: { populate: 'artist' } }
         });
-        setDefaultData(data);
+        setSingle(data);
       } catch (error) {
         errorHandler(error, navigate);
       } finally {
@@ -35,7 +37,7 @@ export default function EditSingle() {
   const onSubmit = useCallback(
     async (data: Single) => {
       try {
-        const validData = singleSchema.parse(data);
+        const validData = SingleSchema.parse(data);
         const { data: updated } = await Api.singles.patch({
           id,
           body: validData
@@ -59,8 +61,8 @@ export default function EditSingle() {
         <Loader rainbow fullscreen />
       ) : (
         <Form
+          defaultValues={defaultValues}
           header="Edit Single"
-          defaultValues={defaultData}
           onSubmit={onSubmit}
           schema={schema}
           errors={errors}

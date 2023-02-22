@@ -52,7 +52,7 @@ export type ISingle = InferSchemaType<typeof SingleSchema>;
 
 // On delete single
 SingleSchema.pre('findOneAndRemove', async function (next) {
-  const single = await this.model.findOne(this.getFilter()).populate('Artist');
+  const single = await this.model.findOne(this.getFilter()).populate('artist');
   if (!single) return next();
 
   // Remove single ref from artist

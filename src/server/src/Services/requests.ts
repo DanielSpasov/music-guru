@@ -65,6 +65,7 @@ export async function del<T>({ req, res, Model }: DelProps<T>) {
     await Model.findOneAndRemove({ uid: req.params.id });
     res.status(200).json({ message: 'Success' });
   } catch (error) {
+    console.log(error);
     errorHandler(req, res, error);
   }
 }

@@ -67,7 +67,8 @@ const ArtistSchema = new Schema(
 
       async removeSingle(single_id: Types.ObjectId) {
         if (!this.singles.includes(single_id)) return;
-        this.singles = this.singles.filter(x => x === single_id);
+        const itemIndex = this.singles.indexOf(single_id);
+        this.singles.splice(itemIndex, 1);
         await this.save();
       }
     }

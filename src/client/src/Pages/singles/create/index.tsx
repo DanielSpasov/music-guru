@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, PageLayout } from '../../../Components';
-import { Single, singleSchema } from '../helpers';
+import { Single, SingleSchema } from '../helpers';
 import { errorHandler } from '../../../Handlers';
 import { schema } from './schema';
 import Api from '../../../Api';
@@ -16,7 +16,7 @@ export default function CreateSingle() {
   const onSubmit = useCallback(
     async (data: Single) => {
       try {
-        const validData = singleSchema.parse(data);
+        const validData = SingleSchema.parse(data);
         const res = await Api.singles.post({ body: validData });
         setErrors([]);
         toast.success(`Successfully created single: ${res.name}`);
@@ -36,7 +36,6 @@ export default function CreateSingle() {
         onSubmit={onSubmit}
         schema={schema}
         errors={errors}
-        defaultValues={{ artist: {} }}
       />
     </PageLayout>
   );
