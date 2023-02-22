@@ -116,7 +116,7 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
   );
 }
 
-export function Result({ data, onClick }: ResultProps<any>) {
+export function Result({ data, onClick, selected }: ResultProps<any>) {
   const { colors } = useContext(ThemeContext);
 
   return (
@@ -125,6 +125,7 @@ export function Result({ data, onClick }: ResultProps<any>) {
       padding=".3em"
       alignItems="center"
       key={data.uid}
+      backgroundColor={selected ? colors.baseLight : 'transparent'}
       hoverCSS={{ backgroundColor: colors.baseLight }}
       onClick={onClick}
     >

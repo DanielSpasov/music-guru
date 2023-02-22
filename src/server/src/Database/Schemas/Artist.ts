@@ -59,16 +59,16 @@ const ArtistSchema = new Schema(
   {
     toJSON: { transform: defaultTransform },
     methods: {
-      async addSingle(single_id: Types.ObjectId) {
-        if (this.singles.includes(single_id)) return;
-        this.singles.push(single_id);
+      async add(type: string, id: Types.ObjectId) {
+        if (this[type].includes(id)) return;
+        this[type].push(id);
         await this.save();
       },
 
-      async removeSingle(single_id: Types.ObjectId) {
-        if (!this.singles.includes(single_id)) return;
-        const itemIndex = this.singles.indexOf(single_id);
-        this.singles.splice(itemIndex, 1);
+      async del(type: string, id: Types.ObjectId) {
+        if (!this[type].includes(id)) return;
+        const itemIndex = this[type].indexOf(id);
+        this[type].splice(itemIndex, 1);
         await this.save();
       }
     }
@@ -77,8 +77,8 @@ const ArtistSchema = new Schema(
 
 export type IArtist = InferSchemaType<typeof ArtistSchema>;
 export type IArtistMethods = {
-  addSingle: (single_id: Types.ObjectId) => Promise<void>;
-  removeSingle: (single_id: Types.ObjectId) => Promise<void>;
+  add: (type: string, single_id: Types.ObjectId) => Promise<void>;
+  del: (type: string, single_id: Types.ObjectId) => Promise<void>;
 };
 
 export default model<IArtist, Model<IArtist, {}, IArtistMethods>>(

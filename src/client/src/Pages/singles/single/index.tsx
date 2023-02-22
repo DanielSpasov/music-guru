@@ -40,7 +40,7 @@ export default function SingleSingle() {
       try {
         const { data } = await Api.singles.get({
           id,
-          config: { params: { populate: 'artist,created_by' } }
+          config: { params: { populate: 'artist,created_by,features' } }
         });
         setSingle(data);
       } catch (error) {
@@ -73,6 +73,14 @@ export default function SingleSingle() {
             </Box>
             <Box>
               <Heading title="Featured Artists" />
+              {single?.features.map(artist => (
+                <Card
+                  key={artist.uid}
+                  image={artist.image || ''}
+                  title={artist.name || ''}
+                  onClick={() => navigate(`/artists/${artist.uid}`)}
+                />
+              ))}
             </Box>
           </Box>
         </Box>

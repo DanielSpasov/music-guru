@@ -31,7 +31,16 @@ router.post('/', authorization, (req, res) =>
         throw new CustomError({ message: 'Artist not found.', code: 404 });
       }
 
-      return { data: { artist: artist._id } };
+      const featuredArtists = await ArtistModel.find({
+        uid: { $in: data.features }
+      });
+
+      return {
+        data: {
+          artist: artist._id,
+          features: featuredArtists.map(artist => artist._id)
+        }
+      };
     },
     postCreateFn: async (data: HydratedDocument<ISingle>) => {
       const artist = await ArtistModel.findById(data.artist);
@@ -39,7 +48,12 @@ router.post('/', authorization, (req, res) =>
         throw new CustomError({ message: 'Artist not found.', code: 404 });
       }
 
-      await artist.addSingle(data._id);
+      const featuredArtists = await ArtistModel.find({
+        _id: { $in: data.features }
+      });
+
+      await artist.add('singles', data._id);
+      await Promise.all(featuredArtists.map(x => x.add('features', data._id)));
     }
   })
 );
@@ -66,9 +80,9 @@ router.patch('/:id', authorization, (req, res) =>
       await newDoc.populate('artist');
       if (oldDoc.artist.uid !== newDoc.artist.uid) {
         const oldArtist = await ArtistModel.findOne({ uid: oldDoc.artist.uid });
-        if (oldArtist) oldArtist.removeSingle(newDoc._id);
+        if (oldArtist) oldArtist.del('singles', newDoc._id);
         const newArtist = await ArtistModel.findOne({ uid: newDoc.artist.uid });
-        if (newArtist) newArtist.addSingle(newDoc._id);
+        if (newArtist) newArtist.add('singles', newDoc._id);
       }
     }
   })

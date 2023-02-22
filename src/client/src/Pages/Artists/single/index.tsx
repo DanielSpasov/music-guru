@@ -27,7 +27,7 @@ export default function SingleArtist() {
       try {
         const { data } = await Api.artists.get({
           id,
-          config: { params: { populate: 'singles,created_by' } }
+          config: { params: { populate: 'singles,created_by,features' } }
         });
         setArtist(data);
       } catch (error) {
@@ -61,6 +61,7 @@ export default function SingleArtist() {
                 </Box>
               )}
             </Summary>
+
             <Summary label="Singles">
               {!artist?.singles.length ? (
                 <Text>{artist?.name} haven't released any singles yet.</Text>
@@ -77,6 +78,7 @@ export default function SingleArtist() {
                 </Box>
               )}
             </Summary>
+
             <Summary label="Mixtapes">
               {!artist?.mixtapes.length ? (
                 <Text>{artist?.name} haven't released any mixtapes yet.</Text>
@@ -84,6 +86,25 @@ export default function SingleArtist() {
                 <Box display="flex">
                   {artist.mixtapes.map(() => (
                     <Card image="Placeholder" title="Placeholder" />
+                  ))}
+                </Box>
+              )}
+            </Summary>
+
+            <Summary label="Features">
+              {!artist?.features.length ? (
+                <Text>
+                  {artist?.name} haven't been featured on any songs yet.
+                </Text>
+              ) : (
+                <Box display="flex">
+                  {artist.features.map(single => (
+                    <Card
+                      key={single.uid}
+                      image={single.image}
+                      title={single.name}
+                      onClick={() => navigate(`/singles/${single.uid}`)}
+                    />
                   ))}
                 </Box>
               )}

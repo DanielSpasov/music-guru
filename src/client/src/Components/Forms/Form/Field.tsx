@@ -27,6 +27,7 @@ export default function Field({
         getValues={getValues}
         setFormValue={setValue}
         fetchFn={field?.fetchFn}
+        multiple={field?.multiple}
       />
 
       {error && <Text variant="danger">{error?.message}</Text>}

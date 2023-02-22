@@ -1,5 +1,4 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { isEmpty } from 'lodash';
 
 import useDebounce from '../../../Hooks/useDebounce';
 import { Label, Icon, Box, Popover } from '../../';
@@ -10,11 +9,12 @@ import { SelectProps } from './helpers';
 function Select({
   setFormValue,
   getValues,
+  multiple = false,
   fetchFn,
   label,
   name
 }: SelectProps) {
-  const [value, setValue] = useState<string>(getValues()[name]?.name || '');
+  const [value, setValue] = useState<string[]>(getValues()[name] || []);
   const [searchTerm, setSearch] = useState<string>('');
   const [options, setOptions] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -22,8 +22,8 @@ function Select({
   const search = useDebounce({ value: searchTerm, delay: 500 });
 
   useEffect(() => {
-    setFormValue('artist', getValues()[name]?.uid);
-  }, [setFormValue, getValues, name]);
+    setFormValue(name, getValues()[name]);
+  }, [setFormValue, getValues, name, multiple]);
 
   useEffect(() => {
     (async () => {
@@ -41,22 +41,45 @@ function Select({
 
   const onResultClick = useCallback(
     (option: any) => {
-      setValue(option.name);
-      setFormValue(name, option.uid);
+      setSearch('');
+      if (multiple) {
+        if (value.includes(option.name)) {
+          setValue(prev => prev.filter(x => x !== option.name));
+          setFormValue(
+            name,
+            getValues()[name].filter((x: any) => x !== option.uid)
+          );
+        } else {
+          if (value[0] === searchTerm) {
+            setValue([option.name]);
+          } else {
+            setValue(prev => [...prev, option.name]);
+          }
+          setFormValue(name, [...(getValues()[name] || []), option.uid]);
+        }
+      } else {
+        if (value.includes(option.name)) {
+          setValue([]);
+          setFormValue(name, []);
+        } else {
+          setValue([option.name]);
+          setFormValue(name, [option.uid]);
+        }
+      }
     },
-    [setFormValue, name]
+    [setFormValue, getValues, name, multiple, value, searchTerm]
   );
 
   const onClear = useCallback(() => {
-    setValue('');
-    setFormValue(name, undefined);
+    setValue([]);
+    setFormValue(name, []);
   }, [setFormValue, name]);
 
-  const onChange = useCallback(
+  const onSearch = useCallback(
     (e: any) => {
-      if (isEmpty(getValues()[name])) {
+      if (!getValues()[name].length) {
         setSearch(e?.target?.value);
-        setValue(e?.target?.value);
+        setValue([e?.target?.value]);
       }
     },
     [getValues, name]
@@ -66,10 +89,10 @@ function Select({
     <>
       {/* This input is just a search bar, this is why it's not registered in the form */}
       <StyledInput
+        value={value.join(', ')}
         onFocus={toggleOpen}
         onBlur={toggleOpen}
-        onChange={onChange}
-        value={value}
+        onChange={onSearch}
         placeholder=" "
         name={name}
         type="text"
@@ -95,6 +118,7 @@ function Select({
           <Result
             key={option.uid}
             data={option}
+            selected={value.includes(option.name)}
             onClick={() => onResultClick(option)}
           />
         ))}

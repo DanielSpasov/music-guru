@@ -15,6 +15,7 @@ export type FormField = {
   type?: InputType;
   required?: boolean;
   fetchFn?: Function;
+  multiple?: boolean;
 };
 
 export type FormError = {

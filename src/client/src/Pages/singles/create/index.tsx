@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, PageLayout } from '../../../Components';
-import { Single, SingleSchema } from '../helpers';
 import { errorHandler } from '../../../Handlers';
+import { SingleSchema } from '../helpers';
 import { schema } from './schema';
 import Api from '../../../Api';
 
@@ -14,9 +14,12 @@ export default function CreateSingle() {
   const navigate = useNavigate();
 
   const onSubmit = useCallback(
-    async (data: Single) => {
+    async (data: any) => {
       try {
-        const validData = SingleSchema.parse(data);
+        const validData = SingleSchema.parse({
+          ...data,
+          artist: data.artist[0]
+        });
         const res = await Api.singles.post({ body: validData });
         setErrors([]);
         toast.success(`Successfully created single: ${res.name}`);
@@ -32,6 +35,7 @@ export default function CreateSingle() {
   return (
     <PageLayout title="Create Single" showHeader={false}>
       <Form
+        defaultValues={{ artist: [], features: [] }}
         header="Create Single"
         onSubmit={onSubmit}
         schema={schema}

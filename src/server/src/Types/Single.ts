@@ -8,8 +8,11 @@ const Schema = z.object({
   image: z.string().url({ message: 'Invalid url.' })
 });
 
+const UidSchema = z.string().min(8).max(8);
+
 export const SingleSchema = Schema.extend({
-  artist: z.string().min(8).max(8)
+  artist: UidSchema,
+  features: z.array(UidSchema).optional()
 });
 
 type SingleSchemaType = z.infer<typeof Schema>;

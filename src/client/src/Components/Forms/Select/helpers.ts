@@ -5,6 +5,7 @@ export type SelectProps = {
   getValues: UseFormGetValues<any>;
   required?: boolean;
   fetchFn: Function;
+  multiple: boolean;
   label: string;
   name: string;
 };

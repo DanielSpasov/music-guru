@@ -62,6 +62,11 @@ SingleSchema.pre('findOneAndRemove', async function (next) {
   artist.singles.pull(single._id);
   await artist.save();
 
+  const features = await model('Artist').find({
+    _id: { $in: single.features }
+  });
+  await Promise.all(features.map(x => x.del('features', single._id)));
+
   next();
 });
 

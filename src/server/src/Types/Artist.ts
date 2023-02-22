@@ -19,16 +19,3 @@ export interface Artist extends ArtistModel {
   singles: Single[];
   features: Single[];
 }
-
-export interface IArtist extends ArtistModel, Document {
-  uid: string;
-  created: Date;
-  created_by: Types.ObjectId;
-  albums: Types.ObjectId[];
-  mixtapes: Types.ObjectId[];
-  singles: Types.ObjectId[];
-  features: Types.ObjectId[];
-
-  addSingle: (singleId: Types.ObjectId) => Promise<void>;
-  removeSingle: (singleId: Types.ObjectId) => Promise<void>;
-}

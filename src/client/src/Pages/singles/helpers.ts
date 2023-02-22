@@ -10,11 +10,14 @@ export const Schema = z.object({
   image: z.string().url({ message: 'Invalid url.' })
 });
 
+const UidSchema = z
+  .string({ required_error: 'Artist is required.' })
+  .min(8, { message: 'Invalid Artist.' })
+  .max(8, { message: 'Invalid Artist.' });
+
 export const SingleSchema = Schema.extend({
-  artist: z
-    .string({ required_error: 'Artist is required.' })
-    .min(8, { message: 'Invalid Artist.' })
-    .max(8, { message: 'Invalid Artist.' })
+  artist: UidSchema,
+  features: z.array(UidSchema).optional()
 });
 
 type SingleModel = z.infer<typeof Schema>;

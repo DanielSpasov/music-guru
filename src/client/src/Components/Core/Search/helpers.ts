@@ -18,6 +18,7 @@ export type SearchBoxProps = {
 export type ResultProps<T> = {
   data: T;
   onClick: Function;
+  selected?: boolean;
 };
 
 export type Results = [ModelKeys, any[]][];

@@ -101,6 +101,7 @@ export async function post<T>({
     // and displays a toast notification (name)
     res.status(200).json({ message: 'Success', uid, name: validData.name });
   } catch (error) {
+    console.log(error);
     errorHandler(req, res, error);
   }
 }
