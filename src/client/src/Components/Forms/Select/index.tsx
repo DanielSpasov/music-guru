@@ -33,47 +33,56 @@ function Select({
     })();
   }, [fetchFn, search]);
 
-  const toggleOpen = useCallback(() => {
-    // In case you wondering what this is:
-    // if onBlur event triggers before the onResultClick, no result is saved
-    setTimeout(() => setOpen(prev => !prev), 50);
-  }, []);
-
-  const onResultClick = useCallback(
-    (option: any) => {
-      setSearch('');
-      if (multiple) {
-        if (value.includes(option.name)) {
-          setValue(prev => prev.filter(x => x !== option.name));
-          setFormValue(
-            name,
-            getValues()[name].filter((x: any) => x !== option.uid)
-          );
-        } else {
-          if (value[0] === searchTerm) {
-            setValue([option.name]);
-          } else {
-            setValue(prev => [...prev, option.name]);
-          }
-          setFormValue(name, [...(getValues()[name] || []), option.uid]);
-        }
-      } else {
-        if (value.includes(option.name)) {
-          setValue([]);
-          setFormValue(name, []);
-        } else {
-          setValue([option.name]);
-          setFormValue(name, [option.uid]);
-        }
-      }
-    },
-    [setFormValue, getValues, name, multiple, value, searchTerm]
+  const toggleOpen = useCallback(
+    () => setTimeout(() => setOpen(prev => !prev), 50),
+    []
   );
 
   const onClear = useCallback(() => {
     setValue([]);
     setFormValue(name, []);
   }, [setFormValue, name]);
+
+  const onClickMultiple = useCallback(
+    (option: any) => {
+      if (value.includes(option.name)) {
+        const filterFn = (key: string) => (x: any) => x !== option[key];
+        setValue(prev => prev.filter(filterFn('name')));
+        setFormValue(name, getValues()[name].filter(filterFn('uid')));
+        return;
+      }
+
+      if (value[0] === searchTerm) {
+        setValue([option.name]);
+      } else {
+        setValue(prev => [...prev, option.name]);
+      }
+      setFormValue(name, [...(getValues()[name] || []), option.uid]);
+    },
+    [getValues, name, searchTerm, value, setFormValue]
+  );
+
+  const onClickSingle = useCallback(
+    (option: any) => {
+      if (value.includes(option.name)) {
+        onClear();
+        return;
+      }
+
+      setValue([option.name]);
+      setFormValue(name, [option.uid]);
+    },
+    [name, onClear, setFormValue, value]
+  );
+
+  const onResultClick = useCallback(
+    (option: any) => {
+      setSearch('');
+      if (multiple) onClickMultiple(option);
+      if (!multiple) onClickSingle(option);
+    },
+    [multiple, onClickMultiple, onClickSingle]
+  );
 
   const onSearch = useCallback(
     (e: any) => {
