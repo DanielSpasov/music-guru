@@ -1,12 +1,13 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { HydratedDocument } from 'mongoose';
 
 import { CustomError } from '../Error/CustomError';
 import { UserModel } from '../Database/Schemas';
-import { IUser } from '../Types/User';
+import { User } from '../Types/User';
 
 export default async function getUser(
   token: string | undefined
-): Promise<IUser> {
+): Promise<HydratedDocument<User>> {
   if (!token) {
     throw new CustomError({ message: 'Unauthorized.', code: 401 });
   }

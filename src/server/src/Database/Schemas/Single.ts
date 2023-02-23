@@ -57,16 +57,17 @@ SingleSchema.pre('findOneAndRemove', async function (next) {
 
   // Remove single ref from artist
   const artist = await model('Artist').findById(single.artist._id);
-  if (!artist) return next();
-
-  artist.singles.pull(single._id);
-  await artist.save();
+  if (artist) {
+    await artist.del('singles', single._id);
+  }
 
   // Remove feature refs from featured artists
   const features = await model('Artist').find({
     _id: { $in: single.features }
   });
-  await Promise.all(features.map(x => x.del('features', single._id)));
+  if (features.length) {
+    await Promise.all(features.map(x => x.del('features', single._id)));
+  }
 
   next();
 });

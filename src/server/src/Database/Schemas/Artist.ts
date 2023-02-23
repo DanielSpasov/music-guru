@@ -2,6 +2,8 @@ import { Schema, model, Types, InferSchemaType, Model } from 'mongoose';
 
 import { defaultTransform } from '../helpers';
 
+type DiscographyTypes = 'singles' | 'features' | 'albums' | 'mixtapes';
+
 const ArtistSchema = new Schema(
   {
     uid: {
@@ -59,13 +61,13 @@ const ArtistSchema = new Schema(
   {
     toJSON: { transform: defaultTransform },
     methods: {
-      async add(type: string, id: Types.ObjectId) {
+      async add(type: DiscographyTypes, id: Types.ObjectId) {
         if (this[type].includes(id)) return;
         this[type].push(id);
         await this.save();
       },
 
-      async del(type: string, id: Types.ObjectId) {
+      async del(type: DiscographyTypes, id: Types.ObjectId) {
         if (!this[type].includes(id)) return;
         const itemIndex = this[type].indexOf(id);
         this[type].splice(itemIndex, 1);
@@ -77,8 +79,8 @@ const ArtistSchema = new Schema(
 
 export type IArtist = InferSchemaType<typeof ArtistSchema>;
 export type IArtistMethods = {
-  add: (type: string, single_id: Types.ObjectId) => Promise<void>;
-  del: (type: string, single_id: Types.ObjectId) => Promise<void>;
+  add: (type: DiscographyTypes, single_id: Types.ObjectId) => Promise<void>;
+  del: (type: DiscographyTypes, single_id: Types.ObjectId) => Promise<void>;
 };
 
 export default model<IArtist, Model<IArtist, {}, IArtistMethods>>(

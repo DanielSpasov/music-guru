@@ -1,4 +1,4 @@
-import { Document, HydratedDocument } from 'mongoose';
+import { Document } from 'mongoose';
 
 import { generateUID, getUser, getMongoSearchQuery } from '../Utils';
 import { CustomError } from '../Error/CustomError';
@@ -93,11 +93,8 @@ export async function post<T>({
 
     if (postCreateFn) await postCreateFn(doc);
 
-    doc.save();
+    await doc.save();
 
-    // There is no need to send the whole object,
-    // since the FE redirects to the single view (uid)
-    // and displays a toast notification (name)
     res.status(200).json({ message: 'Success', uid, name: validData.name });
   } catch (error) {
     errorHandler(req, res, error);
@@ -140,11 +137,8 @@ export async function patch<T>({
 
     if (postUpdateFn) await postUpdateFn(doc, updated);
 
-    doc.save();
+    await doc.save();
 
-    // There is no need to send the whole object,
-    // since the FE redirects to the single view (uid)
-    // and displays a toast notification (name)
     res.status(200).json({
       message: 'Success',
       data: { uid: req.params.id, name: validData.name }
