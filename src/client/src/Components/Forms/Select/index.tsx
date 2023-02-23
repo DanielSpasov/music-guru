@@ -19,9 +19,9 @@ function Select({
     [getValues, name]
   );
 
+  const [options, setOptions] = useState<any[]>([]);
   const [value, setValue] = useState<string[]>(defaultValue || []);
   const [searchTerm, setSearch] = useState<string>('');
-  const [options, setOptions] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
 
   const search = useDebounce({ value: searchTerm, delay: 500 });
@@ -60,14 +60,10 @@ function Select({
         return;
       }
 
-      if (value[0] === searchTerm) {
-        setValue([option.name]);
-      } else {
-        setValue(prev => [...prev, option.name]);
-      }
+      setValue(prev => [...prev, option.name]);
       setFormValue(name, [...(getValues()[name] || []), option.uid]);
     },
-    [getValues, name, searchTerm, value, setFormValue]
+    [getValues, name, value, setFormValue]
   );
 
   const onClickSingle = useCallback(
@@ -83,33 +79,14 @@ function Select({
     [name, onClear, setFormValue, value]
   );
 
-  const onResultClick = useCallback(
-    (option: any) => {
-      setSearch('');
-      if (multiple) onClickMultiple(option);
-      if (!multiple) onClickSingle(option);
-    },
-    [multiple, onClickMultiple, onClickSingle]
-  );
-
-  const onSearch = useCallback(
-    (e: any) => {
-      if (!getValues()[name].length) {
-        setSearch(e?.target?.value);
-        setValue([e?.target?.value]);
-      }
-    },
-    [getValues, name]
-  );
-
   return (
     <>
-      {/* This input is just a search bar, this is why it's not registered in the form */}
+      {/* This input is for display purposes */}
       <StyledInput
         value={value.join(', ')}
         onFocus={toggleOpen}
         onBlur={toggleOpen}
-        onChange={onSearch}
+        onChange={() => null}
         placeholder=" "
         name={name}
         type="text"
@@ -130,13 +107,24 @@ function Select({
       />
 
       <Popover open={open} width="100%" top="65px">
+        <StyledInput
+          onChange={(e: any) => setSearch(e?.target?.value)}
+          value={searchTerm}
+          onFocus={toggleOpen}
+          onBlur={toggleOpen}
+          placeholder="Search..."
+          name={name}
+          type="text"
+        />
         {!options.length && <Box textAlign="center">No Results.</Box>}
-        {options.map((option: any) => (
+        {options.map(option => (
           <Result
             key={option.uid}
             data={option}
             selected={value.includes(option.name)}
-            onClick={() => onResultClick(option)}
+            onClick={() =>
+              multiple ? onClickMultiple(option) : onClickSingle(option)
+            }
           />
         ))}
       </Popover>
