@@ -70,7 +70,14 @@ router.patch('/:id', authorization, (req, res) =>
         throw new CustomError({ message: 'Artist not found.', code: 404 });
       }
 
-      return { data: { artist: artist._id } };
+      const features = await ArtistModel.find({ uid: { $in: data.features } });
+
+      return {
+        data: {
+          artist: artist._id,
+          features: features.map(x => x._id)
+        }
+      };
     },
     postUpdateFn: async (
       oldDoc: HydratedDocument<ISingle & Single>,
@@ -84,6 +91,24 @@ router.patch('/:id', authorization, (req, res) =>
         const newArtist = await ArtistModel.findOne({ uid: newDoc.artist.uid });
         if (newArtist) newArtist.add('singles', newDoc._id);
       }
+
+      const set1 = new Set(oldDoc.features.map(x => x.toString()));
+      const set2 = new Set(newDoc.features.map(x => x.toString()));
+      const added = Array.from(set2).filter(x => !set1.has(x));
+      const removed = Array.from(set1).filter(x => !set2.has(x));
+
+      await Promise.all(
+        added.map(async x => {
+          const artist = await ArtistModel.findById(x);
+          if (artist) await artist.add('features', newDoc._id);
+        })
+      );
+      await Promise.all(
+        removed.map(async x => {
+          const artist = await ArtistModel.findById(x);
+          if (artist) await artist.del('features', newDoc._id);
+        })
+      );
     }
   })
 );

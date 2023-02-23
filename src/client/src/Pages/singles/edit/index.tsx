@@ -16,14 +16,20 @@ export default function EditSingle() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const defaultValues = useMemo(() => single, [single]);
+  const defaultValues = useMemo(
+    () => ({
+      ...single,
+      artist: [single?.artist]
+    }),
+    [single]
+  );
 
   useEffect(() => {
     (async () => {
       try {
         const { data } = await Api.singles.get({
           id,
-          config: { params: { populate: 'artist' } }
+          config: { params: { populate: 'artist,features' } }
         });
         setSingle(data);
       } catch (error) {
@@ -35,9 +41,12 @@ export default function EditSingle() {
   }, [id, navigate]);
 
   const onSubmit = useCallback(
-    async (data: Single) => {
+    async (data: any) => {
       try {
-        const validData = SingleSchema.parse(data);
+        const validData = SingleSchema.parse({
+          ...data,
+          artist: data.artist[0]
+        });
         const { data: updated } = await Api.singles.patch({
           id,
           body: validData

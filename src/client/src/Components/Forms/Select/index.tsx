@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import useDebounce from '../../../Hooks/useDebounce';
 import { Label, Icon, Box, Popover } from '../../';
@@ -14,7 +14,12 @@ function Select({
   label,
   name
 }: SelectProps) {
-  const [value, setValue] = useState<string[]>(getValues()[name] || []);
+  const defaultValue = useMemo(
+    () => getValues()[name].map((x: any) => x?.name),
+    [getValues, name]
+  );
+
+  const [value, setValue] = useState<string[]>(defaultValue || []);
   const [searchTerm, setSearch] = useState<string>('');
   const [options, setOptions] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -22,8 +27,11 @@ function Select({
   const search = useDebounce({ value: searchTerm, delay: 500 });
 
   useEffect(() => {
-    setFormValue(name, getValues()[name]);
-  }, [setFormValue, getValues, name, multiple]);
+    setFormValue(
+      name,
+      getValues()[name].map((x: any) => x?.uid)
+    );
+  }, [setFormValue, name, getValues]);
 
   useEffect(() => {
     (async () => {

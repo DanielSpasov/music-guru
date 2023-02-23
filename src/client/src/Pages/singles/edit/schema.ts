@@ -24,6 +24,14 @@ export const schema: FormSchema = {
       fetchFn: ({ params }: any) => Api.artists.fetch({ config: { params } }),
       required: true,
       Component: Select
+    },
+    {
+      key: 'features',
+      label: 'Featured Artists',
+      fetchFn: ({ params }: any) => Api.artists.fetch({ config: { params } }),
+      Component: Select,
+      multiple: true,
+      required: false
     }
   ]
 };
