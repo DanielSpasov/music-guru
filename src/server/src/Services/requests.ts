@@ -65,7 +65,6 @@ export async function del<T>({ req, res, Model }: DelProps<T>) {
     await Model.findOneAndRemove({ uid: req.params.id });
     res.status(200).json({ message: 'Success' });
   } catch (error) {
-    console.log(error);
     errorHandler(req, res, error);
   }
 }
@@ -101,7 +100,6 @@ export async function post<T>({
     // and displays a toast notification (name)
     res.status(200).json({ message: 'Success', uid, name: validData.name });
   } catch (error) {
-    console.log(error);
     errorHandler(req, res, error);
   }
 }
@@ -152,7 +150,6 @@ export async function patch<T>({
       data: { uid: req.params.id, name: validData.name }
     });
   } catch (error) {
-    console.log(error);
     errorHandler(req, res, error);
   }
 }

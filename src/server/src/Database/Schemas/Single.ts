@@ -62,6 +62,7 @@ SingleSchema.pre('findOneAndRemove', async function (next) {
   artist.singles.pull(single._id);
   await artist.save();
 
+  // Remove feature refs from featured artists
   const features = await model('Artist').find({
     _id: { $in: single.features }
   });
