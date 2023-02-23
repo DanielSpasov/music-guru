@@ -18,6 +18,7 @@ export default function Box({ children, ...css }: BoxProps) {
 
 const StyledBox = styled('div')<BoxProps>`
   box-sizing: border-box;
+  color: ${({ theme: { colors } }) => colors.text};
 
   ${animations};
   ${essentials};
