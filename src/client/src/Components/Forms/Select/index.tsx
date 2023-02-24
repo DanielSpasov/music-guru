@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import useDebounce from '../../../Hooks/useDebounce';
-import { Label, Icon, Box, Popover } from '../../';
+import { Label, Icon, Box, Popover, Tag } from '../../';
 import { StyledInput } from '../Input/Styled';
 import { Result } from '../../Core/Search';
 import { SelectProps } from './helpers';
@@ -14,14 +14,14 @@ function Select({
   label,
   name
 }: SelectProps) {
-  const defaultValue = useMemo(
-    () => getValues()[name].map((x: any) => x?.name),
+  const defaultValue = useMemo<any[]>(
+    () => getValues()[name] || [],
     [getValues, name]
   );
 
-  const [options, setOptions] = useState<any[]>([]);
-  const [value, setValue] = useState<string[]>(defaultValue || []);
+  const [values, setValues] = useState<any[]>(defaultValue);
   const [searchTerm, setSearch] = useState<string>('');
+  const [options, setOptions] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
 
   const search = useDebounce({ value: searchTerm, delay: 500 });
@@ -47,54 +47,76 @@ function Select({
   );
 
   const onClear = useCallback(() => {
-    setValue([]);
+    setValues([]);
     setFormValue(name, []);
   }, [setFormValue, name]);
 
   const onClickMultiple = useCallback(
     (option: any) => {
-      if (value.includes(option.name)) {
-        const filterFn = (key: string) => (x: any) => x !== option[key];
-        setValue(prev => prev.filter(filterFn('name')));
-        setFormValue(name, getValues()[name].filter(filterFn('uid')));
+      if (values.find(x => x.uid === option.uid)) {
+        setValues(prev => prev.filter(x => x.name !== option.name));
+        setFormValue(
+          name,
+          getValues()[name].filter((x: any) => x !== option.uid)
+        );
         return;
       }
 
-      setValue(prev => [...prev, option.name]);
-      setFormValue(name, [...(getValues()[name] || []), option.uid]);
+      setValues(prev => [...prev, option]);
+      setFormValue(name, [...getValues()[name], option.uid]);
     },
-    [getValues, name, value, setFormValue]
+    [getValues, name, values, setFormValue]
   );
 
   const onClickSingle = useCallback(
     (option: any) => {
-      if (value.includes(option.name)) {
+      if (values.find(x => x.uid === option.uid)) {
         onClear();
         return;
       }
 
-      setValue([option.name]);
+      setValues([option]);
       setFormValue(name, [option.uid]);
     },
-    [name, onClear, setFormValue, value]
+    [name, onClear, setFormValue, values]
   );
 
   return (
     <>
-      {/* This input is for display purposes */}
+      {/* TAG BOX */}
+      <Box
+        zIndex="1"
+        position="absolute"
+        display="flex"
+        padding=".35em"
+        margin="0.5em 0"
+      >
+        {values.map(x => (
+          <Tag
+            key={x.uid}
+            onClick={() => (multiple ? onClickMultiple(x) : onClickSingle(x))}
+          >
+            {x.name}
+          </Tag>
+        ))}
+      </Box>
+
+      {/* THIS INPUT IS HERE FOR DISPLAY PURPOSES */}
       <StyledInput
-        value={value.join(', ')}
+        value={values.map(x => x.name).join(' ')}
+        onChange={() => null}
         onFocus={toggleOpen}
         onBlur={toggleOpen}
-        onChange={() => null}
         placeholder=" "
         name={name}
         type="text"
+        color="transparent"
       />
       <Label position="absolute" top="36px" left="10px">
         {label}
       </Label>
 
+      {/* CLEAR ALL */}
       <Icon
         model="x"
         type="solid"
@@ -106,6 +128,7 @@ function Select({
         top="2.25rem"
       />
 
+      {/* OPTIONS DROPDOWN */}
       <Popover open={open} width="100%" top="65px">
         <StyledInput
           onChange={(e: any) => setSearch(e?.target?.value)}
@@ -121,7 +144,7 @@ function Select({
           <Result
             key={option.uid}
             data={option}
-            selected={value.includes(option.name)}
+            selected={values.find(x => x.uid === option.uid)}
             onClick={() =>
               multiple ? onClickMultiple(option) : onClickSingle(option)
             }
