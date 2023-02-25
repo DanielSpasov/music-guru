@@ -14,7 +14,7 @@ import {
   Text
 } from '../../../Components';
 
-export default function SingleArtist() {
+export default function ArtistDetails() {
   const [loading, setLoading] = useState<boolean>(true);
   const [artist, setArtist] = useState<Artist>();
 

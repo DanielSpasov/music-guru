@@ -2,47 +2,54 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
 
-import { Box, Card, Heading, Image, PageLayout } from '../../../Components';
+import {
+  Box,
+  Card,
+  Heading,
+  Image,
+  List,
+  PageLayout
+} from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import useActions from '../useActions';
-import { Album } from '../helpers';
+import { Single } from '../helpers';
 import Api from '../../../Api';
 
-export default function SingleAlbum() {
+export default function SingleDetails() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [album, setAlbum] = useState<Album>();
+  const [single, setSingle] = useState<Single>();
 
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const deleteAlbum = useCallback(async () => {
+  const deleteSingle = useCallback(async () => {
     try {
       setLoading(true);
-      if (!album?.uid) return;
-      await Api.albums.del({ id: album.uid });
-      navigate('/albums');
-      toast.success(`Successfully deleted album: ${album.name}`);
+      if (!single?.uid) return;
+      await Api.singles.del({ id: single.uid });
+      navigate('/singles');
+      toast.success(`Successfully deleted single: ${single?.name}`);
     } catch (error) {
       errorHandler(error, navigate);
     } finally {
       setLoading(false);
     }
-  }, [album, navigate]);
+  }, [single, navigate]);
 
   const actions = useActions({
-    model: 'single-album',
-    data: album,
-    deleteAlbum
+    model: 'single-single',
+    data: single,
+    deleteSingle
   });
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.albums.get({
+        const { data } = await Api.singles.get({
           id,
-          config: { params: { populate: 'artist,created_by' } }
+          config: { params: { populate: 'artist,created_by,features' } }
         });
-        setAlbum(data);
+        setSingle(data);
       } catch (error) {
         errorHandler(error, navigate);
       } finally {
@@ -52,28 +59,33 @@ export default function SingleAlbum() {
   }, [id, navigate]);
 
   return (
-    <PageLayout title={album?.name || ''} loading={loading} actions={actions}>
+    <PageLayout title={single?.name || ''} loading={loading} actions={actions}>
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
         margin="0 5%"
       >
-        <Image src={album?.image || ''} alt={album?.name} width="350px" />
+        <Image src={single?.image || ''} alt={single?.name} width="350px" />
 
-        {album && (
+        {single && (
           <Box width="100%" margin="0.5em">
             <Box display="flex" justifyContent="space-between">
               <Box width="50%">
                 <Heading title="Artist" />
                 <Card
-                  image={album.artist.image}
-                  title={album.artist.name}
-                  onClick={() => navigate(`/artists/${album.artist.uid}`)}
+                  image={single.artist.image}
+                  title={single.artist.name}
+                  onClick={() => navigate(`/artists/${single?.artist.uid}`)}
                 />
               </Box>
               <Box width="50%">
-                <Heading title="Songs" />
+                <Heading title="Featured Artists" />
+                {Boolean(single.features.length) && (
+                  <Box display="flex" flexWrap="wrap" justifyContent="center">
+                    <List data={single.features} model="artists" />
+                  </Box>
+                )}
               </Box>
             </Box>
           </Box>
