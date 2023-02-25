@@ -31,7 +31,7 @@ function Select({
   useEffect(() => {
     (async () => {
       if (!fetchFn) return;
-      const { data } = await fetchFn({ params: { search } });
+      const { data } = await fetchFn({ params: { search, limit: 5 } });
       setOptions(data);
     })();
   }, [fetchFn, search]);
