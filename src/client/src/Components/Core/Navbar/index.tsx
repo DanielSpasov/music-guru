@@ -4,6 +4,7 @@ import { useContext } from 'react';
 
 import { Box, Image, Link, Dropdown, Search } from '../../';
 import { AuthContext } from '../../../Contexts/Auth';
+import ThemeSwitcher from '../ThemeSwitcher';
 
 export default function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -64,8 +65,8 @@ export default function Navbar() {
       </Box>
       <Box display="flex" alignContent="center" height="60px">
         <Search models={['artists', 'singles']} width="250px" />
-        <Dropdown label="Settings" icon={{ model: 'gear', type: 'solid' }}>
-          <Link to="/theme">Theme</Link>
+        <Dropdown label="Settings" icon={{ model: 'palette', type: 'solid' }}>
+          <ThemeSwitcher />
         </Dropdown>
         <Dropdown label="User Settings" icon={{ model: 'user', type: 'solid' }}>
           <Link to="/me">User</Link>

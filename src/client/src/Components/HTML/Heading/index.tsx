@@ -17,7 +17,6 @@ export default function Heading({ size = 'big', title, ...css }: HeadingProps) {
 const H1 = styled('h1')<HeadingProps>`
   text-align: center;
   transition: 0.3s;
-  color: white;
   margin: 10px;
 
   ${padding};
@@ -33,7 +32,6 @@ const H1 = styled('h1')<HeadingProps>`
 const H2 = styled('h2')<HeadingProps>`
   text-align: center;
   transition: 0.3s;
-  color: white;
   margin: 10px;
 
   ${padding};
@@ -49,7 +47,6 @@ const H2 = styled('h2')<HeadingProps>`
 const H3 = styled('h3')<HeadingProps>`
   text-align: center;
   transition: 0.3s;
-  color: white;
   margin: 10px;
 
   ${padding};
