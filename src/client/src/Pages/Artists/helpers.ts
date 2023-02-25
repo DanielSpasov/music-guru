@@ -10,7 +10,7 @@ export const artistSchema = z.object({
 export type ArtistModel = z.infer<typeof artistSchema>;
 export interface Artist extends ArtistModel {
   uid: string;
-  created: Date;
+  created_at: Date;
   created_by: User;
   albums: [];
   mixtapes: [];

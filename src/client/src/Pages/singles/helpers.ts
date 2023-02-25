@@ -23,7 +23,7 @@ export const SingleSchema = Schema.extend({
 type SingleModel = z.infer<typeof Schema>;
 export interface Single extends SingleModel {
   uid: string;
-  created: Date;
+  created_at: Date;
   created_by: User;
   artist: Artist;
   features: Artist[];
