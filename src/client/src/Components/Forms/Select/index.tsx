@@ -1,7 +1,7 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 
-import useDebounce from '../../../Hooks/useDebounce';
 import { Label, Icon, Box, Popover, Tag } from '../../';
+import useDebounce from '../../../Hooks/useDebounce';
 import { StyledInput } from '../Input/Styled';
 import { Result } from '../../Core/Search';
 import { SelectProps } from './helpers';
@@ -14,12 +14,7 @@ function Select({
   label,
   name
 }: SelectProps) {
-  const defaultValue = useMemo<any[]>(
-    () => getValues()[name] || [],
-    [getValues, name]
-  );
-
-  const [values, setValues] = useState<any[]>(defaultValue);
+  const [values, setValues] = useState<any[]>(getValues()?.[name] || []);
   const [searchTerm, setSearch] = useState<string>('');
   const [options, setOptions] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -29,7 +24,7 @@ function Select({
   useEffect(() => {
     setFormValue(
       name,
-      getValues()[name].map((x: any) => x?.uid)
+      getValues()[name].map((x: any) => x.uid)
     );
   }, [setFormValue, name, getValues]);
 
@@ -51,34 +46,33 @@ function Select({
     setFormValue(name, []);
   }, [setFormValue, name]);
 
-  const onClickMultiple = useCallback(
+  const onRemove = useCallback(
     (option: any) => {
-      if (values.find(x => x.uid === option.uid)) {
-        setValues(prev => prev.filter(x => x.name !== option.name));
-        setFormValue(
-          name,
-          getValues()[name].filter((x: any) => x !== option.uid)
-        );
-        return;
-      }
-
-      setValues(prev => [...prev, option]);
-      setFormValue(name, [...getValues()[name], option.uid]);
+      setValues(prev => prev.filter(x => x.name !== option.name));
+      setFormValue(
+        name,
+        getValues()[name].filter((x: any) => x !== option.uid)
+      );
     },
-    [getValues, name, values, setFormValue]
+    [setFormValue, getValues, name]
   );
 
-  const onClickSingle = useCallback(
+  const onClick = useCallback(
     (option: any) => {
       if (values.find(x => x.uid === option.uid)) {
-        onClear();
+        onRemove(option);
         return;
       }
 
-      setValues([option]);
-      setFormValue(name, [option.uid]);
+      if (multiple) {
+        setValues(prev => [...prev, option]);
+        setFormValue(name, [...getValues()[name], option.uid]);
+      } else {
+        setValues([option]);
+        setFormValue(name, [option.uid]);
+      }
     },
-    [name, onClear, setFormValue, values]
+    [getValues, setFormValue, name, multiple, onRemove, values]
   );
 
   return (
@@ -92,10 +86,7 @@ function Select({
         margin="0.5em 0"
       >
         {values.map(x => (
-          <Tag
-            key={x.uid}
-            onClick={() => (multiple ? onClickMultiple(x) : onClickSingle(x))}
-          >
+          <Tag key={x.uid} onClick={() => onRemove(x)}>
             {x.name}
           </Tag>
         ))}
@@ -145,9 +136,7 @@ function Select({
             key={option.uid}
             data={option}
             selected={values.find(x => x.uid === option.uid)}
-            onClick={() =>
-              multiple ? onClickMultiple(option) : onClickSingle(option)
-            }
+            onClick={() => onClick(option)}
           />
         ))}
       </Popover>
