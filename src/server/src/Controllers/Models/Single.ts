@@ -78,37 +78,6 @@ router.patch('/:id', authorization, (req, res) =>
           features: features.map(x => x._id)
         }
       };
-    },
-    postUpdateFn: async (
-      oldDoc: HydratedDocument<ISingle & Single>,
-      newDoc: HydratedDocument<ISingle & Single>
-    ) => {
-      await oldDoc.populate('artist');
-      await newDoc.populate('artist');
-      if (oldDoc.artist.uid !== newDoc.artist.uid) {
-        const oldArtist = await ArtistModel.findOne({ uid: oldDoc.artist.uid });
-        if (oldArtist) oldArtist.del('singles', newDoc._id);
-        const newArtist = await ArtistModel.findOne({ uid: newDoc.artist.uid });
-        if (newArtist) newArtist.add('singles', newDoc._id);
-      }
-
-      const set1 = new Set(oldDoc.features.map(x => x.toString()));
-      const set2 = new Set(newDoc.features.map(x => x.toString()));
-      const added = Array.from(set2).filter(x => !set1.has(x));
-      const removed = Array.from(set1).filter(x => !set2.has(x));
-
-      await Promise.all(
-        added.map(async x => {
-          const artist = await ArtistModel.findById(x);
-          if (artist) await artist.add('features', newDoc._id);
-        })
-      );
-      await Promise.all(
-        removed.map(async x => {
-          const artist = await ArtistModel.findById(x);
-          if (artist) await artist.del('features', newDoc._id);
-        })
-      );
     }
   })
 );
