@@ -1,45 +1,51 @@
 import { Schema, model, InferSchemaType } from 'mongoose';
+import { defaultTransform } from '../helpers';
 
-const AlbumSchema = new Schema({
-  uid: {
-    type: String,
-    required: true,
-    unique: true,
-    minlength: 8,
-    maxlength: 8,
-    immutable: true
+const AlbumSchema = new Schema(
+  {
+    uid: {
+      type: String,
+      required: true,
+      unique: true,
+      minlength: 8,
+      maxlength: 8,
+      immutable: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    image: {
+      type: String,
+      required: true
+    },
+    created_at: {
+      type: Date,
+      immutable: true,
+      default: () => Date.now()
+    },
+    created_by: {
+      immutable: true,
+      required: true,
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    artist: {
+      required: true,
+      type: Schema.Types.ObjectId,
+      ref: 'Artist'
+    },
+    discs: [
+      {
+        name: String,
+        songs: [{ name: String }]
+      }
+    ]
   },
-  name: {
-    type: String,
-    required: true
-  },
-  image: {
-    type: String,
-    required: true
-  },
-  created_at: {
-    type: Date,
-    immutable: true,
-    default: () => Date.now()
-  },
-  created_by: {
-    immutable: true,
-    required: true,
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  artist: {
-    required: true,
-    type: Schema.Types.ObjectId,
-    ref: 'Artist'
-  },
-  discs: [
-    {
-      name: String,
-      songs: [{ name: String }]
-    }
-  ]
-});
+  {
+    toJSON: { transform: defaultTransform }
+  }
+);
 
 // On Album 'Delete'
 AlbumSchema.pre('findOneAndRemove', async function (next) {
