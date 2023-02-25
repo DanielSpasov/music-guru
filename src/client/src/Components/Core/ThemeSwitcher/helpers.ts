@@ -22,4 +22,5 @@ export type Theme = {
 export type ThemeProps = {
   theme: Theme;
   onClick: () => SetStateAction<Themes>;
+  isActive: boolean;
 };

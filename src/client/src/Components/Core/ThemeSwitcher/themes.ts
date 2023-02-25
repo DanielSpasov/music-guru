@@ -36,7 +36,7 @@ const darkPurple: Theme = {
 };
 
 const darkRed: Theme = {
-  name: 'dark',
+  name: 'darkRed',
   colors: {
     ...staticColors,
     text: 'white',

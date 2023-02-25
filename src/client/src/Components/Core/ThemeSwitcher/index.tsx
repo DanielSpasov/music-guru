@@ -2,31 +2,36 @@ import { ThemeContext } from 'styled-components';
 import { useContext } from 'react';
 
 import { ThemeProps } from './helpers';
-import { Box } from '../../HTML';
+import { Box, Icon } from '../../HTML';
 import themes from './themes';
 
 export default function ThemeSwitcher() {
-  const { setTheme } = useContext(ThemeContext);
+  const { setTheme, name: current } = useContext(ThemeContext);
 
   return (
     <Box>
       {Object.entries(themes).map(([name, theme]) => (
-        <PreviewTheme key={name} theme={theme} onClick={() => setTheme(name)} />
+        <PreviewTheme
+          key={name}
+          theme={theme}
+          onClick={() => setTheme(name)}
+          isActive={name === current}
+        />
       ))}
     </Box>
   );
 }
 
-const PreviewTheme = ({ theme, onClick }: ThemeProps) => {
+const PreviewTheme = ({ theme, onClick, isActive }: ThemeProps) => {
   return (
     <Box
       onClick={onClick}
-      width="150px"
+      width="190px"
       height="50px"
       margin=".5em"
       backgroundColor={theme.colors.baseLight}
     >
-      <Box pointerEvents="none">
+      <Box pointerEvents="none" width="150px">
         <Box
           backgroundColor={theme.colors.primary}
           position="absolute"
@@ -95,6 +100,16 @@ const PreviewTheme = ({ theme, onClick }: ThemeProps) => {
           />
         </Box>
       </Box>
+      {isActive && (
+        <Icon
+          model="check"
+          type="solid"
+          position="absolute"
+          top="10px"
+          right="10px"
+          color={theme.colors.success}
+        />
+      )}
     </Box>
   );
 };
