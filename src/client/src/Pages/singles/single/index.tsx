@@ -2,7 +2,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
 
-import { Box, Card, Heading, Image, PageLayout } from '../../../Components';
+import {
+  Box,
+  Card,
+  Heading,
+  Image,
+  List,
+  PageLayout
+} from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import useActions from '../useActions';
 import { Single } from '../helpers';
@@ -61,29 +68,28 @@ export default function SingleSingle() {
       >
         <Image src={single?.image || ''} alt={single?.name} width="350px" />
 
-        <Box width="100%" margin="0.5em">
-          <Box display="flex" justifyContent="space-between">
-            <Box>
-              <Heading title="Artist" />
-              <Card
-                image={single?.artist.image || ''}
-                title={single?.artist.name || ''}
-                onClick={() => navigate(`/artists/${single?.artist.uid}`)}
-              />
-            </Box>
-            <Box>
-              <Heading title="Featured Artists" />
-              {single?.features.map(artist => (
+        {single && (
+          <Box width="100%" margin="0.5em">
+            <Box display="flex" justifyContent="space-between">
+              <Box width="50%">
+                <Heading title="Artist" />
                 <Card
-                  key={artist.uid}
-                  image={artist.image || ''}
-                  title={artist.name || ''}
-                  onClick={() => navigate(`/artists/${artist.uid}`)}
+                  image={single.artist.image}
+                  title={single.artist.name}
+                  onClick={() => navigate(`/artists/${single?.artist.uid}`)}
                 />
-              ))}
+              </Box>
+              <Box width="50%">
+                <Heading title="Featured Artists" />
+                {Boolean(single.features.length) && (
+                  <Box display="flex" flexWrap="wrap" justifyContent="center">
+                    <List data={single.features} model="artists" />
+                  </Box>
+                )}
+              </Box>
             </Box>
           </Box>
-        </Box>
+        )}
       </Box>
     </PageLayout>
   );

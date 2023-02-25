@@ -1,16 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Api from '../../../Api';
+import { useEffect, useState } from 'react';
 
-import { Box, Card, PageLayout } from '../../../Components';
+import { Box, List, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
-import { Single } from '../helpers';
 import useActions from '../useActions';
+import { Single } from '../helpers';
+import Api from '../../../Api';
 
 export default function Singles() {
   const actions = useActions({ model: 'singles-list' });
-  const [singles, setSingles] = useState<Single[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [singles, setSingles] = useState<Single[]>([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,22 +27,10 @@ export default function Singles() {
     })();
   }, [navigate]);
 
-  const onClick = useCallback(
-    (uid: string) => navigate(`/singles/${uid}`),
-    [navigate]
-  );
-
   return (
-    <PageLayout title="Singles" loading={loading} actions={actions}>
+    <PageLayout title="Singles" actions={actions} loading={loading}>
       <Box display="flex" margin="0 5%" flexWrap="wrap">
-        {singles.map(single => (
-          <Card
-            key={single.uid}
-            title={single.name}
-            image={single.image}
-            onClick={() => onClick(single.uid)}
-          />
-        ))}
+        <List data={singles} model="singles" />
       </Box>
     </PageLayout>
   );
