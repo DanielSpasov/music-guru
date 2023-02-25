@@ -61,6 +61,23 @@ AlbumSchema.pre('findOneAndRemove', async function (next) {
   next();
 });
 
+AlbumSchema.pre('findOneAndUpdate', async function (next) {
+  const album = await this.model.findOne(this.getFilter()).populate('artist');
+  if (!album) return next();
+  // @ts-ignore
+  const updated = this._update;
+
+  // Update Artist ref
+  const oldArtist = await model('Artist').findOne({ uid: album.artist.uid });
+  const newArtist = await model('Artist').findById(updated.artist);
+  if (album.artist.uid !== newArtist.uid) {
+    if (oldArtist) oldArtist.del('albums', album._id);
+    if (newArtist) newArtist.add('albums', album._id);
+  }
+
+  next();
+});
+
 export type IAlbum = InferSchemaType<typeof AlbumSchema>;
 
 export default model<IAlbum>('Album', AlbumSchema);

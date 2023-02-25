@@ -25,6 +25,11 @@ export default function useActions({
     case 'single-album':
       return [
         {
+          icon: { model: 'pen-to-square', type: 'regular' },
+          perform: () => navigate('edit'),
+          disabled: uid !== data?.created_by.uid
+        },
+        {
           icon: { model: 'trash', type: 'solid' },
           perform: deleteAlbum ? deleteAlbum : () => null,
           disabled: uid !== data?.created_by.uid

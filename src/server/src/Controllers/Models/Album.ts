@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
 import { AlbumModel, ArtistModel, IAlbum } from '../../Database/Schemas';
-import { fetch, post, get, del } from '../../Services/requests';
+import { fetch, post, get, del, patch } from '../../Services/requests';
 import { CustomError } from '../../Error/CustomError';
-import { AlbumSchema } from '../../Types/Album';
+import { Album, AlbumSchema } from '../../Types/Album';
 import { HydratedDocument } from 'mongoose';
 
 const router = Router();
@@ -41,6 +41,23 @@ router.post('/', (req, res) =>
       }
 
       await artist.add('albums', data._id);
+    }
+  })
+);
+
+router.patch('/:id', (req, res) =>
+  patch({
+    req,
+    res,
+    Model: AlbumModel,
+    ValidationSchema: AlbumSchema,
+    preUpdateFn: async (data: Album) => {
+      const artist = await ArtistModel.findOne({ uid: data.artist });
+      if (!artist) {
+        throw new CustomError({ message: 'Artist not found.', code: 404 });
+      }
+
+      return { data: { artist: artist._id } };
     }
   })
 );

@@ -58,6 +58,11 @@
             "path": "index",
             "filePath": "/albums/single",
             "private": false
+          },
+          {
+            "path": "edit",
+            "filePath": "/albums/edit",
+            "private": true
           }
         ]
       }

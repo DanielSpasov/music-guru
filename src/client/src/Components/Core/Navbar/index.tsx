@@ -64,7 +64,7 @@ export default function Navbar() {
         </Link>
       </Box>
       <Box display="flex" alignContent="center" height="60px">
-        <Search models={['artists', 'singles']} width="250px" />
+        <Search models={['artists', 'singles', 'albums']} width="250px" />
         <Dropdown label="Settings" icon={{ model: 'palette', type: 'solid' }}>
           <ThemeSwitcher />
         </Dropdown>
