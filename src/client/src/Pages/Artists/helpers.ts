@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { User } from '../auth/helpers';
-import { Single } from '../singles/helpers';
+import { Song } from '../songs/helpers';
 
 export const ArtistSchema = z.object({
   name: z.string(),
@@ -14,8 +14,8 @@ export interface Artist extends ArtistModel {
   created_by: User;
   albums: [];
   mixtapes: [];
-  singles: Single[];
-  features: Single[];
+  songs: Song[];
+  features: Song[];
 }
 
 export type UseActionsProps = {

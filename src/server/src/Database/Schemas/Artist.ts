@@ -2,7 +2,7 @@ import { Schema, model, Types, InferSchemaType, Model } from 'mongoose';
 
 import { defaultTransform } from '../helpers';
 
-type DiscographyTypes = 'singles' | 'features' | 'albums' | 'mixtapes';
+type DiscographyTypes = 'songs' | 'features' | 'albums' | 'mixtapes';
 
 const ArtistSchema = new Schema(
   {
@@ -45,16 +45,16 @@ const ArtistSchema = new Schema(
         ref: 'Mixtape'
       }
     ],
-    singles: [
+    songs: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Single'
+        ref: 'Song'
       }
     ],
     features: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Single'
+        ref: 'Song'
       }
     ]
   },
@@ -79,8 +79,8 @@ const ArtistSchema = new Schema(
 
 export type IArtist = InferSchemaType<typeof ArtistSchema>;
 export type IArtistMethods = {
-  add: (type: DiscographyTypes, single_id: Types.ObjectId) => Promise<void>;
-  del: (type: DiscographyTypes, single_id: Types.ObjectId) => Promise<void>;
+  add: (type: DiscographyTypes, song_id: Types.ObjectId) => Promise<void>;
+  del: (type: DiscographyTypes, song_id: Types.ObjectId) => Promise<void>;
 };
 
 export default model<IArtist, Model<IArtist, {}, IArtistMethods>>(

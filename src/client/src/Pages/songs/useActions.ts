@@ -8,13 +8,13 @@ import { UseActionsProps } from './helpers';
 export default function useActions({
   model,
   data,
-  deleteSingle
+  deleteSong
 }: UseActionsProps): Action[] {
   const { isAuthenticated, uid } = useContext(AuthContext);
   const navigate = useNavigate();
 
   switch (model) {
-    case 'singles-list':
+    case 'song-list':
       return [
         {
           icon: { model: 'plus', type: 'solid' },
@@ -22,7 +22,7 @@ export default function useActions({
           disabled: !isAuthenticated
         }
       ];
-    case 'single-single':
+    case 'song-details':
       return [
         {
           icon: { model: 'pen-to-square', type: 'regular' },
@@ -31,7 +31,7 @@ export default function useActions({
         },
         {
           icon: { model: 'trash', type: 'solid' },
-          perform: deleteSingle ? deleteSingle : () => null,
+          perform: deleteSong ? deleteSong : () => null,
           disabled: uid !== data?.created_by.uid
         }
       ];

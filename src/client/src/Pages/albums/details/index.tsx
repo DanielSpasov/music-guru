@@ -30,7 +30,7 @@ export default function AlbumDetails() {
   }, [album, navigate]);
 
   const actions = useActions({
-    model: 'single-album',
+    model: 'album-details',
     data: album,
     deleteAlbum
   });

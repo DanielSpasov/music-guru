@@ -1,9 +1,9 @@
 import Api from '../../../Api';
 import { Album } from '../../../Pages/albums/helpers';
 import { Artist } from '../../../Pages/artists/helpers';
-import { Single } from '../../../Pages/singles/helpers';
+import { Song } from '../../../Pages/songs/helpers';
 
-export type Model = Single | Artist | Album;
+export type Model = Song | Artist | Album;
 type ModelKeys = Exclude<keyof typeof Api, 'prototype'>;
 
 export type ListProps = {

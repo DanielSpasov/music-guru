@@ -55,16 +55,12 @@ export default function Navbar() {
         >
           Mixtapes
         </Link>
-        <Link
-          to="/singles"
-          type="navlink"
-          isActive={pathname.includes('/singles')}
-        >
-          Singles
+        <Link to="/songs" type="navlink" isActive={pathname.includes('/songs')}>
+          Songs
         </Link>
       </Box>
       <Box display="flex" alignContent="center" height="60px">
-        <Search models={['artists', 'singles', 'albums']} width="250px" />
+        <Search models={['artists', 'songs', 'albums']} width="250px" />
         <Dropdown label="Settings" icon={{ model: 'palette', type: 'solid' }}>
           <ThemeSwitcher />
         </Dropdown>

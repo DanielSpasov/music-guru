@@ -15,13 +15,13 @@ const UidSchema = z
   .min(8, { message: 'Invalid Artist.' })
   .max(8, { message: 'Invalid Artist.' });
 
-export const SingleSchema = Schema.extend({
+export const SongSchema = Schema.extend({
   artist: UidSchema,
   features: z.array(UidSchema).optional()
 });
 
-type SingleModel = z.infer<typeof Schema>;
-export interface Single extends SingleModel {
+type SongModel = z.infer<typeof Schema>;
+export interface Song extends SongModel {
   uid: string;
   created_at: Date;
   created_by: User;
@@ -33,6 +33,6 @@ export interface Single extends SingleModel {
 
 export type UseActionsProps = {
   model: string;
-  data?: Single;
-  deleteSingle?: Function;
+  data?: Song;
+  deleteSong?: Function;
 };

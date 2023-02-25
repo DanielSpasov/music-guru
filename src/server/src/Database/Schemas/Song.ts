@@ -2,7 +2,7 @@ import { Schema, model, InferSchemaType } from 'mongoose';
 
 import { defaultTransform } from '../helpers';
 
-const SingleSchema = new Schema(
+const SongSchema = new Schema(
   {
     uid: {
       type: String,
@@ -48,32 +48,32 @@ const SingleSchema = new Schema(
   }
 );
 
-export type ISingle = InferSchemaType<typeof SingleSchema>;
+export type ISong = InferSchemaType<typeof SongSchema>;
 
-// On Single 'Delete'
-SingleSchema.pre('findOneAndRemove', async function (next) {
-  const single = await this.model.findOne(this.getFilter()).populate('artist');
-  if (!single) return next();
+// On Song 'Delete'
+SongSchema.pre('findOneAndRemove', async function (next) {
+  const song = await this.model.findOne(this.getFilter()).populate('artist');
+  if (!song) return next();
 
-  // Remove Single ref from Artist
-  const artist = await model('Artist').findById(single.artist._id);
+  // Remove Song ref from Artist
+  const artist = await model('Artist').findById(song.artist._id);
   if (artist) {
-    await artist.del('singles', single._id);
+    await artist.del('songs', song._id);
   }
 
-  // Remove Single refs from Artists features list
+  // Remove Song refs from Artists features list
   const features = await model('Artist').find({
-    _id: { $in: single.features }
+    _id: { $in: song.features }
   });
   if (features.length) {
-    await Promise.all(features.map(x => x.del('features', single._id)));
+    await Promise.all(features.map(x => x.del('features', song._id)));
   }
 
   next();
 });
 
-// On Single 'Update'
-SingleSchema.pre('findOneAndUpdate', async function (next) {
+// On Song 'Update'
+SongSchema.pre('findOneAndUpdate', async function (next) {
   const doc = await this.model.findOne(this.getFilter()).populate('artist');
   if (!doc) return next();
   // @ts-ignore
@@ -83,11 +83,11 @@ SingleSchema.pre('findOneAndUpdate', async function (next) {
   const oldArtist = await model('Artist').findOne({ uid: doc.artist.uid });
   const newArtist = await model('Artist').findById(updated.artist);
   if (doc.artist.uid !== newArtist.uid) {
-    if (oldArtist) oldArtist.del('singles', doc._id);
-    if (newArtist) newArtist.add('singles', doc._id);
+    if (oldArtist) oldArtist.del('songs', doc._id);
+    if (newArtist) newArtist.add('songs', doc._id);
   }
 
-  // Update Artists features ref to the single
+  // Update Artists features ref to the song
   const oldFeatures = new Set(doc.features.map((x: any) => x.toString()));
   const newFeatures = new Set(updated.features.map((x: any) => x.toString()));
 
@@ -104,4 +104,4 @@ SingleSchema.pre('findOneAndUpdate', async function (next) {
   next();
 });
 
-export default model<ISingle>('Single', SingleSchema);
+export default model<ISong>('Song', SongSchema);

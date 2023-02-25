@@ -18,7 +18,7 @@ export default function useActions({ model, data }: UseActionsProps): Action[] {
           disabled: !isAuthenticated
         }
       ];
-    case 'single-artist':
+    case 'artist-details':
       return [
         {
           icon: { model: 'plus', type: 'solid' },
@@ -37,8 +37,8 @@ export default function useActions({ model, data }: UseActionsProps): Action[] {
               disabled: uid !== data?.created_by.uid
             },
             {
-              label: 'Single',
-              perform: () => navigate('add-single'),
+              label: 'Song',
+              perform: () => navigate('add-song'),
               disabled: uid !== data?.created_by.uid
             }
           ]

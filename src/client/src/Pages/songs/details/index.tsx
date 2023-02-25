@@ -12,44 +12,44 @@ import {
 } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import useActions from '../useActions';
-import { Single } from '../helpers';
+import { Song } from '../helpers';
 import Api from '../../../Api';
 
-export default function SingleDetails() {
+export default function SongDetails() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [single, setSingle] = useState<Single>();
+  const [song, setSong] = useState<Song>();
 
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const deleteSingle = useCallback(async () => {
+  const deleteSong = useCallback(async () => {
     try {
       setLoading(true);
-      if (!single?.uid) return;
-      await Api.singles.del({ id: single.uid });
-      navigate('/singles');
-      toast.success(`Successfully deleted single: ${single?.name}`);
+      if (!song?.uid) return;
+      await Api.songs.del({ id: song.uid });
+      navigate('/songs');
+      toast.success(`Successfully deleted song: ${song?.name}`);
     } catch (error) {
       errorHandler(error, navigate);
     } finally {
       setLoading(false);
     }
-  }, [single, navigate]);
+  }, [song, navigate]);
 
   const actions = useActions({
-    model: 'single-single',
-    data: single,
-    deleteSingle
+    model: 'song-details',
+    data: song,
+    deleteSong
   });
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.singles.get({
+        const { data } = await Api.songs.get({
           id,
           config: { params: { populate: 'artist,created_by,features' } }
         });
-        setSingle(data);
+        setSong(data);
       } catch (error) {
         errorHandler(error, navigate);
       } finally {
@@ -59,31 +59,31 @@ export default function SingleDetails() {
   }, [id, navigate]);
 
   return (
-    <PageLayout title={single?.name || ''} loading={loading} actions={actions}>
+    <PageLayout title={song?.name || ''} loading={loading} actions={actions}>
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
         margin="0 5%"
       >
-        <Image src={single?.image || ''} alt={single?.name} width="350px" />
+        <Image src={song?.image || ''} alt={song?.name} width="350px" />
 
-        {single && (
+        {song && (
           <Box width="100%" margin="0.5em">
             <Box display="flex" justifyContent="space-between">
               <Box width="50%">
                 <Heading title="Artist" />
                 <Card
-                  image={single.artist.image}
-                  title={single.artist.name}
-                  onClick={() => navigate(`/artists/${single?.artist.uid}`)}
+                  image={song.artist.image}
+                  title={song.artist.name}
+                  onClick={() => navigate(`/artists/${song?.artist.uid}`)}
                 />
               </Box>
               <Box width="50%">
                 <Heading title="Featured Artists" />
-                {Boolean(single.features.length) && (
+                {Boolean(song.features.length) && (
                   <Box display="flex" flexWrap="wrap" justifyContent="center">
-                    <List data={single.features} model="artists" />
+                    <List data={song.features} model="artists" />
                   </Box>
                 )}
               </Box>

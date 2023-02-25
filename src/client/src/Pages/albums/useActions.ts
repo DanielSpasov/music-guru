@@ -22,7 +22,7 @@ export default function useActions({
           disabled: !isAuthenticated
         }
       ];
-    case 'single-album':
+    case 'album-details':
       return [
         {
           icon: { model: 'pen-to-square', type: 'regular' },

@@ -18,7 +18,7 @@ export default function ArtistDetails() {
   const [loading, setLoading] = useState<boolean>(true);
   const [artist, setArtist] = useState<Artist>();
 
-  const actions = useActions({ model: 'single-artist', data: artist });
+  const actions = useActions({ model: 'artist-details', data: artist });
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ export default function ArtistDetails() {
       try {
         const { data } = await Api.artists.get({
           id,
-          config: { params: { populate: 'singles,created_by,features,albums' } }
+          config: { params: { populate: 'songs,created_by,features,albums' } }
         });
         setArtist(data);
       } catch (error) {
@@ -44,7 +44,7 @@ export default function ArtistDetails() {
       Boolean(artist.features.length) ||
       Boolean(artist.mixtapes.length) ||
       Boolean(artist.albums.length) ||
-      Boolean(artist.singles.length)
+      Boolean(artist.songs.length)
     );
   }, [artist]);
 
@@ -69,10 +69,10 @@ export default function ArtistDetails() {
                 </Summary>
               )}
 
-              {Boolean(artist.singles.length) && (
-                <Summary label="Singles" open>
+              {Boolean(artist.songs.length) && (
+                <Summary label="Songs" open>
                   <Box display="flex" flexWrap="wrap">
-                    <List data={artist.singles} model="singles" />
+                    <List data={artist.songs} model="songs" />
                   </Box>
                 </Summary>
               )}
@@ -86,7 +86,7 @@ export default function ArtistDetails() {
               {Boolean(artist.features.length) && (
                 <Summary label="Features" open>
                   <Box display="flex" flexWrap="wrap">
-                    <List data={artist.features} model="singles" />
+                    <List data={artist.features} model="songs" />
                   </Box>
                 </Summary>
               )}

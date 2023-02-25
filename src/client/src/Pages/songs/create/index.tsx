@@ -5,25 +5,25 @@ import { toast } from 'react-toastify';
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
-import { SingleSchema } from '../helpers';
+import { SongSchema } from '../helpers';
 import { schema } from './schema';
 import Api from '../../../Api';
 
-export default function CreateSingle() {
+export default function CreateSong() {
   const [errors, setErrors] = useState<FormError[]>([]);
   const navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (data: any) => {
       try {
-        const validData = SingleSchema.parse({
+        const validData = SongSchema.parse({
           ...data,
           artist: data.artist[0]
         });
-        const res = await Api.singles.post({ body: validData });
+        const res = await Api.songs.post({ body: validData });
         setErrors([]);
-        toast.success(`Successfully created single: ${res.name}`);
-        navigate(`/singles/${res.uid}`);
+        toast.success(`Successfully created song: ${res.name}`);
+        navigate(`/songs/${res.uid}`);
       } catch (error) {
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);
@@ -33,10 +33,9 @@ export default function CreateSingle() {
   );
 
   return (
-    <PageLayout title="Create Single" showHeader={false}>
+    <PageLayout title="Create Song" showHeader={false}>
       <Form
-        defaultValues={{ artist: [], features: [] }}
-        header="Create Single"
+        header="Create Song"
         onSubmit={onSubmit}
         schema={schema}
         errors={errors}

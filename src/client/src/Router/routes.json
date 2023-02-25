@@ -74,17 +74,17 @@
     "private": false
   },
   {
-    "path": "/singles",
+    "path": "/songs",
     "filePath": "/not-found",
     "routes": [
       {
         "path": "index",
-        "filePath": "/singles/list",
+        "filePath": "/songs/list",
         "private": false
       },
       {
         "path": "add",
-        "filePath": "/singles/create",
+        "filePath": "/songs/create",
         "private": true
       },
       {
@@ -94,12 +94,12 @@
         "routes": [
           {
             "path": "index",
-            "filePath": "/singles/details",
+            "filePath": "/songs/details",
             "private": false
           },
           {
             "path": "edit",
-            "filePath": "/singles/edit",
+            "filePath": "/songs/edit",
             "private": true
           }
         ]

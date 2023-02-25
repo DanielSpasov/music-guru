@@ -1,9 +1,9 @@
-import { Single } from '../../Pages/singles/helpers';
+import { Song } from '../../Pages/songs/helpers';
 import { applyPrefix } from '../helpers';
 import Crud from '../crud';
 
-export default class SinglesAPI extends Crud<Single> {
-  model = 'single';
+export default class SongsAPI extends Crud<Song> {
+  model = 'song';
 
   constructor(props: any) {
     super();

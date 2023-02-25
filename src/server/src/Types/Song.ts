@@ -10,13 +10,13 @@ const Schema = z.object({
 
 const UidSchema = z.string().min(8).max(8);
 
-export const SingleSchema = Schema.extend({
+export const SongSchema = Schema.extend({
   artist: UidSchema,
   features: z.array(UidSchema).optional()
 });
 
-type SingleSchemaType = z.infer<typeof Schema>;
-export interface Single extends SingleSchemaType {
+type SongSchemaType = z.infer<typeof Schema>;
+export interface Song extends SongSchemaType {
   uid: string;
   created_at: Date;
   created_by: User;

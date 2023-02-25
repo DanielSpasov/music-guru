@@ -4,34 +4,34 @@ import { toast } from 'react-toastify';
 
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, Loader, PageLayout } from '../../../Components';
-import { Single, SingleSchema } from '../helpers';
+import { Song, SongSchema } from '../helpers';
 import { errorHandler } from '../../../Handlers';
 import { schema } from './schema';
 import Api from '../../../Api';
 
-export default function EditSingle() {
+export default function EditSong() {
   const [loading, setLoading] = useState<boolean>(true);
   const [errors, setErrors] = useState<FormError[]>([]);
-  const [single, setSingle] = useState<Single>();
+  const [song, setSong] = useState<Song>();
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
   const defaultValues = useMemo(
     () => ({
-      ...single,
-      artist: [single?.artist]
+      ...song,
+      artist: [song?.artist]
     }),
-    [single]
+    [song]
   );
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.singles.get({
+        const { data } = await Api.songs.get({
           id,
           config: { params: { populate: 'artist,features' } }
         });
-        setSingle(data);
+        setSong(data);
       } catch (error) {
         errorHandler(error, navigate);
       } finally {
@@ -43,19 +43,19 @@ export default function EditSingle() {
   const onSubmit = useCallback(
     async (data: any) => {
       try {
-        const validData = SingleSchema.parse({
+        const validData = SongSchema.parse({
           ...data,
           artist: data.artist[0]
         });
-        const { data: updated } = await Api.singles.patch({
+        const { data: updated } = await Api.songs.patch({
           id,
           body: validData
         });
         setErrors([]);
         toast.success(
-          `Successfully updated information about single: ${updated.name}`
+          `Successfully updated information about song: ${updated.name}`
         );
-        navigate(`/singles/${updated.uid}`);
+        navigate(`/songs/${updated.uid}`);
       } catch (error) {
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);
@@ -65,13 +65,13 @@ export default function EditSingle() {
   );
 
   return (
-    <PageLayout title="Edit Single" showHeader={false}>
+    <PageLayout title="Edit Song" showHeader={false}>
       {loading ? (
         <Loader rainbow fullscreen />
       ) : (
         <Form
           defaultValues={defaultValues}
-          header="Edit Single"
+          header="Edit Song"
           onSubmit={onSubmit}
           schema={schema}
           errors={errors}
