@@ -41,6 +41,20 @@ const AlbumSchema = new Schema({
   ]
 });
 
+// On Album 'Delete'
+AlbumSchema.pre('findOneAndRemove', async function (next) {
+  const album = await this.model.findOne(this.getFilter()).populate('artist');
+  if (!album) return next();
+
+  // Remove Album ref from Artist
+  const artist = await model('Artist').findById(album.artist._id);
+  if (artist) {
+    await artist.del('albums', album._id);
+  }
+
+  next();
+});
+
 export type IAlbum = InferSchemaType<typeof AlbumSchema>;
 
 export default model<IAlbum>('Album', AlbumSchema);

@@ -27,7 +27,7 @@ export default function SingleArtist() {
       try {
         const { data } = await Api.artists.get({
           id,
-          config: { params: { populate: 'singles,created_by,features' } }
+          config: { params: { populate: 'singles,created_by,features,albums' } }
         });
         setArtist(data);
       } catch (error) {
@@ -63,7 +63,9 @@ export default function SingleArtist() {
             <Summary label="Discography" open>
               {Boolean(artist.albums.length) && (
                 <Summary label="Albums" open>
-                  <Text>{artist.name} haven't released any albums yet.</Text>
+                  <Box display="flex" flexWrap="wrap">
+                    <List data={artist.albums} model="albums" />
+                  </Box>
                 </Summary>
               )}
 
