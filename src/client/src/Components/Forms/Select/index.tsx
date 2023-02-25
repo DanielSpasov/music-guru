@@ -24,7 +24,7 @@ function Select({
   useEffect(() => {
     setFormValue(
       name,
-      getValues()[name].map((x: any) => x.uid)
+      getValues()[name]?.map((x: any) => x.uid)
     );
   }, [setFormValue, name, getValues]);
 
@@ -51,7 +51,7 @@ function Select({
       setValues(prev => prev.filter(x => x.name !== option.name));
       setFormValue(
         name,
-        getValues()[name].filter((x: any) => x !== option.uid)
+        getValues()[name]?.filter((x: any) => x !== option.uid)
       );
     },
     [setFormValue, getValues, name]
