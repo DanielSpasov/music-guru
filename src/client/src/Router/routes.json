@@ -44,6 +44,11 @@
         "path": "index",
         "filePath": "/albums/list",
         "private": false
+      },
+      {
+        "path": "add",
+        "filePath": "/albums/create",
+        "private": true
       }
     ]
   },
