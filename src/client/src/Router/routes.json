@@ -38,8 +38,14 @@
   },
   {
     "path": "/albums",
-    "filePath": "/home",
-    "private": false
+    "filePath": "/not-found",
+    "routes": [
+      {
+        "path": "index",
+        "filePath": "/albums/list",
+        "private": false
+      }
+    ]
   },
   {
     "path": "/mixtapes",
