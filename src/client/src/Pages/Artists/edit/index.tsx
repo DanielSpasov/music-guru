@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, Loader, PageLayout } from '../../../Components';
-import { Artist, artistSchema } from '../helpers';
+import { Artist, ArtistSchema } from '../helpers';
 import { errorHandler } from '../../../Handlers';
 import { schema } from './schema';
 import Api from '../../../Api';
@@ -32,7 +32,7 @@ export default function EditArtist() {
   const onSubmit = useCallback(
     async (data: Artist) => {
       try {
-        const validData = artistSchema.parse(data);
+        const validData = ArtistSchema.parse(data);
         const { data: updated } = await Api.artists.patch({
           id,
           body: validData

@@ -2,12 +2,12 @@ import { z } from 'zod';
 import { User } from '../auth/helpers';
 import { Single } from '../singles/helpers';
 
-export const artistSchema = z.object({
+export const ArtistSchema = z.object({
   name: z.string(),
   image: z.string().url({ message: 'Invalid url.' })
 });
 
-export type ArtistModel = z.infer<typeof artistSchema>;
+export type ArtistModel = z.infer<typeof ArtistSchema>;
 export interface Artist extends ArtistModel {
   uid: string;
   created_at: Date;
