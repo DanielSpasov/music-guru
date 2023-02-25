@@ -49,6 +49,17 @@
         "path": "add",
         "filePath": "/albums/create",
         "private": true
+      },
+      {
+        "path": ":id",
+        "filePath": "/not-found",
+        "routes": [
+          {
+            "path": "index",
+            "filePath": "/albums/single",
+            "private": false
+          }
+        ]
       }
     ]
   },

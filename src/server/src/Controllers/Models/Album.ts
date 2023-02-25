@@ -1,13 +1,19 @@
 import { Router } from 'express';
 
 import { AlbumModel, ArtistModel, IAlbum } from '../../Database/Schemas';
-import { AlbumSchema } from '../../Types/Album';
-import { fetch, post } from '../../Services/requests';
+import { fetch, post, get, del } from '../../Services/requests';
 import { CustomError } from '../../Error/CustomError';
+import { AlbumSchema } from '../../Types/Album';
 
 const router = Router();
 
 router.get('/', (req, res) => fetch<IAlbum>({ req, res, Model: AlbumModel }));
+
+router.get('/:id', (req, res) => get<IAlbum>({ req, res, Model: AlbumModel }));
+
+router.delete('/:id', (req, res) =>
+  del<IAlbum>({ req, res, Model: AlbumModel })
+);
 
 router.post('/', (req, res) =>
   post<IAlbum>({
