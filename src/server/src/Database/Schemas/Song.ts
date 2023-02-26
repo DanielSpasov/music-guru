@@ -41,7 +41,11 @@ const SongSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: 'Artist'
       }
-    ]
+    ],
+    release_date: {
+      type: Date,
+      required: false
+    }
   },
   {
     toJSON: { transform: defaultTransform }

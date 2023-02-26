@@ -13,6 +13,9 @@ export const StyledInput = styled('input')<any>`
   outline: none;
   width: 100%;
 
+  caret-color: ${({ disableCaret }) => (disableCaret ? 'transparent' : 'auto')};
+  cursor: ${({ disableCaret }) => (disableCaret ? 'pointer' : 'auto')};
+
   ${essentials}
   ${colors}
   ${font}

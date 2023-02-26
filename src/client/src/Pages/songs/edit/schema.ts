@@ -1,5 +1,5 @@
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
-import { Input, Select } from '../../../Components';
+import { Input, Select, Calendar } from '../../../Components';
 import Api from '../../../Api';
 
 export const schema: FormSchema = {
@@ -17,6 +17,12 @@ export const schema: FormSchema = {
       label: 'Image URL',
       required: true,
       Component: Input
+    },
+    {
+      key: 'release_date',
+      label: 'Release Date',
+      required: false,
+      Component: Calendar
     },
     {
       key: 'artist',

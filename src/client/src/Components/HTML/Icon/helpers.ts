@@ -1,4 +1,10 @@
-type IconVariant = 'success' | 'warning' | 'info' | 'danger';
+type IconVariant =
+  | 'success'
+  | 'warning'
+  | 'info'
+  | 'danger'
+  | 'primary'
+  | 'secondary';
 
 export type IconProps = {
   model: string;

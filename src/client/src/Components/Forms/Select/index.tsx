@@ -66,7 +66,7 @@ function Select({
 
       if (multiple) {
         setValues(prev => [...prev, option]);
-        setFormValue(name, [...getValues()[name], option.uid]);
+        setFormValue(name, [...(getValues()[name] || []), option.uid]);
       } else {
         setValues([option]);
         setFormValue(name, [option.uid]);
@@ -101,7 +101,7 @@ function Select({
         placeholder=" "
         name={name}
         type="text"
-        color="transparent"
+        disableCaret
       />
       <Label position="absolute" top="36px" left="10px">
         {label}
