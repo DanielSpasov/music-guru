@@ -21,7 +21,7 @@ function Calendar({ name, setFormValue, getValues }: CalendarProps) {
   }, [getValues, name, setFormValue]);
 
   const toggleOpen = useCallback(
-    () => setTimeout(() => setOpen(prev => !prev), 50),
+    () => setTimeout(() => setOpen(prev => !prev), 100),
     []
   );
 
@@ -29,9 +29,8 @@ function Calendar({ name, setFormValue, getValues }: CalendarProps) {
     (date: Date) => {
       setFormValue(name, date);
       setValue(date);
-      toggleOpen();
     },
-    [setFormValue, name, toggleOpen]
+    [setFormValue, name]
   );
 
   return (
@@ -51,7 +50,8 @@ function Calendar({ name, setFormValue, getValues }: CalendarProps) {
         placeholder="Select Date"
         onChange={() => null}
         paddingLeft="2.2em"
-        onClick={toggleOpen}
+        onFocus={toggleOpen}
+        onBlur={toggleOpen}
         disableCaret
       />
 
