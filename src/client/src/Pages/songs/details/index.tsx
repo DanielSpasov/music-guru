@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 import {
   Box,
@@ -8,7 +9,8 @@ import {
   Heading,
   Image,
   List,
-  PageLayout
+  PageLayout,
+  Text
 } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import useActions from '../useActions';
@@ -59,14 +61,29 @@ export default function SongDetails() {
   }, [id, navigate]);
 
   return (
-    <PageLayout title={song?.name || ''} loading={loading} actions={actions}>
+    <PageLayout
+      title={song?.name || 'Loading...'}
+      loading={loading}
+      actions={actions}
+      showHeader={false}
+    >
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
         margin="0 5%"
       >
-        <Image src={song?.image || ''} alt={song?.name} width="350px" />
+        <Box margin="2em" display="flex">
+          <Image src={song?.image || ''} alt={song?.name} width="350px" />
+          <Box padding="0 1em">
+            {song?.release_date && (
+              <Box>
+                <Text fontWeight="bold">Release Date: </Text>
+                <Text>{moment(song.release_date).format('MMMM Do YYYY')}</Text>
+              </Box>
+            )}
+          </Box>
+        </Box>
 
         {song && (
           <Box width="100%" margin="0.5em">
