@@ -1,4 +1,5 @@
 import { Box, Text } from '../../HTML';
+import Section from '../Section';
 import { FieldProps } from './helpers';
 
 export default function Field({
@@ -10,27 +11,38 @@ export default function Field({
 }: FieldProps) {
   return (
     <Box position="relative" margin=".5em 0" key={field.key}>
-      <Box display="flex" justifyContent="flex-end">
-        <Text
-          variant={field?.required ? 'danger' : undefined}
-          color={!field?.required ? 'gray' : undefined}
-        >
-          {field?.required ? '*' : 'Optional'}
-        </Text>
-      </Box>
+      {field?.type !== 'section' && (
+        <Box display="flex" justifyContent="flex-end">
+          <Text
+            variant={field?.required ? 'danger' : undefined}
+            color={!field?.required ? 'gray' : undefined}
+          >
+            {field?.required ? '*' : 'Optional'}
+          </Text>
+        </Box>
+      )}
 
-      <field.Component
-        name={field.key}
-        type={field?.type}
-        label={field.label}
-        register={register}
-        getValues={getValues}
-        setFormValue={setValue}
-        fetchFn={field?.fetchFn}
-        multiple={field?.multiple}
-      />
+      {field?.type === 'section' ? (
+        <Section
+          register={register}
+          getValues={getValues}
+          setFormValue={setValue}
+          name={field.key}
+          {...field}
+        />
+      ) : (
+        <field.Component
+          register={register}
+          getValues={getValues}
+          setFormValue={setValue}
+          name={field.key}
+          {...field}
+        />
+      )}
 
-      {error && <Text variant="danger">{error?.message}</Text>}
+      {error && field?.type !== 'section' && (
+        <Text variant="danger">{error?.message}</Text>
+      )}
     </Box>
   );
 }

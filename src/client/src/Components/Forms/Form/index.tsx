@@ -67,6 +67,8 @@ const StyledForm = styled('form')`
   box-shadow: rgba(0, 0, 0, 0.65) 0px 0px 5px;
   flex-direction: column;
   border-radius: 10px;
+  overflow-y: scroll;
+  max-height: 600px;
   min-width: 400px;
   padding: 0.75em;
   display: flex;

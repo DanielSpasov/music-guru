@@ -12,7 +12,7 @@ export type FormField = {
   key: string;
   label: string;
   Component: FC<any>;
-  type?: InputType;
+  type?: InputType | 'section';
   required?: boolean;
   fetchFn?: Function;
   multiple?: boolean;
