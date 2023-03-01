@@ -5,9 +5,9 @@ import moment from 'moment';
 import { StyledInput } from '../Input/Styled';
 import { StyledCalendar } from './Styled';
 import { CalendarProps } from './helpers';
-import { Icon, Popover } from '../../';
+import { Icon, Label, Popover } from '../../';
 
-function Calendar({ name, setFormValue, getValues }: CalendarProps) {
+function Calendar({ label, name, setFormValue, getValues }: CalendarProps) {
   const defaultValue = useMemo(
     () => (getValues()[name] ? new Date(getValues()[name]) : undefined),
     [getValues, name]
@@ -47,13 +47,16 @@ function Calendar({ name, setFormValue, getValues }: CalendarProps) {
       />
       <StyledInput
         value={value ? moment(value).format('MMMM Do YYYY') : ''}
-        placeholder="Select Date"
+        placeholder=" "
         onChange={() => null}
         paddingLeft="2.2em"
         onFocus={toggleOpen}
         onBlur={toggleOpen}
         disableCaret
       />
+      <Label position="absolute" top="36px" left="36px">
+        {label}
+      </Label>
 
       <Icon
         model="trash"

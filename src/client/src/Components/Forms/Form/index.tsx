@@ -68,6 +68,7 @@ const StyledForm = styled('form')`
   flex-direction: column;
   border-radius: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
   max-height: 600px;
   min-width: 400px;
   padding: 0.75em;
