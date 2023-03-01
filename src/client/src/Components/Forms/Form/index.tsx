@@ -3,10 +3,9 @@ import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
-import { Heading, Button, Box } from '../../../Components';
+import { Heading, Button, Box, Section } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import { FormProps } from './helpers';
-import Field from './Field';
 
 export default function Form({
   header,
@@ -39,14 +38,15 @@ export default function Form({
   return (
     <StyledForm onSubmit={handleSubmit(submitFn)}>
       <Heading title={header || 'Form'} />
-      {schema.fields.map(field => (
-        <Field
+      {schema.map(section => (
+        <Section
+          key={section.key}
+          title={section.title}
+          fields={section.fields}
           register={register}
-          setValue={setValue}
+          setFormValue={setValue}
           getValues={getValues}
-          key={field.key}
-          field={field}
-          error={errors.find(x => x.path.includes(field.key))}
+          errors={errors}
         />
       ))}
       <Box display="flex" justifyContent="space-between">

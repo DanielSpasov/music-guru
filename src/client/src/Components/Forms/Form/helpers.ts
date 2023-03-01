@@ -28,9 +28,13 @@ export type FormError = {
   type?: string;
 };
 
-export type FormSchema = {
+export type FormSection = {
+  key: string;
+  title: string;
   fields: FormField[];
 };
+
+export type FormSchema = FormSection[];
 
 export type FormProps = {
   onSubmit: SubmitHandler<any>;

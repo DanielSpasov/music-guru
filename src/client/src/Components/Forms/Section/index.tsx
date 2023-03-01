@@ -1,69 +1,33 @@
-import { memo, useCallback, useReducer } from 'react';
+import { memo } from 'react';
 
-import { ActionKind, SectionProps, sectionReducer } from './helpers';
-import { Box, Icon, Text } from '../../HTML';
+import { Box, Heading } from '../../HTML';
+import { SectionProps } from './helpers';
 import Field from '../Form/Field';
 
 function Section({
-  label,
-  name,
-  Component,
-  fetchFn,
-  required,
+  title,
+  fields,
   register,
+  setFormValue,
   getValues,
-  setFormValue
+  errors
 }: SectionProps) {
-  const [fields, dispatch] = useReducer(sectionReducer, [
-    { label, key: name, Component, fetchFn, required }
-  ]);
-
-  const add = useCallback(() => {
-    dispatch({ type: ActionKind.ADD });
-  }, []);
-
-  const remove = useCallback(() => {
-    dispatch({ type: ActionKind.REMOVE });
-  }, []);
-
   return (
-    <Box>
-      <Text textAlign="start" fontSize="1.2em">
-        {label}s
-      </Text>
+    <Box margin=".75em 0">
+      <Heading title={title} textAlign="start" size="small" margin="0" />
 
       <Box>
         {fields.map(field => (
-          <Box key={field.key}>
-            <Box width="calc(100% - 30px)">
-              <Field
-                field={field}
-                register={register}
-                getValues={getValues}
-                setValue={setFormValue}
-              />
-            </Box>
-            <Icon
-              model="minus"
-              type="solid"
-              onClick={remove}
-              position="absolute"
-              fontSize="1.3em"
-              right=".2rem"
-              top="2rem"
-            />
-          </Box>
+          <Field
+            key={field.key}
+            field={field}
+            error={errors.find(x => x.path.includes(field.key))}
+            register={register}
+            getValues={getValues}
+            setValue={setFormValue}
+          />
         ))}
       </Box>
-
-      <Icon
-        onClick={add}
-        model="plus"
-        type="solid"
-        position="absolute"
-        right="0"
-        top="0"
-      />
     </Box>
   );
 }
