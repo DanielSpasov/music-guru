@@ -44,9 +44,8 @@ function Section({
               />
             </Box>
             <Icon
-              model="x"
+              model="minus"
               type="solid"
-              variant="danger"
               onClick={remove}
               position="absolute"
               fontSize="1.3em"

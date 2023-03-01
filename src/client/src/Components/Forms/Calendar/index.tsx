@@ -56,9 +56,8 @@ function Calendar({ name, setFormValue, getValues }: CalendarProps) {
       />
 
       <Icon
-        model="x"
+        model="trash"
         type="solid"
-        variant="danger"
         onClick={() => setValue(undefined)}
         position="absolute"
         fontSize="1em"

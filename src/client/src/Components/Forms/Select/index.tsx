@@ -109,9 +109,8 @@ function Select({
 
       {/* CLEAR ALL */}
       <Icon
-        model="x"
+        model="trash"
         type="solid"
-        variant="danger"
         onClick={onClear}
         position="absolute"
         fontSize="1em"

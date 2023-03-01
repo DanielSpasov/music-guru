@@ -50,7 +50,7 @@ export default function Form({
         />
       ))}
       <Box display="flex" justifyContent="space-between">
-        <Button variant="danger" type="button" onClick={() => navigate(-1)}>
+        <Button variant="secondary" type="button" onClick={() => navigate(-1)}>
           Go Back
         </Button>
         <Button variant="primary" type="submit" disabled={disableSubmit}>
