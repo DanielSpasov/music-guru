@@ -102,6 +102,7 @@ function Select({
         name={name}
         type="text"
         disableCaret
+        color="transparent"
       />
       <Label position="absolute" top="36px" left="10px">
         {label}
