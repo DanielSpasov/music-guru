@@ -6,7 +6,7 @@
   },
   {
     "path": "/artists",
-    "filePath": "/not-found",
+    "filePath": "/artists/list",
     "routes": [
       {
         "path": "index",
@@ -20,7 +20,7 @@
       },
       {
         "path": ":id",
-        "filePath": "/not-found",
+        "filePath": "/artists/details",
         "routes": [
           {
             "path": "index",
@@ -38,7 +38,7 @@
   },
   {
     "path": "/albums",
-    "filePath": "/not-found",
+    "filePath": "/albums/list",
     "routes": [
       {
         "path": "index",
@@ -52,7 +52,7 @@
       },
       {
         "path": ":id",
-        "filePath": "/not-found",
+        "filePath": "/albums/details",
         "routes": [
           {
             "path": "index",
@@ -75,7 +75,7 @@
   },
   {
     "path": "/songs",
-    "filePath": "/not-found",
+    "filePath": "/songs/list",
     "routes": [
       {
         "path": "index",
@@ -89,7 +89,7 @@
       },
       {
         "path": ":id",
-        "filePath": "/not-found",
+        "filePath": "/songs/details",
         "private": false,
         "routes": [
           {
