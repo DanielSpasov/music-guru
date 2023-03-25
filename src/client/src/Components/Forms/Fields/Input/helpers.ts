@@ -9,7 +9,7 @@ export type File = {
   webkitRelativePath: string;
 };
 
-export type InputType = 'password' | 'text' | 'email' | 'file';
+export type InputType = 'password' | 'text' | 'email';
 
 export type InputProps = {
   register: UseFormRegister<any>;
@@ -18,7 +18,3 @@ export type InputProps = {
   label: string;
   name: string;
 };
-
-export interface TextInputProps extends InputProps {
-  passVisibility?: boolean;
-}
