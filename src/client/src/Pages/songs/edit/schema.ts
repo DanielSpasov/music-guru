@@ -4,8 +4,7 @@ import Api from '../../../Api';
 
 export const schema: FormSchema = [
   {
-    title: 'Details',
-    key: 'details',
+    key: 'fields',
     fields: [
       {
         key: 'name',

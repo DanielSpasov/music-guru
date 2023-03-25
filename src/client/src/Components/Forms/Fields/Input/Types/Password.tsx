@@ -2,7 +2,7 @@ import { ThemeContext } from 'styled-components';
 import { useContext, useState } from 'react';
 
 import { InputProps } from '../helpers';
-import { Icon } from '../../../HTML';
+import { Icon } from '../../../../HTML';
 import Text from './Text';
 
 export default function Password({

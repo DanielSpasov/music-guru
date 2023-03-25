@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { colors, essentials, font } from '../../helpers';
+
+import { colors, essentials, font } from '../../../helpers';
 
 export const StyledInput = styled('input')<any>`
   border: 2px solid ${({ theme: { colors } }) => colors.baseLighter};

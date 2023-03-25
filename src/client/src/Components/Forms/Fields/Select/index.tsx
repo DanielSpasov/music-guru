@@ -1,12 +1,12 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { Label, Icon, Box, Popover, Tag } from '../../';
-import useDebounce from '../../../Hooks/useDebounce';
+import { Label, Icon, Box, Popover, Tag } from '../../..';
+import useDebounce from '../../../../Hooks/useDebounce';
 import { StyledInput } from '../Input/Styled';
-import { Result } from '../../Core/Search';
+import { Result } from '../../../Core/Search';
 import { SelectProps } from './helpers';
 
-function Select({
+export default function Select({
   setFormValue,
   getValues,
   multiple = false,
@@ -143,5 +143,3 @@ function Select({
     </>
   );
 }
-
-export default memo(Select);

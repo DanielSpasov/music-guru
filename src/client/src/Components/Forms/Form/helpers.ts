@@ -20,7 +20,7 @@ export type FormField = {
 
 export type FormSection = {
   key: string;
-  title: string;
+  title?: string;
   fields: FormField[];
 };
 

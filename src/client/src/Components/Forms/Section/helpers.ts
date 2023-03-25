@@ -7,7 +7,7 @@ import {
 import { FormError, FormField } from '../Form/helpers';
 
 export type SectionProps = {
-  title: string;
+  title?: string;
   fields: FormField[];
   register: UseFormRegister<any>;
   getValues: UseFormGetValues<any>;

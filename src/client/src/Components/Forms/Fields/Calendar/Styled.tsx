@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Box } from '../../HTML';
+import { Box } from '../../../HTML';
 
 export const StyledCalendar = styled(Box)`
   padding: 0.5em;

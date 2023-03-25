@@ -1,10 +1,8 @@
-import { memo } from 'react';
-
 import { Box, Heading } from '../../HTML';
 import { SectionProps } from './helpers';
 import Field from '../Form/Field';
 
-function Section({
+export default function Section({
   title,
   fields,
   register,
@@ -14,7 +12,9 @@ function Section({
 }: SectionProps) {
   return (
     <Box margin=".75em 0">
-      <Heading title={title} textAlign="start" size="small" margin="0" />
+      {title && (
+        <Heading title={title} textAlign="start" size="small" margin="0" />
+      )}
 
       <Box>
         {fields.map(field => (
@@ -31,5 +31,3 @@ function Section({
     </Box>
   );
 }
-
-export default memo(Section);

@@ -3,8 +3,7 @@ import { FormSchema } from '../../../Components/Forms/Form/helpers';
 
 const schema: FormSchema = [
   {
-    title: '',
-    key: 'details',
+    key: 'fields',
     fields: [
       {
         key: 'username',

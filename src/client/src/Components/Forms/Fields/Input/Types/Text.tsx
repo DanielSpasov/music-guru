@@ -1,6 +1,6 @@
 import { TextInputProps } from '../helpers';
+import { Label } from '../../../../HTML';
 import { StyledInput } from '../Styled';
-import Label from '../../Label';
 
 export default function Text({
   register,

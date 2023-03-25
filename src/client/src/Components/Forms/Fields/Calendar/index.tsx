@@ -1,13 +1,18 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { default as ReactCalendar } from 'react-calendar';
 import moment from 'moment';
 
+import { Icon, Label, Popover } from '../../..';
 import { StyledInput } from '../Input/Styled';
 import { StyledCalendar } from './Styled';
 import { CalendarProps } from './helpers';
-import { Icon, Label, Popover } from '../../';
 
-function Calendar({ label, name, setFormValue, getValues }: CalendarProps) {
+export default function Calendar({
+  label,
+  name,
+  setFormValue,
+  getValues
+}: CalendarProps) {
   const defaultValue = useMemo(
     () => (getValues()[name] ? new Date(getValues()[name]) : undefined),
     [getValues, name]
@@ -76,5 +81,3 @@ function Calendar({ label, name, setFormValue, getValues }: CalendarProps) {
     </>
   );
 }
-
-export default memo(Calendar);

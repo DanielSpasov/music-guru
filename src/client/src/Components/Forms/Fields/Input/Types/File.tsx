@@ -1,10 +1,9 @@
 import { useCallback, useState, useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import { Box, Icon } from '../../../HTML';
-import { border } from '../../../helpers';
+import { Box, Icon, Label } from '../../../../HTML';
+import { border } from '../../../../helpers';
 import { InputProps } from '../helpers';
-import Label from '../../Label';
 
 export default function FileInput({
   register,

@@ -1,11 +1,9 @@
-import { memo } from 'react';
-
 import { InputProps } from './helpers';
 import Password from './Types/Password';
 import File from './Types/File';
 import Text from './Types/Text';
 
-function Input(props: InputProps) {
+export default function Input(props: InputProps) {
   switch (props.type) {
     case 'file':
       return <File {...props} />;
@@ -17,5 +15,3 @@ function Input(props: InputProps) {
       return <Text {...props} />;
   }
 }
-
-export default memo(Input);
