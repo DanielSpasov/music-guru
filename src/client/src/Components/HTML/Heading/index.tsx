@@ -1,10 +1,7 @@
 import styled from 'styled-components';
+import { margin, padding, text } from '../../helpers';
 
-type HeadingProps = {
-  size?: 'small' | 'medium' | 'big';
-  title: string;
-  [css: string]: any;
-};
+import { HeadingProps } from './helpers';
 
 export default function Heading({ size = 'big', title, ...css }: HeadingProps) {
   switch (size) {
@@ -19,18 +16,45 @@ export default function Heading({ size = 'big', title, ...css }: HeadingProps) {
 
 const H1 = styled('h1')<HeadingProps>`
   text-align: center;
-  color: white;
+  transition: 0.3s;
   margin: 10px;
+
+  ${padding};
+  ${margin};
+  ${text};
+
+  &:hover {
+    cursor: ${({ onClick }) => onClick && 'pointer'};
+    color: ${({ onClick, theme: { colors } }) => onClick && colors.primary};
+  }
 `;
 
 const H2 = styled('h2')<HeadingProps>`
   text-align: center;
-  color: white;
+  transition: 0.3s;
   margin: 10px;
+
+  ${padding};
+  ${margin};
+  ${text};
+
+  &:hover {
+    cursor: ${({ onClick }) => onClick && 'pointer'};
+    color: ${({ onClick, theme: { colors } }) => onClick && colors.primary};
+  }
 `;
 
 const H3 = styled('h3')<HeadingProps>`
   text-align: center;
-  color: white;
+  transition: 0.3s;
   margin: 10px;
+
+  ${padding};
+  ${margin};
+  ${text};
+
+  &:hover {
+    cursor: ${({ onClick }) => onClick && 'pointer'};
+    color: ${({ onClick, theme: { colors } }) => onClick && colors.primary};
+  }
 `;

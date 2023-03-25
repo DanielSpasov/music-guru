@@ -1,17 +1,15 @@
 import { NavLink, Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { ReactNode } from 'react';
 
-import { colors, font, padding, text } from '../../helpers';
-
-type LinkProps = {
-  to: string;
-  children: ReactNode;
-  type?: 'navlink' | 'link';
-  isActive?: boolean;
-  className?: string;
-  [css: string]: any;
-};
+import {
+  colors,
+  dimensions,
+  font,
+  padding,
+  positioning,
+  text
+} from '../../helpers';
+import { LinkProps } from './helpers';
 
 function LinkSwitch({
   children,
@@ -33,17 +31,17 @@ function LinkSwitch({
 const StyledLink = styled(LinkSwitch)<LinkProps>`
   box-sizing: border-box;
 
+  color: ${({ isActive, theme: { colors } }) =>
+    isActive ? colors.primary : colors.text};
+  padding: ${({ type }) => (type === 'navlink' ? '18px 0.25em' : '0.25em')};
+  transition: 0.3s;
+
+  ${positioning};
+  ${dimensions};
   ${padding};
   ${colors};
   ${font};
   ${text};
-
-  border-bottom: ${({ isActive, theme: { colors } }) =>
-    isActive && `5px solid ${colors.primary}`};
-  color: ${({ isActive, theme: { colors } }) => isActive && colors.primary};
-  padding: ${({ type }) => (type === 'navlink' ? '18px 0.25em' : '0.25em')};
-  transition: 0.2s;
-  height: 100%;
 
   &:hover {
     color: ${({ theme: { colors } }) => colors.primary};

@@ -1,20 +1,26 @@
 import styled from 'styled-components';
-import { ReactNode } from 'react';
 
-import { colors, font } from '../../helpers';
-
-type TextProps = {
-  children: ReactNode;
-  [css: string]: any;
-};
+import { colors, font, padding } from '../../helpers';
+import { TextProps } from './helpers';
 
 export default function Text({ children, ...css }: TextProps) {
   return <StyledText {...css}>{children}</StyledText>;
 }
 
 const StyledText = styled('span')<TextProps>`
-  fontsize: inherit;
+  font-size: inherit;
+  transition: 0.3s;
+  color: ${({ variant, theme: { colors }, color }) => {
+    if (variant) return colors[variant];
+    return color || colors.text;
+  }};
 
+  ${padding};
   ${colors};
   ${font};
+
+  &:hover {
+    cursor: ${({ onClick }) => onClick && 'pointer'};
+    color: ${({ onClick, theme: { colors } }) => onClick && colors.primary};
+  }
 `;

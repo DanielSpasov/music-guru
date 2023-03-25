@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 
 import { colors, dimensions, font, padding, positioning } from '../../helpers';
+import { IconProps } from './helpers';
 
-type IconProps = {
-  model: string;
-  type: string;
-  [css: string]: any;
-};
-
-export default function Icon({ model, type, ...css }: IconProps) {
+export default function Icon({ model, type, variant, ...css }: IconProps) {
   return (
-    <StyledIcon {...css}>
+    <StyledIcon variant={variant} {...css}>
       <i className={`fa-${type} fa-${model}`} />
     </StyledIcon>
   );
@@ -18,8 +13,8 @@ export default function Icon({ model, type, ...css }: IconProps) {
 
 const StyledIcon = styled('i')<IconProps>`
   cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
-  transition: 0.2s;
-  font-size: 30px;
+  transition: 0.3s;
+  font-size: 1.5em;
 
   ${positioning};
   ${dimensions};
@@ -27,9 +22,19 @@ const StyledIcon = styled('i')<IconProps>`
   ${colors};
   ${font};
 
+  color: ${({ variant, theme: { colors }, color, disabled }) => {
+    if (disabled) return 'gray';
+    return variant ? colors[variant] : color || colors.text;
+  }};
+
   &:hover {
-    cursor: pointer;
-    color: ${({ onClick, theme: { colors }, color }) =>
-      onClick ? colors.primary : color || 'white'};
+    cursor: ${({ disabled, onClick }) => {
+      if (disabled) return 'auto';
+      return onClick ? 'pointer' : 'auto';
+    }};
+    color: ${({ onClick, theme: { colors }, color, disabled }) => {
+      if (disabled) return 'gray';
+      return onClick ? colors.primary : color || colors.text;
+    }};
   }
 `;

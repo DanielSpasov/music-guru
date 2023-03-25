@@ -23,7 +23,9 @@ export const attachComponents = (routes: IConfigRoute[]): IRoute[] => {
       path: route.path,
       filePath: route.filePath,
       private: route.private,
-      Component: lazyLoad(`../Pages${route.filePath}`)
+      Component: lazyLoad(
+        '../Pages'.concat(route.filePath).concat('/index.tsx')
+      )
     };
 
     if (route?.routes) {

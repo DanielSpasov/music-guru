@@ -1,10 +1,19 @@
 export type DotSize = 'b' | 's';
+
 export type LoaderProps = {
   fullscreen?: boolean;
   dim?: boolean;
   rainbow?: boolean;
   color?: string;
   size?: DotSize;
+};
+
+export type DotProps = {
+  delay: string;
+  color: string;
+  top: string;
+  left: string;
+  size: string;
 };
 
 const rainbowColors = [

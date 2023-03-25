@@ -1,7 +1,7 @@
-import Crud from '../crud';
-import { User } from '../../Types/User';
+import { SignInData, SignUpData, User } from '../../Pages/auth/helpers';
 import { applyPrefix } from '../helpers';
 import { get, post } from '../requests';
+import Crud from '../crud';
 
 export default class UserAPI extends Crud<User> {
   model = 'user';
@@ -11,14 +11,14 @@ export default class UserAPI extends Crud<User> {
     applyPrefix(this, props);
   }
 
-  signUp(user: User) {
+  signUp(user: SignUpData) {
     return post({
       url: `${this.baseUrl}/${this.model}/sign-up`,
       body: user
     });
   }
 
-  signIn(user: Partial<User>) {
+  signIn(user: SignInData) {
     return post({
       url: `${this.baseUrl}/${this.model}/sign-in`,
       body: user

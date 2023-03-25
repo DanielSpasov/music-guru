@@ -1,33 +1,48 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, InferSchemaType } from 'mongoose';
 
-const schema = new Schema({
-  uid: {
-    type: String,
-    required: true,
-    unique: true,
-    minlength: 8,
-    maxlength: 8
+const UserSchema = new Schema(
+  {
+    uid: {
+      type: String,
+      required: true,
+      unique: true,
+      minlength: 8,
+      maxlength: 8,
+      immutable: true
+    },
+    username: {
+      type: String,
+      required: true,
+      minlength: 2,
+      maxlength: 30
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    created_at: {
+      type: Date,
+      immutable: true,
+      default: () => Date.now()
+    }
   },
-  username: {
-    type: String,
-    required: false,
-    minlength: 2,
-    maxlength: 16
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  created: {
-    type: Date,
-    required: true,
-    readonly: true
+  {
+    toJSON: {
+      transform: (_, data) => {
+        delete data.password;
+        delete data._id;
+        delete data.__v;
+        return data;
+      }
+    }
   }
-});
+);
 
-export default model('user', schema);
+type IUser = InferSchemaType<typeof UserSchema>;
+
+export default model<IUser>('User', UserSchema);

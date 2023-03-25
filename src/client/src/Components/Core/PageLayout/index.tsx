@@ -1,17 +1,8 @@
-import { ReactNode, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 
-import { Box, BreadCrumb, Header, Navbar } from '../../';
-import { Action } from '../../../Types';
-
-type PageLayoutProps = {
-  title: string;
-  showNavbar?: boolean;
-  showBreadCrumb?: boolean;
-  showHeader?: boolean;
-  children?: ReactNode;
-  actions?: Action[];
-};
+import { Box, BreadCrumb, Header, Loader, Navbar } from '../../';
+import { PageLayoutProps } from './helpers';
 
 export default function PageLayout({
   title,
@@ -19,12 +10,14 @@ export default function PageLayout({
   showBreadCrumb = true,
   showHeader = true,
   children,
-  actions = []
+  actions = [],
+  loading = false
 }: PageLayoutProps) {
   const { colors } = useContext(ThemeContext);
+
   useEffect(() => {
-    document.title = title;
-  }, [title]);
+    document.title = loading ? 'Loading...' : title;
+  }, [title, loading]);
 
   return (
     <Box
@@ -37,8 +30,14 @@ export default function PageLayout({
     >
       {showNavbar && <Navbar />}
       {showBreadCrumb && <BreadCrumb actions={actions} />}
-      {showHeader && <Header padding="60px 0 20px 0" title={title}></Header>}
-      {children}
+      {loading ? (
+        <Box textAlign="center" margin="1em 0">
+          <Loader rainbow />
+        </Box>
+      ) : (
+        showHeader && <Header padding="60px 0 20px 0" title={title} />
+      )}
+      {!loading && children}
     </Box>
   );
 }

@@ -47,17 +47,17 @@ export const positioning = css<any>`
 `;
 
 export const colors = css<any>`
-  color: ${({ color, theme: { colors } }) => color || colors.text};
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor || 'transparent'};
+  opacity: ${({ opacity }) => opacity};
+  color: ${({ color }) => color};
+  background-color: ${({ backgroundColor }) => backgroundColor};
 `;
 
 export const essentials = css<any>`
-  ${positioning}
-  ${dimensions}
-  ${padding}
-  ${margin}
-  ${border}
+  ${positioning};
+  ${dimensions};
+  ${padding};
+  ${margin};
+  ${border};
 `;
 
 export const flex = css<any>`
@@ -83,7 +83,7 @@ export const shadows = css<any>`
 `;
 
 export const font = css<any>`
-  font-size: ${({ fontSize }) => fontSize || '1em'};
+  font-size: ${({ fontSize }) => fontSize};
   font-variant: ${({ fontVariant }) => fontVariant};
   font-weight: ${({ fontWeight }) => fontWeight};
   font-family: ${({ fontFamily }) => fontFamily || "'Maven Pro', sans-serif"};
@@ -97,4 +97,31 @@ export const text = css<any>`
   text-orientation: ${({ textOrientation }) => textOrientation};
   text-shadow: ${({ textShadow }) => textShadow};
   text-transform: ${({ textTransform }) => textTransform};
+  white-space: ${({ whiteSpace }) => whiteSpace};
+`;
+
+export const pointer = css<any>`
+  pointer: ${({ pointer }) => pointer};
+  pointer-events: ${({ pointerEvents }) => pointerEvents};
+`;
+
+export const animations = css<any>`
+  transform: ${({ transform }) => transform};
+  transition: ${({ transition }) => transition || '0.3s'};
+  animation: ${({ animation }) => animation};
+  animation-delay: ${({ animationDelay }) => animationDelay};
+  animation-direction: ${({ animationDirection }) => animationDirection};
+  animation-duration: ${({ animationDuration }) => animationDuration};
+  animation-fill-mode: ${({ animationFillMode }) => animationFillMode};
+  animation-iteration-count: ${({ animationIterationCount }) =>
+    animationIterationCount};
+  animation-name: ${({ animationName }) => animationName};
+  animation-play-state: ${({ animationPlayState }) => animationPlayState};
+  animation-timing-function: ${({ animationTimingFunction }) =>
+    animationTimingFunction};
+`;
+
+export const overflow = css<any>`
+  overflow-y: ${({ overflowY }) => overflowY};
+  overflow-x: ${({ overflowX }) => overflowX};
 `;

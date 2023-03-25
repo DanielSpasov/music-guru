@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { getCssProps, LoaderProps } from './helpers';
+import { getCssProps, LoaderProps, DotProps } from './helpers';
 import { Box } from '../../HTML';
 
 export default function Loader({
@@ -18,11 +18,10 @@ export default function Loader({
       width="100vw"
       height="100vh"
       position="fixed"
-      top="0"
-      left="0"
       display="flex"
-      alignContent="center"
+      alignItems="center"
       justifyContent="center"
+      backgroundColor={dim ? 'black' : 'transparent'}
       opacity={dim ? '0.85' : '1'}
       zIndex="9999"
     >
@@ -40,8 +39,8 @@ function Spinner({
     <Box
       display="inline-block"
       position="relative"
-      width={size === 's' ? '0px' : '80px'}
-      height={size === 's' ? '0px' : '80px'}
+      width={size === 's' ? '40px' : '80px'}
+      height={size === 's' ? '40px' : '80px'}
       backgroundColor="transparent"
     >
       {getCssProps({ size, color, rainbow }).map((css, i) => (
@@ -62,14 +61,6 @@ const animation = keyframes`
     transform: scale(1.5);
   }
 `;
-
-type DotProps = {
-  delay: string;
-  color: string;
-  top: string;
-  left: string;
-  size: string;
-};
 
 const Dot = styled('div')<DotProps>`
   position: absolute;

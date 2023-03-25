@@ -1,58 +1,129 @@
 [
   {
     "path": "index",
-    "filePath": "/Home",
+    "filePath": "/home",
     "private": false
   },
   {
     "path": "/artists",
-    "filePath": "/NotFound",
+    "filePath": "/artists/list",
     "routes": [
       {
         "path": "index",
-        "filePath": "/Artists",
+        "filePath": "/artists/list",
         "private": false
       },
       {
         "path": "add",
-        "filePath": "/Artists/create",
+        "filePath": "/artists/create",
         "private": true
+      },
+      {
+        "path": ":id",
+        "filePath": "/artists/details",
+        "routes": [
+          {
+            "path": "index",
+            "filePath": "/artists/details",
+            "private": false
+          },
+          {
+            "path": "edit",
+            "filePath": "/artists/edit",
+            "private": true
+          }
+        ]
       }
     ]
   },
   {
     "path": "/albums",
-    "filePath": "/Home",
-    "private": false
+    "filePath": "/albums/list",
+    "routes": [
+      {
+        "path": "index",
+        "filePath": "/albums/list",
+        "private": false
+      },
+      {
+        "path": "add",
+        "filePath": "/albums/create",
+        "private": true
+      },
+      {
+        "path": ":id",
+        "filePath": "/albums/details",
+        "routes": [
+          {
+            "path": "index",
+            "filePath": "/albums/details",
+            "private": false
+          },
+          {
+            "path": "edit",
+            "filePath": "/albums/edit",
+            "private": true
+          }
+        ]
+      }
+    ]
   },
   {
     "path": "/mixtapes",
-    "filePath": "/Home",
+    "filePath": "/home",
     "private": false
   },
   {
-    "path": "/singles",
-    "filePath": "/Home",
-    "private": false
+    "path": "/songs",
+    "filePath": "/songs/list",
+    "routes": [
+      {
+        "path": "index",
+        "filePath": "/songs/list",
+        "private": false
+      },
+      {
+        "path": "add",
+        "filePath": "/songs/create",
+        "private": true
+      },
+      {
+        "path": ":id",
+        "filePath": "/songs/details",
+        "private": false,
+        "routes": [
+          {
+            "path": "index",
+            "filePath": "/songs/details",
+            "private": false
+          },
+          {
+            "path": "edit",
+            "filePath": "/songs/edit",
+            "private": true
+          }
+        ]
+      }
+    ]
   },
   {
     "path": "/sign-in",
-    "filePath": "/Auth/SignIn",
+    "filePath": "/auth/sign-in",
     "private": false
   },
   {
     "path": "/sign-up",
-    "filePath": "/Auth/SignUp",
+    "filePath": "/auth/sign-up",
     "private": false
   },
   {
     "path": "/sign-out",
-    "filePath": "/Auth/SignOut",
+    "filePath": "/auth/sign-out",
     "private": false
   },
   {
     "path": "*",
-    "filePath": "/NotFound",
+    "filePath": "/not-found",
     "private": false
   }
 ]

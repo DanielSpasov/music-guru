@@ -1,58 +1,54 @@
-import { ReactNode, useState, useContext } from 'react';
-import { ThemeContext } from 'styled-components';
+import { useState, useCallback } from 'react';
 
-import { Box, Icon } from '../../';
-
-type DropdownProps = {
-  label: string;
-  children: ReactNode;
-  icon?: {
-    model: string;
-    type: string;
-  };
-  openOnHover?: boolean;
-};
+import { Box, Icon, Popover } from '../../';
+import { DropdownProps } from './helpers';
 
 export default function Dropdown({
   children,
   label,
   icon,
-  openOnHover = false
+  openOnHover = false,
+  disabled = false
 }: DropdownProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { colors } = useContext(ThemeContext);
+  const [open, setOpen] = useState(false);
+
+  const onClick = useCallback(() => {
+    if (disabled || openOnHover) return;
+    setOpen(prev => !prev);
+  }, [disabled, openOnHover]);
+
+  const onMouseOver = useCallback(() => {
+    if (disabled || !openOnHover) return;
+    setOpen(true);
+  }, [disabled, openOnHover]);
+
+  const onMouseOut = useCallback(() => {
+    if (disabled || !openOnHover) return;
+    setOpen(false);
+  }, [disabled, openOnHover]);
 
   return (
-    <Box>
+    <Box
+      height="100%"
+      display="flex"
+      alignItems="center"
+      padding="0 0.75em"
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
+    >
       {icon ? (
         <Icon
-          padding="15px 10px"
-          fontSize="26px"
+          disabled={disabled}
           model={icon.model}
+          onClick={onClick}
           type={icon.type}
-          onClick={!openOnHover ? () => setIsOpen(!isOpen) : () => null}
-          onMouseOver={openOnHover ? () => setIsOpen(true) : () => null}
-          onMouseOut={openOnHover ? () => setIsOpen(false) : () => null}
         />
       ) : (
         label
       )}
-      <Box
-        minWidth="90px"
-        display={isOpen ? 'flex' : 'none'}
-        backgroundColor={colors.base}
-        flexDirection="column"
-        position="absolute"
-        top="60px"
-        right="0px"
-        boxShadow="rgba(0, 0, 0, 0.45) 0px 0px 5px 3px"
-        borderRadius="10px"
-        padding="0.5em"
-        onMouseOver={openOnHover ? () => setIsOpen(true) : () => null}
-        onMouseOut={openOnHover ? () => setIsOpen(false) : () => null}
-      >
+      <Popover open={open} whiteSpace="nowrap">
         {children}
-      </Box>
+      </Popover>
     </Box>
   );
 }

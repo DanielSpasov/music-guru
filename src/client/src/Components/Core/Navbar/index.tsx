@@ -2,12 +2,13 @@ import { ThemeContext } from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 
-import { Box, Image, Link, Dropdown } from '../../';
+import { Box, Image, Link, Dropdown, Search } from '../../';
 import { AuthContext } from '../../../Contexts/Auth';
+import ThemeSwitcher from '../ThemeSwitcher';
 
 export default function Navbar() {
-  const { colors } = useContext(ThemeContext);
   const { isAuthenticated } = useContext(AuthContext);
+  const { colors } = useContext(ThemeContext);
   const { pathname } = useLocation();
 
   return (
@@ -23,7 +24,7 @@ export default function Navbar() {
       zIndex="9999"
     >
       <Box height="60px">
-        <Link to="/">
+        <Link to="/" height="60px" padding="0">
           <Image
             src="/images/logo/blue-logo192.png"
             alt="Music Nerd"
@@ -54,17 +55,14 @@ export default function Navbar() {
         >
           Mixtapes
         </Link>
-        <Link
-          to="/singles"
-          type="navlink"
-          isActive={pathname.includes('/singles')}
-        >
-          Singles
+        <Link to="/songs" type="navlink" isActive={pathname.includes('/songs')}>
+          Songs
         </Link>
       </Box>
       <Box display="flex" alignContent="center" height="60px">
-        <Dropdown label="Settings" icon={{ model: 'gear', type: 'solid' }}>
-          <Link to="/theme">Theme</Link>
+        <Search models={['artists', 'songs', 'albums']} width="250px" />
+        <Dropdown label="Settings" icon={{ model: 'palette', type: 'solid' }}>
+          <ThemeSwitcher />
         </Dropdown>
         <Dropdown label="User Settings" icon={{ model: 'user', type: 'solid' }}>
           <Link to="/me">User</Link>

@@ -1,28 +1,28 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { lazy, Suspense, useContext, useMemo } from 'react';
+import { Suspense, useContext, useMemo } from 'react';
 
+import { attachComponents, IRoute } from './helpers';
 import { AuthContext } from '../Contexts/Auth';
 import routesConfig from './routes.json';
 import { Loader } from '../Components';
-import { attachComponents, IRoute } from './helpers';
 
 export default function Router() {
+  const { isAuthenticated } = useContext(AuthContext);
   const routes = useMemo(() => attachComponents(routesConfig), []);
 
+  if (isAuthenticated === null) return <Loader fullscreen rainbow />;
   return (
     <Suspense fallback={<Loader fullscreen rainbow />}>
-      <Routes>{routes.map(setupRoute)}</Routes>
+      <Routes>{routes.map(x => setupRoute(x, isAuthenticated))}</Routes>
     </Suspense>
   );
 }
 
-const setupRoute = (route: IRoute) => {
-  const { isAuthenticated } = useContext(AuthContext);
-
+const setupRoute = (route: IRoute, isAuthenticated: boolean) => {
   if (route?.routes) {
     return (
       <Route key={route.path} path={route.path}>
-        {route.routes.map(setupRoute)}
+        {route.routes.map(x => setupRoute(x, isAuthenticated))}
       </Route>
     );
   }

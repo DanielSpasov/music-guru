@@ -1,6 +1,6 @@
+import { Error as MongooseError } from 'mongoose';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import { Error as MongooseError } from 'mongoose';
 
 import { mongooseErrorHandler } from './mongooseErrorHandler';
 import { jwtErrorHandler } from './jwtErrorHandler';
