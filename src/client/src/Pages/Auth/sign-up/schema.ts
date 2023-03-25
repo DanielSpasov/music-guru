@@ -8,29 +8,43 @@ const schema: FormSchema = [
       {
         key: 'username',
         label: 'Username',
-        type: 'text',
-        Component: Input
+        Component: Input,
+        props: {
+          type: 'text'
+        }
       },
       {
         key: 'email',
         label: 'Email',
-        type: 'email',
         Component: Input,
-        required: true
+        props: {
+          type: 'email'
+        },
+        validations: {
+          required: true
+        }
       },
       {
         key: 'password',
         label: 'Password',
-        type: 'password',
         Component: Input,
-        required: true
+        props: {
+          type: 'password'
+        },
+        validations: {
+          required: true
+        }
       },
       {
         key: 'repeat_password',
         label: 'Repeat Password',
-        type: 'password',
         Component: Input,
-        required: true
+        props: {
+          type: 'password'
+        },
+        validations: {
+          required: true
+        }
       }
     ]
   }

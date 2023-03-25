@@ -7,8 +7,8 @@ import { StyledInput } from './Styled';
 
 export default function Input({
   register,
-  required,
-  type,
+  validations,
+  props,
   label,
   name
 }: InputProps) {
@@ -18,9 +18,9 @@ export default function Input({
   return (
     <>
       <StyledInput
-        {...register(name, { required })}
+        {...register(name, { required: validations?.required })}
         name={name}
-        type={passVisibility ? 'text' : type}
+        type={passVisibility ? 'text' : props?.type}
         placeholder=" "
       />
 
@@ -28,7 +28,7 @@ export default function Input({
         {label}
       </Label>
 
-      {type === 'password' && (
+      {props?.type === 'password' && (
         <Icon
           color={passVisibility ? colors.primary : 'lightgray'}
           onClick={() => setPassVisibility(!passVisibility)}

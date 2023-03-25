@@ -8,16 +8,24 @@ const schema: FormSchema = [
       {
         key: 'email',
         label: 'Email',
-        type: 'email',
         Component: Input,
-        required: true
+        props: {
+          type: 'email'
+        },
+        validations: {
+          required: true
+        }
       },
       {
         key: 'password',
         label: 'Password',
-        type: 'password',
         Component: Input,
-        required: true
+        props: {
+          type: 'email'
+        },
+        validations: {
+          required: true
+        }
       }
     ]
   }

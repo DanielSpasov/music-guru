@@ -12,10 +12,10 @@ export default function Field({
     <Box position="relative" margin=".5em 0" key={field.key}>
       <Box display="flex" justifyContent="flex-end">
         <Text
-          variant={field?.required ? 'danger' : undefined}
-          color={!field?.required ? 'gray' : undefined}
+          variant={field?.validations?.required ? 'danger' : undefined}
+          color={!field?.validations?.required ? 'gray' : undefined}
         >
-          {field?.required ? '*' : 'Optional'}
+          {field?.validations?.required ? '*' : 'Optional'}
         </Text>
       </Box>
 

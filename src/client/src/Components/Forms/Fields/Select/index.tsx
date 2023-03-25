@@ -9,8 +9,7 @@ import { SelectProps } from './helpers';
 export default function Select({
   setFormValue,
   getValues,
-  multiple = false,
-  fetchFn,
+  props,
   label,
   name
 }: SelectProps) {
@@ -30,11 +29,11 @@ export default function Select({
 
   useEffect(() => {
     (async () => {
-      if (!fetchFn) return;
-      const { data } = await fetchFn({ params: { search, limit: 5 } });
+      if (!props?.fetchFn) return;
+      const { data } = await props?.fetchFn({ params: { search, limit: 5 } });
       setOptions(data);
     })();
-  }, [fetchFn, search]);
+  }, [props, search]);
 
   const toggleOpen = useCallback(
     () => setTimeout(() => setOpen(prev => !prev), 50),
@@ -64,7 +63,7 @@ export default function Select({
         return;
       }
 
-      if (multiple) {
+      if (props?.multiple) {
         setValues(prev => [...prev, option]);
         setFormValue(name, [...(getValues()[name] || []), option.uid]);
       } else {
@@ -72,7 +71,7 @@ export default function Select({
         setFormValue(name, [option.uid]);
       }
     },
-    [getValues, setFormValue, name, multiple, onRemove, values]
+    [getValues, setFormValue, name, props, onRemove, values]
   );
 
   return (

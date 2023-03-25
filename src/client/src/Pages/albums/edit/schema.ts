@@ -9,24 +9,37 @@ export const schema: FormSchema = [
     fields: [
       {
         key: 'name',
-        type: 'text',
         label: 'Name',
-        required: true,
-        Component: Input
+        Component: Input,
+        props: {
+          type: 'text'
+        },
+        validations: {
+          required: true
+        }
       },
       {
         key: 'image',
-        type: 'text',
         label: 'Image URL',
-        required: true,
-        Component: Input
+        Component: Input,
+        props: {
+          type: 'text'
+        },
+        validations: {
+          required: true
+        }
       },
       {
         key: 'artist',
         label: 'Artist',
-        fetchFn: ({ params }: any) => Api.artists.fetch({ config: { params } }),
         Component: Select,
-        required: true
+        props: {
+          fetchFn: ({ params }: any) =>
+            Api.artists.fetch({ config: { params } })
+        },
+        validations: {
+          required: true
+        }
       }
     ]
   }
