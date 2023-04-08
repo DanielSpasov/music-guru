@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { Theme } from '../../Core/ThemeSwitcher/helpers';
+import { Box } from '../../HTML';
 
 const Animation = keyframes`
   0%,
@@ -11,14 +12,18 @@ const Animation = keyframes`
   }
 `;
 
-const CardSkeleton = styled('div')<{ theme: Theme }>`
-  background-color: ${({ theme }) => theme.colors.baseLighter};
-  width: 200px;
-  height: 200px;
-  margin: 1em;
-  border-radius: 15px;
+const AnimatedBox = styled(Box)<{ theme: Theme }>`
   animation: ${Animation} 1s infinite;
 `;
+
+function CardSkeleton() {
+  return (
+    <Box margin="1em" display="flex" flexDirection="column" alignItems="center">
+      <AnimatedBox width="200px" height="200px" borderRadius="1em" />
+      <AnimatedBox width="60px" height="20px" margin=".5em" />
+    </Box>
+  );
+}
 
 export default function Skeleton() {
   return (
