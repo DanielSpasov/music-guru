@@ -28,9 +28,9 @@ export default function Songs() {
   }, [navigate]);
 
   return (
-    <PageLayout title="Songs" actions={actions} loading={loading}>
+    <PageLayout title="Songs" actions={actions}>
       <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={songs} model="songs" />
+        <List data={songs} model="songs" loading={loading} />
       </Box>
     </PageLayout>
   );

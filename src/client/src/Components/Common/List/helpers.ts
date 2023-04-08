@@ -9,4 +9,5 @@ type ModelKeys = Exclude<keyof typeof Api, 'prototype'>;
 export type ListProps = {
   data: Model[];
   model: ModelKeys;
+  loading?: boolean;
 };

@@ -28,9 +28,9 @@ export default function Albums() {
   }, [navigate]);
 
   return (
-    <PageLayout title="Albums" actions={actions} loading={loading}>
+    <PageLayout title="Albums" actions={actions}>
       <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={albums} model="albums" />
+        <List data={albums} model="albums" loading={loading} />
       </Box>
     </PageLayout>
   );

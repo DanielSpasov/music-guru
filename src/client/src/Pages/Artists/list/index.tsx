@@ -28,9 +28,9 @@ export default function Artists() {
   }, [navigate]);
 
   return (
-    <PageLayout title="Artists" actions={actions} loading={loading}>
+    <PageLayout title="Artists" actions={actions}>
       <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={artists} model="artists" />
+        <List data={artists} model="artists" loading={loading} />
       </Box>
     </PageLayout>
   );
