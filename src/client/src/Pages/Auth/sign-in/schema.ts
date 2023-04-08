@@ -21,7 +21,7 @@ const schema: FormSchema = [
         label: 'Password',
         Component: Input,
         props: {
-          type: 'email'
+          type: 'password'
         },
         validations: {
           required: true
