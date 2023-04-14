@@ -34,6 +34,7 @@ export default function Calendar({
     (date: Date) => {
       setFormValue(name, date);
       setValue(date);
+      setOpen(false);
     },
     [setFormValue, name]
   );
@@ -55,8 +56,7 @@ export default function Calendar({
         placeholder=" "
         onChange={() => null}
         paddingLeft="2.2em"
-        onFocus={toggleOpen}
-        onBlur={toggleOpen}
+        onClick={toggleOpen}
         disableCaret
       />
       <Label position="absolute" top="36px" left="36px">
