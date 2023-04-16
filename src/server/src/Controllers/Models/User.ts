@@ -14,18 +14,16 @@ router.get('/test-nodemailer', async (req: Request, res: Response) => {
     }
   });
 
-  const info = await transporter.sendMail({
-    from: `"Music Nerd Accounts" <${process.env.EMAIL_SERVICE_USER}>`,
+  const code = Math.random().toString().substring(2, 8);
+
+  await transporter.sendMail({
+    from: `"Music Nerd" <${process.env.EMAIL_SERVICE_USER}>`,
     to: 'shadygotrabies@gmail.com',
-    subject: 'Test Subject',
-    text: 'Test Text',
-    html: '<b>Test HTML</b>'
+    subject: '2FA Code',
+    text: `2FA Code: ${code}`
   });
 
-  res.status(200).json({
-    message: 'Successful',
-    info
-  });
+  res.status(200).json({ message: 'Email sent to @email.com' });
 });
 
 router.get('/validate-jwt', ValidateToken);
