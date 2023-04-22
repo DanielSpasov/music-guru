@@ -3,9 +3,9 @@ import { Router } from 'express';
 
 import { ArtistModel, SongModel, ISong } from '../../Database/Schemas';
 import { fetch, get, del, post, patch } from '../../Services/requests';
-import { Song, SongSchema } from '../../Types/Song';
 import { CustomError } from '../../Error/CustomError';
 import { authorization } from '../../Middleware';
+import { SongSchema } from '../../Types/Song';
 
 const router = Router();
 
@@ -21,7 +21,7 @@ router.post(
   post<ISong>({
     Model: SongModel,
     ValidationSchema: SongSchema,
-    preCreateFn: async (data: Song) => {
+    preCreateFn: async (data: ISong) => {
       const artist = await ArtistModel.findOne({ uid: data.artist });
       if (!artist) {
         throw new CustomError({ message: 'Artist not found.', code: 404 });
@@ -60,7 +60,7 @@ router.patch(
   patch<ISong>({
     Model: SongModel,
     ValidationSchema: SongSchema,
-    preUpdateFn: async (data: Song) => {
+    preUpdateFn: async (data: ISong) => {
       const artist = await ArtistModel.findOne({ uid: data.artist });
       if (!artist) {
         throw new CustomError({ message: 'Artist not found.', code: 404 });

@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
 import { Document } from 'mongoose';
+import { Request, Response } from 'express';
 
 import { generateUID, getUser, getMongoSearchQuery } from '../Utils';
 import { CustomError } from '../Error/CustomError';

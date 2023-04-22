@@ -1,10 +1,10 @@
+import { HydratedDocument } from 'mongoose';
 import { Router } from 'express';
 
 import { AlbumModel, ArtistModel, IAlbum } from '../../Database/Schemas';
 import { fetch, post, get, del, patch } from '../../Services/requests';
 import { CustomError } from '../../Error/CustomError';
-import { Album, AlbumSchema } from '../../Types/Album';
-import { HydratedDocument } from 'mongoose';
+import { AlbumSchema } from '../../Types/Album';
 
 const router = Router();
 
@@ -44,10 +44,10 @@ router.post(
 
 router.patch(
   '/:id',
-  patch({
+  patch<IAlbum>({
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
-    preUpdateFn: async (data: Album) => {
+    preUpdateFn: async (data: IAlbum) => {
       const artist = await ArtistModel.findOne({ uid: data.artist });
       if (!artist) {
         throw new CustomError({ message: 'Artist not found.', code: 404 });

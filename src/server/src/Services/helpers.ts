@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { HydratedDocument, Model } from 'mongoose';
 import { ZodSchema } from 'zod';
 
 export type FetchProps<T> = {
@@ -16,13 +16,16 @@ export type DelProps<T> = {
 export type PostProps<T> = {
   Model: Model<T>;
   ValidationSchema: ZodSchema;
-  preCreateFn?: (doc: any) => any;
-  postCreateFn?: (doc: any) => any;
+  preCreateFn?: (data: T) => Promise<{ data: Partial<T> }>;
+  postCreateFn?: (data: HydratedDocument<T, object, unknown>) => Promise<void>;
 };
 
 export type PatchProps<T> = {
   Model: Model<T>;
   ValidationSchema: ZodSchema;
-  preUpdateFn?: (doc: any) => any;
-  postUpdateFn?: (doc1: any, doc2: any) => any;
+  preUpdateFn?: (data: T) => Promise<{ data: Partial<T> }>;
+  postUpdateFn?: (
+    data: HydratedDocument<T, object, unknown>,
+    updated?: HydratedDocument<T, object, unknown> | null
+  ) => Promise<void>;
 };
