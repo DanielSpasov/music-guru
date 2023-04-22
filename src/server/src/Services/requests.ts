@@ -1,7 +1,7 @@
-import { Document } from 'mongoose';
 import { Request, Response } from 'express';
+import { Document } from 'mongoose';
 
-import { generateUID, getUser, getMongoSearchQuery } from '../Utils';
+import { generateUID, getUser, getSearchQuery } from '../Utils';
 import { CustomError } from '../Error/CustomError';
 import { errorHandler } from '../Error';
 import {
@@ -17,7 +17,7 @@ export const fetch =
   async (req: Request, res: Response) => {
     try {
       // Searching
-      const search = getMongoSearchQuery(req.query.search);
+      const search = getSearchQuery(req.query.search as string);
       if (!search) {
         res.status(200).json({ data: [] });
         return;
@@ -117,7 +117,7 @@ export const patch =
       if (!found) {
         throw new CustomError({ message: 'Document not found.', code: 404 });
       }
-      const doc = found as any;
+      const doc = found as any; // TODO: find a way to avoid doing this
       if (doc.created_by.uid !== user.uid) {
         throw new CustomError({ message: 'Permission denied.', code: 401 });
       }

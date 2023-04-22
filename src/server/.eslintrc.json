@@ -14,8 +14,5 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
-  "rules": {
-    "@typescript-eslint/no-explicit-any": "off"
-  }
+  "plugins": ["react", "@typescript-eslint"]
 }

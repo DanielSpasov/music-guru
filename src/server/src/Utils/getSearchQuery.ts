@@ -1,14 +1,6 @@
 const regex = /^(?!\.*$)[\w. ]+$/;
 
-export const getSearchQuery = (query: any) => {
-  if (!query) return;
-
-  const queryString = query?.toString() || '';
-  const search = regex.exec(queryString);
-  return !search ? '' : search[0];
-};
-
-export const getMongoSearchQuery = (query: any) => {
+export const getSearchQuery = (query?: string) => {
   // Search not intended
   if (!query) return {};
 
