@@ -17,7 +17,7 @@ export type FormField = {
   };
   props?: {
     type?: InputType;
-    fetchFn?: Function;
+    fetchFn?: (props: any) => any;
     multiple?: boolean;
   };
 };

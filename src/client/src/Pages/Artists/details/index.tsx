@@ -79,7 +79,9 @@ export default function ArtistDetails() {
 
               {Boolean(artist.mixtapes.length) && (
                 <Summary label="Mixtapes" open>
-                  <Text>{artist.name} haven't released any mixtapes yet.</Text>
+                  <Text>
+                    {artist.name} haven&apos;t released any mixtapes yet.
+                  </Text>
                 </Summary>
               )}
 

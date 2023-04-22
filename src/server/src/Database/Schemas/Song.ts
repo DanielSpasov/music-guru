@@ -80,6 +80,7 @@ SongSchema.pre('findOneAndRemove', async function (next) {
 SongSchema.pre('findOneAndUpdate', async function (next) {
   const doc = await this.model.findOne(this.getFilter()).populate('artist');
   if (!doc) return next();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const updated = this._update;
 
