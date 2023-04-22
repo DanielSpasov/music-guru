@@ -8,18 +8,15 @@ import { HydratedDocument } from 'mongoose';
 
 const router = Router();
 
-router.get('/', (req, res) => fetch<IAlbum>({ req, res, Model: AlbumModel }));
+router.get('/', fetch<IAlbum>({ Model: AlbumModel }));
 
-router.get('/:id', (req, res) => get<IAlbum>({ req, res, Model: AlbumModel }));
+router.get('/:id', get<IAlbum>({ Model: AlbumModel }));
 
-router.delete('/:id', (req, res) =>
-  del<IAlbum>({ req, res, Model: AlbumModel })
-);
+router.delete('/:id', del<IAlbum>({ Model: AlbumModel }));
 
-router.post('/', (req, res) =>
+router.post(
+  '/',
   post<IAlbum>({
-    req,
-    res,
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
     preCreateFn: async (data: IAlbum) => {
@@ -45,10 +42,9 @@ router.post('/', (req, res) =>
   })
 );
 
-router.patch('/:id', (req, res) =>
+router.patch(
+  '/:id',
   patch({
-    req,
-    res,
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
     preUpdateFn: async (data: Album) => {

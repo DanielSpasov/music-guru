@@ -9,18 +9,16 @@ import { authorization } from '../../Middleware';
 
 const router = Router();
 
-router.get('/', (req, res) => fetch<ISong>({ req, res, Model: SongModel }));
+router.get('/', fetch<ISong>({ Model: SongModel }));
 
-router.get('/:id', (req, res) => get<ISong>({ req, res, Model: SongModel }));
+router.get('/:id', get<ISong>({ Model: SongModel }));
 
-router.delete('/:id', authorization, (req, res) =>
-  del<ISong>({ req, res, Model: SongModel })
-);
+router.delete('/:id', authorization, del<ISong>({ Model: SongModel }));
 
-router.post('/', authorization, (req, res) =>
+router.post(
+  '/',
+  authorization,
   post<ISong>({
-    req,
-    res,
     Model: SongModel,
     ValidationSchema: SongSchema,
     preCreateFn: async (data: Song) => {
@@ -56,10 +54,10 @@ router.post('/', authorization, (req, res) =>
   })
 );
 
-router.patch('/:id', authorization, (req, res) =>
+router.patch(
+  '/:id',
+  authorization,
   patch<ISong>({
-    req,
-    res,
     Model: SongModel,
     ValidationSchema: SongSchema,
     preUpdateFn: async (data: Song) => {
