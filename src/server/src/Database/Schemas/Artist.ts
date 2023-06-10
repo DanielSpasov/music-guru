@@ -83,7 +83,7 @@ export type IArtistMethods = {
   del: (type: DiscographyTypes, song_id: Types.ObjectId) => Promise<void>;
 };
 
-export default model<IArtist, Model<IArtist, {}, IArtistMethods>>(
+export default model<IArtist, Model<IArtist, object, IArtistMethods>>(
   'Artist',
   ArtistSchema
 );

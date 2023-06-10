@@ -1,7 +1,7 @@
 import Api from '../../../Api';
 
 export type InputProps = {
-  onChange: Function;
+  onChange: (props: any) => any;
   open: boolean;
   value: string;
   placeholder?: string;
@@ -17,7 +17,7 @@ export type SearchBoxProps = {
 
 export type ResultProps<T> = {
   data: T;
-  onClick: Function;
+  onClick: (props: any) => any;
   selected?: boolean;
 };
 

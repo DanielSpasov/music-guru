@@ -1,4 +1,4 @@
-import { Schema, model, InferSchemaType } from 'mongoose';
+import { Schema, model, InferSchemaType, ObjectId } from 'mongoose';
 
 import { defaultTransform } from '../helpers';
 
@@ -80,6 +80,7 @@ SongSchema.pre('findOneAndRemove', async function (next) {
 SongSchema.pre('findOneAndUpdate', async function (next) {
   const doc = await this.model.findOne(this.getFilter()).populate('artist');
   if (!doc) return next();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const updated = this._update;
 
@@ -92,13 +93,17 @@ SongSchema.pre('findOneAndUpdate', async function (next) {
   }
 
   // Update Artists features ref to the song
-  const oldFeatures = new Set(doc.features.map((x: any) => x.toString()));
-  const newFeatures = new Set(updated.features.map((x: any) => x.toString()));
+  const oldFeatures = new Set<ObjectId>(
+    doc.features.map((x: ObjectId) => x.toString())
+  );
+  const newFeatures = new Set<ObjectId>(
+    updated.features.map((x: ObjectId) => x.toString())
+  );
 
   const added = Array.from(newFeatures).filter(x => !oldFeatures.has(x));
   const removed = Array.from(oldFeatures).filter(x => !newFeatures.has(x));
 
-  const mapFn = (action: 'del' | 'add') => async (x: any) => {
+  const mapFn = (action: 'del' | 'add') => async (x: ObjectId) => {
     const artist = await model('Artist').findById(x);
     if (artist) await artist[action]('features', doc._id);
   };

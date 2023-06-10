@@ -11,10 +11,9 @@
   },
   "scripts": {
     "dev": "yarn client",
-    "lint": "eslint --max-warnings=0 src",
+    "lint": "eslint \"**/*.{ts,tsx}\"",
     "client": "cd src/client && yarn start",
     "server": "cd src/server && yarn start"
   },
-  "homepage": "https://github.com/DanielSpasov/Music-Nerd#readme",
-  "dependencies": {}
+  "homepage": "https://github.com/DanielSpasov/Music-Nerd#readme"
 }

@@ -7,25 +7,23 @@ import { authorization } from '../../Middleware';
 
 const router = Router();
 
-router.get('/', (req, res) => fetch<IArtist>({ req, res, Model: ArtistModel }));
+router.get('/', fetch<IArtist>({ Model: ArtistModel }));
 
-router.get('/:id', (req, res) =>
-  get<IArtist>({ req, res, Model: ArtistModel })
-);
+router.get('/:id', get<IArtist>({ Model: ArtistModel }));
 
-router.post('/', authorization, (req, res) =>
+router.post(
+  '/',
+  authorization,
   post<IArtist>({
-    req,
-    res,
     Model: ArtistModel,
     ValidationSchema: ArtistSchema
   })
 );
 
-router.patch('/:id', authorization, (req, res) =>
+router.patch(
+  '/:id',
+  authorization,
   patch<IArtist>({
-    req,
-    res,
     Model: ArtistModel,
     ValidationSchema: ArtistSchema
   })

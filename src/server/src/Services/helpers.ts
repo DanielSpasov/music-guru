@@ -1,39 +1,31 @@
-import { Request, Response } from 'express';
-import { Model } from 'mongoose';
+import { HydratedDocument, Model } from 'mongoose';
 import { ZodSchema } from 'zod';
 
 export type FetchProps<T> = {
-  req: Request;
-  res: Response;
   Model: Model<T>;
 };
 
 export type GetProps<T> = {
-  req: Request;
-  res: Response;
   Model: Model<T>;
 };
 
 export type DelProps<T> = {
-  req: Request;
-  res: Response;
   Model: Model<T>;
 };
 
 export type PostProps<T> = {
-  req: Request;
-  res: Response;
   Model: Model<T>;
   ValidationSchema: ZodSchema;
-  preCreateFn?: Function;
-  postCreateFn?: Function;
+  preCreateFn?: (data: T) => Promise<{ data: Partial<T> }>;
+  postCreateFn?: (data: HydratedDocument<T, object, unknown>) => Promise<void>;
 };
 
 export type PatchProps<T> = {
-  req: Request;
-  res: Response;
   Model: Model<T>;
   ValidationSchema: ZodSchema;
-  preUpdateFn?: Function;
-  postUpdateFn?: Function;
+  preUpdateFn?: (data: T) => Promise<{ data: Partial<T> }>;
+  postUpdateFn?: (
+    data: HydratedDocument<T, object, unknown>,
+    updated?: HydratedDocument<T, object, unknown> | null
+  ) => Promise<void>;
 };

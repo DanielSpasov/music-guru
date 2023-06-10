@@ -57,7 +57,6 @@ export async function SignUp(req: Request, res: Response) {
 
     res.status(200).json({ token, uid });
   } catch (error) {
-    console.log(error);
     errorHandler(req, res, error);
   }
 }

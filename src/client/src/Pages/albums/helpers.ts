@@ -31,5 +31,5 @@ export interface Album extends AlbumModel {
 export type UseActionsProps = {
   model: string;
   data?: Album;
-  deleteAlbum?: Function;
+  deleteAlbum?: (props: any) => any;
 };

@@ -1,25 +1,22 @@
+import { HydratedDocument } from 'mongoose';
 import { Router } from 'express';
 
 import { AlbumModel, ArtistModel, IAlbum } from '../../Database/Schemas';
 import { fetch, post, get, del, patch } from '../../Services/requests';
 import { CustomError } from '../../Error/CustomError';
-import { Album, AlbumSchema } from '../../Types/Album';
-import { HydratedDocument } from 'mongoose';
+import { AlbumSchema } from '../../Types/Album';
 
 const router = Router();
 
-router.get('/', (req, res) => fetch<IAlbum>({ req, res, Model: AlbumModel }));
+router.get('/', fetch<IAlbum>({ Model: AlbumModel }));
 
-router.get('/:id', (req, res) => get<IAlbum>({ req, res, Model: AlbumModel }));
+router.get('/:id', get<IAlbum>({ Model: AlbumModel }));
 
-router.delete('/:id', (req, res) =>
-  del<IAlbum>({ req, res, Model: AlbumModel })
-);
+router.delete('/:id', del<IAlbum>({ Model: AlbumModel }));
 
-router.post('/', (req, res) =>
+router.post(
+  '/',
   post<IAlbum>({
-    req,
-    res,
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
     preCreateFn: async (data: IAlbum) => {
@@ -45,13 +42,12 @@ router.post('/', (req, res) =>
   })
 );
 
-router.patch('/:id', (req, res) =>
-  patch({
-    req,
-    res,
+router.patch(
+  '/:id',
+  patch<IAlbum>({
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
-    preUpdateFn: async (data: Album) => {
+    preUpdateFn: async (data: IAlbum) => {
       const artist = await ArtistModel.findOne({ uid: data.artist });
       if (!artist) {
         throw new CustomError({ message: 'Artist not found.', code: 404 });

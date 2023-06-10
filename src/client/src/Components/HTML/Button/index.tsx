@@ -17,7 +17,8 @@ export default function Button({
 }
 
 const StyledButton = styled('button')<ButtonProps>`
-  background-color: ${({ variant, theme: { colors } }) => colors[variant!]};
+  background-color: ${({ variant, theme: { colors } }) =>
+    variant ? colors[variant] : colors.primary};
   color: ${({ theme: { colors }, color }) => color || colors.text};
   border: 2px solid transparent;
   padding: 0.75em 1.25em;

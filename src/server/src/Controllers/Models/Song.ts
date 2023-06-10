@@ -3,27 +3,25 @@ import { Router } from 'express';
 
 import { ArtistModel, SongModel, ISong } from '../../Database/Schemas';
 import { fetch, get, del, post, patch } from '../../Services/requests';
-import { Song, SongSchema } from '../../Types/Song';
 import { CustomError } from '../../Error/CustomError';
 import { authorization } from '../../Middleware';
+import { SongSchema } from '../../Types/Song';
 
 const router = Router();
 
-router.get('/', (req, res) => fetch<ISong>({ req, res, Model: SongModel }));
+router.get('/', fetch<ISong>({ Model: SongModel }));
 
-router.get('/:id', (req, res) => get<ISong>({ req, res, Model: SongModel }));
+router.get('/:id', get<ISong>({ Model: SongModel }));
 
-router.delete('/:id', authorization, (req, res) =>
-  del<ISong>({ req, res, Model: SongModel })
-);
+router.delete('/:id', authorization, del<ISong>({ Model: SongModel }));
 
-router.post('/', authorization, (req, res) =>
+router.post(
+  '/',
+  authorization,
   post<ISong>({
-    req,
-    res,
     Model: SongModel,
     ValidationSchema: SongSchema,
-    preCreateFn: async (data: Song) => {
+    preCreateFn: async (data: ISong) => {
       const artist = await ArtistModel.findOne({ uid: data.artist });
       if (!artist) {
         throw new CustomError({ message: 'Artist not found.', code: 404 });
@@ -56,13 +54,13 @@ router.post('/', authorization, (req, res) =>
   })
 );
 
-router.patch('/:id', authorization, (req, res) =>
+router.patch(
+  '/:id',
+  authorization,
   patch<ISong>({
-    req,
-    res,
     Model: SongModel,
     ValidationSchema: SongSchema,
-    preUpdateFn: async (data: Song) => {
+    preUpdateFn: async (data: ISong) => {
       const artist = await ArtistModel.findOne({ uid: data.artist });
       if (!artist) {
         throw new CustomError({ message: 'Artist not found.', code: 404 });

@@ -65,6 +65,7 @@ AlbumSchema.pre('findOneAndRemove', async function (next) {
 AlbumSchema.pre('findOneAndUpdate', async function (next) {
   const album = await this.model.findOne(this.getFilter()).populate('artist');
   if (!album) return next();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const updated = this._update;
 

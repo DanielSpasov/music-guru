@@ -7,13 +7,13 @@ export type Action = {
   };
   type?: ActionType;
   subActions?: SubAction[];
-  perform: Function;
+  perform: (props: any) => any;
   disabled?: boolean;
 };
 
 export type SubAction = {
   label: string;
-  perform: Function;
+  perform: (props: any) => any;
   disabled?: boolean;
 };
 

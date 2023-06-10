@@ -5,7 +5,7 @@ export type SelectProps = {
   getValues: UseFormGetValues<any>;
   props: {
     multiple?: boolean;
-    fetchFn?: Function;
+    fetchFn?: (props: any) => any;
   };
   validations: {
     required?: boolean;
