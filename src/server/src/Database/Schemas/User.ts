@@ -29,6 +29,10 @@ const UserSchema = new Schema(
       type: Date,
       immutable: true,
       default: () => Date.now()
+    },
+    verified: {
+      type: Boolean,
+      default: false
     }
   },
   {
@@ -43,6 +47,6 @@ const UserSchema = new Schema(
   }
 );
 
-type IUser = InferSchemaType<typeof UserSchema>;
+export type IUser = InferSchemaType<typeof UserSchema>;
 
 export default model<IUser>('User', UserSchema);

@@ -122,6 +122,16 @@
     "private": false
   },
   {
+    "path": "/verify-email",
+    "filePath": "/auth/verify-email",
+    "private": false
+  },
+  {
+    "path": "/me",
+    "filePath": "/auth/me",
+    "private": false
+  },
+  {
     "path": "*",
     "filePath": "/not-found",
     "private": false

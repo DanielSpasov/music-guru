@@ -7,6 +7,10 @@ export function jwtErrorHandler(
   error: JsonWebTokenError
 ) {
   try {
+    if (error.name === 'TokenExpiredError') {
+      res.status(400).json({ message: 'Verification email has expired.' });
+      return;
+    }
     if (error.name === 'JsonWebTokenError') {
       res.status(400).json({ message: 'Invalid token.' });
       return;

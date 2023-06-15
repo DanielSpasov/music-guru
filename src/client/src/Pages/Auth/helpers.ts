@@ -39,4 +39,6 @@ export type UserModel = z.infer<typeof UserSchema>;
 
 export interface User extends UserModel {
   uid: string;
+  verified: boolean;
+  created_at: string;
 }

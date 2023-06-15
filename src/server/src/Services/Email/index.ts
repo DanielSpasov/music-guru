@@ -5,10 +5,12 @@ import { Template } from './helpers';
 
 export default async function SendEmail({
   to,
-  template
+  template,
+  data
 }: {
   to: string;
   template: Template;
+  data?: Record<string, any>;
 }) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -21,6 +23,6 @@ export default async function SendEmail({
   await transporter.sendMail({
     to,
     from: `"Music Nerd" <${process.env.EMAIL_SERVICE_USER}>`,
-    ...templates[template]
+    ...templates[template](data)
   });
 }

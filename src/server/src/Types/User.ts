@@ -10,10 +10,12 @@ export const schema = z.object({
   ]),
   email: z.string().email({ message: 'Invalid email.' }),
   password: z.string(),
-  repeat_password: z.string()
+  repeat_password: z.string(),
+  verified: z.boolean()
 });
 
-export const SignUpSchema = schema.superRefine(
+const OmittedSignUpSchema = schema.omit({ verified: true });
+export const SignUpSchema = OmittedSignUpSchema.superRefine(
   ({ repeat_password, password }, context) => {
     if (repeat_password !== password) {
       context.addIssue({

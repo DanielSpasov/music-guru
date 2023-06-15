@@ -7,6 +7,7 @@ import { CustomError } from '../../Error/CustomError';
 import { UserModel } from '../../Database/Schemas';
 import { SignUpSchema } from '../../Types/User';
 import { errorHandler } from '../../Error';
+import SendEmail from '../Email';
 
 export async function SignUp(req: Request, res: Response) {
   try {
@@ -47,15 +48,26 @@ export async function SignUp(req: Request, res: Response) {
       uid,
       username,
       email,
-      password: passwordHash
+      password: passwordHash,
+      verified: false
     });
     await user.save();
 
     // SIGN THE JSON WEB TOKEN
     const jwtSecret = String(process.env.JWT_SECRET);
-    const token = jwt.sign({ uid }, jwtSecret);
+    const authToken = jwt.sign({ uid }, jwtSecret);
+    const emailToken = jwt.sign({ id: user._id }, jwtSecret, {
+      expiresIn: '10m'
+    });
 
-    res.status(200).json({ token, uid });
+    // SEND VERIFICATION EMAIL
+    await SendEmail({
+      to: email,
+      template: 'VERIFY',
+      data: { token: emailToken }
+    });
+
+    res.status(200).json({ token: authToken, uid });
   } catch (error) {
     errorHandler(req, res, error);
   }
