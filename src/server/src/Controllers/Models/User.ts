@@ -6,10 +6,11 @@ import {
   ValidateToken,
   ResendValidationEmail
 } from '../../Services/Auth';
+import { ValidateEmail } from '../../Services/Auth/ValidateEmail';
 import { UserModel, IUser } from '../../Database/Schemas';
 import { authorization } from '../../Middleware';
+import { UpdateUser } from '../../Services/User';
 import { get } from '../../Services/requests';
-import { ValidateEmail } from '../../Services/Auth/ValidateEmail';
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.post('/sign-up', SignUp);
 router.post('/sign-in', SignIn);
 
 router.get('/:id', get<IUser>({ Model: UserModel }));
+router.patch('/:id', authorization, UpdateUser);
 
 export default router;

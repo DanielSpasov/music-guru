@@ -1,6 +1,6 @@
 import { SignInData, SignUpData, User } from '../../Pages/auth/helpers';
 import { applyPrefix } from '../helpers';
-import { get, post } from '../requests';
+import { get, patch, post } from '../requests';
 import Crud from '../crud';
 
 export default class UserAPI extends Crud<User> {
@@ -9,6 +9,27 @@ export default class UserAPI extends Crud<User> {
   constructor(props: any) {
     super();
     applyPrefix(this, props);
+  }
+
+  patch({
+    id,
+    field,
+    body = {},
+    config = {}
+  }: {
+    id: string;
+    field: keyof User;
+    body: any;
+    config?: any;
+  }): Promise<{ data: User }> {
+    return patch({
+      url: `${this.baseUrl}/${this.model}/${id}/`,
+      body,
+      config: {
+        params: { field, ...config?.params },
+        ...config
+      }
+    });
   }
 
   signUp(user: SignUpData) {

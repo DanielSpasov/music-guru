@@ -32,11 +32,13 @@ export default function Me() {
             icon={{ model: 'user', type: 'solid' }}
             label="Information"
             config={getInfoConfig(user)}
+            setUser={setUser}
           />
           <OptionMenu
             icon={{ model: 'lock', type: 'solid' }}
             label="MFA"
             config={getMFAConfig(user)}
+            setUser={setUser}
           />
         </Box>
       )}
