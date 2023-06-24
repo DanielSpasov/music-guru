@@ -15,12 +15,16 @@ export default function SignUp() {
     (async () => {
       try {
         const token = searchParams.get('token') || '';
-        const res = await Api.user.validateToken(token);
-        console.log('after', res);
+        const { id } = await Api.user.validateToken(token);
+        if (id) {
+          const response = await Api.user.validateEmail(id);
+          toast.success(response.message);
+          navigate('/me');
+        }
       } catch (error) {
-        toast.info('You can send a new email from your security settings.');
-        toast.error('Email verification expired.');
-        navigate('/');
+        toast.info('You can send a new one from your security settings.');
+        toast.error('Verification email has expired.');
+        navigate('/me');
       } finally {
         setLoading(false);
       }

@@ -31,4 +31,17 @@ export default class UserAPI extends Crud<User> {
       config: { params: { token } }
     });
   }
+
+  reSendValidationEmail() {
+    return get({
+      url: `${this.baseUrl}/${this.model}/resend-validation-email`
+    });
+  }
+
+  validateEmail(id: string) {
+    return post({
+      url: `${this.baseUrl}/${this.model}/validate-email`,
+      body: { id }
+    });
+  }
 }

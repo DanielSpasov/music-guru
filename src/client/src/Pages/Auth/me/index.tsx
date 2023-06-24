@@ -1,5 +1,6 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
+import { getInfoConfig, getMFAConfig } from './helpers';
 import { Box, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import OptionMenu from './OptionMenu';
@@ -23,50 +24,22 @@ export default function Me() {
     })();
   }, [uid]);
 
-  const information = useMemo(() => {
-    if (!user) return [];
-
-    const formattedDate = new Date(user.created_at).toLocaleDateString(
-      'en-US',
-      {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      }
-    );
-
-    return [
-      { name: 'UID', value: user.uid },
-      { name: 'Email', value: user.email },
-      { name: 'Username', value: user?.username },
-      { name: 'Date Created', value: formattedDate }
-    ];
-  }, [user]);
-
-  const mfa = useMemo(() => {
-    if (!user) return [];
-    return [
-      { name: 'Verified Email', value: user.verified ? 'Yes' : 'No' },
-      { name: 'Email 2FA', value: 'TODO' },
-      { name: 'Phone Number', value: 'TODO' },
-      { name: 'Google Authenticator', value: 'TODO' }
-    ];
-  }, [user]);
-
   return (
     <PageLayout title={user?.username || ''} loading={loading}>
-      <Box padding="1em">
-        <OptionMenu
-          icon={{ model: 'user', type: 'solid' }}
-          label="Information"
-          data={information}
-        />
-        <OptionMenu
-          icon={{ model: 'lock', type: 'solid' }}
-          label="MFA"
-          data={mfa}
-        />
-      </Box>
+      {user && (
+        <Box padding="1em">
+          <OptionMenu
+            icon={{ model: 'user', type: 'solid' }}
+            label="Information"
+            config={getInfoConfig(user)}
+          />
+          <OptionMenu
+            icon={{ model: 'lock', type: 'solid' }}
+            label="MFA"
+            config={getMFAConfig(user)}
+          />
+        </Box>
+      )}
     </PageLayout>
   );
 }

@@ -5,9 +5,9 @@ import crypto from 'crypto';
 
 import { CustomError } from '../../Error/CustomError';
 import { UserModel } from '../../Database/Schemas';
+import { sendVerificationEmail } from './helpers';
 import { SignUpSchema } from '../../Types/User';
 import { errorHandler } from '../../Error';
-import SendEmail from '../Email';
 
 export async function SignUp(req: Request, res: Response) {
   try {
@@ -56,16 +56,8 @@ export async function SignUp(req: Request, res: Response) {
     // SIGN THE JSON WEB TOKEN
     const jwtSecret = String(process.env.JWT_SECRET);
     const authToken = jwt.sign({ uid }, jwtSecret);
-    const emailToken = jwt.sign({ id: user._id }, jwtSecret, {
-      expiresIn: '10m'
-    });
 
-    // SEND VERIFICATION EMAIL
-    await SendEmail({
-      to: email,
-      template: 'VERIFY',
-      data: { token: emailToken }
-    });
+    await sendVerificationEmail(user);
 
     res.status(200).json({ token: authToken, uid });
   } catch (error) {
