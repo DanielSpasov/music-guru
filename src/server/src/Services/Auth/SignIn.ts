@@ -19,7 +19,7 @@ export async function SignIn(req: Request, res: Response) {
     const user = await UserModel.findOne({ email: email });
     if (!user) {
       throw new CustomError({
-        message: 'Wrong Email adress or Password.',
+        message: 'Wrong Email address or Password.',
         code: 400
       });
     }
@@ -28,7 +28,7 @@ export async function SignIn(req: Request, res: Response) {
     const passMatch = await bcrypt.compare(password, user.password);
     if (!passMatch) {
       throw new CustomError({
-        message: 'Wrong Email adress or Password.',
+        message: 'Wrong Email address or Password.',
         code: 400
       });
     }
