@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { getInfoConfig, getMFAConfig } from './helpers';
+import { infoConfig, getMFAConfig } from './helpers';
 import { Box, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import OptionMenu from './OptionMenu';
@@ -31,14 +31,16 @@ export default function Me() {
           <OptionMenu
             icon={{ model: 'user', type: 'solid' }}
             label="Information"
-            config={getInfoConfig(user)}
+            config={infoConfig}
             setUser={setUser}
+            user={user}
           />
           <OptionMenu
             icon={{ model: 'lock', type: 'solid' }}
             label="MFA"
             config={getMFAConfig(user)}
             setUser={setUser}
+            user={user}
           />
         </Box>
       )}

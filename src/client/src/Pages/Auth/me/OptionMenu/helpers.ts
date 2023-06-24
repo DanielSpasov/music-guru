@@ -1,7 +1,7 @@
 import { Dispatch } from 'react';
 import { User } from '../../helpers';
 
-export type MenuOptionType = 'string' | 'boolean';
+export type MenuOptionType = 'string' | 'boolean' | 'date';
 
 export type MenuOptionAction = {
   label: string;
@@ -11,12 +11,11 @@ export type MenuOptionAction = {
 };
 
 export type MenuOption = {
-  name: string;
+  label: string;
   field: keyof User;
-  value?: string | boolean;
-  type?: MenuOptionType;
-  action?: MenuOptionAction;
+  type: MenuOptionType;
   editable?: boolean;
+  action?: MenuOptionAction;
 };
 
 export type OptionMenuProps = {
@@ -26,5 +25,12 @@ export type OptionMenuProps = {
   };
   label: string;
   config: MenuOption[];
+  setUser: Dispatch<User>;
+  user: User;
+};
+
+export type OptionProps = {
+  data: MenuOption;
+  user: User;
   setUser: Dispatch<User>;
 };

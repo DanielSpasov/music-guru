@@ -2,39 +2,34 @@ import { MenuOption } from './OptionMenu/helpers';
 import { User } from '../helpers';
 import Api from '../../../Api';
 
-export const getInfoConfig = (user: User): MenuOption[] => [
+export const infoConfig: MenuOption[] = [
   {
     field: 'uid',
-    name: 'UID',
-    value: user.uid
+    label: 'UID',
+    type: 'string'
   },
   {
     field: 'email',
-    name: 'Email',
-    value: user.email
+    label: 'Email',
+    type: 'string'
   },
   {
     field: 'username',
-    name: 'Username',
-    value: user?.username,
-    editable: true
+    label: 'Username',
+    editable: true,
+    type: 'string'
   },
   {
     field: 'created_at',
-    name: 'Date Created',
-    value: new Date(user.created_at).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    })
+    label: 'Date Created',
+    type: 'date'
   }
 ];
 
 export const getMFAConfig = (user: User): MenuOption[] => [
   {
     field: 'verified',
-    name: 'Verified Email',
-    value: user.verified,
+    label: 'Verified Email',
     type: 'boolean',
     action: {
       label: 'Send Email',
@@ -44,17 +39,17 @@ export const getMFAConfig = (user: User): MenuOption[] => [
   },
   {
     field: 'verified',
-    name: 'Email 2FA',
-    value: 'TODO'
+    label: 'Email 2FA',
+    type: 'boolean'
   },
   {
     field: 'verified',
-    name: 'Phone Number',
-    value: 'TODO'
+    label: 'Phone Number',
+    type: 'boolean'
   },
   {
     field: 'verified',
-    name: 'Google Authenticator',
-    value: 'TODO'
+    label: 'Google Authenticator',
+    type: 'boolean'
   }
 ];

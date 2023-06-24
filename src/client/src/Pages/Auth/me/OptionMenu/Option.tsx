@@ -1,33 +1,20 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  useCallback,
-  useContext,
-  useState
-} from 'react';
+import { ChangeEvent, useCallback, useContext, useState } from 'react';
 import { ThemeContext } from 'styled-components';
 import { toast } from 'react-toastify';
 
 import { StyledInput } from '../../../../Components/Forms/Fields/Input/Styled';
 import { Box, Button, Icon, Text } from '../../../../Components';
-import { MenuOption } from './helpers';
 import { AuthContext } from '../../../../Contexts/Auth';
-import Api from '../../../../Api';
 import { errorHandler } from '../../../../Handlers';
-import { User } from '../../helpers';
+import { OptionProps } from './helpers';
+import Api from '../../../../Api';
 
-export default function Option({
-  data,
-  setUser
-}: {
-  data: MenuOption;
-  setUser: Dispatch<User>;
-}) {
+export default function Option({ data, user, setUser }: OptionProps) {
   const { colors } = useContext(ThemeContext);
   const { uid } = useContext(AuthContext);
 
+  const [value, setValue] = useState(user[data.field]);
   const [isEditing, setIsEditing] = useState(false);
-  const [value, setValue] = useState(data?.value);
   const [loading, setLoading] = useState(false);
 
   const handleOnClick = useCallback(async () => {
@@ -44,11 +31,6 @@ export default function Option({
     }
   }, [data?.action]);
 
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => setValue(e?.target?.value),
-    []
-  );
-
   const onSubmit = useCallback(async () => {
     try {
       const { data: updated } = await Api.user.patch({
@@ -57,7 +39,7 @@ export default function Option({
         body: { [data.field]: value }
       });
       setUser(updated);
-      toast.success(`${data.name} updated successfully.`);
+      toast.success(`${data.label} updated successfully.`);
     } catch (error) {
       errorHandler(error);
     }
@@ -92,30 +74,44 @@ export default function Option({
           ))}
       </Box>
 
-      <Box flex="3">
-        <Text fontWeight="bold">{data.name}: </Text>
+      <Box flex="1">
+        <Text fontWeight="bold">{data.label}: </Text>
       </Box>
 
-      <Box flex="3">
+      <Box flex="2">
         {isEditing ? (
-          <StyledInput margin="0" value={value} onChange={onChange} />
+          <StyledInput
+            margin="0"
+            value={value}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setValue(e?.target?.value)
+            }
+          />
         ) : (
           <>
-            {data?.type === 'boolean' ? (
+            {data.type === 'string' && <Text>{user[data.field]}</Text>}
+            {data.type === 'boolean' && (
               <Icon
-                model={data?.value ? 'check' : 'x'}
+                model={user[data.field] ? 'check' : 'x'}
                 type="solid"
-                color={data?.value ? colors.success : colors.danger}
+                color={user[data.field] ? colors.success : colors.danger}
                 padding="0 .5em"
               />
-            ) : (
-              <Text>{data?.value}</Text>
+            )}
+            {data.type === 'date' && (
+              <Text>
+                {new Date(user.created_at).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </Text>
             )}
           </>
         )}
       </Box>
 
-      <Box flex="3" textAlign="end">
+      <Box flex="2" textAlign="end">
         {data?.action && !data?.action?.hide && (
           <Button
             margin="0"

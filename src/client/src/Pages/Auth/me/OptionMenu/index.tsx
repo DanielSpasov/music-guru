@@ -9,7 +9,8 @@ export default function OptionMenu({
   icon,
   label,
   config,
-  setUser
+  setUser,
+  user
 }: OptionMenuProps) {
   const { colors } = useContext(ThemeContext);
 
@@ -18,7 +19,7 @@ export default function OptionMenu({
       <Icon {...icon} color={colors.primary} fontSize="2em" padding=".4em" />
       <Summary label={label} open>
         {config.map((data, i) => (
-          <Option data={data} key={i} setUser={setUser} />
+          <Option data={data} key={i} setUser={setUser} user={user} />
         ))}
       </Summary>
     </Box>
