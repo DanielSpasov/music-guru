@@ -1,8 +1,9 @@
+import { useCallback, useContext, useState } from 'react';
 import { ThemeContext } from 'styled-components';
-import { useContext } from 'react';
 
+import { MenuOption, MenuOptionAction, OptionMenuProps } from './helpers';
 import { Box, Button, Icon, Summary, Text } from '../../../Components';
-import { MenuOption, OptionMenuProps } from './helpers';
+import { toast } from 'react-toastify';
 
 export default function OptionMenu({ icon, label, config }: OptionMenuProps) {
   const { colors } = useContext(ThemeContext);
@@ -21,6 +22,22 @@ export default function OptionMenu({ icon, label, config }: OptionMenuProps) {
 
 function Option({ data }: { data: MenuOption }) {
   const { colors } = useContext(ThemeContext);
+
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = useCallback(async (action: MenuOptionAction) => {
+    try {
+      setLoading(true);
+      const res = await action.onClick();
+      toast.success(res?.message || 'Action successful.');
+    } catch (error) {
+      toast.error(
+        'An error occurred when trying to send the verification email.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   return (
     <Box
@@ -47,8 +64,9 @@ function Option({ data }: { data: MenuOption }) {
       {data?.action && !data?.action?.hide && (
         <Button
           margin="0"
-          onClick={() => data.action?.onClick()}
-          disabled={data.action?.disabled}
+          padding=".6em"
+          onClick={() => data?.action && handleClick(data.action)}
+          disabled={loading || data.action?.disabled}
         >
           {data.action.label}
         </Button>

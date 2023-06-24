@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { border, colors, font, margin } from '../../helpers';
+import { border, colors, font, margin, padding } from '../../helpers';
 import { ButtonProps } from './helpers';
 
 export default function Button({
@@ -27,6 +27,7 @@ const StyledButton = styled('button')<ButtonProps>`
   transition: 0.3s;
   font-size: 1em;
 
+  ${padding};
   ${colors};
   ${margin};
   ${border};

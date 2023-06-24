@@ -1,19 +1,20 @@
-import { toast } from 'react-toastify';
 import { User } from '../helpers';
 import Api from '../../../Api';
 
 export type MenuOptionType = 'string' | 'boolean';
 
+export type MenuOptionAction = {
+  label: string;
+  disabled?: boolean;
+  hide?: boolean;
+  onClick: () => any;
+};
+
 export type MenuOption = {
   name: string;
   value?: string | boolean;
   type?: MenuOptionType;
-  action?: {
-    label: string;
-    disabled?: boolean;
-    hide?: boolean;
-    onClick: () => any;
-  };
+  action?: MenuOptionAction;
 };
 
 export type OptionMenuProps = {
@@ -50,14 +51,7 @@ export const getMFAConfig = (user: User): MenuOption[] => [
       onClick: () => Api.user.reSendValidationEmail()
     }
   },
-  {
-    name: 'Email 2FA',
-    value: 'TODO',
-    action: {
-      label: '123',
-      onClick: () => toast.info('test')
-    }
-  },
+  { name: 'Email 2FA', value: 'TODO' },
   { name: 'Phone Number', value: 'TODO' },
   { name: 'Google Authenticator', value: 'TODO' }
 ];
