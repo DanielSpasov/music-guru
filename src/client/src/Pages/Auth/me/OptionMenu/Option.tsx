@@ -6,6 +6,7 @@ import { StyledInput } from '../../../../Components/Forms/Fields/Input/Styled';
 import { Box, Button, Icon, Text } from '../../../../Components';
 import { AuthContext } from '../../../../Contexts/Auth';
 import { errorHandler } from '../../../../Handlers';
+import { fromatDate } from '../../../../Utils';
 import { OptionProps } from './helpers';
 import Api from '../../../../Api';
 
@@ -100,11 +101,7 @@ export default function Option({ data, user, setUser }: OptionProps) {
             )}
             {data.type === 'date' && (
               <Text>
-                {new Date(user.created_at).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric'
-                })}
+                {fromatDate({ date: user[data.field] as any as Date })}
               </Text>
             )}
           </>

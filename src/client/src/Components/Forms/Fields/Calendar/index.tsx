@@ -14,7 +14,7 @@ export default function Calendar({
   getValues
 }: CalendarProps) {
   const defaultValue = useMemo(
-    () => (getValues()[name] ? new Date(getValues()[name]) : undefined),
+    () => (getValues()[name] ? moment(getValues()[name]).toDate() : undefined),
     [getValues, name]
   );
 
