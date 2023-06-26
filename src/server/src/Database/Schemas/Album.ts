@@ -47,7 +47,7 @@ const AlbumSchema = new Schema(
   }
 );
 
-// On Album 'Delete'
+// Pre Album 'Delete'
 AlbumSchema.pre('findOneAndRemove', async function (next) {
   const album = await this.model.findOne(this.getFilter()).populate('artist');
   if (!album) return next();
@@ -61,7 +61,7 @@ AlbumSchema.pre('findOneAndRemove', async function (next) {
   next();
 });
 
-// On Album 'Update'
+// Pre Album 'Update'
 AlbumSchema.pre('findOneAndUpdate', async function (next) {
   const album = await this.model.findOne(this.getFilter()).populate('artist');
   if (!album) return next();
