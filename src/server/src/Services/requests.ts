@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Document } from 'mongoose';
+import { Document, model } from 'mongoose';
 
 import { generateUID, getUser, getSearchQuery } from '../Utils';
 import { CustomError } from '../Error/CustomError';
@@ -78,22 +78,33 @@ export const del =
   };
 
 export const post =
-  <T>({ Model, ValidationSchema, preCreateFn, postCreateFn }: PostProps<T>) =>
+  <T>({ Model, ValidationSchema, prepopulate, postCreateFn }: PostProps<T>) =>
   async (req: Request, res: Response) => {
     try {
       const user = await getUser(req.headers?.authorization);
       const validData = ValidationSchema.parse(req.body);
       const uid = await generateUID(Model);
 
-      const { data } = preCreateFn
-        ? await preCreateFn(validData)
-        : { data: {} };
+      const data = await prepopulate?.reduce(async (prev, path) => {
+        const field = Model.schema.paths[path as string];
+        const isMulti = Array.isArray(validData[path]);
+        const modelPath = isMulti
+          ? field.options.type[0].ref
+          : field.options.ref;
+        const query = isMulti ? validData[path] : [validData[path]];
+
+        const items = await model(modelPath).find({ uid: { $in: query } });
+
+        return {
+          ...(await prev),
+          [path]: isMulti ? items.map(x => x._id) : items[0]._id
+        };
+      }, validData);
 
       const doc = new Model({
         uid,
         created_by: user._id,
-        ...validData,
-        ...data
+        ...(data || validData)
       });
 
       if (postCreateFn) await postCreateFn(doc);

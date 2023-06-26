@@ -19,18 +19,7 @@ router.post(
   post<IAlbum>({
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
-    preCreateFn: async (data: IAlbum) => {
-      const artist = await ArtistModel.findOne({ uid: data.artist });
-      if (!artist) {
-        throw new CustomError({ message: 'Artist not found.', code: 404 });
-      }
-
-      return {
-        data: {
-          artist: artist._id
-        }
-      };
-    },
+    prepopulate: ['artist'],
     postCreateFn: async (data: HydratedDocument<IAlbum>) => {
       const artist = await ArtistModel.findById(data.artist);
       if (!artist) {

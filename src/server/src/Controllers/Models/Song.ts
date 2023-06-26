@@ -21,23 +21,7 @@ router.post(
   post<ISong>({
     Model: SongModel,
     ValidationSchema: SongSchema,
-    preCreateFn: async (data: ISong) => {
-      const artist = await ArtistModel.findOne({ uid: data.artist });
-      if (!artist) {
-        throw new CustomError({ message: 'Artist not found.', code: 404 });
-      }
-
-      const featuredArtists = await ArtistModel.find({
-        uid: { $in: data.features }
-      });
-
-      return {
-        data: {
-          artist: artist._id,
-          features: featuredArtists.map(artist => artist._id)
-        }
-      };
-    },
+    prepopulate: ['artist', 'features'],
     postCreateFn: async (data: HydratedDocument<ISong>) => {
       const artist = await ArtistModel.findById(data.artist);
       if (!artist) {

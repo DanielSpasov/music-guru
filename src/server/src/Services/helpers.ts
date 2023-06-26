@@ -16,7 +16,7 @@ export type DelProps<T> = {
 export type PostProps<T> = {
   Model: Model<T>;
   ValidationSchema: ZodSchema;
-  preCreateFn?: (data: T) => Promise<{ data: Partial<T> }>;
+  prepopulate?: (keyof T)[];
   postCreateFn?: (data: HydratedDocument<T, object, unknown>) => Promise<void>;
 };
 
