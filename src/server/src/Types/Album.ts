@@ -20,5 +20,4 @@ export interface Album extends AlbumSchemaType {
   created_at: Date;
   created_by: User;
   artist: Artist;
-  discs: unknown[];
 }

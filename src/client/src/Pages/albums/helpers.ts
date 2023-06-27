@@ -25,7 +25,6 @@ export interface Album extends AlbumModel {
   created_at: Date;
   created_by: User;
   artist: Artist;
-  discs: any[];
 }
 
 export type UseActionsProps = {

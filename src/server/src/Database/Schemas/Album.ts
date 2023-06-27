@@ -34,13 +34,7 @@ const AlbumSchema = new Schema(
       required: true,
       type: Schema.Types.ObjectId,
       ref: 'Artist'
-    },
-    discs: [
-      {
-        name: String,
-        songs: [{ name: String }]
-      }
-    ]
+    }
   },
   {
     toJSON: { transform: defaultTransform }
