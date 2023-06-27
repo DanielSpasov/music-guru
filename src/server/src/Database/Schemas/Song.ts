@@ -54,7 +54,7 @@ const SongSchema = new Schema(
 
 export type ISong = InferSchemaType<typeof SongSchema>;
 
-// On Song 'Delete'
+// Pre Song 'Delete'
 SongSchema.pre('findOneAndRemove', async function (next) {
   const song = await this.model.findOne(this.getFilter()).populate('artist');
   if (!song) return next();
@@ -76,7 +76,7 @@ SongSchema.pre('findOneAndRemove', async function (next) {
   next();
 });
 
-// On Song 'Update'
+// Pre Song 'Update'
 SongSchema.pre('findOneAndUpdate', async function (next) {
   const doc = await this.model.findOne(this.getFilter()).populate('artist');
   if (!doc) return next();
@@ -88,8 +88,8 @@ SongSchema.pre('findOneAndUpdate', async function (next) {
   const oldArtist = await model('Artist').findOne({ uid: doc.artist.uid });
   const newArtist = await model('Artist').findById(updated.artist);
   if (doc.artist.uid !== newArtist.uid) {
-    if (oldArtist) oldArtist.del('songs', doc._id);
-    if (newArtist) newArtist.add('songs', doc._id);
+    if (oldArtist) await oldArtist.del('songs', doc._id);
+    if (newArtist) await newArtist.add('songs', doc._id);
   }
 
   // Update Artists features ref to the song
