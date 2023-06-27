@@ -1,4 +1,3 @@
-import { HydratedDocument } from 'mongoose';
 import { Router } from 'express';
 
 import { AlbumModel, ArtistModel, IAlbum } from '../../Database/Schemas';
@@ -20,14 +19,7 @@ router.post(
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
     prepopulate: ['artist'],
-    postCreateFn: async (data: HydratedDocument<IAlbum>) => {
-      const artist = await ArtistModel.findById(data.artist);
-      if (!artist) {
-        throw new CustomError({ message: 'Artist not found.', code: 404 });
-      }
-
-      await artist.add('albums', data._id);
-    }
+    relations: [{ key: 'artist', relation: ['albums'] }]
   })
 );
 

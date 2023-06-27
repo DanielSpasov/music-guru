@@ -78,7 +78,7 @@ export const del =
   };
 
 export const post =
-  <T>({ Model, ValidationSchema, prepopulate, postCreateFn }: PostProps<T>) =>
+  <T>({ Model, ValidationSchema, prepopulate, relations }: PostProps<T>) =>
   async (req: Request, res: Response) => {
     try {
       const user = await getUser(req.headers?.authorization);
@@ -107,7 +107,22 @@ export const post =
         ...(data || validData)
       });
 
-      if (postCreateFn) await postCreateFn(doc);
+      relations?.forEach(async ({ key, relation }) => {
+        const field = Model.schema.paths[key as string];
+        const isMulti = Array.isArray(validData[key]);
+        const modelPath = isMulti
+          ? field.options.type[0].ref
+          : field.options.ref;
+        const query = isMulti ? validData[key] : [validData[key]];
+
+        const items = await model(modelPath).find({ uid: { $in: query } });
+        items.forEach(async item => {
+          Array.isArray(relation)
+            ? item[relation[0]].push(doc._id)
+            : (item[relation[0]] = doc._id);
+          await item.save();
+        });
+      });
 
       await doc.save();
 

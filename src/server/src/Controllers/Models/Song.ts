@@ -1,4 +1,3 @@
-import { HydratedDocument } from 'mongoose';
 import { Router } from 'express';
 
 import { ArtistModel, SongModel, ISong } from '../../Database/Schemas';
@@ -22,19 +21,10 @@ router.post(
     Model: SongModel,
     ValidationSchema: SongSchema,
     prepopulate: ['artist', 'features'],
-    postCreateFn: async (data: HydratedDocument<ISong>) => {
-      const artist = await ArtistModel.findById(data.artist);
-      if (!artist) {
-        throw new CustomError({ message: 'Artist not found.', code: 404 });
-      }
-
-      const featuredArtists = await ArtistModel.find({
-        _id: { $in: data.features }
-      });
-
-      await artist.add('songs', data._id);
-      await Promise.all(featuredArtists.map(x => x.add('features', data._id)));
-    }
+    relations: [
+      { key: 'artist', relation: ['songs'] },
+      { key: 'features', relation: ['features'] }
+    ]
   })
 );
 
