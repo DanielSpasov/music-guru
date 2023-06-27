@@ -1,4 +1,4 @@
-import { HydratedDocument, Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { ZodSchema } from 'zod';
 
 export type FetchProps<T> = {
@@ -28,9 +28,5 @@ export type PostProps<T> = {
 export type PatchProps<T> = {
   Model: Model<T>;
   ValidationSchema: ZodSchema;
-  preUpdateFn?: (data: T) => Promise<{ data: Partial<T> }>;
-  postUpdateFn?: (
-    data: HydratedDocument<T, object, unknown>,
-    updated?: HydratedDocument<T, object, unknown> | null
-  ) => Promise<void>;
+  prepopulate?: (keyof T)[];
 };

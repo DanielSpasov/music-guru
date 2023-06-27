@@ -133,7 +133,7 @@ export const post =
   };
 
 export const patch =
-  <T>({ Model, ValidationSchema, preUpdateFn, postUpdateFn }: PatchProps<T>) =>
+  <T>({ Model, ValidationSchema, prepopulate }: PatchProps<T>) =>
   async (req: Request, res: Response) => {
     try {
       const user = await getUser(req.headers?.authorization);
@@ -150,20 +150,27 @@ export const patch =
 
       const validData = ValidationSchema.parse(req.body);
 
-      const { data } = preUpdateFn
-        ? await preUpdateFn(validData)
-        : { data: {} };
+      const data = await prepopulate?.reduce(async (prev, path) => {
+        const field = Model.schema.paths[path as string];
+        const isMulti = Array.isArray(validData[path]);
+        const modelPath = isMulti
+          ? field.options.type[0].ref
+          : field.options.ref;
+        const query = isMulti ? validData[path] : [validData[path]];
 
-      const updated = await Model.findOneAndUpdate(
+        const items = await model(modelPath).find({ uid: { $in: query } });
+
+        return {
+          ...(await prev),
+          [path]: isMulti ? items.map(x => x?._id) : items[0]?._id
+        };
+      }, validData);
+
+      await Model.findOneAndUpdate(
         { uid: req.params.id },
-        {
-          ...validData,
-          ...data
-        },
+        { ...(data || validData) },
         { new: true }
       );
-
-      if (postUpdateFn) await postUpdateFn(doc, updated);
 
       await doc.save();
 

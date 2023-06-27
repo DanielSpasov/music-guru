@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-import { AlbumModel, ArtistModel, IAlbum } from '../../Database/Schemas';
 import { fetch, post, get, del, patch } from '../../Services/requests';
-import { CustomError } from '../../Error/CustomError';
+import { AlbumModel, IAlbum } from '../../Database/Schemas';
+import { authorization } from '../../Middleware';
 import { AlbumSchema } from '../../Types/Album';
 
 const router = Router();
@@ -11,10 +11,11 @@ router.get('/', fetch<IAlbum>({ Model: AlbumModel }));
 
 router.get('/:id', get<IAlbum>({ Model: AlbumModel }));
 
-router.delete('/:id', del<IAlbum>({ Model: AlbumModel }));
+router.delete('/:id', authorization, del<IAlbum>({ Model: AlbumModel }));
 
 router.post(
   '/',
+  authorization,
   post<IAlbum>({
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
@@ -25,17 +26,11 @@ router.post(
 
 router.patch(
   '/:id',
+  authorization,
   patch<IAlbum>({
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
-    preUpdateFn: async (data: IAlbum) => {
-      const artist = await ArtistModel.findOne({ uid: data.artist });
-      if (!artist) {
-        throw new CustomError({ message: 'Artist not found.', code: 404 });
-      }
-
-      return { data: { artist: artist._id } };
-    }
+    prepopulate: ['artist']
   })
 );
 

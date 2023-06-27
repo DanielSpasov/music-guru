@@ -1,8 +1,7 @@
 import { Router } from 'express';
 
-import { ArtistModel, SongModel, ISong } from '../../Database/Schemas';
 import { fetch, get, del, post, patch } from '../../Services/requests';
-import { CustomError } from '../../Error/CustomError';
+import { SongModel, ISong } from '../../Database/Schemas';
 import { authorization } from '../../Middleware';
 import { SongSchema } from '../../Types/Song';
 
@@ -34,21 +33,7 @@ router.patch(
   patch<ISong>({
     Model: SongModel,
     ValidationSchema: SongSchema,
-    preUpdateFn: async (data: ISong) => {
-      const artist = await ArtistModel.findOne({ uid: data.artist });
-      if (!artist) {
-        throw new CustomError({ message: 'Artist not found.', code: 404 });
-      }
-
-      const features = await ArtistModel.find({ uid: { $in: data.features } });
-
-      return {
-        data: {
-          artist: artist._id,
-          features: features.map(x => x._id)
-        }
-      };
-    }
+    prepopulate: ['artist', 'features']
   })
 );
 
