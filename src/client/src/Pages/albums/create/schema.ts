@@ -42,19 +42,5 @@ export const schema: FormSchema = [
         }
       }
     ]
-  },
-  {
-    key: 'songs',
-    title: 'Songs',
-    fields: [
-      {
-        key: 'song',
-        label: 'Song',
-        Component: Select,
-        props: {
-          fetchFn: ({ params }: any) => Api.songs.fetch({ config: { params } })
-        }
-      }
-    ]
   }
 ];
