@@ -19,13 +19,15 @@ export default function Field({
         </Text>
       </Box>
 
-      <field.Component
-        register={register}
-        getValues={getValues}
-        setFormValue={setValue}
-        name={field.key}
-        {...field}
-      />
+      <Box>
+        <field.Component
+          register={register}
+          getValues={getValues}
+          setFormValue={setValue}
+          name={field.key}
+          {...field}
+        />
+      </Box>
 
       {error && <Text variant="danger">{error?.message}</Text>}
     </Box>

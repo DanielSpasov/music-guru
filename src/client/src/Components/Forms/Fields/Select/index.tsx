@@ -23,7 +23,7 @@ export default function Select({
   useEffect(() => {
     setFormValue(
       name,
-      getValues()[name]?.map((x: any) => x.uid)
+      getValues()[name]?.map((x: any) => x?.uid)
     );
   }, [setFormValue, name, getValues]);
 
@@ -75,15 +75,9 @@ export default function Select({
   );
 
   return (
-    <>
+    <Box>
       {/* TAG BOX */}
-      <Box
-        zIndex="1"
-        position="absolute"
-        display="flex"
-        padding=".35em"
-        margin="0.5em 0"
-      >
+      <Box zIndex="1" position="absolute" display="flex" padding=".35em">
         {values.map(x => (
           <Tag key={x.uid} onClick={() => onRemove(x)}>
             {x.name}
@@ -103,7 +97,7 @@ export default function Select({
         disableCaret
         color="transparent"
       />
-      <Label position="absolute" top="36px" left="10px">
+      <Label position="absolute" top=".65em" left=".75em">
         {label}
       </Label>
 
@@ -114,8 +108,8 @@ export default function Select({
         onClick={onClear}
         position="absolute"
         fontSize="1em"
-        right=".75rem"
-        top="2.25rem"
+        right=".7em"
+        top=".7em"
       />
 
       {/* OPTIONS DROPDOWN */}
@@ -139,6 +133,6 @@ export default function Select({
           />
         ))}
       </Popover>
-    </>
+    </Box>
   );
 }

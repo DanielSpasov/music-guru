@@ -35,7 +35,7 @@ export const StyledInput = styled('input')<any>`
 
   &:focus ~ label,
   &:not(:placeholder-shown)&:not(:focus) ~ label {
-    top: 0;
-    left: 0;
+    top: -1.5em;
+    left: 0em;
   }
 `;
