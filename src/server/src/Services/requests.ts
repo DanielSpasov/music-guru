@@ -88,10 +88,11 @@ export const post =
       const data = await prepopulate?.reduce(async (prev, path) => {
         const field = Model.schema.paths[path as string];
         const isMulti = Array.isArray(validData[path]);
+        const query = isMulti ? validData[path] : [validData[path]];
         const modelPath = isMulti
           ? field.options.type[0].ref
           : field.options.ref;
-        const query = isMulti ? validData[path] : [validData[path]];
+        if (!modelPath) return await prev;
 
         const items = await model(modelPath).find({ uid: { $in: query } });
 
@@ -110,18 +111,20 @@ export const post =
       relations?.forEach(async ({ key, relation }) => {
         const field = Model.schema.paths[key as string];
         const isMulti = Array.isArray(validData[key]);
+        const query = isMulti ? validData[key] : [validData[key]];
         const modelPath = isMulti
           ? field.options.type[0].ref
           : field.options.ref;
-        const query = isMulti ? validData[key] : [validData[key]];
 
-        const items = await model(modelPath).find({ uid: { $in: query } });
-        items.forEach(async item => {
-          Array.isArray(relation)
-            ? item[relation[0]].push(doc._id)
-            : (item[relation[0]] = doc._id);
-          await item.save();
-        });
+        if (modelPath) {
+          const items = await model(modelPath).find({ uid: { $in: query } });
+          items.forEach(async item => {
+            Array.isArray(relation)
+              ? item[relation[0]].push(doc._id)
+              : (item[relation[0]] = doc._id);
+            await item.save();
+          });
+        }
       });
 
       await doc.save();
