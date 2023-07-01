@@ -72,9 +72,9 @@ export default function Calendar({
         type="solid"
         onClick={() => setValue(undefined)}
         position="absolute"
-        fontSize="1em"
-        right=".7em"
-        top=".7em"
+        size=".75em"
+        right=".5em"
+        top=".2em"
       />
 
       {/* CALENDAR POPOVER */}
