@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { Artist } from '../artists/helpers';
 import { User } from '../auth/helpers';
+import { Song } from '../songs/helpers';
 
 export const Schema = z.object({
   name: z
@@ -16,7 +17,8 @@ const UidSchema = z
   .max(8, { message: 'Invalid Artist.' });
 
 export const AlbumSchema = Schema.extend({
-  artist: UidSchema
+  artist: UidSchema,
+  songs: z.array(UidSchema)
 });
 
 type AlbumModel = z.infer<typeof Schema>;
@@ -25,6 +27,7 @@ export interface Album extends AlbumModel {
   created_at: Date;
   created_by: User;
   artist: Artist;
+  songs: Song[];
 }
 
 export type UseActionsProps = {

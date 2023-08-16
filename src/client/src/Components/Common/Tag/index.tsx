@@ -12,7 +12,7 @@ export default function Tag({ children, onClick, variant }: TagProps) {
       onClick={onClick}
       backgroundColor={variant ? colors[variant] : colors.baseLightest}
       padding=".3em"
-      margin="0 .3em .3em 0"
+      margin=".155em"
       display="flex"
       alignItems="center"
       whiteSpace="nowrap"

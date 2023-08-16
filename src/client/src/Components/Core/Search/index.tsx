@@ -130,7 +130,11 @@ export function Result({ data, onClick, selected }: ResultProps<any>) {
       onClick={onClick}
     >
       <Image src={data.image} height="40px" hoverCSS={{ cursor: 'pointer' }} />
-      <Text padding="0 0.5em" fontSize="1em">
+      <Text
+        padding="0 0.5em"
+        fontSize="1em"
+        color={selected ? colors.secondary : colors.text}
+      >
         {data.name}
       </Text>
     </Box>

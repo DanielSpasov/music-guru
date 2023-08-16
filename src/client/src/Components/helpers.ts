@@ -1,5 +1,9 @@
 import { css } from 'styled-components';
 
+export const focus = css<any>`
+  tabindex: ${({ tabIndex }) => tabIndex};
+`;
+
 export const padding = css<any>`
   padding: ${({ padding }) => padding};
   padding-left: ${({ paddingLeft }) => paddingLeft};

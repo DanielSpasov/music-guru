@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { Label, Icon, Box, Popover, Tag } from '../../..';
+import { Label, Icon, Box, Popover } from '../../..';
 import useDebounce from '../../../../Hooks/useDebounce';
 import { StyledInput } from '../Input/Styled';
 import { Result } from '../../../Core/Search';
 import { SelectProps } from './helpers';
+import FakeInput from './FakeInput';
 
 export default function Select({
   setFormValue,
@@ -76,28 +77,33 @@ export default function Select({
 
   return (
     <Box>
-      {/* TAG BOX */}
-      <Box zIndex="1" position="absolute" display="flex" padding=".35em">
-        {values.map(x => (
-          <Tag key={x.uid} onClick={() => onRemove(x)}>
-            {x.name}
-          </Tag>
-        ))}
-      </Box>
-
       {/* THIS INPUT IS HERE FOR DISPLAY PURPOSES */}
-      <StyledInput
-        value={values.map(x => x.name).join(' ')}
-        onChange={() => null}
-        onFocus={toggleOpen}
-        onBlur={toggleOpen}
-        placeholder=" "
-        name={name}
-        type="text"
-        disableCaret
-        color="transparent"
-      />
-      <Label position="absolute" top=".65em" left=".75em">
+      <FakeInput values={values} onRemove={onRemove} onClick={toggleOpen}>
+        {/* OPTIONS DROPDOWN */}
+        <Popover open={open} width="100%" top="2.5em">
+          <StyledInput
+            onChange={(e: any) => setSearch(e?.target?.value)}
+            value={searchTerm}
+            placeholder="Search..."
+            name={name}
+            type="text"
+          />
+          {!options.length && <Box textAlign="center">No Results.</Box>}
+          {options.map(option => (
+            <Result
+              key={option.uid}
+              data={option}
+              selected={values.find(x => x.uid === option.uid)}
+              onClick={() => onClick(option)}
+            />
+          ))}
+        </Popover>
+      </FakeInput>
+      <Label
+        position="absolute"
+        top={!values.length ? '.65em' : '-1.5em'}
+        left={!values.length ? '.75em' : '0'}
+      >
         {label}
       </Label>
 
@@ -111,28 +117,6 @@ export default function Select({
         right=".5em"
         top=".2em"
       />
-
-      {/* OPTIONS DROPDOWN */}
-      <Popover open={open} width="100%" top="65px">
-        <StyledInput
-          onChange={(e: any) => setSearch(e?.target?.value)}
-          value={searchTerm}
-          onFocus={toggleOpen}
-          onBlur={toggleOpen}
-          placeholder="Search..."
-          name={name}
-          type="text"
-        />
-        {!options.length && <Box textAlign="center">No Results.</Box>}
-        {options.map(option => (
-          <Result
-            key={option.uid}
-            data={option}
-            selected={values.find(x => x.uid === option.uid)}
-            onClick={() => onClick(option)}
-          />
-        ))}
-      </Popover>
     </Box>
   );
 }

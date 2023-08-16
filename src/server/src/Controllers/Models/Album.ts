@@ -19,8 +19,11 @@ router.post(
   post<IAlbum>({
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
-    prepopulate: ['artist'],
-    relations: [{ key: 'artist', relation: ['albums'] }]
+    prepopulate: ['artist', 'songs'],
+    relations: [
+      { key: 'artist', relation: ['albums'] },
+      { key: 'songs', relation: ['albums'] }
+    ]
   })
 );
 

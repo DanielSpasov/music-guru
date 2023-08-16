@@ -49,7 +49,7 @@ export default function SongDetails() {
       try {
         const { data } = await Api.songs.get({
           id,
-          config: { params: { populate: 'artist,created_by,features' } }
+          config: { params: { populate: 'artist,created_by,features,albums' } }
         });
         setSong(data);
       } catch (error) {
@@ -104,11 +104,17 @@ export default function SongDetails() {
               {song.features.length > 0 && (
                 <Box width="50%">
                   <Heading title="Featured Artists" />
-                  {Boolean(song.features.length) && (
-                    <Box display="flex" flexWrap="wrap" justifyContent="center">
-                      <List data={song.features} model="artists" />
-                    </Box>
-                  )}
+                  <Box display="flex" flexWrap="wrap" justifyContent="center">
+                    <List data={song.features} model="artists" />
+                  </Box>
+                </Box>
+              )}
+              {song.albums.length > 0 && (
+                <Box width="50%">
+                  <Heading title="In Albums" />
+                  <Box display="flex" flexWrap="wrap" justifyContent="center">
+                    <List data={song.albums} model="albums" />
+                  </Box>
                 </Box>
               )}
             </Box>

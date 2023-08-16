@@ -1,6 +1,15 @@
-import { Schema, model, InferSchemaType, ObjectId } from 'mongoose';
+import {
+  Schema,
+  model,
+  InferSchemaType,
+  ObjectId,
+  Types,
+  Model
+} from 'mongoose';
 
 import { defaultTransform } from '../helpers';
+
+type DiscographyTypes = 'features' | 'albums';
 
 const SongSchema = new Schema(
   {
@@ -42,17 +51,41 @@ const SongSchema = new Schema(
         ref: 'Artist'
       }
     ],
+    albums: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Album'
+      }
+    ],
     release_date: {
       type: Date,
       required: false
     }
   },
   {
-    toJSON: { transform: defaultTransform }
+    toJSON: { transform: defaultTransform },
+    methods: {
+      async add(type: DiscographyTypes, id: Types.ObjectId) {
+        if (this[type].includes(id)) return;
+        this[type].push(id);
+        await this.save();
+      },
+
+      async del(type: DiscographyTypes, id: Types.ObjectId) {
+        if (!this[type].includes(id)) return;
+        const itemIndex = this[type].indexOf(id);
+        this[type].splice(itemIndex, 1);
+        await this.save();
+      }
+    }
   }
 );
 
 export type ISong = InferSchemaType<typeof SongSchema>;
+export type ISongMethods = {
+  add: (type: DiscographyTypes, obj_id: Types.ObjectId) => Promise<void>;
+  del: (type: DiscographyTypes, obj_id: Types.ObjectId) => Promise<void>;
+};
 
 // Pre Song 'Delete'
 SongSchema.pre('findOneAndRemove', async function (next) {
@@ -113,4 +146,7 @@ SongSchema.pre('findOneAndUpdate', async function (next) {
   next();
 });
 
-export default model<ISong>('Song', SongSchema);
+export default model<ISong, Model<ISong, object, ISongMethods>>(
+  'Song',
+  SongSchema
+);

@@ -34,7 +34,14 @@ const AlbumSchema = new Schema(
       required: true,
       type: Schema.Types.ObjectId,
       ref: 'Artist'
-    }
+    },
+    songs: [
+      {
+        required: true,
+        type: Schema.Types.ObjectId,
+        ref: 'Song'
+      }
+    ]
   },
   {
     toJSON: { transform: defaultTransform }
@@ -50,6 +57,14 @@ AlbumSchema.pre('findOneAndRemove', async function (next) {
   const artist = await model('Artist').findById(album.artist._id);
   if (artist) {
     await artist.del('albums', album._id);
+  }
+
+  // Remove Album refs from Songs albums list
+  const songs = await model('Song').find({
+    _id: { $in: album.songs }
+  });
+  if (songs.length) {
+    await Promise.all(songs.map(x => x.del('albums', album._id)));
   }
 
   next();
