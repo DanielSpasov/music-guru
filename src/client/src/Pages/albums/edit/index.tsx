@@ -29,7 +29,7 @@ export default function EditAlbum() {
       try {
         const { data } = await Api.albums.get({
           id,
-          config: { params: { populate: 'artist' } }
+          config: { params: { populate: 'artist,songs' } }
         });
         setAlbum(data);
       } catch (error) {

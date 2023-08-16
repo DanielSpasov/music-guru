@@ -1,4 +1,4 @@
-import { Schema, model, InferSchemaType } from 'mongoose';
+import { Schema, model, InferSchemaType, ObjectId } from 'mongoose';
 import { defaultTransform } from '../helpers';
 
 const AlbumSchema = new Schema(
@@ -86,6 +86,23 @@ AlbumSchema.pre('findOneAndUpdate', async function (next) {
     if (newArtist) newArtist.add('albums', album._id);
   }
 
+  // Update Album songs
+  const oldSongs = new Set<ObjectId>(
+    album.songs.map((x: ObjectId) => x.toString())
+  );
+  const newSongs = new Set<ObjectId>(
+    updated.songs.map((x: ObjectId) => x.toString())
+  );
+
+  const added = Array.from(newSongs).filter(x => !oldSongs.has(x));
+  const removed = Array.from(oldSongs).filter(x => !newSongs.has(x));
+
+  const mapFn = (action: 'del' | 'add') => async (x: ObjectId) => {
+    const song = await model('Song').findById(x);
+    if (song) await song[action]('albums', album._id);
+  };
+  await Promise.all(added.map(mapFn('add')));
+  await Promise.all(removed.map(mapFn('del')));
   next();
 });
 

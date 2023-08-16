@@ -33,7 +33,7 @@ router.patch(
   patch<IAlbum>({
     Model: AlbumModel,
     ValidationSchema: AlbumSchema,
-    prepopulate: ['artist']
+    prepopulate: ['artist', 'songs']
   })
 );
 
