@@ -49,7 +49,7 @@ export default function SongDetails() {
       try {
         const { data } = await Api.songs.get({
           id,
-          config: { params: { populate: 'artist,created_by,features,albums' } }
+          config: { params: { populate: 'artist,features,albums' } }
         });
         setSong(data);
       } catch (error) {

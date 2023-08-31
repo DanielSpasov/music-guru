@@ -27,7 +27,7 @@ export default function ArtistDetails() {
       try {
         const { data } = await Api.artists.get({
           id,
-          config: { params: { populate: 'songs,created_by,features,albums' } }
+          config: { params: { populate: 'songs,features,albums' } }
         });
         setArtist(data);
       } catch (error) {
