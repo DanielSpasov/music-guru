@@ -1,10 +1,9 @@
-import { Schema, model, Types, InferSchemaType, Model } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 
-import { defaultTransform } from '../helpers';
+import { defaultTransform } from '../../helpers';
+import { DiscographyTypes } from './types';
 
-type DiscographyTypes = 'songs' | 'features' | 'albums' | 'mixtapes';
-
-const ArtistSchema = new Schema(
+export default new Schema(
   {
     uid: {
       type: String,
@@ -75,15 +74,4 @@ const ArtistSchema = new Schema(
       }
     }
   }
-);
-
-export type IArtist = InferSchemaType<typeof ArtistSchema>;
-export type IArtistMethods = {
-  add: (type: DiscographyTypes, song_id: Types.ObjectId) => Promise<void>;
-  del: (type: DiscographyTypes, song_id: Types.ObjectId) => Promise<void>;
-};
-
-export default model<IArtist, Model<IArtist, object, IArtistMethods>>(
-  'Artist',
-  ArtistSchema
 );
