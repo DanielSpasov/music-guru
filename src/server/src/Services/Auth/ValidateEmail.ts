@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { errorHandler } from '../../Error';
-import { UserModel } from '../../Database/Schemas';
+import { UserModel } from '../../Database/Models';
 import { CustomError } from '../../Error/CustomError';
 
 export async function ValidateEmail(req: Request, res: Response) {

@@ -2,7 +2,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { HydratedDocument } from 'mongoose';
 
 import { CustomError } from '../Error/CustomError';
-import { UserModel } from '../Database/Schemas';
+import { UserModel } from '../Database/Models';
 import { User } from '../Types/User';
 
 export default async function getUser(

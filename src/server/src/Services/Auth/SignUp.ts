@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
 import { CustomError } from '../../Error/CustomError';
-import { UserModel } from '../../Database/Schemas';
+import { UserModel } from '../../Database/Models';
 import { sendVerificationEmail } from './helpers';
 import { SignUpSchema } from '../../Types/User';
 import { errorHandler } from '../../Error';

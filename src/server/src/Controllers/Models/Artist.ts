@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { fetch, get, post, patch } from '../../Services/requests';
-import { ArtistModel, IArtist } from '../../Database/Schemas';
+import { ArtistModel, IArtist } from '../../Database/Models';
 import { ArtistSchema } from '../../Types/Artist';
 import { authorization } from '../../Middleware';
 

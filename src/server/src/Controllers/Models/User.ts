@@ -7,7 +7,7 @@ import {
   ResendValidationEmail
 } from '../../Services/Auth';
 import { ValidateEmail } from '../../Services/Auth/ValidateEmail';
-import { UserModel, IUser } from '../../Database/Schemas';
+import { UserModel, IUser } from '../../Database/Models';
 import { authorization } from '../../Middleware';
 import { UpdateUser } from '../../Services/User';
 import { get } from '../../Services/requests';

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { fetch, post, get, del, patch } from '../../Services/requests';
-import { AlbumModel, IAlbum } from '../../Database/Schemas';
+import { AlbumModel, IAlbum } from '../../Database/Models';
 import { authorization } from '../../Middleware';
 import { AlbumSchema } from '../../Types/Album';
 

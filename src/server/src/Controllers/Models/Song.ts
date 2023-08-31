@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { fetch, get, del, post, patch } from '../../Services/requests';
-import { SongModel, ISong } from '../../Database/Schemas';
+import { SongModel, ISong } from '../../Database/Models';
 import { authorization } from '../../Middleware';
 import { SongSchema } from '../../Types/Song';
 

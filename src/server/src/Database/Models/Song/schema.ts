@@ -1,0 +1,74 @@
+import { Schema, Types } from 'mongoose';
+
+import { defaultTransform } from '../../helpers';
+import { DiscographyTypes } from './types';
+
+export default new Schema(
+  {
+    uid: {
+      type: String,
+      required: true,
+      unique: true,
+      minlength: 8,
+      maxlength: 8,
+      immutable: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    image: {
+      type: String,
+      required: true
+    },
+    created_at: {
+      type: Date,
+      immutable: true,
+      default: () => Date.now()
+    },
+    created_by: {
+      immutable: true,
+      required: true,
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    artist: {
+      required: true,
+      type: Schema.Types.ObjectId,
+      ref: 'Artist'
+    },
+    features: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Artist'
+      }
+    ],
+    albums: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Album'
+      }
+    ],
+    release_date: {
+      type: Date,
+      required: false
+    }
+  },
+  {
+    toJSON: { transform: defaultTransform },
+    methods: {
+      async add(type: DiscographyTypes, id: Types.ObjectId) {
+        if (this[type].includes(id)) return;
+        this[type].push(id);
+        await this.save();
+      },
+
+      async del(type: DiscographyTypes, id: Types.ObjectId) {
+        if (!this[type].includes(id)) return;
+        const itemIndex = this[type].indexOf(id);
+        this[type].splice(itemIndex, 1);
+        await this.save();
+      }
+    }
+  }
+);

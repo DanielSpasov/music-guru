@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { CustomError } from '../../Error/CustomError';
-import { UserModel } from '../../Database/Schemas';
+import { UserModel } from '../../Database/Models';
 import { SignInSchema } from '../../Types/User';
 import { errorHandler } from '../../Error';
 
