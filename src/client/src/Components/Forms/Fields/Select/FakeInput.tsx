@@ -1,5 +1,5 @@
 import { ThemeContext } from 'styled-components';
-import { useContext } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 
 import { Box } from '../../../HTML';
 import { Tag } from '../../../Common';
@@ -7,13 +7,13 @@ import { Tag } from '../../../Common';
 export default function FakeInput({
   values,
   onRemove,
-  onClick,
+  setOpen,
   children
 }: {
   values: any[];
   onRemove: (x: any) => any;
-  onClick: () => any;
-  children: any;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  children?: any;
 }) {
   const { colors } = useContext(ThemeContext);
 
@@ -26,11 +26,15 @@ export default function FakeInput({
       backgroundColor={colors.baseLight}
       border={`2px solid ${colors.baseLighter}`}
       tabIndex="-1"
-      onFocus={onClick}
-      onBlur={onClick}
+      onFocus={() => {
+        setOpen(true);
+      }}
+      onBlur={() => {
+        setOpen(false);
+      }}
     >
       {values?.map(x => (
-        <Tag key={x.uid} onClick={() => onRemove(x)}>
+        <Tag key={x.uid} onRemove={() => onRemove(x)}>
           {x.name}
         </Tag>
       ))}

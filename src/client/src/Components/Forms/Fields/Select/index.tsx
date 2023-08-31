@@ -36,11 +36,6 @@ export default function Select({
     })();
   }, [props, search]);
 
-  const toggleOpen = useCallback(
-    () => setTimeout(() => setOpen(prev => !prev), 50),
-    []
-  );
-
   const onClear = useCallback(() => {
     setValues([]);
     setFormValue(name, []);
@@ -78,9 +73,17 @@ export default function Select({
   return (
     <Box>
       {/* THIS INPUT IS HERE FOR DISPLAY PURPOSES */}
-      <FakeInput values={values} onRemove={onRemove} onClick={toggleOpen}>
+      <FakeInput values={values} onRemove={onRemove} setOpen={setOpen}>
         {/* OPTIONS DROPDOWN */}
-        <Popover open={open} width="100%" top="2.5em">
+        <Popover
+          open={open}
+          setOpen={setOpen}
+          position="fixed"
+          right="auto"
+          margin="auto"
+          width="35%"
+          top="50%"
+        >
           <StyledInput
             onChange={(e: any) => setSearch(e?.target?.value)}
             value={searchTerm}

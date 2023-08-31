@@ -3,6 +3,6 @@ import { ReactNode } from 'react';
 type Variant = 'success' | 'danger' | 'info' | 'warning';
 export type TagProps = {
   children: ReactNode;
-  onClick?: (props: any) => any;
+  onRemove?: (props: any) => any;
   variant?: Variant;
 };
