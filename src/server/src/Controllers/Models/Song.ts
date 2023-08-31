@@ -7,7 +7,7 @@ import { SongSchema } from '../../Types/Song';
 
 const router = Router();
 
-router.get('/', fetch<ISong>({ Model: SongModel }));
+router.get('/', fetch('songs'));
 
 router.get('/:id', get<ISong>({ Model: SongModel }));
 

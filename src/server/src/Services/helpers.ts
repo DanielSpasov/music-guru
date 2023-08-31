@@ -1,9 +1,7 @@
 import { Model } from 'mongoose';
 import { ZodSchema } from 'zod';
 
-export type FetchProps<T> = {
-  Model: Model<T>;
-};
+export type FetchProps = string;
 
 export type GetProps<T> = {
   Model: Model<T>;

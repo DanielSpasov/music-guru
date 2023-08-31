@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import { Document, model } from 'mongoose';
 
-import { generateUID, getUser, getSearchQuery } from '../Utils';
+import { collection, getDocs } from 'firebase/firestore/lite';
+import db from '../Database';
+
+import { generateUID, getUser } from '../Utils';
 import { CustomError } from '../Error/CustomError';
 import { errorHandler } from '../Error';
 import {
@@ -12,24 +15,18 @@ import {
   PatchProps
 } from './helpers';
 
-export const fetch =
-  <T>({ Model }: FetchProps<T>) =>
-  async (req: Request, res: Response) => {
+export function fetch(collectionName: FetchProps) {
+  return async function (req: Request, res: Response) {
     try {
-      // Searching
-      const search = getSearchQuery(req.query.search as string);
-      if (!search) {
-        res.status(200).json({ data: [] });
-        return;
-      }
-
-      const limit = Number(req.query.limit) || 25;
-      const data = await Model.find(search).limit(limit);
-      res.status(200).json({ data });
+      const _collection = collection(db, collectionName);
+      const snapshot = await getDocs(_collection);
+      const list = snapshot.docs.map(doc => doc.data());
+      res.status(200).json({ data: list });
     } catch (error) {
       errorHandler(req, res, error);
     }
   };
+}
 
 export const get =
   <T>({ Model }: GetProps<T>) =>

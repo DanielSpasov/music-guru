@@ -7,7 +7,7 @@ import { AlbumSchema } from '../../Types/Album';
 
 const router = Router();
 
-router.get('/', fetch<IAlbum>({ Model: AlbumModel }));
+router.get('/', fetch('albums'));
 
 router.get('/:id', get<IAlbum>({ Model: AlbumModel }));
 

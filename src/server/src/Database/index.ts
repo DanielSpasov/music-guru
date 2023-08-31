@@ -1,18 +1,15 @@
-import mongoose from 'mongoose';
+import { getFirestore } from 'firebase/firestore/lite';
+import { initializeApp } from 'firebase/app';
 
-function run(DB_URI: string) {
-  try {
-    mongoose.set('strictQuery', false);
-    mongoose.connect(DB_URI, {});
+const app = initializeApp({
+  apiKey: 'AIzaSyCYrMqCrebUPhAmgNLuHVXTVfEHcYCZJD4',
+  authDomain: 'music-nerd.firebaseapp.com',
+  projectId: 'music-nerd',
+  storageBucket: 'music-nerd.appspot.com',
+  messagingSenderId: '92229724793',
+  appId: '1:92229724793:web:229fccb4d1182274b802a8'
+});
 
-    const db = mongoose.connection;
-    db.once('open', () => console.log('Database status: Connected'));
-    db.once('error', err => console.error('Database status: Error', err));
-    return db;
-  } catch (error) {
-    console.error(error);
-  }
-}
+const database = getFirestore(app);
 
-const database = { run };
 export default database;

@@ -7,7 +7,7 @@ import { authorization } from '../../Middleware';
 
 const router = Router();
 
-router.get('/', fetch<IArtist>({ Model: ArtistModel }));
+router.get('/', fetch('artists'));
 
 router.get('/:id', get<IArtist>({ Model: ArtistModel }));
 
