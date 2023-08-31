@@ -1,9 +1,9 @@
-import { Schema, Types } from 'mongoose';
+import { Schema } from 'mongoose';
 
-import { defaultTransform } from '../../helpers';
-import { DiscographyTypes } from './types';
+import { add, defaultTransform, del } from '../../helpers';
+import { DiscographyTypes, ISong } from './types';
 
-export default new Schema(
+const SongSchema = new Schema(
   {
     uid: {
       type: String,
@@ -54,21 +54,10 @@ export default new Schema(
       required: false
     }
   },
-  {
-    toJSON: { transform: defaultTransform },
-    methods: {
-      async add(type: DiscographyTypes, id: Types.ObjectId) {
-        if (this[type].includes(id)) return;
-        this[type].push(id);
-        await this.save();
-      },
-
-      async del(type: DiscographyTypes, id: Types.ObjectId) {
-        if (!this[type].includes(id)) return;
-        const itemIndex = this[type].indexOf(id);
-        this[type].splice(itemIndex, 1);
-        await this.save();
-      }
-    }
-  }
+  { toJSON: { transform: defaultTransform } }
 );
+
+SongSchema.method('add', add<ISong, DiscographyTypes>);
+SongSchema.method('del', del<ISong, DiscographyTypes>);
+
+export default SongSchema;
