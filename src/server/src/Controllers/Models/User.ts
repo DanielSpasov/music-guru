@@ -4,9 +4,9 @@ import {
   SignUp,
   SignIn,
   ValidateToken,
+  ValidateEmail,
   ResendValidationEmail
 } from '../../Services/Auth';
-import { ValidateEmail } from '../../Services/Auth/ValidateEmail';
 import { authorization } from '../../Middleware';
 import { UpdateUser } from '../../Services/User';
 import { get } from '../helpers/requests';

@@ -22,5 +22,5 @@ export default async function getUser(
     throw new CustomError({ message: 'User not found.', code: 404 });
   }
 
-  return { uid: snapshot.id, document };
+  return { uid: snapshot.id, ...document };
 }

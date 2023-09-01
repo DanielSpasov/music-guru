@@ -44,7 +44,9 @@ export function get(collectionName: Collection) {
       const document = {
         ...snapshot.data(),
         ...populated,
-        created_by: { uid: snapshot.get('created_by').id },
+        created_by: collectionName !== 'users' && {
+          uid: snapshot.get('created_by').id
+        },
         uid: snapshot.id
       };
 
