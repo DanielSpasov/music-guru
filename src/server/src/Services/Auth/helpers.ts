@@ -1,11 +1,11 @@
 import { DocumentData } from 'firebase/firestore/lite';
 import jwt from 'jsonwebtoken';
+import env from '../../env';
 
 import SendEmail from '../Email';
 
 export const sendVerificationEmail = async (user: DocumentData) => {
-  const jwtSecret = String(process.env.JWT_SECRET);
-  const emailToken = jwt.sign({ id: user.uid }, jwtSecret, {
+  const emailToken = jwt.sign({ id: user.uid }, env.JWT_SECRET, {
     expiresIn: '10m'
   });
 

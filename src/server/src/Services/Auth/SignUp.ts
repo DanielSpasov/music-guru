@@ -16,6 +16,7 @@ import { SignUpSchema } from '../../Types/User';
 import { errorHandler } from '../../Error';
 import { generateUID } from '../../Utils';
 import db from '../../Database';
+import env from '../../env';
 
 export async function SignUp(req: Request, res: Response) {
   try {
@@ -39,7 +40,7 @@ export async function SignUp(req: Request, res: Response) {
     }
 
     // HASHING THE PASSWORD
-    const saltRounds = Number(process.env.SALT_ROUNDS);
+    const saltRounds = Number(env.SALT_ROUNDS);
     const salt = await bcrypt.genSalt(saltRounds);
     const passwordHash = await bcrypt.hash(password, salt);
 
@@ -56,8 +57,7 @@ export async function SignUp(req: Request, res: Response) {
     await setDoc(doc(db, 'users', uid), data);
 
     // SIGN THE JSON WEB TOKEN
-    const jwtSecret = String(process.env.JWT_SECRET);
-    const authToken = jwt.sign({ uid }, jwtSecret);
+    const authToken = jwt.sign({ uid }, env.JWT_SECRET);
 
     await sendVerificationEmail({ uid, email });
 

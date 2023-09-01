@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 
 import templates from './templates';
 import { Template } from './helpers';
+import env from '../../env';
 
 export default async function SendEmail({
   to,
@@ -15,14 +16,14 @@ export default async function SendEmail({
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.EMAIL_SERVICE_USER,
-      pass: process.env.EMAIL_SERVICE_PASS
+      user: env.EMAIL_SERVICE_USER,
+      pass: env.EMAIL_SERVICE_PASS
     }
   });
 
   await transporter.sendMail({
     to,
-    from: `"Music Nerd" <${process.env.EMAIL_SERVICE_USER}>`,
+    from: `"Music Nerd" <${env.EMAIL_SERVICE_USER}>`,
     ...templates[template](data)
   });
 }

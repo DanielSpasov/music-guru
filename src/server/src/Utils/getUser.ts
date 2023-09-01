@@ -3,6 +3,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { CustomError } from '../Error/CustomError';
 import db from '../Database';
+import env from '../env';
 
 export default async function getUser(
   token: string | undefined
@@ -11,8 +12,7 @@ export default async function getUser(
     throw new CustomError({ message: 'Unauthorized.', code: 401 });
   }
 
-  const secret = process.env.JWT_SECRET || '';
-  const { uid } = jwt.verify(token, secret) as JwtPayload;
+  const { uid } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
 
   const reference = doc(db, 'users', uid);
   const snapshot = await getDoc(reference);

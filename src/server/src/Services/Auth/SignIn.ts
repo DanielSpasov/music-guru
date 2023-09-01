@@ -7,6 +7,7 @@ import { CustomError } from '../../Error/CustomError';
 import { SignInSchema } from '../../Types/User';
 import { errorHandler } from '../../Error';
 import db from '../../Database';
+import env from '../../env';
 
 export async function SignIn(req: Request, res: Response) {
   try {
@@ -39,8 +40,7 @@ export async function SignIn(req: Request, res: Response) {
     }
 
     // SIGN THE JSON WEB TOKEN
-    const secret = process.env.JWT_SECRET || '';
-    const token = jwt.sign({ uid: qSnap.docs[0].id }, secret);
+    const token = jwt.sign({ uid: qSnap.docs[0].id }, env.JWT_SECRET);
 
     res.status(200).json({ token, uid: qSnap.docs[0].id });
   } catch (error) {

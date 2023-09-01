@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import { CustomError } from '../../Error/CustomError';
 import { errorHandler } from '../../Error';
+import env from '../../env';
 
 interface JwtPayload {
   uid: string;
@@ -15,8 +16,7 @@ export function ValidateToken(req: Request, res: Response) {
       throw new CustomError({ message: 'No Token was found.', code: 400 });
     }
 
-    const secret = process.env.JWT_SECRET || '';
-    const payload = jwt.verify(token, secret) as JwtPayload;
+    const payload = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
 
     res.status(200).json(payload);
   } catch (error) {

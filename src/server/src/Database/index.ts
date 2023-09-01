@@ -1,15 +1,14 @@
 import { getFirestore } from 'firebase/firestore/lite';
 import { initializeApp } from 'firebase/app';
+import env from '../env';
 
 const app = initializeApp({
-  apiKey: 'AIzaSyCYrMqCrebUPhAmgNLuHVXTVfEHcYCZJD4',
-  authDomain: 'music-nerd.firebaseapp.com',
-  projectId: 'music-nerd',
-  storageBucket: 'music-nerd.appspot.com',
-  messagingSenderId: '92229724793',
-  appId: '1:92229724793:web:229fccb4d1182274b802a8'
+  apiKey: env.DB_API_KEY,
+  authDomain: env.DB_AUTH_DOMAIN,
+  projectId: env.DB_PROJECT_ID,
+  storageBucket: env.DB_STORAGE_BUCKET,
+  messagingSenderId: env.DB_MESSAGING_SENDER_ID,
+  appId: env.DB_APP_ID
 });
 
-const database = getFirestore(app);
-
-export default database;
+export default getFirestore(app);
