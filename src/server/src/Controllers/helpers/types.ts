@@ -1,18 +1,17 @@
 import { Model } from 'mongoose';
 import { ZodSchema } from 'zod';
 
-export type Collection = 'users' | 'artists' | 'songs' | 'albums';
+import { Collection } from '../../Database/types';
 
 export type PostProps<T> = {
-  collectionName: string;
+  collectionName: Collection;
   validationSchema: ZodSchema;
-  defaultData?: Partial<T>;
   refereces?: Referece<T>[];
 };
 
 export type Referece<T> = {
   key: keyof T;
-  collection: string;
+  collection: Collection;
   type?: 'str' | 'arr';
 };
 

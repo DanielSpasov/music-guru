@@ -18,7 +18,6 @@ router.post(
   post<Album>({
     collectionName: 'albums',
     validationSchema: AlbumSchema,
-    defaultData: {},
     refereces: [
       { key: 'artist', collection: 'artists' },
       { key: 'songs', collection: 'songs', type: 'arr' }

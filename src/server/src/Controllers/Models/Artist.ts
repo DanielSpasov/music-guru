@@ -13,11 +13,7 @@ router.get('/:id', get('artists'));
 router.post(
   '/',
   authorization,
-  post<Artist>({
-    collectionName: 'artists',
-    validationSchema: ArtistSchema,
-    defaultData: { albums: [], mixtapes: [], songs: [], features: [] }
-  })
+  post<Artist>({ collectionName: 'artists', validationSchema: ArtistSchema })
 );
 
 router.patch(

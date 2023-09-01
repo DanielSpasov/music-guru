@@ -7,12 +7,12 @@ import {
   deleteDoc
 } from 'firebase/firestore/lite';
 import { Request, Response } from 'express';
-import { model } from 'mongoose';
 
 import { createReferences, populateFields } from './helpers';
-import { PostProps, PatchProps, Collection } from './types';
-import { CustomError } from '../../Error/CustomError';
 import { generateUID, getUser } from '../../Utils';
+import converters from '../../Database/Converters';
+import { Collection } from '../../Database/types';
+import { PostProps, PatchProps } from './types';
 import { errorHandler } from '../../Error';
 import db from '../../Database';
 
@@ -33,7 +33,9 @@ export function fetch(collectionName: Collection) {
 export function get(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
-      const reference = doc(db, collectionName, req.params.id);
+      const reference = doc(db, collectionName, req.params.id).withConverter(
+        converters[collectionName]
+      );
       const snapshot = await getDoc(reference);
 
       const populated = await populateFields(
@@ -44,10 +46,9 @@ export function get(collectionName: Collection) {
       const document = {
         ...snapshot.data(),
         ...populated,
-        created_by: collectionName !== 'users' && {
-          uid: snapshot.get('created_by').id
-        },
-        uid: snapshot.id
+        ...(collectionName !== 'users' && {
+          created_by: { uid: snapshot.get('created_by').id }
+        })
       };
 
       res.status(200).json({ data: document });
@@ -82,7 +83,6 @@ export function del(collectionName: Collection) {
 export function post<T>({
   collectionName,
   validationSchema,
-  defaultData = {},
   refereces = []
 }: PostProps<T>) {
   return async function (req: Request, res: Response) {
@@ -94,14 +94,15 @@ export function post<T>({
       const references = await createReferences<T>(refereces, validatedData);
 
       const data = {
-        ...defaultData,
         ...validatedData,
         ...references,
-        created_by: doc(db, 'users', user.uid),
-        created_at: new Date()
+        created_by: doc(db, 'users', user.uid)
       };
 
-      await setDoc(doc(db, collectionName, uid), data);
+      await setDoc(
+        doc(db, collectionName, uid).withConverter(converters[collectionName]),
+        data
+      );
 
       res.status(200).json({ message: 'Success', uid, name: data.name });
     } catch (error) {
@@ -114,48 +115,50 @@ export const patch =
   <T>({ Model, ValidationSchema, prepopulate }: PatchProps<T>) =>
   async (req: Request, res: Response) => {
     try {
-      const user = await getUser(req.headers?.authorization);
-      const found = await Model.findOne({ uid: req.params.id }).populate(
-        'created_by'
-      );
-      if (!found) {
-        throw new CustomError({ message: 'Document not found.', code: 404 });
-      }
-      const doc = found as any; // TODO: find a way to avoid doing this
-      if (doc.created_by.uid !== user.uid) {
-        throw new CustomError({ message: 'Permission denied.', code: 401 });
-      }
+      console.log('INSIDE');
+      res.status(500).json({ message: 'TESTING' });
+      // const user = await getUser(req.headers?.authorization);
+      // const found = await Model.findOne({ uid: req.params.id }).populate(
+      //   'created_by'
+      // );
+      // if (!found) {
+      //   throw new CustomError({ message: 'Document not found.', code: 404 });
+      // }
+      // const doc = found as any; // TODO: find a way to avoid doing this
+      // if (doc.created_by.uid !== user.uid) {
+      //   throw new CustomError({ message: 'Permission denied.', code: 401 });
+      // }
 
-      const validData = ValidationSchema.parse(req.body);
+      // const validData = ValidationSchema.parse(req.body);
 
-      const data = await prepopulate?.reduce(async (prev, path) => {
-        const field = Model.schema.paths[path as string];
-        const isMulti = Array.isArray(validData[path]);
-        const modelPath = isMulti
-          ? field.options.type[0].ref
-          : field.options.ref;
-        const query = isMulti ? validData[path] : [validData[path]];
+      // const data = await prepopulate?.reduce(async (prev, path) => {
+      //   const field = Model.schema.paths[path as string];
+      //   const isMulti = Array.isArray(validData[path]);
+      //   const modelPath = isMulti
+      //     ? field.options.type[0].ref
+      //     : field.options.ref;
+      //   const query = isMulti ? validData[path] : [validData[path]];
 
-        const items = await model(modelPath).find({ uid: { $in: query } });
+      //   const items = await model(modelPath).find({ uid: { $in: query } });
 
-        return {
-          ...(await prev),
-          [path]: isMulti ? items.map(x => x?._id) : items[0]?._id
-        };
-      }, validData);
+      //   return {
+      //     ...(await prev),
+      //     [path]: isMulti ? items.map(x => x?._id) : items[0]?._id
+      //   };
+      // }, validData);
 
-      await Model.findOneAndUpdate(
-        { uid: req.params.id },
-        { ...(data || validData) },
-        { new: true }
-      );
+      // await Model.findOneAndUpdate(
+      //   { uid: req.params.id },
+      //   { ...(data || validData) },
+      //   { new: true }
+      // );
 
-      await doc.save();
+      // await doc.save();
 
-      res.status(200).json({
-        message: 'Success',
-        data: { uid: req.params.id, name: validData.name }
-      });
+      // res.status(200).json({
+      //   message: 'Success',
+      //   data: { uid: req.params.id, name: validData.name }
+      // });
     } catch (error) {
       errorHandler(req, res, error);
     }

@@ -40,7 +40,7 @@ export async function createReferences<T>(refs: Referece<T>[], data: T) {
     if (type === 'arr') {
       return {
         ...obj,
-        [key]: (data[key] as Array<string>).map(id => {
+        [key]: (data[key] as Array<string>)?.map(id => {
           const ref = doc(db, collection, id);
           if (ref?.id) return ref;
         })

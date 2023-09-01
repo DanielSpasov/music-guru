@@ -14,5 +14,8 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"]
+  "plugins": ["react", "@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": "error"
+  }
 }

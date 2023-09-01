@@ -37,8 +37,7 @@ export type SignInData = z.infer<typeof SignInSchema>;
 
 export const UserSchema = schema.omit({
   repeat_password: true,
-  password: true,
-  verified: true
+  password: true
 });
 
 export type UserModel = z.infer<typeof UserSchema>;
