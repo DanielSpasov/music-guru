@@ -1,8 +1,6 @@
-import { Error as MongooseError } from 'mongoose';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-import { mongooseErrorHandler } from './mongooseErrorHandler';
 import { jwtErrorHandler } from './jwtErrorHandler';
 import { CustomError } from './CustomError';
 
@@ -15,11 +13,6 @@ export function errorHandler(req: Request, res: Response, error: unknown) {
 
     if (error instanceof JsonWebTokenError) {
       jwtErrorHandler(req, res, error);
-      return;
-    }
-
-    if (error instanceof MongooseError.ValidationError) {
-      mongooseErrorHandler(req, res, error);
       return;
     }
 
