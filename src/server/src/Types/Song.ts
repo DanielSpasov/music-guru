@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { Artist } from './Artist';
+import { Album } from './Album';
 import { User } from './User';
 
 const Schema = z.object({
@@ -23,4 +24,5 @@ export interface Song extends SongSchemaType {
   created_by: User;
   artist: Artist;
   features: Artist[];
+  albums: Album[];
 }

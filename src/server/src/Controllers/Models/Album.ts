@@ -1,29 +1,33 @@
 import { Router } from 'express';
 
-import { fetch, post, get, del, patch } from '../../Services/requests';
+import { fetch, post, get, del, patch } from '../helpers/requests';
 import { AlbumModel, IAlbum } from '../../Database/Models';
+import { Album, AlbumSchema } from '../../Types/Album';
 import { authorization } from '../../Middleware';
-import { AlbumSchema } from '../../Types/Album';
 
 const router = Router();
 
 router.get('/', fetch('albums'));
+router.get('/:id', get('albums'));
 
-router.get('/:id', get<IAlbum>({ Model: AlbumModel }));
-
-router.delete('/:id', authorization, del<IAlbum>({ Model: AlbumModel }));
+router.delete('/:id', authorization, del('albums'));
 
 router.post(
   '/',
   authorization,
-  post<IAlbum>({
-    Model: AlbumModel,
-    ValidationSchema: AlbumSchema,
-    prepopulate: ['artist', 'songs'],
-    relations: [
-      { key: 'artist', relation: ['albums'] },
-      { key: 'songs', relation: ['albums'] }
+  post<Album>({
+    collectionName: 'albums',
+    validationSchema: AlbumSchema,
+    defaultData: {},
+    refereces: [
+      { key: 'artist', collection: 'artists' },
+      { key: 'songs', collection: 'songs', type: 'arr' }
     ]
+
+    // relations: [
+    //   { key: 'artist', relation: ['albums'] },
+    //   { key: 'songs', relation: ['albums'] }
+    // ]
   })
 );
 

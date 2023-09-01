@@ -1,22 +1,22 @@
 import { Router } from 'express';
 
-import { fetch, get, post, patch } from '../../Services/requests';
+import { fetch, get, post, patch } from '../helpers/requests';
 import { ArtistModel, IArtist } from '../../Database/Models';
-import { ArtistSchema } from '../../Types/Artist';
+import { Artist, ArtistSchema } from '../../Types/Artist';
 import { authorization } from '../../Middleware';
 
 const router = Router();
 
 router.get('/', fetch('artists'));
-
-router.get('/:id', get<IArtist>({ Model: ArtistModel }));
+router.get('/:id', get('artists'));
 
 router.post(
   '/',
   authorization,
-  post<IArtist>({
-    Model: ArtistModel,
-    ValidationSchema: ArtistSchema
+  post<Artist>({
+    collectionName: 'artists',
+    validationSchema: ArtistSchema,
+    defaultData: { albums: [], mixtapes: [], songs: [], features: [] }
   })
 );
 

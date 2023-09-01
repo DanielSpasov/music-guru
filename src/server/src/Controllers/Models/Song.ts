@@ -1,29 +1,33 @@
 import { Router } from 'express';
 
-import { fetch, get, del, post, patch } from '../../Services/requests';
+import { fetch, get, del, post, patch } from '../helpers/requests';
 import { SongModel, ISong } from '../../Database/Models';
+import { SongSchema, Song } from '../../Types/Song';
 import { authorization } from '../../Middleware';
-import { SongSchema } from '../../Types/Song';
 
 const router = Router();
 
 router.get('/', fetch('songs'));
+router.get('/:id', get('songs'));
 
-router.get('/:id', get<ISong>({ Model: SongModel }));
-
-router.delete('/:id', authorization, del<ISong>({ Model: SongModel }));
+router.delete('/:id', authorization, del('songs'));
 
 router.post(
   '/',
   authorization,
-  post<ISong>({
-    Model: SongModel,
-    ValidationSchema: SongSchema,
-    prepopulate: ['artist', 'features'],
-    relations: [
-      { key: 'artist', relation: ['songs'] },
-      { key: 'features', relation: ['features'] }
+  post<Song>({
+    collectionName: 'songs',
+    validationSchema: SongSchema,
+    defaultData: { albums: [], features: [] },
+    refereces: [
+      { key: 'artist', collection: 'artists' },
+      { key: 'features', collection: 'artists', type: 'arr' }
     ]
+
+    // relations: [
+    //   { key: 'artist', relation: ['songs'] },
+    //   { key: 'features', relation: ['features'] }
+    // ]
   })
 );
 
