@@ -11,7 +11,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { sendVerificationEmail } from './helpers';
-import { SignUpSchema } from '../../Types/User';
+import { SignUpSchema } from '../../Database/Types/User';
 import { errorHandler } from '../../Error';
 import { generateUID } from '../../Utils';
 import db from '../../Database';

@@ -1,25 +1,13 @@
 import { DocumentReference, Timestamp } from 'firebase/firestore/lite';
 import { z } from 'zod';
 
+import { BaseSongSchema } from '../Schemas';
+
 import { Artist } from './Artist';
 import { Album } from './Album';
 import { User } from './User';
 
-const Schema = z.object({
-  name: z.string(),
-  image: z.string().url({ message: 'Invalid url.' }),
-  release_date: z.coerce.date().optional()
-});
-
-const UidSchema = z.string().min(8).max(8);
-
-export const SongSchema = Schema.extend({
-  artist: UidSchema,
-  features: z.array(UidSchema).optional()
-});
-
-type SongSchemaType = z.infer<typeof Schema>;
-export interface Song extends SongSchemaType {
+export interface Song extends z.infer<typeof BaseSongSchema> {
   uid: string;
   created_at: Date;
   created_by: Partial<User>;
@@ -28,7 +16,7 @@ export interface Song extends SongSchemaType {
   albums: Partial<Album>[];
 }
 
-export type DBSong = {
+export interface DBSong {
   albums: DocumentReference<Album>[];
   artist: DocumentReference<Artist>;
   created_at: Timestamp;
@@ -37,4 +25,4 @@ export type DBSong = {
   image: string;
   name: string;
   release_date: Timestamp;
-};
+}

@@ -10,10 +10,11 @@ import { Request, Response } from 'express';
 
 import { createReferences, createRelations, populateFields } from './helpers';
 import { generateUID, getUser } from '../../Utils';
-import converters from '../../Database/Converters';
-import { Collection } from '../../Database/types';
-import { PostProps, PatchProps } from './types';
 import { errorHandler } from '../../Error';
+import { validationSchemas } from '../../Database/Schemas';
+import { converters } from '../../Database/Converters';
+import { getRefs } from '../../Database/References';
+import { Collection } from '../../Database/types';
 import db from '../../Database';
 
 export function fetch(collectionName: Collection) {
@@ -80,22 +81,21 @@ export function del(collectionName: Collection) {
   };
 }
 
-export function post<T>({
-  collectionName,
-  validationSchema,
-  references = [],
-  relations = []
-}: PostProps<T>) {
+export function post<T>(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
       const user = await getUser(req.headers?.authorization);
       const uid = await generateUID(collectionName);
 
+      const validationSchema = validationSchemas[collectionName];
       const validatedData = validationSchema.parse(req.body);
-      const refs = await createReferences<T>(references, validatedData);
+
+      const refs = getRefs<T>(collectionName);
+      const references = await createReferences<T>(refs, validatedData);
+
       const data = {
         ...validatedData,
-        ...refs,
+        ...references,
         created_by: doc(db, 'users', user.uid)
       };
 
@@ -105,7 +105,7 @@ export function post<T>({
       );
 
       await createRelations<T>(
-        relations,
+        refs,
         validatedData,
         doc(db, collectionName, uid)
       );
@@ -117,11 +117,7 @@ export function post<T>({
   };
 }
 
-export function patch<T>({
-  collectionName,
-  validationSchema,
-  references = []
-}: PatchProps<T>) {
+export function patch<T>(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
       const user = await getUser(req.headers?.authorization);
@@ -133,11 +129,15 @@ export function patch<T>({
         res.status(401).json({ message: 'Permission denied.' });
       }
 
+      const validationSchema = validationSchemas[collectionName];
       const validatedData = validationSchema.parse(req.body);
-      const refs = await createReferences<T>(references, validatedData);
+
+      const refs = getRefs<T>(collectionName);
+      const references = await createReferences<T>(refs, validatedData);
+
       const data = {
         ...validatedData,
-        ...refs,
+        ...references,
         created_by: doc(db, 'users', user.uid),
         created_at: snapshot.get('created_at')
       };

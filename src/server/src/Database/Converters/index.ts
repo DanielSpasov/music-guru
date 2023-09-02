@@ -1,15 +1,13 @@
 import { Collection, ObjConverter } from '../types';
 
-import artistConverter from './artist';
-import albumConverter from './album';
-import songConverter from './song';
-import userConverter from './user';
+import artistConverter from './Artist';
+import albumConverter from './Album';
+import songConverter from './Song';
+import userConverter from './User';
 
-const converters: Record<Collection, ObjConverter> = {
+export const converters: Record<Collection, ObjConverter> = {
   songs: songConverter,
   albums: albumConverter,
   artists: artistConverter,
   users: userConverter
 };
-
-export default converters;

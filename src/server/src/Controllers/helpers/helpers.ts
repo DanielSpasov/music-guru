@@ -7,8 +7,7 @@ import {
   updateDoc
 } from 'firebase/firestore/lite';
 
-import { Collection } from '../../Database/types';
-import { Reference, Relation } from './types';
+import { Collection, Reference } from '../../Database/types';
 import db from '../../Database';
 
 async function getRefData(ref: DocumentReference) {
@@ -59,7 +58,7 @@ export async function createReferences<T>(refs: Reference<T>[], data: T) {
 }
 
 export async function createRelations<T>(
-  rels: Relation<T>[],
+  rels: Reference<T>[],
   data: T,
   objRef: DocumentReference
 ) {

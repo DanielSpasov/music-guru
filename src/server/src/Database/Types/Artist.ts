@@ -1,18 +1,13 @@
+import { DocumentReference, Timestamp } from 'firebase/firestore/lite';
 import { z } from 'zod';
 
+import { ArtistSchema } from '../Schemas';
+
+import { Album } from './Album';
 import { Song } from './Song';
 import { User } from './User';
-import { Album } from './Album';
-import { DocumentReference, Timestamp } from 'firebase/firestore/lite';
 
-export const ArtistSchema = z.object({
-  name: z.string(),
-  image: z.string().url({ message: 'Invalid url.' })
-});
-
-export type ArtistModel = z.infer<typeof ArtistSchema>;
-
-export interface Artist extends ArtistModel {
+export interface Artist extends z.infer<typeof ArtistSchema> {
   uid: string;
   created_at: Date;
   created_by: Partial<User>;
@@ -22,7 +17,7 @@ export interface Artist extends ArtistModel {
   features: Partial<Song>[];
 }
 
-export type DBArtist = {
+export interface DBArtist {
   albums: DocumentReference<Album>[];
   created_at: Timestamp;
   created_by: DocumentReference<User>;
@@ -30,4 +25,4 @@ export type DBArtist = {
   image: string;
   name: string;
   songs: DocumentReference<Song>[];
-};
+}

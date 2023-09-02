@@ -2,7 +2,7 @@ import { doc, updateDoc } from 'firebase/firestore/lite';
 import { Request, Response } from 'express';
 import { ZodSchema } from 'zod';
 
-import { User, emailSchema, usernameSchema } from '../../Types/User';
+import { User, emailSchema, usernameSchema } from '../../Database/Types/User';
 import { errorHandler } from '../../Error';
 import { getUser } from '../../Utils';
 import db from '../../Database';

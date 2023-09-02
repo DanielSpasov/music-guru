@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-import { SignInSchema } from '../../Types/User';
+import { SignInSchema } from '../../Database/Types/User';
 import { errorHandler } from '../../Error';
 import db from '../../Database';
 import env from '../../env';

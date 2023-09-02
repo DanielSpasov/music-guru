@@ -4,7 +4,7 @@ import {
   Timestamp
 } from 'firebase/firestore/lite';
 
-import { Song, DBSong } from '../../Types';
+import { Song, DBSong } from '../Types/';
 
 const songConverter: FirestoreDataConverter<Song, DBSong> = {
   fromFirestore: snapshot => {

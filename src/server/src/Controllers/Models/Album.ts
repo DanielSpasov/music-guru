@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { fetch, post, get, del, patch } from '../helpers/requests';
-import { Album, AlbumSchema } from '../../Types/Album';
+import { Album } from '../../Database/Types/Album';
 import { authorization } from '../../Middleware';
 
 const router = Router();
@@ -11,34 +11,8 @@ router.get('/:id', get('albums'));
 
 router.delete('/:id', authorization, del('albums'));
 
-router.post(
-  '/',
-  authorization,
-  post<Album>({
-    collectionName: 'albums',
-    validationSchema: AlbumSchema,
-    references: [
-      { key: 'artist', collection: 'artists' },
-      { key: 'songs', collection: 'songs' }
-    ],
-    relations: [
-      { key: 'artist', collection: 'artists', relationKey: 'albums' },
-      { key: 'songs', collection: 'songs', relationKey: 'albums' }
-    ]
-  })
-);
+router.post('/', authorization, post<Album>('albums'));
 
-router.patch(
-  '/:id',
-  authorization,
-  patch<Album>({
-    collectionName: 'albums',
-    validationSchema: AlbumSchema,
-    references: [
-      { key: 'artist', collection: 'artists' },
-      { key: 'songs', collection: 'songs' }
-    ]
-  })
-);
+router.patch('/:id', authorization, patch<Album>('albums'));
 
 export default router;

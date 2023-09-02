@@ -1,6 +1,6 @@
 import { FirestoreDataConverter } from 'firebase/firestore/lite';
 
-import { User } from '../../Types';
+import { User } from '../Types/';
 
 // @ts-expect-error: We don't use a converter when creating users so 'toFirestore' method is obsolete
 const userConverter: FirestoreDataConverter<User, DBUser> = {
