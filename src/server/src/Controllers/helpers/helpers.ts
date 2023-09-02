@@ -1,12 +1,15 @@
 import {
   DocumentReference,
   DocumentSnapshot,
+  arrayUnion,
   doc,
-  getDoc
+  getDoc,
+  updateDoc
 } from 'firebase/firestore/lite';
 
-import { Referece } from './types';
+import { Referece, Relation } from './types';
 import db from '../../Database';
+import { Collection } from '../../Database/types';
 
 async function getRefData(ref: DocumentReference) {
   if (!ref?.id) return;
@@ -52,3 +55,33 @@ export async function createReferences<T>(refs: Referece<T>[], data: T) {
     return { ...obj, [key]: ref };
   }, {});
 }
+
+export async function createRelations<T>(
+  rels: Relation<T>[],
+  data: T,
+  objRef: DocumentReference
+) {
+  for (const { key, collection, relationKey } of rels) {
+    if (!data[key]) continue;
+
+    if (Array.isArray(data[key])) {
+      for (const id of data[key] as string[]) {
+        await attachRef(collection, id, relationKey, objRef);
+      }
+      continue;
+    }
+
+    await attachRef(collection, data[key] as string, relationKey, objRef);
+  }
+}
+
+const attachRef = async (
+  collection: Collection,
+  id: string,
+  key: string,
+  ref: DocumentReference
+) => {
+  const relationRef = doc(db, collection, id);
+  if (!relationRef?.id) return;
+  await updateDoc(relationRef, { [key]: arrayUnion(ref) });
+};

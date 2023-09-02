@@ -20,12 +20,11 @@ router.post(
     references: [
       { key: 'artist', collection: 'artists' },
       { key: 'songs', collection: 'songs', type: 'arr' }
+    ],
+    relations: [
+      { key: 'artist', collection: 'artists', relationKey: 'albums' },
+      { key: 'songs', collection: 'songs', relationKey: 'albums' }
     ]
-
-    // relations: [
-    //   { key: 'artist', relation: ['albums'] },
-    //   { key: 'songs', relation: ['albums'] }
-    // ]
   })
 );
 

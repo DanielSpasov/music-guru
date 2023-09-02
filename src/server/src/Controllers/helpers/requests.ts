@@ -8,7 +8,7 @@ import {
 } from 'firebase/firestore/lite';
 import { Request, Response } from 'express';
 
-import { createReferences, populateFields } from './helpers';
+import { createReferences, createRelations, populateFields } from './helpers';
 import { generateUID, getUser } from '../../Utils';
 import converters from '../../Database/Converters';
 import { Collection } from '../../Database/types';
@@ -83,7 +83,8 @@ export function del(collectionName: Collection) {
 export function post<T>({
   collectionName,
   validationSchema,
-  references = []
+  references = [],
+  relations = []
 }: PostProps<T>) {
   return async function (req: Request, res: Response) {
     try {
@@ -101,6 +102,12 @@ export function post<T>({
       await setDoc(
         doc(db, collectionName, uid).withConverter(converters[collectionName]),
         data
+      );
+
+      await createRelations<T>(
+        relations,
+        validatedData,
+        doc(db, collectionName, uid)
       );
 
       res.status(200).json({ message: 'Success', uid, name: data.name });
