@@ -7,9 +7,9 @@ import {
   updateDoc
 } from 'firebase/firestore/lite';
 
-import { Referece, Relation } from './types';
-import db from '../../Database';
 import { Collection } from '../../Database/types';
+import { Reference, Relation } from './types';
+import db from '../../Database';
 
 async function getRefData(ref: DocumentReference) {
   if (!ref?.id) return;
@@ -38,9 +38,11 @@ export async function populateFields(
   }, Promise.resolve({}));
 }
 
-export async function createReferences<T>(refs: Referece<T>[], data: T) {
-  return refs.reduce((obj, { key, collection, type = 'str' }) => {
-    if (type === 'arr') {
+export async function createReferences<T>(refs: Reference<T>[], data: T) {
+  return refs.reduce((obj, { key, collection }) => {
+    if (!data[key]) return obj;
+
+    if (Array.isArray(data[key])) {
       return {
         ...obj,
         [key]: (data[key] as Array<string>)?.map(id => {

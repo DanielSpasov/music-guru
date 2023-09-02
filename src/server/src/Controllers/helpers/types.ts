@@ -5,20 +5,19 @@ import { Collection } from '../../Database/types';
 export type PostProps<T> = {
   collectionName: Collection;
   validationSchema: ZodSchema;
-  references?: Referece<T>[];
+  references?: Reference<T>[];
   relations?: Relation<T>[];
 };
 
 export type PatchProps<T> = {
   collectionName: Collection;
   validationSchema: ZodSchema;
-  references?: Referece<T>[];
+  references?: Reference<T>[];
 };
 
-export type Referece<T> = {
+export type Reference<T> = {
   key: keyof T;
   collection: Collection;
-  type?: 'str' | 'arr';
 };
 
 export type Relation<T> = {

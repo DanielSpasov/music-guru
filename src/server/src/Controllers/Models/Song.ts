@@ -19,7 +19,7 @@ router.post(
     validationSchema: SongSchema,
     references: [
       { key: 'artist', collection: 'artists' },
-      { key: 'features', collection: 'artists', type: 'arr' }
+      { key: 'features', collection: 'artists' }
     ],
     relations: [
       { key: 'artist', collection: 'artists', relationKey: 'songs' },
@@ -36,7 +36,7 @@ router.patch(
     validationSchema: SongSchema,
     references: [
       { key: 'artist', collection: 'artists' },
-      { key: 'features', collection: 'artists', type: 'arr' }
+      { key: 'features', collection: 'artists' }
     ]
   })
 );
