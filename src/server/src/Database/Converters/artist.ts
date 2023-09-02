@@ -22,16 +22,19 @@ const artistConverter: FirestoreDataConverter<Artist, DBArtist> = {
     };
   },
   toFirestore: snapshot => {
+    const created_at = snapshot.created_at as Timestamp;
+    const albums = snapshot?.albums || [];
+    const features = snapshot?.features || [];
+    const songs = snapshot?.songs || [];
+
     return {
       name: String(snapshot.name),
       image: String(snapshot.image),
-      created_at: Timestamp.fromDate(
-        (snapshot?.created_at as Date) || new Date()
-      ),
+      created_at: created_at || Timestamp.fromDate(new Date()),
       created_by: snapshot.created_by as DocumentReference,
-      albums: [],
-      features: [],
-      songs: []
+      albums: albums as DocumentReference[],
+      features: features as DocumentReference[],
+      songs: songs as DocumentReference[]
     };
   }
 };

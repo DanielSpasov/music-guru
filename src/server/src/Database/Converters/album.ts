@@ -20,15 +20,16 @@ const albumConverter: FirestoreDataConverter<Album, DBAlbum> = {
     };
   },
   toFirestore: snapshot => {
+    const created_at = snapshot.created_at as Timestamp;
+    const songs = snapshot?.songs || [];
+
     return {
       name: String(snapshot.name),
       image: String(snapshot.image),
-      created_at: Timestamp.fromDate(
-        (snapshot?.created_at as Date) || new Date()
-      ),
+      created_at: created_at || Timestamp.fromDate(new Date()),
       created_by: snapshot.created_by as DocumentReference,
       artist: snapshot.artist as DocumentReference,
-      songs: snapshot.songs as DocumentReference[]
+      songs: songs as DocumentReference[]
     };
   }
 };

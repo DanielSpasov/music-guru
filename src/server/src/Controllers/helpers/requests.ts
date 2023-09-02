@@ -131,7 +131,8 @@ export function patch<T>({
       const data = {
         ...validatedData,
         ...refs,
-        created_by: doc(db, 'users', user.uid)
+        created_by: doc(db, 'users', user.uid),
+        created_at: snapshot.get('created_at')
       };
 
       await setDoc(reference.withConverter(converters[collectionName]), data, {
