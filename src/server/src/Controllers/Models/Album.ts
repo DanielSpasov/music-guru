@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
 import { fetch, post, get, del, patch } from '../helpers/requests';
-import { AlbumModel, IAlbum } from '../../Database/Models';
 import { Album, AlbumSchema } from '../../Types/Album';
 import { authorization } from '../../Middleware';
 
@@ -18,7 +17,7 @@ router.post(
   post<Album>({
     collectionName: 'albums',
     validationSchema: AlbumSchema,
-    refereces: [
+    references: [
       { key: 'artist', collection: 'artists' },
       { key: 'songs', collection: 'songs', type: 'arr' }
     ]
@@ -33,10 +32,13 @@ router.post(
 router.patch(
   '/:id',
   authorization,
-  patch<IAlbum>({
-    Model: AlbumModel,
-    ValidationSchema: AlbumSchema,
-    prepopulate: ['artist', 'songs']
+  patch<Album>({
+    collectionName: 'albums',
+    validationSchema: AlbumSchema,
+    references: [
+      { key: 'artist', collection: 'artists' },
+      { key: 'songs', collection: 'songs', type: 'arr' }
+    ]
   })
 );
 

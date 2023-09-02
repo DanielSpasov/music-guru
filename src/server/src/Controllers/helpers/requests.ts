@@ -83,19 +83,18 @@ export function del(collectionName: Collection) {
 export function post<T>({
   collectionName,
   validationSchema,
-  refereces = []
+  references = []
 }: PostProps<T>) {
   return async function (req: Request, res: Response) {
     try {
       const user = await getUser(req.headers?.authorization);
-      const validatedData = validationSchema.parse(req.body);
       const uid = await generateUID(collectionName);
 
-      const references = await createReferences<T>(refereces, validatedData);
-
+      const validatedData = validationSchema.parse(req.body);
+      const refs = await createReferences<T>(references, validatedData);
       const data = {
         ...validatedData,
-        ...references,
+        ...refs,
         created_by: doc(db, 'users', user.uid)
       };
 
@@ -111,55 +110,40 @@ export function post<T>({
   };
 }
 
-export const patch =
-  <T>({ Model, ValidationSchema, prepopulate }: PatchProps<T>) =>
-  async (req: Request, res: Response) => {
+export function patch<T>({
+  collectionName,
+  validationSchema,
+  references = []
+}: PatchProps<T>) {
+  return async function (req: Request, res: Response) {
     try {
-      console.log('INSIDE');
-      res.status(500).json({ message: 'TESTING' });
-      // const user = await getUser(req.headers?.authorization);
-      // const found = await Model.findOne({ uid: req.params.id }).populate(
-      //   'created_by'
-      // );
-      // if (!found) {
-      //   throw new CustomError({ message: 'Document not found.', code: 404 });
-      // }
-      // const doc = found as any; // TODO: find a way to avoid doing this
-      // if (doc.created_by.uid !== user.uid) {
-      //   throw new CustomError({ message: 'Permission denied.', code: 401 });
-      // }
+      const user = await getUser(req.headers?.authorization);
+      const reference = doc(db, collectionName, req.params.id).withConverter(
+        converters[collectionName]
+      );
+      const snapshot = await getDoc(reference);
+      if (snapshot.get('created_by').id !== user.uid) {
+        res.status(401).json({ message: 'Permission denied.' });
+      }
 
-      // const validData = ValidationSchema.parse(req.body);
+      const validatedData = validationSchema.parse(req.body);
+      const refs = await createReferences<T>(references, validatedData);
+      const data = {
+        ...validatedData,
+        ...refs,
+        created_by: doc(db, 'users', user.uid)
+      };
 
-      // const data = await prepopulate?.reduce(async (prev, path) => {
-      //   const field = Model.schema.paths[path as string];
-      //   const isMulti = Array.isArray(validData[path]);
-      //   const modelPath = isMulti
-      //     ? field.options.type[0].ref
-      //     : field.options.ref;
-      //   const query = isMulti ? validData[path] : [validData[path]];
+      await setDoc(reference.withConverter(converters[collectionName]), data, {
+        merge: true
+      });
 
-      //   const items = await model(modelPath).find({ uid: { $in: query } });
-
-      //   return {
-      //     ...(await prev),
-      //     [path]: isMulti ? items.map(x => x?._id) : items[0]?._id
-      //   };
-      // }, validData);
-
-      // await Model.findOneAndUpdate(
-      //   { uid: req.params.id },
-      //   { ...(data || validData) },
-      //   { new: true }
-      // );
-
-      // await doc.save();
-
-      // res.status(200).json({
-      //   message: 'Success',
-      //   data: { uid: req.params.id, name: validData.name }
-      // });
+      res.status(200).json({
+        message: 'Success',
+        data: { uid: req.params.id, name: validatedData.name }
+      });
     } catch (error) {
       errorHandler(req, res, error);
     }
   };
+}

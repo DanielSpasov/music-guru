@@ -25,7 +25,9 @@ const artistConverter: FirestoreDataConverter<Artist, DBArtist> = {
     return {
       name: String(snapshot.name),
       image: String(snapshot.image),
-      created_at: Timestamp.fromDate(new Date()),
+      created_at: Timestamp.fromDate(
+        (snapshot?.created_at as Date) || new Date()
+      ),
       created_by: snapshot.created_by as DocumentReference,
       albums: [],
       features: [],

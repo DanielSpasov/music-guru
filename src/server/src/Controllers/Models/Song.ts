@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
 import { fetch, get, del, post, patch } from '../helpers/requests';
-import { SongModel, ISong } from '../../Database/Models';
 import { SongSchema, Song } from '../../Types/Song';
 import { authorization } from '../../Middleware';
 
@@ -18,7 +17,7 @@ router.post(
   post<Song>({
     collectionName: 'songs',
     validationSchema: SongSchema,
-    refereces: [
+    references: [
       { key: 'artist', collection: 'artists' },
       { key: 'features', collection: 'artists', type: 'arr' }
     ]
@@ -33,10 +32,13 @@ router.post(
 router.patch(
   '/:id',
   authorization,
-  patch<ISong>({
-    Model: SongModel,
-    ValidationSchema: SongSchema,
-    prepopulate: ['artist', 'features']
+  patch<Song>({
+    collectionName: 'songs',
+    validationSchema: SongSchema,
+    references: [
+      { key: 'artist', collection: 'artists' },
+      { key: 'features', collection: 'artists', type: 'arr' }
+    ]
   })
 );
 

@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
 import { fetch, get, post, patch } from '../helpers/requests';
-import { ArtistModel, IArtist } from '../../Database/Models';
 import { Artist, ArtistSchema } from '../../Types/Artist';
 import { authorization } from '../../Middleware';
 
@@ -19,10 +18,7 @@ router.post(
 router.patch(
   '/:id',
   authorization,
-  patch<IArtist>({
-    Model: ArtistModel,
-    ValidationSchema: ArtistSchema
-  })
+  patch<Artist>({ collectionName: 'artists', validationSchema: ArtistSchema })
 );
 
 export default router;
