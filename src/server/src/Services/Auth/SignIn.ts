@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-import { CustomError } from '../../Error/CustomError';
 import { SignInSchema } from '../../Types/User';
 import { errorHandler } from '../../Error';
 import db from '../../Database';
@@ -21,10 +20,7 @@ export async function SignIn(req: Request, res: Response) {
     const q = query(collection(db, 'users'), where('email', '==', email));
     const qSnap = await getDocs(q);
     if (qSnap.empty) {
-      throw new CustomError({
-        message: 'Wrong Email address or Password.',
-        code: 400
-      });
+      res.status(400).json({ message: 'Wrong Email address or Password.' });
     }
 
     // CHECK IF THE PASSWORD IS VALID
@@ -33,10 +29,7 @@ export async function SignIn(req: Request, res: Response) {
       qSnap.docs[0].data().password
     );
     if (!passMatch) {
-      throw new CustomError({
-        message: 'Wrong Email address or Password.',
-        code: 400
-      });
+      res.status(400).json({ message: 'Wrong Email address or Password.' });
     }
 
     // SIGN THE JSON WEB TOKEN

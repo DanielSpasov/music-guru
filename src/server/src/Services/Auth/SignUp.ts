@@ -10,7 +10,6 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-import { CustomError } from '../../Error/CustomError';
 import { sendVerificationEmail } from './helpers';
 import { SignUpSchema } from '../../Types/User';
 import { errorHandler } from '../../Error';
@@ -33,10 +32,7 @@ export async function SignUp(req: Request, res: Response) {
     const q = query(collection(db, 'users'), where('email', '==', email));
     const qSnap = await getDocs(q);
     if (!qSnap.empty) {
-      throw new CustomError({
-        message: 'This email is alredy signed up.',
-        code: 400
-      });
+      res.status(400).json({ message: 'This email is alredy signed up.' });
     }
 
     // HASHING THE PASSWORD
