@@ -65,7 +65,6 @@ export default function SongDetails() {
       title={song?.name || 'Loading...'}
       loading={loading}
       actions={actions}
-      showHeader={false}
     >
       <Box
         display="flex"
