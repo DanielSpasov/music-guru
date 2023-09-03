@@ -69,11 +69,6 @@
     ]
   },
   {
-    "path": "/mixtapes",
-    "filePath": "/home",
-    "private": false
-  },
-  {
     "path": "/songs",
     "filePath": "/songs/list",
     "routes": [
