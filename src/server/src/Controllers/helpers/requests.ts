@@ -4,7 +4,8 @@ import {
   getDoc,
   setDoc,
   doc,
-  deleteDoc
+  deleteDoc,
+  updateDoc
 } from 'firebase/firestore/lite';
 import { Request, Response } from 'express';
 
@@ -125,18 +126,7 @@ export function patch<T>(collectionName: Collection) {
       const refs = getRefs<T>(collectionName);
       const references = await createReferences<T>(refs, validatedData);
 
-      const data = {
-        ...validatedData,
-        ...references,
-        created_by: doc(db, 'users', user.uid),
-        created_at: snapshot.get('created_at')
-      };
-
-      await setDoc(
-        reference.withConverter(converters[collectionName]('reference')),
-        data,
-        { merge: true }
-      );
+      await updateDoc(reference, { ...validatedData, ...references });
 
       res.status(200).json({
         message: 'Success',
