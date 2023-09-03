@@ -37,7 +37,7 @@ export function get(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
       const reference = doc(db, collectionName, req.params.id).withConverter(
-        converters[collectionName]
+        converters[collectionName]('data')
       );
       const snapshot = await getDoc(reference);
       res.status(200).json({ data: await snapshot.data() });
@@ -88,7 +88,9 @@ export function post<T>(collectionName: Collection) {
       };
 
       await setDoc(
-        doc(db, collectionName, uid).withConverter(converters[collectionName]),
+        doc(db, collectionName, uid).withConverter(
+          converters[collectionName]('reference')
+        ),
         data
       );
 
@@ -110,7 +112,7 @@ export function patch<T>(collectionName: Collection) {
     try {
       const user = await getUser(req.headers?.authorization);
       const reference = doc(db, collectionName, req.params.id).withConverter(
-        converters[collectionName]
+        converters[collectionName]('reference')
       );
       const snapshot = await getDoc(reference);
       if (snapshot.get('created_by').id !== user.uid) {
@@ -130,9 +132,11 @@ export function patch<T>(collectionName: Collection) {
         created_at: snapshot.get('created_at')
       };
 
-      await setDoc(reference.withConverter(converters[collectionName]), data, {
-        merge: true
-      });
+      await setDoc(
+        reference.withConverter(converters[collectionName]('reference')),
+        data,
+        { merge: true }
+      );
 
       res.status(200).json({
         message: 'Success',

@@ -9,6 +9,8 @@ export { SignInData, SignUpData } from './User';
 
 export type Collection = 'users' | 'artists' | 'songs' | 'albums';
 
+export type ConvertType = 'reference' | 'data';
+
 export type Reference<T> = {
   key: keyof T;
   collection: Collection;

@@ -2,27 +2,11 @@ import {
   DocumentReference,
   arrayUnion,
   doc,
-  getDoc,
   updateDoc
 } from 'firebase/firestore/lite';
 
-import { AnyObj, Collection, Reference } from '../../Database/Types';
+import { Collection, Reference } from '../../Database/Types';
 import db from '../../Database';
-
-export async function getRefData(
-  ref: DocumentReference
-): Promise<Partial<AnyObj>> {
-  if (!ref?.id) return {};
-  const [collection] = ref.path.split('/');
-  const document = await getDoc(doc(db, collection, ref.id));
-  if (!document.exists()) return {};
-
-  return {
-    ...(ref?.id ? { uid: ref.id } : {}),
-    ...(document.data()?.name ? { name: document.data()?.name } : {}),
-    ...(document.data()?.image ? { image: document.data()?.image } : {})
-  };
-}
 
 export async function createReferences<T>(refs: Reference<T>[], data: T) {
   return refs.reduce((obj, { key, collection }) => {

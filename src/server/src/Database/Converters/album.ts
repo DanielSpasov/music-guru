@@ -4,10 +4,12 @@ import {
   Timestamp
 } from 'firebase/firestore/lite';
 
-import { Album, DBAlbum } from '../Types';
-import { getRefData } from '../../Controllers/helpers/helpers';
+import { Album, ConvertType, DBAlbum } from '../Types';
+import { getDataByType } from './helpers';
 
-const albumConverter: FirestoreDataConverter<Album, DBAlbum> = {
+const albumConverter = (
+  ct: ConvertType
+): FirestoreDataConverter<Album, DBAlbum> => ({
   fromFirestore: async snapshot => {
     const album = snapshot.data();
     return Promise.resolve({
@@ -15,9 +17,9 @@ const albumConverter: FirestoreDataConverter<Album, DBAlbum> = {
       name: album.name,
       image: album.image,
       created_at: album.created_at.toDate(),
-      created_by: await getRefData(album.created_by),
-      songs: await Promise.all(album.songs.map(getRefData)),
-      artist: await getRefData(album.artist)
+      created_by: await getDataByType<Album>(ct, album, 'created_by'),
+      songs: await getDataByType<Album>(ct, album, 'songs'),
+      artist: await getDataByType<Album>(ct, album, 'artist')
     });
   },
   toFirestore: snapshot => {
@@ -33,6 +35,6 @@ const albumConverter: FirestoreDataConverter<Album, DBAlbum> = {
       songs: songs as DocumentReference[]
     };
   }
-};
+});
 
 export default albumConverter;

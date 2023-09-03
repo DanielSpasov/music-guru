@@ -4,10 +4,12 @@ import {
   Timestamp
 } from 'firebase/firestore/lite';
 
-import { Song, DBSong } from '../Types';
-import { getRefData } from '../../Controllers/helpers/helpers';
+import { Song, DBSong, ConvertType } from '../Types';
+import { getDataByType } from './helpers';
 
-const songConverter: FirestoreDataConverter<Song, DBSong> = {
+const songConverter = (
+  ct: ConvertType
+): FirestoreDataConverter<Song, DBSong> => ({
   fromFirestore: async snapshot => {
     const song = snapshot.data();
     return Promise.resolve({
@@ -16,10 +18,10 @@ const songConverter: FirestoreDataConverter<Song, DBSong> = {
       image: song.image,
       release_date: song.release_date.toDate(),
       created_at: song.created_at.toDate(),
-      created_by: await getRefData(song.created_by),
-      artist: await getRefData(song.artist),
-      albums: await Promise.all(song.albums.map(getRefData)),
-      features: await Promise.all(song.features.map(getRefData))
+      created_by: await getDataByType<Song>(ct, song, 'created_by'),
+      artist: await getDataByType<Song>(ct, song, 'artist'),
+      albums: await getDataByType<Song>(ct, song, 'albums'),
+      features: await getDataByType<Song>(ct, song, 'features')
     });
   },
   toFirestore: snapshot => {
@@ -40,6 +42,6 @@ const songConverter: FirestoreDataConverter<Song, DBSong> = {
       )
     };
   }
-};
+});
 
 export default songConverter;
