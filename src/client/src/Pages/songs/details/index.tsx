@@ -47,10 +47,7 @@ export default function SongDetails() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.songs.get({
-          id,
-          config: { params: { populate: 'artist,features,albums' } }
-        });
+        const { data } = await Api.songs.get({ id });
         setSong(data);
       } catch (error) {
         errorHandler(error, navigate);

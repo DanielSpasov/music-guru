@@ -8,13 +8,15 @@ import {
 } from 'firebase/firestore/lite';
 import { Request, Response } from 'express';
 
-import { createReferences, createRelations, populateFields } from './helpers';
+import { createReferences, createRelations } from './helpers';
 import { generateUID, getUser } from '../../Utils';
 import { errorHandler } from '../../Error';
+
+// Database imports
 import { validationSchemas } from '../../Database/Schemas';
 import { converters } from '../../Database/Converters';
 import { getRefs } from '../../Database/References';
-import { Collection } from '../../Database/types';
+import { Collection } from '../../Database/Types';
 import db from '../../Database';
 
 export function fetch(collectionName: Collection) {
@@ -38,21 +40,7 @@ export function get(collectionName: Collection) {
         converters[collectionName]
       );
       const snapshot = await getDoc(reference);
-
-      const populated = await populateFields(
-        req.query?.populate?.toString(),
-        snapshot
-      );
-
-      const document = {
-        ...snapshot.data(),
-        ...populated,
-        ...(collectionName !== 'users' && {
-          created_by: { uid: snapshot.get('created_by').id }
-        })
-      };
-
-      res.status(200).json({ data: document });
+      res.status(200).json({ data: await snapshot.data() });
     } catch (error) {
       errorHandler(req, res, error);
     }

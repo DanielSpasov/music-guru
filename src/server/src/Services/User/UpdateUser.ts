@@ -2,14 +2,15 @@ import { doc, updateDoc } from 'firebase/firestore/lite';
 import { Request, Response } from 'express';
 import { ZodSchema } from 'zod';
 
-import { User, emailSchema, usernameSchema } from '../../Database/Types/User';
+import { EmailSchema, UsernameSchema } from '../../Database/Schemas';
+import { User } from '../../Database/Types';
 import { errorHandler } from '../../Error';
 import { getUser } from '../../Utils';
 import db from '../../Database';
 
 const editableFieldSchemas: Record<string, ZodSchema> = {
-  username: usernameSchema,
-  email: emailSchema
+  username: UsernameSchema,
+  email: EmailSchema
 };
 
 export async function UpdateUser(req: Request, res: Response) {

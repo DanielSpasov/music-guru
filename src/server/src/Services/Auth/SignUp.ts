@@ -10,8 +10,8 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
+import { SignUpSchema } from '../../Database/Schemas';
 import { sendVerificationEmail } from './helpers';
-import { SignUpSchema } from '../../Database/Types/User';
 import { errorHandler } from '../../Error';
 import { generateUID } from '../../Utils';
 import db from '../../Database';

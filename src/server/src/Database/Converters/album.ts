@@ -4,20 +4,21 @@ import {
   Timestamp
 } from 'firebase/firestore/lite';
 
-import { Album, DBAlbum } from '../Types/';
+import { Album, DBAlbum } from '../Types';
+import { getRefData } from '../../Controllers/helpers/helpers';
 
 const albumConverter: FirestoreDataConverter<Album, DBAlbum> = {
-  fromFirestore: snapshot => {
+  fromFirestore: async snapshot => {
     const album = snapshot.data();
-    return {
+    return Promise.resolve({
       uid: snapshot.id,
       name: album.name,
       image: album.image,
       created_at: album.created_at.toDate(),
-      created_by: {},
-      songs: [],
-      artist: {}
-    };
+      created_by: await getRefData(album.created_by),
+      songs: await Promise.all(album.songs.map(getRefData)),
+      artist: await getRefData(album.artist)
+    });
   },
   toFirestore: snapshot => {
     const created_at = snapshot.created_at as Timestamp;

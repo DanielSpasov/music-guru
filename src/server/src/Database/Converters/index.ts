@@ -1,4 +1,4 @@
-import { Collection, ObjConverter } from '../types';
+import { Collection, ObjConverter } from '../Types';
 
 import artistConverter from './Artist';
 import albumConverter from './Album';

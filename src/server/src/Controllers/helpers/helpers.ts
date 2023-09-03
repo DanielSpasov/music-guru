@@ -1,40 +1,27 @@
 import {
   DocumentReference,
-  DocumentSnapshot,
   arrayUnion,
   doc,
   getDoc,
   updateDoc
 } from 'firebase/firestore/lite';
 
-import { Collection, Reference } from '../../Database/types';
+import { AnyObj, Collection, Reference } from '../../Database/Types';
 import db from '../../Database';
 
-async function getRefData(ref: DocumentReference) {
-  if (!ref?.id) return;
+export async function getRefData(
+  ref: DocumentReference
+): Promise<Partial<AnyObj>> {
+  if (!ref?.id) return {};
   const [collection] = ref.path.split('/');
   const document = await getDoc(doc(db, collection, ref.id));
-  if (!document.exists()) return;
+  if (!document.exists()) return {};
+
   return {
-    uid: ref.id,
-    name: document.data()?.name,
-    image: document.data()?.image
+    ...(ref?.id ? { uid: ref.id } : {}),
+    ...(document.data()?.name ? { name: document.data()?.name } : {}),
+    ...(document.data()?.image ? { image: document.data()?.image } : {})
   };
-}
-
-export async function populateFields(
-  query: string | undefined,
-  snap: DocumentSnapshot
-) {
-  const fields = query?.split(',') || [];
-
-  return await fields.reduce(async (obj: Promise<object>, field: string) => {
-    const fieldRef = snap.get(field);
-    const value = Array.isArray(fieldRef)
-      ? await Promise.all(fieldRef.map(getRefData))
-      : await getRefData(fieldRef);
-    return { ...(await obj), [field]: value };
-  }, Promise.resolve({}));
 }
 
 export async function createReferences<T>(refs: Reference<T>[], data: T) {

@@ -2,17 +2,13 @@ import { DocumentReference, Timestamp } from 'firebase/firestore/lite';
 import { z } from 'zod';
 
 import { ArtistSchema } from '../Schemas';
-
-import { Album } from './Album';
-import { Song } from './Song';
-import { User } from './User';
+import { Album, Song, User } from './';
 
 export interface Artist extends z.infer<typeof ArtistSchema> {
   uid: string;
   created_at: Date;
   created_by: Partial<User>;
   albums: Partial<Album>[];
-  mixtapes: unknown[];
   songs: Partial<Song>[];
   features: Partial<Song>[];
 }

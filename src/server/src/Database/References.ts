@@ -1,4 +1,4 @@
-import { Collection, Reference } from './types';
+import { Collection, Reference } from './Types';
 
 const refs: Record<Collection, Reference<any>[]> = {
   albums: [

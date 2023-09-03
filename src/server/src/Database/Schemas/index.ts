@@ -1,6 +1,6 @@
 import { ZodSchema } from 'zod';
 
-import { Collection } from '../types';
+import { Collection } from '../Types';
 
 import { ArtistSchema } from './Artist';
 import { AlbumSchema } from './Album';

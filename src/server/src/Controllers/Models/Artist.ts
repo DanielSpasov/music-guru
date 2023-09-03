@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
 import { fetch, get, post, patch } from '../helpers/requests';
-import { Artist } from '../../Database/Types/Artist';
 import { authorization } from '../../Middleware';
+import { Artist } from '../../Database/Types';
 
 const router = Router();
 
