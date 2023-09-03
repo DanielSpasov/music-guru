@@ -5,9 +5,9 @@ export const BaseAlbumSchema = z.object({
   image: z.string().url({ message: 'Invalid url.' })
 });
 
-const uid = z.string().min(8).max(8);
+const UidSchema = z.string().min(8).max(8);
 
 export const AlbumSchema = BaseAlbumSchema.extend({
-  artist: uid,
-  songs: z.array(uid)
+  artist: UidSchema,
+  songs: z.array(UidSchema)
 });
