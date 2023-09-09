@@ -9,7 +9,7 @@ import {
 } from 'firebase/firestore/lite';
 import { Request, Response } from 'express';
 
-import { createReferences, createRelations } from './helpers';
+import { createReferences, createRelations, removeRelations } from './helpers';
 import { generateUID, getUser } from '../../Utils';
 import { errorHandler } from '../../Error';
 
@@ -48,7 +48,7 @@ export function get(collectionName: Collection) {
   };
 }
 
-export function del(collectionName: Collection) {
+export function del<T>(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
       const reference = doc(db, collectionName, req.params.id);
@@ -61,7 +61,9 @@ export function del(collectionName: Collection) {
         return;
       }
 
-      await deleteDoc(doc(db, collectionName, snapshot.id));
+      await removeRelations<T>(getRefs<T>(collectionName), reference);
+
+      await deleteDoc(reference);
 
       res.status(200).json({ message: 'Success' });
     } catch (error) {

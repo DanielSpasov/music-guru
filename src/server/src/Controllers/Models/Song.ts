@@ -9,7 +9,7 @@ const router = Router();
 router.get('/', fetch('songs'));
 router.get('/:id', get('songs'));
 
-router.delete('/:id', authorization, del('songs'));
+router.delete('/:id', authorization, del<Song>('songs'));
 
 router.post('/', authorization, post<Song>('songs'));
 

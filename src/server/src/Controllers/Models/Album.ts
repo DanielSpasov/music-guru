@@ -9,7 +9,7 @@ const router = Router();
 router.get('/', fetch('albums'));
 router.get('/:id', get('albums'));
 
-router.delete('/:id', authorization, del('albums'));
+router.delete('/:id', authorization, del<Album>('albums'));
 
 router.post('/', authorization, post<Album>('albums'));
 

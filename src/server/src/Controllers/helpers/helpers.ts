@@ -1,7 +1,9 @@
 import {
   DocumentReference,
+  arrayRemove,
   arrayUnion,
   doc,
+  getDoc,
   updateDoc
 } from 'firebase/firestore/lite';
 
@@ -47,6 +49,31 @@ export async function createRelations<T>(
   }
 }
 
+export async function removeRelations<T>(
+  refs: Reference<T>[],
+  objRef: DocumentReference
+) {
+  const snapshot = await getDoc(objRef);
+  const data = (await snapshot.data()) as T;
+
+  for (const { key, collection, relationKey } of refs) {
+    if (!data[key]) continue;
+
+    if (Array.isArray(data[key])) {
+      for (const { id } of data[key] as DocumentReference[]) {
+        await removeRef(collection, id, relationKey, objRef);
+      }
+      continue;
+    }
+    await removeRef(
+      collection,
+      (data[key] as DocumentReference).id,
+      relationKey,
+      objRef
+    );
+  }
+}
+
 const attachRef = async (
   collection: Collection,
   id: string,
@@ -56,4 +83,15 @@ const attachRef = async (
   const relationRef = doc(db, collection, id);
   if (!relationRef?.id) return;
   await updateDoc(relationRef, { [key]: arrayUnion(ref) });
+};
+
+const removeRef = async (
+  collection: Collection,
+  id: string,
+  key: string,
+  ref: DocumentReference
+) => {
+  const relationRef = doc(db, collection, id);
+  if (!relationRef?.id) return;
+  await updateDoc(relationRef, { [key]: arrayRemove(ref) });
 };
