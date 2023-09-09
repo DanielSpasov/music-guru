@@ -33,27 +33,27 @@ export async function createReferences<T>(refs: Reference<T>[], data: T) {
 export async function createRelations<T>(
   rels: Reference<T>[],
   data: T,
-  objRef: DocumentReference
+  reference: DocumentReference
 ) {
   for (const { key, collection, relationKey } of rels) {
     if (!data[key]) continue;
 
     if (Array.isArray(data[key])) {
       for (const id of data[key] as string[]) {
-        await attachRef(collection, id, relationKey, objRef);
+        await ref(collection, id, relationKey).attach(reference);
       }
       continue;
     }
 
-    await attachRef(collection, data[key] as string, relationKey, objRef);
+    await ref(collection, data[key] as string, relationKey).attach(reference);
   }
 }
 
 export async function removeRelations<T>(
   refs: Reference<T>[],
-  objRef: DocumentReference
+  reference: DocumentReference
 ) {
-  const snapshot = await getDoc(objRef);
+  const snapshot = await getDoc(reference);
   const data = (await snapshot.data()) as T;
 
   for (const { key, collection, relationKey } of refs) {
@@ -61,37 +61,28 @@ export async function removeRelations<T>(
 
     if (Array.isArray(data[key])) {
       for (const { id } of data[key] as DocumentReference[]) {
-        await removeRef(collection, id, relationKey, objRef);
+        await ref(collection, id, relationKey).remove(reference);
       }
       continue;
     }
-    await removeRef(
-      collection,
-      (data[key] as DocumentReference).id,
-      relationKey,
-      objRef
-    );
+    const id = (data[key] as DocumentReference)?.id;
+    await ref(collection, id, relationKey).remove(reference);
   }
 }
 
-const attachRef = async (
+const ref = (
   collection: Collection,
   id: string,
-  key: string,
-  ref: DocumentReference
-) => {
+  key: string
+): {
+  attach: (ref: DocumentReference) => Promise<void>;
+  remove: (ref: DocumentReference) => Promise<void>;
+} => {
   const relationRef = doc(db, collection, id);
-  if (!relationRef?.id) return;
-  await updateDoc(relationRef, { [key]: arrayUnion(ref) });
-};
-
-const removeRef = async (
-  collection: Collection,
-  id: string,
-  key: string,
-  ref: DocumentReference
-) => {
-  const relationRef = doc(db, collection, id);
-  if (!relationRef?.id) return;
-  await updateDoc(relationRef, { [key]: arrayRemove(ref) });
+  return {
+    attach: async (ref: DocumentReference) =>
+      await updateDoc(relationRef, { [key]: arrayUnion(ref) }),
+    remove: async (ref: DocumentReference) =>
+      await updateDoc(relationRef, { [key]: arrayRemove(ref) })
+  };
 };
