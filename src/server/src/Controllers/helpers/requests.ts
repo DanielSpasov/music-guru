@@ -88,18 +88,14 @@ export function post<T>(collectionName: Collection) {
         created_by: doc(db, 'users', user.uid)
       };
 
+      const document = doc(db, collectionName, uid);
+
       await setDoc(
-        doc(db, collectionName, uid).withConverter(
-          converters[collectionName]('reference')
-        ),
+        document.withConverter(converters[collectionName]('reference')),
         data
       );
 
-      await createRelations<T>(
-        refs,
-        validatedData,
-        doc(db, collectionName, uid)
-      );
+      await createRelations<T>(refs, validatedData, document);
 
       res.status(200).json({ message: 'Success', uid, name: data.name });
     } catch (error) {
