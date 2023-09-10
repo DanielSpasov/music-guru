@@ -4,13 +4,12 @@ import {
   SignUp,
   SignIn,
   ValidateToken,
+  ValidateEmail,
   ResendValidationEmail
 } from '../../Services/Auth';
-import { ValidateEmail } from '../../Services/Auth/ValidateEmail';
-import { UserModel, IUser } from '../../Database/Models';
 import { authorization } from '../../Middleware';
 import { UpdateUser } from '../../Services/User';
-import { get } from '../../Services/requests';
+import { get } from '../helpers/requests';
 
 const router = Router();
 
@@ -22,7 +21,7 @@ router.post('/validate-email', authorization, ValidateEmail);
 router.post('/sign-up', SignUp);
 router.post('/sign-in', SignIn);
 
-router.get('/:id', get<IUser>({ Model: UserModel }));
+router.get('/:id', get('users'));
 router.patch('/:id', authorization, UpdateUser);
 
 export default router;

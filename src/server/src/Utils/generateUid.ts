@@ -1,9 +1,12 @@
-import { Model } from 'mongoose';
+import { getDoc, doc } from 'firebase/firestore/lite';
 import crypto from 'crypto';
 
-export default async function generateUID<T>(Model: Model<T>) {
+import db from '../Database';
+
+export default async function generateUID(collectionName: string) {
   const uid = crypto.randomBytes(4).toString('hex');
-  const usedUid = await Model.findOne({ uid });
-  if (!usedUid) return uid;
-  generateUID(Model);
+  const reference = doc(db, collectionName, uid);
+  const snapshot = await getDoc(reference);
+  if (snapshot.exists()) generateUID(collectionName);
+  return uid;
 }

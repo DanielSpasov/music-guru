@@ -5,14 +5,7 @@ import { errorHandler } from '../../../Handlers';
 import useActions from '../useActions';
 import { Artist } from '../helpers';
 import Api from '../../../Api';
-import {
-  Box,
-  Image,
-  List,
-  PageLayout,
-  Summary,
-  Text
-} from '../../../Components';
+import { Box, Image, List, PageLayout, Summary } from '../../../Components';
 
 export default function ArtistDetails() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -25,10 +18,7 @@ export default function ArtistDetails() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.artists.get({
-          id,
-          config: { params: { populate: 'songs,created_by,features,albums' } }
-        });
+        const { data } = await Api.artists.get({ id });
         setArtist(data);
       } catch (error) {
         errorHandler(error, navigate);
@@ -42,7 +32,6 @@ export default function ArtistDetails() {
     if (!artist) return false;
     return (
       Boolean(artist.features.length) ||
-      Boolean(artist.mixtapes.length) ||
       Boolean(artist.albums.length) ||
       Boolean(artist.songs.length)
     );
@@ -74,14 +63,6 @@ export default function ArtistDetails() {
                   <Box display="flex" flexWrap="wrap">
                     <List data={artist.songs} model="songs" />
                   </Box>
-                </Summary>
-              )}
-
-              {Boolean(artist.mixtapes.length) && (
-                <Summary label="Mixtapes" open>
-                  <Text>
-                    {artist.name} haven&apos;t released any mixtapes yet.
-                  </Text>
                 </Summary>
               )}
 

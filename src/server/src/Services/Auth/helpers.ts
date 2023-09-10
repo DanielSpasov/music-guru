@@ -1,12 +1,11 @@
-import { HydratedDocument } from 'mongoose';
+import { DocumentData } from 'firebase/firestore/lite';
 import jwt from 'jsonwebtoken';
+import env from '../../env';
 
-import { User } from '../../Types/User';
 import SendEmail from '../Email';
 
-export const sendVerificationEmail = async (user: HydratedDocument<User>) => {
-  const jwtSecret = String(process.env.JWT_SECRET);
-  const emailToken = jwt.sign({ id: user._id }, jwtSecret, {
+export const sendVerificationEmail = async (user: DocumentData) => {
+  const emailToken = jwt.sign({ id: user.uid }, env.JWT_SECRET, {
     expiresIn: '10m'
   });
 

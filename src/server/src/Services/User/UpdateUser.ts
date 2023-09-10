@@ -1,36 +1,29 @@
+import { doc, updateDoc } from 'firebase/firestore/lite';
 import { Request, Response } from 'express';
-
-import { User, emailSchema, usernameSchema } from '../../Types/User';
-import { CustomError } from '../../Error/CustomError';
-import { errorHandler } from '../../Error';
-import { getUser } from '../../Utils';
 import { ZodSchema } from 'zod';
 
+import { EmailSchema, UsernameSchema } from '../../Database/Schemas';
+import { User } from '../../Database/Types';
+import { errorHandler } from '../../Error';
+import { getUser } from '../../Utils';
+import db from '../../Database';
+
 const editableFieldSchemas: Record<string, ZodSchema> = {
-  username: usernameSchema,
-  email: emailSchema
+  username: UsernameSchema,
+  email: EmailSchema
 };
 
 export async function UpdateUser(req: Request, res: Response) {
   try {
     const field = req.query['field']?.toString() as keyof User;
-    const payload = req.body;
+
+    const reference = doc(db, 'users', req.params.id);
+    const validData = editableFieldSchemas[field].parse(req.body[field]);
+    await updateDoc(reference, { [field]: validData });
 
     const user = await getUser(req.headers.authorization);
-    if (!user[field]) {
-      throw new CustomError({
-        code: 400,
-        message: `User has no property ${field}`
-      });
-    }
-
-    const validData = editableFieldSchemas[field].parse(payload[field]);
-    user[field] = validData;
-    await user.save();
-
     res.status(200).json({ message: `User updated.`, data: user });
   } catch (error) {
-    // console.log(error);
     errorHandler(req, res, error);
   }
 }

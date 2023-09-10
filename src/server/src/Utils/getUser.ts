@@ -1,23 +1,26 @@
+import { DocumentData, doc, getDoc } from 'firebase/firestore/lite';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { HydratedDocument } from 'mongoose';
 
 import { CustomError } from '../Error/CustomError';
-import { UserModel } from '../Database/Models';
-import { User } from '../Types/User';
+import db from '../Database';
+import env from '../env';
 
 export default async function getUser(
   token: string | undefined
-): Promise<HydratedDocument<User>> {
+): Promise<DocumentData> {
   if (!token) {
     throw new CustomError({ message: 'Unauthorized.', code: 401 });
   }
 
-  const secret = process.env.JWT_SECRET || '';
-  const { uid: userUid } = jwt.verify(token, secret) as JwtPayload;
-  const user = await UserModel.findOne({ uid: userUid });
-  if (!user) {
+  const { uid } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+
+  const reference = doc(db, 'users', uid);
+  const snapshot = await getDoc(reference);
+  const document = snapshot.data();
+
+  if (!document) {
     throw new CustomError({ message: 'User not found.', code: 404 });
   }
 
-  return user;
+  return { uid: snapshot.id, ...document };
 }

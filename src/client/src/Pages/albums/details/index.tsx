@@ -45,10 +45,7 @@ export default function AlbumDetails() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.albums.get({
-          id,
-          config: { params: { populate: 'artist,created_by,songs' } }
-        });
+        const { data } = await Api.albums.get({ id });
         setAlbum(data);
       } catch (error) {
         errorHandler(error, navigate);

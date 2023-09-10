@@ -47,10 +47,7 @@ export default function SongDetails() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.songs.get({
-          id,
-          config: { params: { populate: 'artist,created_by,features,albums' } }
-        });
+        const { data } = await Api.songs.get({ id });
         setSong(data);
       } catch (error) {
         errorHandler(error, navigate);
@@ -65,7 +62,6 @@ export default function SongDetails() {
       title={song?.name || 'Loading...'}
       loading={loading}
       actions={actions}
-      showHeader={false}
     >
       <Box
         display="flex"

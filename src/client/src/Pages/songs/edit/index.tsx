@@ -27,10 +27,7 @@ export default function EditSong() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.songs.get({
-          id,
-          config: { params: { populate: 'artist,features' } }
-        });
+        const { data } = await Api.songs.get({ id });
         setSong(data);
       } catch (error) {
         errorHandler(error, navigate);

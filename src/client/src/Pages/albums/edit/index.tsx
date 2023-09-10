@@ -27,10 +27,7 @@ export default function EditAlbum() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.albums.get({
-          id,
-          config: { params: { populate: 'artist,songs' } }
-        });
+        const { data } = await Api.albums.get({ id });
         setAlbum(data);
       } catch (error) {
         errorHandler(error, navigate);

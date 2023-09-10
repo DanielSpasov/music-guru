@@ -1,40 +1,18 @@
 import { Router } from 'express';
 
-import { fetch, get, del, post, patch } from '../../Services/requests';
-import { SongModel, ISong } from '../../Database/Models';
+import { fetch, get, del, post, patch } from '../helpers/requests';
 import { authorization } from '../../Middleware';
-import { SongSchema } from '../../Types/Song';
+import { Song } from '../../Database/Types';
 
 const router = Router();
 
-router.get('/', fetch<ISong>({ Model: SongModel }));
+router.get('/', fetch('songs'));
+router.get('/:id', get('songs'));
 
-router.get('/:id', get<ISong>({ Model: SongModel }));
+router.delete('/:id', authorization, del<Song>('songs'));
 
-router.delete('/:id', authorization, del<ISong>({ Model: SongModel }));
+router.post('/', authorization, post<Song>('songs'));
 
-router.post(
-  '/',
-  authorization,
-  post<ISong>({
-    Model: SongModel,
-    ValidationSchema: SongSchema,
-    prepopulate: ['artist', 'features'],
-    relations: [
-      { key: 'artist', relation: ['songs'] },
-      { key: 'features', relation: ['features'] }
-    ]
-  })
-);
-
-router.patch(
-  '/:id',
-  authorization,
-  patch<ISong>({
-    Model: SongModel,
-    ValidationSchema: SongSchema,
-    prepopulate: ['artist', 'features']
-  })
-);
+router.patch('/:id', authorization, patch<Song>('songs'));
 
 export default router;

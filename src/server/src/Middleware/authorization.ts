@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import env from '../env';
 
 export default async function authorization(
   req: Request,
@@ -13,7 +14,7 @@ export default async function authorization(
       return;
     }
 
-    const secret = process.env.JWT_SECRET || '';
+    const secret = env.JWT_SECRET || '';
     jwt.verify(token, secret) as JwtPayload;
 
     next();
