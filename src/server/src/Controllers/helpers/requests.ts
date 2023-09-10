@@ -5,11 +5,17 @@ import {
   setDoc,
   doc,
   deleteDoc,
-  updateDoc
+  updateDoc,
+  DocumentData
 } from 'firebase/firestore/lite';
 import { Request, Response } from 'express';
 
-import { createReferences, createRelations, removeRelations } from './helpers';
+import {
+  createReferences,
+  createRelations,
+  removeRelations,
+  updateRelations
+} from './helpers';
 import { generateUID, getUser } from '../../Utils';
 import { errorHandler } from '../../Error';
 
@@ -130,6 +136,11 @@ export function patch<T>(collectionName: Collection) {
         message: 'Success',
         data: { uid: req.params.id, name: validatedData.name }
       });
+
+      // It's okay for the relations update to be after the return
+      // since the user doesn't need it immediately
+      const oldData = (await snapshot.data()) as DocumentData;
+      await updateRelations<T>(refs, validatedData, oldData, reference);
     } catch (error) {
       errorHandler(req, res, error);
     }

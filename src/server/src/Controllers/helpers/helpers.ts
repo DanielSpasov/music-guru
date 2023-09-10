@@ -1,4 +1,5 @@
 import {
+  DocumentData,
   DocumentReference,
   arrayRemove,
   arrayUnion,
@@ -70,14 +71,47 @@ export async function removeRelations<T>(
   }
 }
 
-const ref = (
-  collection: Collection,
-  id: string,
-  key: string
-): {
+export async function updateRelations<T>(
+  refs: Reference<T>[],
+  data: T,
+  oldData: DocumentData,
+  reference: DocumentReference
+) {
+  for (const { key, collection, relationKey } of refs) {
+    const _key = key as string;
+    if (!data[key]) continue;
+
+    if (Array.isArray(data[key]) && Array.isArray(oldData[_key])) {
+      const newFeatures = new Set<string>(data[key] as string);
+      const oldFeatures = new Set<string>(
+        oldData[_key].map((x: DocumentReference) => x.id)
+      );
+
+      const added = Array.from(newFeatures).filter(x => !oldFeatures.has(x));
+      const removed = Array.from(oldFeatures).filter(x => !newFeatures.has(x));
+
+      const mapFn = (action: keyof RefActions) => (x: string) => {
+        ref(collection, x, relationKey)[action](reference);
+      };
+
+      await Promise.all(added.map(mapFn('attach')));
+      await Promise.all(removed.map(mapFn('remove')));
+
+      continue;
+    }
+
+    if (data[key] === oldData[_key].id) continue;
+    await ref(collection, oldData[_key].id, relationKey).remove(reference);
+    await ref(collection, data[key] as string, relationKey).attach(reference);
+  }
+}
+
+type RefActions = {
   attach: (ref: DocumentReference) => Promise<void>;
   remove: (ref: DocumentReference) => Promise<void>;
-} => {
+};
+
+const ref = (collection: Collection, id: string, key: string): RefActions => {
   const relationRef = doc(db, collection, id);
   return {
     attach: async (ref: DocumentReference) =>
