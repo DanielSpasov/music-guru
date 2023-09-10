@@ -14,4 +14,6 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use(router);
 
-app.listen(PORT, () => console.log(`Server running on PORT: ${PORT}`));
+app.listen(PORT, () =>
+  console.log('\u001b[1;32m' + `Server running on PORT: ${PORT}` + '\u001b[0m')
+);
