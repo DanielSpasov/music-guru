@@ -23,16 +23,18 @@ import { errorHandler } from '../../Error';
 import { validationSchemas } from '../../Database/Schemas';
 import { converters } from '../../Database/Converters';
 import { getRefs } from '../../Database/References';
-import { Collection } from '../../Database/Types';
+import { Collection, Serializer } from '../../Database/Types';
 import db from '../../Database';
 
 export function fetch(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
-      const reference = collection(db, collectionName);
+      const serializer = req.query?.serializer as Serializer;
+      const reference = collection(db, collectionName).withConverter(
+        converters[collectionName](serializer)
+      );
       const snapshot = await getDocs(reference);
-      const list = snapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() }));
-
+      const list = await Promise.all(snapshot.docs.map(doc => doc.data()));
       res.status(200).json({ data: list });
     } catch (error) {
       errorHandler(req, res, error);
@@ -43,11 +45,12 @@ export function fetch(collectionName: Collection) {
 export function get(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
+      const serializer = req.query?.serializer as Serializer;
       const reference = doc(db, collectionName, req.params.id).withConverter(
-        converters[collectionName]('data')
+        converters[collectionName](serializer)
       );
       const snapshot = await getDoc(reference);
-      res.status(200).json({ data: await snapshot.data() });
+      res.status(200).json({ data: snapshot.data() });
     } catch (error) {
       errorHandler(req, res, error);
     }
@@ -98,10 +101,7 @@ export function post<T>(collectionName: Collection) {
 
       const document = doc(db, collectionName, uid);
 
-      await setDoc(
-        document.withConverter(converters[collectionName]('reference')),
-        data
-      );
+      await setDoc(document.withConverter(converters[collectionName]()), data);
 
       await createRelations<T>(refs, validatedData, document);
 
@@ -117,7 +117,7 @@ export function patch<T>(collectionName: Collection) {
     try {
       const user = await getUser(req.headers?.authorization);
       const reference = doc(db, collectionName, req.params.id).withConverter(
-        converters[collectionName]('reference')
+        converters[collectionName]()
       );
       const snapshot = await getDoc(reference);
       if (snapshot.get('created_by').id !== user.uid) {

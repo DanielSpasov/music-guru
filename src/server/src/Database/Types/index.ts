@@ -9,7 +9,7 @@ export { SignInData, SignUpData } from './User';
 
 export type Collection = 'users' | 'artists' | 'songs' | 'albums';
 
-export type ConvertType = 'reference' | 'data';
+export type Serializer = 'reference' | 'detailed' | 'list';
 
 export type Reference<T> = {
   key: keyof T;
@@ -20,7 +20,7 @@ export type Reference<T> = {
 export type AnyObj = Song | Artist | Album | User;
 export type AnyDBObj = DBSong | DBArtist | DBAlbum;
 
-export type ObjConverter = FirestoreDataConverter<AnyObj, AnyDBObj>;
+export type ObjConverter = FirestoreDataConverter<Partial<AnyObj>, AnyDBObj>;
 
 export { Song, Artist, Album, User };
 export { DBSong, DBArtist, DBAlbum };

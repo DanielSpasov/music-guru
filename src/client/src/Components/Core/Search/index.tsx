@@ -49,7 +49,7 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
         const results: Results = await Promise.all(
           models.map(async model => {
             const { data } = await Api[model].fetch({
-              config: { params: { search, limit: 5 } }
+              config: { params: { search } }
             });
             return [model, data];
           })

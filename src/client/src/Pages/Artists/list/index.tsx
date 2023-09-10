@@ -17,7 +17,9 @@ export default function Artists() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.artists.fetch({});
+        const { data } = await Api.artists.fetch({
+          config: { params: { serializer: 'list' } }
+        });
         setArtists(data);
       } catch (error) {
         errorHandler(error, navigate);

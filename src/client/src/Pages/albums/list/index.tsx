@@ -17,7 +17,9 @@ export default function Albums() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.albums.fetch({});
+        const { data } = await Api.albums.fetch({
+          config: { params: { serializer: 'list' } }
+        });
         setAlbums(data);
       } catch (error) {
         errorHandler(error, navigate);

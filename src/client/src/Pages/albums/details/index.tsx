@@ -45,7 +45,10 @@ export default function AlbumDetails() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.albums.get({ id });
+        const { data } = await Api.albums.get({
+          id,
+          config: { params: { serializer: 'detailed' } }
+        });
         setAlbum(data);
       } catch (error) {
         errorHandler(error, navigate);

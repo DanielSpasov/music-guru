@@ -17,7 +17,9 @@ export default function Songs() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.songs.fetch({});
+        const { data } = await Api.songs.fetch({
+          config: { params: { serializer: 'list' } }
+        });
         setSongs(data);
       } catch (error) {
         errorHandler(error, navigate);

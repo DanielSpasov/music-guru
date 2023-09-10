@@ -4,25 +4,39 @@ import {
   Timestamp
 } from 'firebase/firestore/lite';
 
-import { Song, DBSong, ConvertType } from '../Types';
-import { getDataByType } from './helpers';
+import { Song, DBSong, Serializer } from '../Types';
 
 const songConverter = (
-  ct: ConvertType
-): FirestoreDataConverter<Song, DBSong> => ({
-  fromFirestore: async snapshot => {
+  serializer?: Serializer
+): FirestoreDataConverter<Partial<Song>, DBSong> => ({
+  fromFirestore: snapshot => {
     const song = snapshot.data();
-    return Promise.resolve({
-      uid: snapshot.id,
-      name: song.name,
-      image: song.image,
-      release_date: song.release_date.toDate(),
-      created_at: song.created_at.toDate(),
-      created_by: await getDataByType<Song>(ct, song, 'created_by'),
-      artist: await getDataByType<Song>(ct, song, 'artist'),
-      albums: await getDataByType<Song>(ct, song, 'albums'),
-      features: await getDataByType<Song>(ct, song, 'features')
-    });
+    switch (serializer) {
+      case 'list':
+        return {
+          uid: snapshot.id,
+          name: song.name,
+          image: song.image
+        };
+      case 'detailed':
+        return {
+          uid: snapshot.id,
+          name: song.name,
+          image: song.image,
+          release_date: song.release_date.toDate(),
+          created_at: song.created_at.toDate(),
+          created_by: { uid: snapshot.get('created_by').id },
+          artist: { uid: snapshot.get('artist').id },
+          albums: snapshot
+            .get('albums')
+            .map((x: DocumentReference) => ({ uid: x.id })),
+          features: snapshot
+            .get('features')
+            .map((x: DocumentReference) => ({ uid: x.id }))
+        };
+      default:
+        return song;
+    }
   },
   toFirestore: snapshot => {
     const created_at = snapshot.created_at as Timestamp;

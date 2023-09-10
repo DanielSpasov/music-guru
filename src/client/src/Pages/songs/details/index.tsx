@@ -47,7 +47,10 @@ export default function SongDetails() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.songs.get({ id });
+        const { data } = await Api.songs.get({
+          id,
+          config: { params: { serializer: 'detailed' } }
+        });
         setSong(data);
       } catch (error) {
         errorHandler(error, navigate);

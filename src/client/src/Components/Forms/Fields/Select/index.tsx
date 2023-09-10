@@ -31,7 +31,7 @@ export default function Select({
   useEffect(() => {
     (async () => {
       if (!props?.fetchFn) return;
-      const { data } = await props.fetchFn({ params: { search, limit: 5 } });
+      const { data } = await props.fetchFn({ params: { search } });
       setOptions(data);
     })();
   }, [props, search]);

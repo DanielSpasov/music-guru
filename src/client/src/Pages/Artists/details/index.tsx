@@ -18,7 +18,10 @@ export default function ArtistDetails() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.artists.get({ id });
+        const { data } = await Api.artists.get({
+          id,
+          config: { params: { serializer: 'detailed' } }
+        });
         setArtist(data);
       } catch (error) {
         errorHandler(error, navigate);

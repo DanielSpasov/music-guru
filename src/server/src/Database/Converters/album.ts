@@ -4,23 +4,35 @@ import {
   Timestamp
 } from 'firebase/firestore/lite';
 
-import { Album, ConvertType, DBAlbum } from '../Types';
-import { getDataByType } from './helpers';
+import { Album, Serializer, DBAlbum } from '../Types';
 
 const albumConverter = (
-  ct: ConvertType
-): FirestoreDataConverter<Album, DBAlbum> => ({
-  fromFirestore: async snapshot => {
+  serializer?: Serializer
+): FirestoreDataConverter<Partial<Album>, DBAlbum> => ({
+  fromFirestore: snapshot => {
     const album = snapshot.data();
-    return Promise.resolve({
-      uid: snapshot.id,
-      name: album.name,
-      image: album.image,
-      created_at: album.created_at.toDate(),
-      created_by: await getDataByType<Album>(ct, album, 'created_by'),
-      songs: await getDataByType<Album>(ct, album, 'songs'),
-      artist: await getDataByType<Album>(ct, album, 'artist')
-    });
+    switch (serializer) {
+      case 'list':
+        return {
+          uid: snapshot.id,
+          name: album.name,
+          image: album.image
+        };
+      case 'detailed':
+        return {
+          uid: snapshot.id,
+          name: album.name,
+          image: album.image,
+          created_at: album.created_at.toDate(),
+          created_by: { uid: snapshot.get('created_by').id },
+          artist: { uid: snapshot.get('artist').id },
+          songs: snapshot
+            .get('songs')
+            .map((x: DocumentReference) => ({ uid: x.id }))
+        };
+      default:
+        return album;
+    }
   },
   toFirestore: snapshot => {
     const created_at = snapshot.created_at as Timestamp;
