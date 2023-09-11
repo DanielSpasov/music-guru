@@ -1,11 +1,12 @@
 import { PopoverProps } from './helpers';
-import { Box, Icon } from '../../HTML';
+import { Box, Icon, Text } from '../../HTML';
 import { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 
 export default function Popover({
   children,
   open,
+  title,
   setOpen,
   ...css
 }: PopoverProps) {
@@ -26,7 +27,8 @@ export default function Popover({
       right="0"
       {...css}
     >
-      <Box display="flex" justifyContent="flex-end">
+      <Box display="flex" justifyContent={title ? 'space-between' : 'flex-end'}>
+        {title && <Text fontWeight="bold">Select {title}</Text>}
         {setOpen && (
           <Icon
             model="x"

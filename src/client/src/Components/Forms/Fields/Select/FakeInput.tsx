@@ -26,6 +26,7 @@ export default function FakeInput({
       backgroundColor={colors.baseLight}
       border={`2px solid ${colors.baseLighter}`}
       tabIndex="-1"
+      hoverCSS={{ cursor: 'pointer' }}
       onFocus={() => {
         setOpen(true);
       }}

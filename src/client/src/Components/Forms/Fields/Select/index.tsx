@@ -78,11 +78,14 @@ export default function Select({
         <Popover
           open={open}
           setOpen={setOpen}
+          title={label}
           position="fixed"
           right="auto"
           margin="auto"
-          width="35%"
-          top="50%"
+          padding="1em"
+          height="25rem"
+          width="28rem"
+          top="22rem"
         >
           <StyledInput
             onChange={(e: any) => setSearch(e?.target?.value)}
