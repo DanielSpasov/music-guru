@@ -2,7 +2,12 @@ import { z } from 'zod';
 
 export const BaseSongSchema = z.object({
   name: z.string(),
-  image: z.string().url({ message: 'Invalid url.' }),
+  image: z
+    .union([
+      z.string().url({ message: 'Invalid url.' }),
+      z.string().length(0) // Optional/empty string
+    ])
+    .optional(),
   release_date: z.coerce.date().optional()
 });
 

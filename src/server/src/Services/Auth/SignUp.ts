@@ -33,6 +33,7 @@ export async function SignUp(req: Request, res: Response) {
     const qSnap = await getDocs(q);
     if (!qSnap.empty) {
       res.status(400).json({ message: 'This email is alredy signed up.' });
+      return;
     }
 
     // HASHING THE PASSWORD

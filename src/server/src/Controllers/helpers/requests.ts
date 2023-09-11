@@ -134,6 +134,7 @@ export function patch<T>(collectionName: Collection) {
       const snapshot = await getDoc(reference);
       if (snapshot.get('created_by').id !== user.uid) {
         res.status(401).json({ message: 'Permission denied.' });
+        return;
       }
 
       const validationSchema = validationSchemas[collectionName];
@@ -144,15 +145,13 @@ export function patch<T>(collectionName: Collection) {
 
       await updateDoc(reference, { ...validatedData, ...references });
 
+      const oldData = snapshot.data() as DocumentData;
+      await updateRelations<T>(refs, validatedData, oldData, reference);
+
       res.status(200).json({
         message: 'Success',
         data: { uid: req.params.id, name: validatedData.name }
       });
-
-      // It's okay for the relations update to be after the return
-      // since the user doesn't need it immediately
-      const oldData = (await snapshot.data()) as DocumentData;
-      await updateRelations<T>(refs, validatedData, oldData, reference);
     } catch (error) {
       errorHandler(req, res, error);
     }

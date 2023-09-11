@@ -73,7 +73,9 @@ export default function SongDetails() {
         margin="0 5%"
       >
         <Box margin="2em" display="flex">
-          <Image src={song?.image || ''} alt={song?.name} width="350px" />
+          {song?.image && (
+            <Image src={song?.image || ''} alt={song?.name} width="350px" />
+          )}
           <Box padding="0 1em">
             {song?.release_date && (
               <Box>

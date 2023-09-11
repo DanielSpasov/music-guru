@@ -12,6 +12,7 @@ export async function ValidateEmail(req: Request, res: Response) {
     const snapshot = await getDoc(reference);
     if (!snapshot.exists()) {
       res.status(400).json({ message: 'Failed to validate Email.' });
+      return;
     }
 
     await updateDoc(reference, { verified: true });

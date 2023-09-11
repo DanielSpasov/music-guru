@@ -23,9 +23,6 @@ export const schema: FormSchema = [
         Component: Input,
         props: {
           type: 'text'
-        },
-        validations: {
-          required: true
         }
       },
       {

@@ -8,7 +8,12 @@ export const Schema = z.object({
     .string()
     .min(1, { message: 'Name is required.' })
     .max(128, { message: 'Name is too long.' }),
-  image: z.string().url({ message: 'Invalid url.' }),
+  image: z
+    .union([
+      z.string().url({ message: 'Invalid url.' }),
+      z.string().length(0) // Optional/empty string
+    ])
+    .optional(),
   release_date: z.coerce.date().optional()
 });
 

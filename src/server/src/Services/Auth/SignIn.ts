@@ -21,6 +21,7 @@ export async function SignIn(req: Request, res: Response) {
     const qSnap = await getDocs(q);
     if (qSnap.empty) {
       res.status(400).json({ message: 'Wrong Email address or Password.' });
+      return;
     }
 
     // CHECK IF THE PASSWORD IS VALID
@@ -30,6 +31,7 @@ export async function SignIn(req: Request, res: Response) {
     );
     if (!passMatch) {
       res.status(400).json({ message: 'Wrong Email address or Password.' });
+      return;
     }
 
     // SIGN THE JSON WEB TOKEN

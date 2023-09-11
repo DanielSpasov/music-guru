@@ -82,10 +82,8 @@ export async function updateRelations<T>(
     if (!data[key]) continue;
 
     if (Array.isArray(data[key]) && Array.isArray(oldData[_key])) {
-      const newFeatures = new Set<string>(data[key] as string);
-      const oldFeatures = new Set<string>(
-        oldData[_key].map((x: DocumentReference) => x.id)
-      );
+      const newFeatures = new Set<string>(data[key] as string[]);
+      const oldFeatures = new Set<string>(oldData[_key] as string[]);
 
       const added = Array.from(newFeatures).filter(x => !oldFeatures.has(x));
       const removed = Array.from(oldFeatures).filter(x => !newFeatures.has(x));
@@ -100,8 +98,8 @@ export async function updateRelations<T>(
       continue;
     }
 
-    if (data[key] === oldData[_key].id) continue;
-    await ref(collection, oldData[_key].id, relationKey).remove(reference);
+    if (data[key] === oldData[_key]) continue;
+    await ref(collection, oldData[_key], relationKey).remove(reference);
     await ref(collection, data[key] as string, relationKey).attach(reference);
   }
 }

@@ -35,8 +35,8 @@ export default function Input({
           type="solid"
           position="absolute"
           fontSize="1.3em"
-          right="10px"
-          top="33px"
+          right=".75em"
+          top=".35em"
         />
       )}
     </Box>

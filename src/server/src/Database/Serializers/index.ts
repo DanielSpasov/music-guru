@@ -15,6 +15,7 @@ export const serializers: CollectionSerializer = {
     detailed: async (data: UnpopulatedArtist) => {
       const artist = new DetailedArtist(data);
       await artist.populate('albums', 'albums', 'list');
+      await artist.populate('features', 'songs', 'list');
       await artist.populate('songs', 'songs', 'list');
       return artist;
     }
@@ -34,7 +35,7 @@ export const serializers: CollectionSerializer = {
       const song = new DetailedSong(data);
       await song.populate('albums', 'albums', 'list');
       await song.populate('artist', 'artists', 'list');
-      await song.populate('features', 'songs', 'list');
+      await song.populate('features', 'artists', 'list');
       return song;
     }
   }
