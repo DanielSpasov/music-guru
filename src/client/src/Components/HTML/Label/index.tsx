@@ -13,6 +13,7 @@ const StyledLabel = styled('label')<LabelProps>`
   pointer-events: none;
   overflow: hidden;
   inline-size: 96%;
+  transition: 0.3s;
 
   ${essentials};
   ${font};

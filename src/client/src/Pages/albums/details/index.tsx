@@ -2,7 +2,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
 
-import { Box, Card, Heading, Image, PageLayout } from '../../../Components';
+import {
+  Box,
+  Card,
+  Heading,
+  Image,
+  Link,
+  PageLayout
+} from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import useActions from '../useActions';
 import { Album } from '../helpers';
@@ -40,7 +47,7 @@ export default function AlbumDetails() {
       try {
         const { data } = await Api.albums.get({
           id,
-          config: { params: { populate: 'artist,created_by' } }
+          config: { params: { serializer: 'detailed' } }
         });
         setAlbum(data);
       } catch (error) {
@@ -64,7 +71,7 @@ export default function AlbumDetails() {
         {album && (
           <Box width="100%" margin="0.5em">
             <Box display="flex" justifyContent="space-between">
-              <Box width="50%">
+              <Box>
                 <Heading title="Artist" />
                 <Card
                   image={album.artist.image}
@@ -72,8 +79,13 @@ export default function AlbumDetails() {
                   onClick={() => navigate(`/artists/${album.artist.uid}`)}
                 />
               </Box>
-              <Box width="50%">
+              <Box>
                 <Heading title="Songs" />
+                {album.songs.map(song => (
+                  <Link key={song.uid} to={`/songs/${song.uid}`}>
+                    {song.name}
+                  </Link>
+                ))}
               </Box>
             </Box>
           </Box>

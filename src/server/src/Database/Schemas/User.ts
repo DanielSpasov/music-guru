@@ -1,48 +1,41 @@
-import { Schema, model, InferSchemaType } from 'mongoose';
+import { z } from 'zod';
 
-const UserSchema = new Schema(
-  {
-    uid: {
-      type: String,
-      required: true,
-      unique: true,
-      minlength: 8,
-      maxlength: 8,
-      immutable: true
-    },
-    username: {
-      type: String,
-      required: true,
-      minlength: 2,
-      maxlength: 30
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true
-    },
-    password: {
-      type: String,
-      required: true
-    },
-    created_at: {
-      type: Date,
-      immutable: true,
-      default: () => Date.now()
-    }
-  },
-  {
-    toJSON: {
-      transform: (_, data) => {
-        delete data.password;
-        delete data._id;
-        delete data.__v;
-        return data;
-      }
+export const UsernameSchema = z.union([
+  z
+    .string()
+    .min(2, { message: 'Username is too short.' })
+    .max(30, { message: 'Username is too long.' }),
+  z.string().length(0) // empty string
+]);
+
+export const EmailSchema = z.string().email({ message: 'Invalid email.' });
+
+export const BaseUserSchema = z.object({
+  username: UsernameSchema,
+  email: EmailSchema,
+  password: z.string(),
+  repeat_password: z.string(),
+  verified: z.boolean()
+});
+
+export const SignUpSchema = BaseUserSchema.omit({ verified: true }).superRefine(
+  ({ repeat_password, password }, context) => {
+    if (repeat_password !== password) {
+      context.addIssue({
+        code: 'custom',
+        message: "Passwords doesn't match.",
+        path: ['password', 'repeat_password']
+      });
     }
   }
 );
 
-type IUser = InferSchemaType<typeof UserSchema>;
+export const SignInSchema = BaseUserSchema.pick({
+  email: true,
+  password: true
+});
 
-export default model<IUser>('User', UserSchema);
+export const UserSchema = BaseUserSchema.omit({
+  repeat_password: true,
+  password: true
+});

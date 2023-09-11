@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { default as ReactCalendar } from 'react-calendar';
 import moment from 'moment';
 
-import { Icon, Label, Popover } from '../../..';
+import { Box, Icon, Label, Popover } from '../../..';
 import { StyledInput } from '../Input/Styled';
 import { StyledCalendar } from './Styled';
 import { CalendarProps } from './helpers';
@@ -14,7 +14,7 @@ export default function Calendar({
   getValues
 }: CalendarProps) {
   const defaultValue = useMemo(
-    () => (getValues()[name] ? new Date(getValues()[name]) : undefined),
+    () => (getValues()[name] ? moment(getValues()[name]).toDate() : undefined),
     [getValues, name]
   );
 
@@ -34,50 +34,55 @@ export default function Calendar({
     (date: Date) => {
       setFormValue(name, date);
       setValue(date);
+      setOpen(false);
     },
     [setFormValue, name]
   );
 
   return (
-    <>
+    <Box>
+      {/* CALENDAR ICON */}
       <Icon
         model="calendar"
         type="regular"
         position="absolute"
         zIndex="1"
         left=".3em"
-        top="1.3em"
+        top=".2em"
         onClick={toggleOpen}
         variant={open ? 'primary' : undefined}
       />
+
+      {/* MAIN INPUT */}
       <StyledInput
         value={value ? moment(value).format('MMMM Do YYYY') : ''}
         placeholder=" "
         onChange={() => null}
         paddingLeft="2.2em"
-        onFocus={toggleOpen}
-        onBlur={toggleOpen}
+        onClick={toggleOpen}
         disableCaret
       />
-      <Label position="absolute" top="36px" left="36px">
+      <Label position="absolute" top=".65em" left="2.2em">
         {label}
       </Label>
 
+      {/* CLEAR ALL */}
       <Icon
         model="trash"
         type="solid"
         onClick={() => setValue(undefined)}
         position="absolute"
-        fontSize="1em"
-        right=".75rem"
-        top="2.25rem"
+        size=".75em"
+        right=".5em"
+        top=".2em"
       />
 
+      {/* CALENDAR POPOVER */}
       <Popover open={open} width="100%" minHeight="260px">
         <StyledCalendar>
           <ReactCalendar onChange={onChange} defaultValue={defaultValue} />
         </StyledCalendar>
       </Popover>
-    </>
+    </Box>
   );
 }

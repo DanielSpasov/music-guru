@@ -47,7 +47,7 @@ export default function SignIn() {
             >
               sign up
             </Link>
-            <Text>if you don't have an account yet.</Text>
+            <Text>if you don&apos;t have an account yet.</Text>
           </Box>
         }
       />

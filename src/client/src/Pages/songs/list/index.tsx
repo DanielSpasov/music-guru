@@ -17,7 +17,9 @@ export default function Songs() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.songs.fetch({});
+        const { data } = await Api.songs.fetch({
+          config: { params: { serializer: 'list' } }
+        });
         setSongs(data);
       } catch (error) {
         errorHandler(error, navigate);
@@ -28,9 +30,9 @@ export default function Songs() {
   }, [navigate]);
 
   return (
-    <PageLayout title="Songs" actions={actions} loading={loading}>
+    <PageLayout title="Songs" actions={actions}>
       <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={songs} model="songs" />
+        <List data={songs} model="songs" loading={loading} />
       </Box>
     </PageLayout>
   );

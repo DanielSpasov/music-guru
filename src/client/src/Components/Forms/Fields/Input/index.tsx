@@ -1,7 +1,7 @@
 import { ThemeContext } from 'styled-components';
 import { useContext, useState } from 'react';
 
-import { Icon, Label } from '../../../HTML';
+import { Box, Icon, Label } from '../../../HTML';
 import { InputProps } from './helpers';
 import { StyledInput } from './Styled';
 
@@ -16,15 +16,14 @@ export default function Input({
   const { colors } = useContext(ThemeContext);
 
   return (
-    <>
+    <Box>
       <StyledInput
         {...register(name, { required: validations?.required })}
         name={name}
         type={passVisibility ? 'text' : props?.type}
         placeholder=" "
       />
-
-      <Label position="absolute" top="36px" left="10px">
+      <Label position="absolute" top=".65em" left=".75em">
         {label}
       </Label>
 
@@ -40,6 +39,6 @@ export default function Input({
           top="33px"
         />
       )}
-    </>
+    </Box>
   );
 }

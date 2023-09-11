@@ -9,7 +9,13 @@ export default function Card({ title, image, onClick }: CardProps) {
   const [hover, setHover] = useState(false);
 
   return (
-    <Box margin="1em" display="flex" flexDirection="column" alignItems="center">
+    <Box
+      margin="1em"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      width="200px"
+    >
       <Box
         width="200px"
         height="200px"
@@ -39,6 +45,7 @@ export default function Card({ title, image, onClick }: CardProps) {
       <Text
         padding="10px"
         fontSize="18px"
+        textAlign="center"
         onClick={onClick}
         onMouseOver={() => setHover(true)}
         onMouseOut={() => setHover(false)}

@@ -40,6 +40,18 @@ export const schema: FormSchema = [
         validations: {
           required: true
         }
+      },
+      {
+        key: 'songs',
+        label: 'Songs',
+        Component: Select,
+        props: {
+          fetchFn: ({ params }) => Api.songs.fetch({ config: { params } }),
+          multiple: true
+        },
+        validations: {
+          required: true
+        }
       }
     ]
   }

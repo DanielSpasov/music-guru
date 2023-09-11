@@ -1,18 +1,14 @@
-import mongoose from 'mongoose';
+import { getFirestore } from 'firebase/firestore/lite';
+import { initializeApp } from 'firebase/app';
+import env from '../env';
 
-function run(DB_URI: string) {
-  try {
-    mongoose.set('strictQuery', false);
-    mongoose.connect(DB_URI, {});
+const app = initializeApp({
+  apiKey: env.DB_API_KEY,
+  authDomain: env.DB_AUTH_DOMAIN,
+  projectId: env.DB_PROJECT_ID,
+  storageBucket: env.DB_STORAGE_BUCKET,
+  messagingSenderId: env.DB_MESSAGING_SENDER_ID,
+  appId: env.DB_APP_ID
+});
 
-    const db = mongoose.connection;
-    db.once('open', () => console.log('Database status: Connected'));
-    db.once('error', err => console.error('Database status: Error', err));
-    return db;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-const database = { run };
-export default database;
+export default getFirestore(app);

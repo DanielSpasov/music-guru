@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { Artist } from '../artists/helpers';
 import { User } from '../auth/helpers';
+import { Album } from '../albums/helpers';
 
 export const Schema = z.object({
   name: z
@@ -28,12 +29,11 @@ export interface Song extends SongModel {
   created_by: User;
   artist: Artist;
   features: Artist[];
-  album: any; // TODO: Replace with Album Model when its ready
-  mixtape: any; // TODO: Replace with Mixtape Model when its ready
+  albums: Album[];
 }
 
 export type UseActionsProps = {
   model: string;
   data?: Song;
-  deleteSong?: Function;
+  deleteSong?: (props: any) => any;
 };

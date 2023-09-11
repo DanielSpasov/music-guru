@@ -1,34 +1,16 @@
 import { Router } from 'express';
 
-import { fetch, get, post, patch } from '../../Services/requests';
-import { ArtistModel, IArtist } from '../../Database/Schemas';
-import { ArtistSchema } from '../../Types/Artist';
+import { fetch, get, post, patch } from '../helpers/requests';
 import { authorization } from '../../Middleware';
+import { Artist } from '../../Database/Types';
 
 const router = Router();
 
-router.get('/', (req, res) => fetch<IArtist>({ req, res, Model: ArtistModel }));
+router.get('/', fetch('artists'));
+router.get('/:id', get('artists'));
 
-router.get('/:id', (req, res) =>
-  get<IArtist>({ req, res, Model: ArtistModel })
-);
+router.post('/', authorization, post<Artist>('artists'));
 
-router.post('/', authorization, (req, res) =>
-  post<IArtist>({
-    req,
-    res,
-    Model: ArtistModel,
-    ValidationSchema: ArtistSchema
-  })
-);
-
-router.patch('/:id', authorization, (req, res) =>
-  patch<IArtist>({
-    req,
-    res,
-    Model: ArtistModel,
-    ValidationSchema: ArtistSchema
-  })
-);
+router.patch('/:id', authorization, patch<Artist>('artists'));
 
 export default router;

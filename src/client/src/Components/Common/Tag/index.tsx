@@ -2,26 +2,33 @@ import { ThemeContext } from 'styled-components';
 import { useContext } from 'react';
 
 import { TagProps } from './helpers';
-import { Box } from '../../HTML';
+import { Box, Icon } from '../../HTML';
 
-export default function Tag({ children, onClick, variant }: TagProps) {
+export default function Tag({ children, onRemove, variant }: TagProps) {
   const { colors } = useContext(ThemeContext);
 
   return (
     <Box
-      onClick={onClick}
       backgroundColor={variant ? colors[variant] : colors.baseLightest}
       padding=".3em"
-      margin="0 .3em .3em 0"
+      margin=".155em"
       display="flex"
       alignItems="center"
+      alignContent="center"
       whiteSpace="nowrap"
-      hoverCSS={{
-        backgroundColor: onClick ? colors.baseLighter : colors.baseLightest,
-        cursor: onClick ? 'pointer' : 'default'
-      }}
+      hoverCSS={{ backgroundColor: colors.baseLighter, cursor: 'default' }}
     >
       {children}
+      {onRemove && (
+        <Icon
+          model="x"
+          type="solid"
+          color={colors.danger}
+          onClick={onRemove}
+          fontSize=".7em"
+          paddingLeft=".25em"
+        />
+      )}
     </Box>
   );
 }

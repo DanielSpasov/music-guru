@@ -2,9 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 
 import { ListProps, Model } from './helpers';
+import Skeleton from './skeleton';
 import Card from '../Card';
 
-export default function List({ data, model }: ListProps) {
+export default function List({ data, model, loading = false }: ListProps) {
   const navigate = useNavigate();
 
   const onClick = useCallback(
@@ -12,6 +13,7 @@ export default function List({ data, model }: ListProps) {
     [model, navigate]
   );
 
+  if (loading) return <Skeleton />;
   return (
     <>
       {data.map(x => (

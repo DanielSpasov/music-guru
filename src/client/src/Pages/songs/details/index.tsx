@@ -49,7 +49,7 @@ export default function SongDetails() {
       try {
         const { data } = await Api.songs.get({
           id,
-          config: { params: { populate: 'artist,created_by,features' } }
+          config: { params: { serializer: 'detailed' } }
         });
         setSong(data);
       } catch (error) {
@@ -65,7 +65,6 @@ export default function SongDetails() {
       title={song?.name || 'Loading...'}
       loading={loading}
       actions={actions}
-      showHeader={false}
     >
       <Box
         display="flex"
@@ -87,8 +86,13 @@ export default function SongDetails() {
 
         {song && (
           <Box width="100%" margin="0.5em">
-            <Box display="flex" justifyContent="space-between">
-              <Box width="50%">
+            <Box display="flex" justifyContent="center">
+              <Box
+                width="50%"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+              >
                 <Heading title="Artist" />
                 <Card
                   image={song.artist.image}
@@ -96,14 +100,22 @@ export default function SongDetails() {
                   onClick={() => navigate(`/artists/${song?.artist.uid}`)}
                 />
               </Box>
-              <Box width="50%">
-                <Heading title="Featured Artists" />
-                {Boolean(song.features.length) && (
+              {song.features.length > 0 && (
+                <Box width="50%">
+                  <Heading title="Featured Artists" />
                   <Box display="flex" flexWrap="wrap" justifyContent="center">
                     <List data={song.features} model="artists" />
                   </Box>
-                )}
-              </Box>
+                </Box>
+              )}
+              {song.albums.length > 0 && (
+                <Box width="50%">
+                  <Heading title="In Albums" />
+                  <Box display="flex" flexWrap="wrap" justifyContent="center">
+                    <List data={song.albums} model="albums" />
+                  </Box>
+                </Box>
+              )}
             </Box>
           </Box>
         )}

@@ -69,11 +69,6 @@
     ]
   },
   {
-    "path": "/mixtapes",
-    "filePath": "/home",
-    "private": false
-  },
-  {
     "path": "/songs",
     "filePath": "/songs/list",
     "routes": [
@@ -119,6 +114,16 @@
   {
     "path": "/sign-out",
     "filePath": "/auth/sign-out",
+    "private": false
+  },
+  {
+    "path": "/verify-email",
+    "filePath": "/auth/verify-email",
+    "private": false
+  },
+  {
+    "path": "/me",
+    "filePath": "/auth/me",
     "private": false
   },
   {

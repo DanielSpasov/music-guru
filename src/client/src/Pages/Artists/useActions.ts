@@ -21,29 +21,6 @@ export default function useActions({ model, data }: UseActionsProps): Action[] {
     case 'artist-details':
       return [
         {
-          icon: { model: 'plus', type: 'solid' },
-          type: 'menu',
-          perform: () => null,
-          disabled: uid !== data?.created_by.uid,
-          subActions: [
-            {
-              label: 'Album',
-              perform: () => navigate('add-album'),
-              disabled: uid !== data?.created_by.uid
-            },
-            {
-              label: 'Mixtape',
-              perform: () => navigate('add-mixtape'),
-              disabled: uid !== data?.created_by.uid
-            },
-            {
-              label: 'Song',
-              perform: () => navigate('add-song'),
-              disabled: uid !== data?.created_by.uid
-            }
-          ]
-        },
-        {
           icon: { model: 'pen-to-square', type: 'regular' },
           perform: () => navigate('edit'),
           disabled: uid !== data?.created_by.uid

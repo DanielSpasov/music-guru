@@ -19,7 +19,10 @@ export default function EditArtist() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.artists.get({ id });
+        const { data } = await Api.artists.get({
+          id,
+          config: { params: { serializer: 'detailed' } }
+        });
         setDefaultData(data);
       } catch (error) {
         errorHandler(error, navigate);

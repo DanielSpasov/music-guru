@@ -17,11 +17,17 @@ export default function Summary({
   return (
     <Box
       width="100%"
+      backgroundColor={isOpen ? colors.baseLighter : 'transparent'}
       hoverCSS={{ backgroundColor: colors.baseLighter }}
       padding="0.5em"
       position="relative"
     >
-      <Box display="flex" alignItems="center" onClick={toggleSummary}>
+      <Box
+        display="flex"
+        alignItems="center"
+        onClick={toggleSummary}
+        padding="0 .5em"
+      >
         <Icon model={isOpen ? 'chevron-up' : 'chevron-down'} type="solid" />
         <Heading title={label} size="medium" textAlign="start" />
       </Box>

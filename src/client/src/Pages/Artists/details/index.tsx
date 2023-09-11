@@ -5,14 +5,7 @@ import { errorHandler } from '../../../Handlers';
 import useActions from '../useActions';
 import { Artist } from '../helpers';
 import Api from '../../../Api';
-import {
-  Box,
-  Image,
-  List,
-  PageLayout,
-  Summary,
-  Text
-} from '../../../Components';
+import { Box, Image, List, PageLayout, Summary } from '../../../Components';
 
 export default function ArtistDetails() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,7 +20,7 @@ export default function ArtistDetails() {
       try {
         const { data } = await Api.artists.get({
           id,
-          config: { params: { populate: 'songs,created_by,features,albums' } }
+          config: { params: { serializer: 'detailed' } }
         });
         setArtist(data);
       } catch (error) {
@@ -42,7 +35,6 @@ export default function ArtistDetails() {
     if (!artist) return false;
     return (
       Boolean(artist.features.length) ||
-      Boolean(artist.mixtapes.length) ||
       Boolean(artist.albums.length) ||
       Boolean(artist.songs.length)
     );
@@ -74,12 +66,6 @@ export default function ArtistDetails() {
                   <Box display="flex" flexWrap="wrap">
                     <List data={artist.songs} model="songs" />
                   </Box>
-                </Summary>
-              )}
-
-              {Boolean(artist.mixtapes.length) && (
-                <Summary label="Mixtapes" open>
-                  <Text>{artist.name} haven't released any mixtapes yet.</Text>
                 </Summary>
               )}
 

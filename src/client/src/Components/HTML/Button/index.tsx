@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { border, colors, font } from '../../helpers';
+import { border, colors, font, margin, padding } from '../../helpers';
 import { ButtonProps } from './helpers';
 
 export default function Button({
@@ -17,7 +17,8 @@ export default function Button({
 }
 
 const StyledButton = styled('button')<ButtonProps>`
-  background-color: ${({ variant, theme: { colors } }) => colors[variant!]};
+  background-color: ${({ variant, theme: { colors } }) =>
+    variant ? colors[variant] : colors.primary};
   color: ${({ theme: { colors }, color }) => color || colors.text};
   border: 2px solid transparent;
   padding: 0.75em 1.25em;
@@ -26,7 +27,9 @@ const StyledButton = styled('button')<ButtonProps>`
   transition: 0.3s;
   font-size: 1em;
 
+  ${padding};
   ${colors};
+  ${margin};
   ${border};
   ${font};
 

@@ -1,12 +1,10 @@
-import { Error as MongooseError } from 'mongoose';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-import { mongooseErrorHandler } from './mongooseErrorHandler';
 import { jwtErrorHandler } from './jwtErrorHandler';
 import { CustomError } from './CustomError';
 
-export function errorHandler(req: Request, res: Response, error: any) {
+export function errorHandler(req: Request, res: Response, error: unknown) {
   try {
     if (error instanceof CustomError) {
       res.status(error.code).json({ message: error.message });
@@ -18,13 +16,8 @@ export function errorHandler(req: Request, res: Response, error: any) {
       return;
     }
 
-    if (error instanceof MongooseError.ValidationError) {
-      mongooseErrorHandler(req, res, error);
-      return;
-    }
-
     res.status(400).json({ message: 'Bad Input.' });
-  } catch (err: any) {
+  } catch (err: unknown) {
     res.status(500).json({ message: 'Unexpected Server Error.' });
   }
 }

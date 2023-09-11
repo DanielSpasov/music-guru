@@ -49,7 +49,7 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
         const results: Results = await Promise.all(
           models.map(async model => {
             const { data } = await Api[model].fetch({
-              config: { params: { search, limit: 5 } }
+              config: { params: { search } }
             });
             return [model, data];
           })
@@ -130,7 +130,11 @@ export function Result({ data, onClick, selected }: ResultProps<any>) {
       onClick={onClick}
     >
       <Image src={data.image} height="40px" hoverCSS={{ cursor: 'pointer' }} />
-      <Text padding="0 0.5em" fontSize="1em">
+      <Text
+        padding="0 0.5em"
+        fontSize="1em"
+        color={selected ? colors.secondary : colors.text}
+      >
         {data.name}
       </Text>
     </Box>

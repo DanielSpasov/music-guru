@@ -48,13 +48,6 @@ export default function Navbar() {
         >
           Albums
         </Link>
-        <Link
-          to="/mixtapes"
-          type="navlink"
-          isActive={pathname.includes('/mixtapes')}
-        >
-          Mixtapes
-        </Link>
         <Link to="/songs" type="navlink" isActive={pathname.includes('/songs')}>
           Songs
         </Link>

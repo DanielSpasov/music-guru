@@ -29,7 +29,7 @@ export default function EditSong() {
       try {
         const { data } = await Api.songs.get({
           id,
-          config: { params: { populate: 'artist,features' } }
+          config: { params: { serializer: 'detailed' } }
         });
         setSong(data);
       } catch (error) {

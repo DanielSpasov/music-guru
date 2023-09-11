@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { colors, font, padding } from '../../helpers';
+import { colors, font, padding, text } from '../../helpers';
 import { TextProps } from './helpers';
 
 export default function Text({ children, ...css }: TextProps) {
@@ -18,6 +18,7 @@ const StyledText = styled('span')<TextProps>`
   ${padding};
   ${colors};
   ${font};
+  ${text};
 
   &:hover {
     cursor: ${({ onClick }) => onClick && 'pointer'};

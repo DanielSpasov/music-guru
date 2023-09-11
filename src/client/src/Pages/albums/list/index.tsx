@@ -17,7 +17,9 @@ export default function Albums() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.albums.fetch({});
+        const { data } = await Api.albums.fetch({
+          config: { params: { serializer: 'list' } }
+        });
         setAlbums(data);
       } catch (error) {
         errorHandler(error, navigate);
@@ -28,9 +30,9 @@ export default function Albums() {
   }, [navigate]);
 
   return (
-    <PageLayout title="Albums" actions={actions} loading={loading}>
+    <PageLayout title="Albums" actions={actions}>
       <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={albums} model="albums" />
+        <List data={albums} model="albums" loading={loading} />
       </Box>
     </PageLayout>
   );

@@ -34,25 +34,22 @@ export const schema: FormSchema = [
         label: 'Artist',
         Component: Select,
         props: {
-          fetchFn: ({ params }: any) =>
-            Api.artists.fetch({ config: { params } })
+          fetchFn: ({ params }) => Api.artists.fetch({ config: { params } })
         },
         validations: {
           required: true
         }
-      }
-    ]
-  },
-  {
-    key: 'songs',
-    title: 'Songs',
-    fields: [
+      },
       {
-        key: 'song',
-        label: 'Song',
+        key: 'songs',
+        label: 'Songs',
         Component: Select,
         props: {
-          fetchFn: ({ params }: any) => Api.songs.fetch({ config: { params } })
+          fetchFn: ({ params }) => Api.songs.fetch({ config: { params } }),
+          multiple: true
+        },
+        validations: {
+          required: true
         }
       }
     ]

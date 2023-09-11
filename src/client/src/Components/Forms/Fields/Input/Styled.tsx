@@ -29,13 +29,9 @@ export const StyledInput = styled('input')<any>`
     border: 2px solid ${({ theme: { colors } }) => colors.primary};
   }
 
-  & ~ label {
-    transition: 0.3s;
-  }
-
   &:focus ~ label,
   &:not(:placeholder-shown)&:not(:focus) ~ label {
-    top: 0;
-    left: 0;
+    top: -1.5em;
+    left: 0em;
   }
 `;

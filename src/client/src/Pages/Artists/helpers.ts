@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { User } from '../auth/helpers';
 import { Song } from '../songs/helpers';
+import { Album } from '../albums/helpers';
 
 export const ArtistSchema = z.object({
   name: z.string(),
@@ -12,8 +13,7 @@ export interface Artist extends ArtistModel {
   uid: string;
   created_at: Date;
   created_by: User;
-  albums: [];
-  mixtapes: [];
+  albums: Album[];
   songs: Song[];
   features: Song[];
 }

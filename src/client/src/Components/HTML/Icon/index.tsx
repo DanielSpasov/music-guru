@@ -3,10 +3,24 @@ import styled from 'styled-components';
 import { colors, dimensions, font, padding, positioning } from '../../helpers';
 import { IconProps } from './helpers';
 
-export default function Icon({ model, type, variant, ...css }: IconProps) {
+export default function Icon({
+  model,
+  type,
+  variant,
+  size = '1em',
+  ...css
+}: IconProps) {
   return (
     <StyledIcon variant={variant} {...css}>
-      <i className={`fa-${type} fa-${model}`} />
+      <i
+        className={`fa-${type} fa-${model}`}
+        style={{
+          fontSize: size,
+          width: size,
+          height: size,
+          textAlign: 'center'
+        }}
+      />
     </StyledIcon>
   );
 }

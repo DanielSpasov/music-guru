@@ -17,7 +17,9 @@ export default function Artists() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.artists.fetch({});
+        const { data } = await Api.artists.fetch({
+          config: { params: { serializer: 'list' } }
+        });
         setArtists(data);
       } catch (error) {
         errorHandler(error, navigate);
@@ -28,9 +30,9 @@ export default function Artists() {
   }, [navigate]);
 
   return (
-    <PageLayout title="Artists" actions={actions} loading={loading}>
+    <PageLayout title="Artists" actions={actions}>
       <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={artists} model="artists" />
+        <List data={artists} model="artists" loading={loading} />
       </Box>
     </PageLayout>
   );
