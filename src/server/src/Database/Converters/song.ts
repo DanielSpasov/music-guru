@@ -4,39 +4,22 @@ import {
   Timestamp
 } from 'firebase/firestore/lite';
 
-import { Song, DBSong, Serializer } from '../Types';
+import { Song, DBSong } from '../Types';
 
-const songConverter = (
-  serializer?: Serializer
-): FirestoreDataConverter<Partial<Song>, DBSong> => ({
+const songConverter: FirestoreDataConverter<Partial<Song>, DBSong> = {
   fromFirestore: snapshot => {
     const song = snapshot.data();
-    switch (serializer) {
-      case 'list':
-        return {
-          uid: snapshot.id,
-          name: song.name,
-          image: song.image
-        };
-      case 'detailed':
-        return {
-          uid: snapshot.id,
-          name: song.name,
-          image: song.image,
-          release_date: song.release_date.toDate(),
-          created_at: song.created_at.toDate(),
-          created_by: { uid: snapshot.get('created_by').id },
-          artist: { uid: snapshot.get('artist').id },
-          albums: snapshot
-            .get('albums')
-            .map((x: DocumentReference) => ({ uid: x.id })),
-          features: snapshot
-            .get('features')
-            .map((x: DocumentReference) => ({ uid: x.id }))
-        };
-      default:
-        return song;
-    }
+    return {
+      uid: snapshot.id,
+      name: song.name,
+      image: song.image,
+      albums: snapshot.get('albums').map((x: DocumentReference) => x.id),
+      artist: snapshot.get('artist').id,
+      created_at: song.created_at.toDate(),
+      created_by: snapshot.get('created_by').id,
+      features: snapshot.get('features').map((x: DocumentReference) => x.id),
+      release_date: song.release_date.toDate()
+    };
   },
   toFirestore: snapshot => {
     const created_at = snapshot.created_at as Timestamp;
@@ -56,6 +39,6 @@ const songConverter = (
       )
     };
   }
-});
+};
 
 export default songConverter;

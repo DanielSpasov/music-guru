@@ -12,6 +12,14 @@ export interface Album extends z.infer<typeof BaseAlbumSchema> {
   songs: Partial<Song>[];
 }
 
+export interface UnpopulatedAlbum extends z.infer<typeof BaseAlbumSchema> {
+  uid: string;
+  created_at: Date;
+  created_by: string;
+  artist: string;
+  songs: string[];
+}
+
 export interface DBAlbum {
   name: string;
   image: string;

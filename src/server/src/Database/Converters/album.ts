@@ -4,35 +4,20 @@ import {
   Timestamp
 } from 'firebase/firestore/lite';
 
-import { Album, Serializer, DBAlbum } from '../Types';
+import { Album, DBAlbum } from '../Types';
 
-const albumConverter = (
-  serializer?: Serializer
-): FirestoreDataConverter<Partial<Album>, DBAlbum> => ({
+const albumConverter: FirestoreDataConverter<Partial<Album>, DBAlbum> = {
   fromFirestore: snapshot => {
     const album = snapshot.data();
-    switch (serializer) {
-      case 'list':
-        return {
-          uid: snapshot.id,
-          name: album.name,
-          image: album.image
-        };
-      case 'detailed':
-        return {
-          uid: snapshot.id,
-          name: album.name,
-          image: album.image,
-          created_at: album.created_at.toDate(),
-          created_by: { uid: snapshot.get('created_by').id },
-          artist: { uid: snapshot.get('artist').id },
-          songs: snapshot
-            .get('songs')
-            .map((x: DocumentReference) => ({ uid: x.id }))
-        };
-      default:
-        return album;
-    }
+    return {
+      uid: snapshot.id,
+      name: album.name,
+      image: album.image,
+      artist: snapshot.get('artist').id,
+      created_at: album.created_at.toDate(),
+      created_by: snapshot.get('created_by').id,
+      songs: snapshot.get('songs').map((x: DocumentReference) => x.id)
+    };
   },
   toFirestore: snapshot => {
     const created_at = snapshot.created_at as Timestamp;
@@ -47,6 +32,6 @@ const albumConverter = (
       songs: songs as DocumentReference[]
     };
   }
-});
+};
 
 export default albumConverter;

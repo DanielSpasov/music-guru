@@ -13,6 +13,15 @@ export interface Artist extends z.infer<typeof ArtistSchema> {
   features: Partial<Song>[];
 }
 
+export interface UnpopulatedArtist extends z.infer<typeof ArtistSchema> {
+  uid: string;
+  created_at: Date;
+  created_by: string;
+  albums: string[];
+  songs: string[];
+  features: string[];
+}
+
 export interface DBArtist {
   albums: DocumentReference<Album>[];
   created_at: Timestamp;
