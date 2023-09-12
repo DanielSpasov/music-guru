@@ -131,14 +131,14 @@ const Icons: Record<string, (css: Partial<IconProps>) => ReactElement> = {
     </SVG>
   ),
   back: css => (
-    <SVG viewBox="0 0 1024 1024" {...css}>
+    <SVG viewBox="0 0 512 512" {...css}>
       <path
-        fill="currentColor"
-        d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"
-      />
-      <path
-        fill="currentColor"
-        d="m237.248 512l265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="48"
+        d="M244 400L100 256l144-144M120 256h292"
       />
     </SVG>
   ),
@@ -148,6 +148,25 @@ const Icons: Record<string, (css: Partial<IconProps>) => ReactElement> = {
         fill="currentColor"
         d="M946.5 505L534.6 93.4a31.93 31.93 0 0 0-45.2 0L77.5 505c-12 12-18.8 28.3-18.8 45.3c0 35.3 28.7 64 64 64h43.4V908c0 17.7 14.3 32 32 32H448V716h112v224h265.9c17.7 0 32-14.3 32-32V614.3h43.4c17 0 33.3-6.7 45.3-18.8c24.9-25 24.9-65.5-.1-90.5z"
       />
+    </SVG>
+  ),
+  lock: css => (
+    <SVG viewBox="0 0 24 24" {...css}>
+      <g fill="none">
+        <path
+          fill="currentColor"
+          fillRule="evenodd"
+          d="M3 12a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-7zm10 2a1 1 0 1 0-2 0v3a1 1 0 1 0 2 0v-3z"
+          clipRule="evenodd"
+        />
+        <path
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M8 10V7a4 4 0 0 1 4-4v0a4 4 0 0 1 4 4v3"
+        />
+      </g>
     </SVG>
   )
 };

@@ -4,8 +4,8 @@ import { IconProps } from './helpers';
 
 export const SVG = styled('svg')<IconProps>`
   xmlns: 'http://www.w3.org/2000/svg';
-  width: 34px;
-  height: 34px;
+  width: ${({ size }) => size || '34px'};
+  height: ${({ size }) => size || '34px'};
 
   color: ${({ disabled, variant, theme: { colors } }) => {
     if (disabled) return 'gray';

@@ -114,8 +114,8 @@ export default function Select({
       </Label>
 
       {/* CLEAR ALL */}
-      <Box position="absolute" size=".75em" right="0em" top=".15em">
-        <Icon model="trash" onClick={onClear} />
+      <Box position="absolute" right=".25em" top=".45em">
+        <Icon model="trash" onClick={onClear} size="25px" />
       </Box>
     </Box>
   );

@@ -11,7 +11,7 @@ export default function OptionMenu({
 }: OptionMenuProps) {
   return (
     <Box display="flex" alignItems="flex-start" margin=".5em 0">
-      <Icon model={icon} variant="primary" />
+      <Icon model={icon} variant="primary" size="60px" />
       <Summary label={label} open>
         {config.map((data, i) => (
           <Option data={data} key={i} setUser={setUser} user={user} />
