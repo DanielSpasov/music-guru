@@ -70,7 +70,7 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
       height="100%"
       display="flex"
       alignItems="center"
-      padding="0 0.75em"
+      padding="0 .5em"
       onBlur={toggleOpen}
     >
       <Input
@@ -80,10 +80,12 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
         placeholder="Search..."
         position="absolute"
         width={width}
-        right="0px"
+        right=".2em"
       />
 
-      <Icon model="search" onClick={toggleOpen} />
+      <Box>
+        <Icon model="search" onClick={toggleOpen} />
+      </Box>
 
       <Popover open={open} width={width} textAlign="center">
         {loading && <Loader size="s" rainbow />}

@@ -32,7 +32,7 @@ export default function Dropdown({
       height="100%"
       display="flex"
       alignItems="center"
-      padding="0 0.75em"
+      padding="0 .5em"
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
