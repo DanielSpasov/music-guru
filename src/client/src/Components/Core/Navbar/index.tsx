@@ -54,10 +54,10 @@ export default function Navbar() {
       </Box>
       <Box display="flex" alignContent="center" height="60px">
         <Search models={['artists', 'songs', 'albums']} width="250px" />
-        <Dropdown label="Settings" icon={{ model: 'palette', type: 'solid' }}>
+        <Dropdown label="Settings" icon="theme">
           <ThemeSwitcher />
         </Dropdown>
-        <Dropdown label="User Settings" icon={{ model: 'user', type: 'solid' }}>
+        <Dropdown label="User Settings" icon="user">
           <Link to="/me">User</Link>
           {!isAuthenticated && <Link to="/sign-in">Sign In</Link>}
           {!isAuthenticated && <Link to="/sign-up">Sign Up</Link>}

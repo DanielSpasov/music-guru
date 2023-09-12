@@ -1,10 +1,7 @@
 export type ActionType = 'action' | 'menu';
 
 export type Action = {
-  icon: {
-    model: string;
-    type: string;
-  };
+  icon: string;
   type?: ActionType;
   subActions?: SubAction[];
   perform: (props: any) => any;

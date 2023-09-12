@@ -28,7 +28,7 @@ export default function Summary({
         onClick={toggleSummary}
         padding="0 .5em"
       >
-        <Icon model={isOpen ? 'chevron-up' : 'chevron-down'} type="solid" />
+        <Icon model={isOpen ? 'up' : 'down'} />
         <Heading title={label} size="medium" textAlign="start" />
       </Box>
       {isOpen && children}

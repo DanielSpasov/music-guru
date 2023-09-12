@@ -17,7 +17,7 @@ export default function useActions({
     case 'song-list':
       return [
         {
-          icon: { model: 'plus', type: 'solid' },
+          icon: 'add',
           perform: () => navigate('add'),
           disabled: !isAuthenticated
         }
@@ -25,12 +25,12 @@ export default function useActions({
     case 'song-details':
       return [
         {
-          icon: { model: 'pen-to-square', type: 'regular' },
+          icon: 'edit',
           perform: () => navigate('edit'),
           disabled: uid !== data?.created_by.uid
         },
         {
-          icon: { model: 'trash', type: 'solid' },
+          icon: 'delete',
           perform: deleteSong ? deleteSong : () => null,
           disabled: uid !== data?.created_by.uid
         }

@@ -28,16 +28,13 @@ export default function Input({
       </Label>
 
       {props?.type === 'password' && (
-        <Icon
-          color={passVisibility ? colors.primary : 'lightgray'}
-          onClick={() => setPassVisibility(!passVisibility)}
-          model={passVisibility ? 'eye' : 'eye-slash'}
-          type="solid"
-          position="absolute"
-          fontSize="1.3em"
-          right=".75em"
-          top=".35em"
-        />
+        <Box position="absolute" right=".5em" top=".05em">
+          <Icon
+            color={passVisibility ? colors.primary : 'lightgray'}
+            onClick={() => setPassVisibility(!passVisibility)}
+            model={passVisibility ? 'show' : 'hide'}
+          />
+        </Box>
       )}
     </Box>
   );

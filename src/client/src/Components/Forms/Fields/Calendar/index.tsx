@@ -42,16 +42,13 @@ export default function Calendar({
   return (
     <Box>
       {/* CALENDAR ICON */}
-      <Icon
-        model="calendar"
-        type="regular"
-        position="absolute"
-        zIndex="1"
-        left=".3em"
-        top=".2em"
-        onClick={toggleOpen}
-        variant={open ? 'primary' : undefined}
-      />
+      <Box position="absolute" zIndex="1" top=".2em">
+        <Icon
+          model="calendar"
+          onClick={toggleOpen}
+          variant={open ? 'primary' : undefined}
+        />
+      </Box>
 
       {/* MAIN INPUT */}
       <StyledInput
@@ -67,15 +64,9 @@ export default function Calendar({
       </Label>
 
       {/* CLEAR ALL */}
-      <Icon
-        model="trash"
-        type="solid"
-        onClick={() => setValue(undefined)}
-        position="absolute"
-        size=".75em"
-        right=".5em"
-        top=".2em"
-      />
+      <Box position="absolute" size=".75em" right="0em" top=".15em">
+        <Icon model="trash" onClick={() => setValue(undefined)} />
+      </Box>
 
       {/* CALENDAR POPOVER */}
       <Popover open={open} width="100%" minHeight="260px">

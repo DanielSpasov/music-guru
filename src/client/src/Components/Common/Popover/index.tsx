@@ -30,12 +30,7 @@ export default function Popover({
       <Box display="flex" justifyContent={title ? 'space-between' : 'flex-end'}>
         {title && <Text fontWeight="bold">Select {title}</Text>}
         {setOpen && (
-          <Icon
-            model="x"
-            type="solid"
-            variant="danger"
-            onClick={() => setOpen(false)}
-          />
+          <Icon model="close" variant="danger" onClick={() => setOpen(false)} />
         )}
       </Box>
       {children}

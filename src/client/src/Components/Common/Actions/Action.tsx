@@ -7,8 +7,7 @@ export default function Action({ action }: ActionProps) {
       <Icon
         onClick={!action.disabled ? action.perform : null}
         disabled={action.disabled}
-        model={action.icon.model}
-        type={action.icon.type}
+        model={action.icon}
       />
     </Box>
   );

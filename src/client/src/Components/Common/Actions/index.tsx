@@ -13,7 +13,7 @@ export default function Actions({ actions }: ActionsProps) {
             return (
               <Dropdown
                 key={i}
-                icon={{ model: action.icon.model, type: action.icon.type }}
+                icon={action.icon}
                 label="Actions"
                 disabled={action?.disabled}
               >

@@ -29,14 +29,14 @@ export default function Me() {
       {user && (
         <Box padding="1em">
           <OptionMenu
-            icon={{ model: 'user', type: 'solid' }}
+            icon="user"
             label="Information"
             config={infoConfig}
             setUser={setUser}
             user={user}
           />
           <OptionMenu
-            icon={{ model: 'lock', type: 'solid' }}
+            icon="lock"
             label="MFA"
             config={getMFAConfig(user)}
             setUser={setUser}

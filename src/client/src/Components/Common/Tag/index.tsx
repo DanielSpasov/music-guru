@@ -19,16 +19,7 @@ export default function Tag({ children, onRemove, variant }: TagProps) {
       hoverCSS={{ backgroundColor: colors.baseLighter, cursor: 'default' }}
     >
       {children}
-      {onRemove && (
-        <Icon
-          model="x"
-          type="solid"
-          color={colors.danger}
-          onClick={onRemove}
-          fontSize=".7em"
-          paddingLeft=".25em"
-        />
-      )}
+      {onRemove && <Icon model="close" variant="danger" onClick={onRemove} />}
     </Box>
   );
 }

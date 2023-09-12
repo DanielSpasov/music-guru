@@ -19,10 +19,7 @@ export type MenuOption = {
 };
 
 export type OptionMenuProps = {
-  icon: {
-    model: string;
-    type: string;
-  };
+  icon: string;
   label: string;
   config: MenuOption[];
   setUser: Dispatch<User>;

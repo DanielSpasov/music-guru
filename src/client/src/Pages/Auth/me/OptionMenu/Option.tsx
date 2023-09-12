@@ -60,18 +60,13 @@ export default function Option({ data, user, setUser }: OptionProps) {
           (isEditing ? (
             <Icon
               model="check"
-              type="solid"
               onClick={() => {
                 setIsEditing(prev => !prev);
                 onSubmit();
               }}
             />
           ) : (
-            <Icon
-              model="edit"
-              type="solid"
-              onClick={() => setIsEditing(prev => !prev)}
-            />
+            <Icon model="edit" onClick={() => setIsEditing(prev => !prev)} />
           ))}
       </Box>
 
@@ -93,10 +88,8 @@ export default function Option({ data, user, setUser }: OptionProps) {
             {data.type === 'string' && <Text>{user[data.field]}</Text>}
             {data.type === 'boolean' && (
               <Icon
-                model={user[data.field] ? 'check' : 'x'}
-                type="solid"
-                color={user[data.field] ? colors.success : colors.danger}
-                padding="0 .5em"
+                model={user[data.field] ? 'check' : 'close'}
+                variant={user[data.field] ? 'success' : 'danger'}
               />
             )}
             {data.type === 'date' && (

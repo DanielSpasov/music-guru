@@ -26,18 +26,8 @@ export default function BreadCrumb({ actions }: { actions: Action[] }) {
         height="100%"
       >
         <Box display="flex">
-          <Icon
-            onClick={() => navigate(-1)}
-            model="arrow-left"
-            type="solid"
-            padding=".3em"
-          />
-          <Icon
-            onClick={() => navigate('/')}
-            model="home"
-            type="solid"
-            padding=".3em"
-          />
+          <Icon onClick={() => navigate(-1)} model="back" />
+          <Icon onClick={() => navigate('/')} model="home" />
         </Box>
         <Actions actions={actions} />
       </Box>

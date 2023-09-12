@@ -13,7 +13,7 @@ export default function useActions({ model, data }: UseActionsProps): Action[] {
     case 'artists-list':
       return [
         {
-          icon: { model: 'plus', type: 'solid' },
+          icon: 'add',
           perform: () => navigate('add'),
           disabled: !isAuthenticated
         }
@@ -21,7 +21,7 @@ export default function useActions({ model, data }: UseActionsProps): Action[] {
     case 'artist-details':
       return [
         {
-          icon: { model: 'pen-to-square', type: 'regular' },
+          icon: 'edit',
           perform: () => navigate('edit'),
           disabled: uid !== data?.created_by.uid
         }

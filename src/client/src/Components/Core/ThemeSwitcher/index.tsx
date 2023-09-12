@@ -101,14 +101,9 @@ const PreviewTheme = ({ theme, onClick, isActive }: ThemeProps) => {
         </Box>
       </Box>
       {isActive && (
-        <Icon
-          model="check"
-          type="solid"
-          position="absolute"
-          top="10px"
-          right="10px"
-          color={theme.colors.success}
-        />
+        <Box position="absolute" right=".2em" top=".3em">
+          <Icon model="check" variant="success" />
+        </Box>
       )}
     </Box>
   );

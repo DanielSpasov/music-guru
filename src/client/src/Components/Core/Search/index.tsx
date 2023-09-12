@@ -83,7 +83,7 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
         right="0px"
       />
 
-      <Icon model="search" type="solid" onClick={toggleOpen} />
+      <Icon model="search" onClick={toggleOpen} />
 
       <Popover open={open} width={width} textAlign="center">
         {loading && <Loader size="s" rainbow />}
@@ -139,14 +139,7 @@ export function Result({ data, onClick, selected }: ResultProps<any>) {
         <Text padding="0 0.5em" fontSize="1em" color={colors.text}>
           {data.name}
         </Text>
-        {selected && (
-          <Icon
-            model="check"
-            type="solid"
-            color={colors.success}
-            paddingRight=".5em"
-          />
-        )}
+        {selected && <Icon model="check" variant="success" />}
       </Box>
     </Box>
   );

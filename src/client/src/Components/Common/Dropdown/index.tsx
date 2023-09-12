@@ -37,12 +37,7 @@ export default function Dropdown({
       onMouseOut={onMouseOut}
     >
       {icon ? (
-        <Icon
-          disabled={disabled}
-          model={icon.model}
-          onClick={onClick}
-          type={icon.type}
-        />
+        <Icon disabled={disabled} model={icon} onClick={onClick} />
       ) : (
         label
       )}
