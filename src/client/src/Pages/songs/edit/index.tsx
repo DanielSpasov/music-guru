@@ -45,7 +45,8 @@ export default function EditSong() {
       try {
         const validData = SongSchema.parse({
           ...data,
-          artist: data.artist[0]
+          artist: data.artist[0]?.uid,
+          features: data?.features?.map((x: any) => x.uid)
         });
         const { data: updated } = await Api.songs.patch({
           id,
@@ -57,6 +58,7 @@ export default function EditSong() {
         );
         navigate(`/songs/${updated.uid}`);
       } catch (error) {
+        console.log(error);
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);
       }

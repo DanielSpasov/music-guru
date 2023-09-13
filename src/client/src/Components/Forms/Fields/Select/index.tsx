@@ -1,118 +1,123 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useContext } from 'react';
+import { default as ReactSelect } from 'react-select';
+import { ThemeContext } from 'styled-components';
 
-import { Label, Icon, Box, Popover } from '../../..';
-import useDebounce from '../../../../Hooks/useDebounce';
-import { StyledInput } from '../Input/Styled';
-import { Result } from '../../../Core/Search';
 import { SelectProps } from './helpers';
-import FakeInput from './FakeInput';
+import { Label, Box } from '../../..';
 
 export default function Select({
   setFormValue,
   getValues,
   props,
   label,
-  name
+  name,
+  validations
 }: SelectProps) {
-  const [values, setValues] = useState<any[]>(getValues()?.[name] || []);
-  const [searchTerm, setSearch] = useState<string>('');
+  const [selected, setSelected] = useState<any[]>(
+    !props?.multiple
+      ? getValues()[name]
+        ? [getValues()[name]]
+        : []
+      : getValues()[name] || []
+  );
   const [options, setOptions] = useState<any[]>([]);
-  const [open, setOpen] = useState<boolean>(false);
 
-  const search = useDebounce({ value: searchTerm, delay: 500 });
-
-  useEffect(() => {
-    setFormValue(
-      name,
-      getValues()[name]?.map((x: any) => x?.uid)
-    );
-  }, [setFormValue, name, getValues]);
+  const { colors } = useContext(ThemeContext);
 
   useEffect(() => {
     (async () => {
       if (!props?.fetchFn) return;
-      const { data } = await props.fetchFn({ params: { search } });
+      const { data } = await props.fetchFn({});
       setOptions(data);
     })();
-  }, [props, search]);
+  }, [props]);
 
-  const onClear = useCallback(() => {
-    setValues([]);
-    setFormValue(name, []);
-  }, [setFormValue, name]);
-
-  const onRemove = useCallback(
-    (option: any) => {
-      setValues(prev => prev.filter(x => x.name !== option.name));
-      setFormValue(
-        name,
-        getValues()[name]?.filter((x: any) => x !== option.uid)
-      );
-    },
-    [setFormValue, getValues, name]
-  );
-
-  const onClick = useCallback(
-    (option: any) => {
-      if (values.find(x => x.uid === option.uid)) {
-        onRemove(option);
-        return;
-      }
-
-      if (props?.multiple) {
-        setValues(prev => [...prev, option]);
-        setFormValue(name, [...(getValues()[name] || []), option.uid]);
-      } else {
-        setValues([option]);
-        setFormValue(name, [option.uid]);
+  const onChange = useCallback(
+    (option: any, settings: any) => {
+      switch (settings?.action) {
+        case 'clear':
+          setSelected([]);
+          break;
+        default:
+          setFormValue(name, option?.length ? option : [option]);
+          setSelected(getValues()[name]);
       }
     },
-    [getValues, setFormValue, name, props, onRemove, values]
+    [name, setFormValue, getValues]
   );
 
   return (
     <Box>
-      {/* THIS INPUT IS HERE FOR DISPLAY PURPOSES */}
-      <FakeInput values={values} onRemove={onRemove} setOpen={setOpen}>
-        {/* OPTIONS DROPDOWN */}
-        <Popover
-          open={open}
-          setOpen={setOpen}
-          title={label}
-          width="100%"
-          padding=".5em"
-          top="2.2em"
-        >
-          <StyledInput
-            onChange={(e: any) => setSearch(e?.target?.value)}
-            value={searchTerm}
-            placeholder="Search..."
-            name={name}
-            type="text"
-          />
-          {!options.length && <Box textAlign="center">No Results.</Box>}
-          {options.map(option => (
-            <Result
-              key={option.uid}
-              data={option}
-              selected={values.find(x => x.uid === option.uid)}
-              onClick={() => onClick(option)}
-            />
-          ))}
-        </Popover>
-      </FakeInput>
+      <ReactSelect
+        options={options}
+        onChange={onChange}
+        isMulti={props?.multiple}
+        defaultValue={getValues()[name]}
+        required={validations?.required}
+        formatOptionLabel={option => option?.name}
+        getOptionValue={option => option?.uid}
+        isSearchable
+        placeholder=""
+        isClearable
+        styles={{
+          control: (base, state) => ({
+            ...base,
+            marginTop: '.5em',
+            backgroundColor: colors.baseLight,
+            borderColor: state.isFocused ? colors.primary : colors.baseLighter,
+            borderWidth: '2px',
+            borderRadius: '5px',
+            boxShadow: 'none',
+            '&:hover': {
+              borderColor: state.isFocused
+                ? colors.primary
+                : colors.baseLightest
+            }
+          }),
+          multiValueLabel: base => ({ ...base, color: colors.text }),
+          singleValue: base => ({ ...base, color: colors.text }),
+          multiValue: base => ({
+            ...base,
+            backgroundColor: colors.baseLightest,
+            padding: '.2em'
+          }),
+          valueContainer: (base, state) => ({
+            ...base,
+            ...(state.isMulti ? { padding: '.1em' } : {})
+          }),
+          menu: base => ({
+            ...base,
+            backgroundColor: colors.base,
+            boxShadow: 'rgba(0, 0, 0, 0.45) 0px 0px 5px 3px'
+          }),
+          option: (base, state) => ({
+            ...base,
+            borderRadius: '5px',
+            backgroundColor: state.isSelected ? colors.baseLight : colors.base,
+            '&:hover': { backgroundColor: colors.baseLight }
+          }),
+          clearIndicator: base => ({
+            ...base,
+            '&:hover': { color: colors.primary }
+          }),
+          dropdownIndicator: base => ({
+            ...base,
+            '&:hover': { color: colors.primary }
+          }),
+          indicatorSeparator: base => ({
+            ...base,
+            backgroundColor: colors.baseLightest
+          })
+        }}
+      />
+
       <Label
         position="absolute"
-        top={!values.length ? '.65em' : '-1.5em'}
-        left={!values.length ? '.75em' : '0'}
+        top={!selected.length ? '.65em' : '-1.5em'}
+        left={!selected.length ? '.75em' : '0'}
       >
         {label}
       </Label>
-
-      {/* CLEAR ALL */}
-      <Box position="absolute" right=".25em" top=".45em">
-        <Icon model="trash" onClick={onClear} size="25px" />
-      </Box>
     </Box>
   );
 }

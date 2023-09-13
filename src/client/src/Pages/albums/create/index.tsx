@@ -18,7 +18,8 @@ export default function CreateAlbum() {
       try {
         const validData = AlbumSchema.parse({
           ...data,
-          artist: data.artist?.[0]
+          artist: data.artist[0].uid,
+          songs: data.songs.map((x: any) => x.uid)
         });
         const res = await Api.albums.post({ body: validData });
         setErrors([]);

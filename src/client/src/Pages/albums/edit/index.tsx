@@ -45,7 +45,8 @@ export default function EditAlbum() {
       try {
         const validData = AlbumSchema.parse({
           ...data,
-          artist: data.artist[0]
+          artist: data.artist[0].uid,
+          songs: data.songs.map((x: any) => x.uid)
         });
         const { data: updated } = await Api.albums.patch({
           id,

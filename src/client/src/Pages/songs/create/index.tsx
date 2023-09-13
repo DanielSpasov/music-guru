@@ -18,7 +18,8 @@ export default function CreateSong() {
       try {
         const validData = SongSchema.parse({
           ...data,
-          artist: data.artist?.[0]
+          artist: data.artist?.[0]?.uid,
+          features: data?.features?.map((x: any) => x.uid)
         });
         const res = await Api.songs.post({ body: validData });
         setErrors([]);
