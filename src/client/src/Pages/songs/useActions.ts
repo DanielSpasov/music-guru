@@ -30,7 +30,7 @@ export default function useActions({
           disabled: uid !== data?.created_by.uid
         },
         {
-          icon: 'delete',
+          icon: 'trash',
           perform: deleteSong ? deleteSong : () => null,
           disabled: uid !== data?.created_by.uid
         }
