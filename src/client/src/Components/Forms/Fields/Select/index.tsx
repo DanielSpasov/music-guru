@@ -39,11 +39,11 @@ export default function Select({
           setSelected([]);
           break;
         default:
-          setFormValue(name, option?.length ? option : [option]);
-          setSelected(getValues()[name]);
+          setFormValue(name, props?.multiple ? option : [option]);
+          setSelected(props?.multiple ? option : [option]);
       }
     },
-    [name, setFormValue, getValues]
+    [name, setFormValue, props?.multiple]
   );
 
   return (
