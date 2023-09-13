@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-
 import { Box } from '../../../HTML';
 
 export const StyledCalendar = styled(Box)`
-  padding: 0.5em;
+  margin-top: 0.5em;
 
   /* ~~~ NAVIGATION ~~~ */
   .react-calendar__navigation {
@@ -31,11 +30,9 @@ export const StyledCalendar = styled(Box)`
   button {
     background-color: ${({ theme: { colors } }) => colors.baseLight};
     color: ${({ theme: { colors } }) => colors.text};
-    border-radius: 4px;
+    border: 1px ${({ theme: { colors } }) => colors.base} solid;
     cursor: pointer;
     padding: 0.5em;
-    border: none;
-    margin: 0.1em;
 
     &:hover {
       background-color: ${({ theme: { colors } }) => colors.baseLighter};
@@ -54,7 +51,7 @@ export const StyledCalendar = styled(Box)`
 
   /* ~~~ NEIGHBORING MONTHS ~~~ */
   .react-calendar__month-view__days__day--neighboringMonth {
-    opacity: 0.6;
+    opacity: 0.5;
   }
   .react-calendar__month-view__days__day--weekend {
     color: ${({ theme: { colors } }) => colors.secondary};
