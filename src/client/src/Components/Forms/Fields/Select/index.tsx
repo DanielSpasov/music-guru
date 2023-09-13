@@ -79,13 +79,9 @@ export default function Select({
           open={open}
           setOpen={setOpen}
           title={label}
-          position="fixed"
-          right="auto"
-          margin="auto"
-          padding="1em"
-          height="25rem"
-          width="28rem"
-          top="22rem"
+          width="100%"
+          padding=".5em"
+          top="2.2em"
         >
           <StyledInput
             onChange={(e: any) => setSearch(e?.target?.value)}

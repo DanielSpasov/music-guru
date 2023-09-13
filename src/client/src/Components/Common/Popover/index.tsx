@@ -21,7 +21,6 @@ export default function Popover({
       position="absolute"
       overflowY="auto"
       maxHeight="600px"
-      padding="0.5em"
       zIndex="9999"
       top="60px"
       right="0"

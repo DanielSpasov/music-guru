@@ -70,7 +70,7 @@ export default function Calendar({
       </Box>
 
       {/* CALENDAR POPOVER */}
-      <Popover open={open} width="100%" minHeight="260px">
+      <Popover open={open} top="2.4em" width="100%">
         <StyledCalendar>
           <ReactCalendar onChange={onChange} defaultValue={defaultValue} />
         </StyledCalendar>
