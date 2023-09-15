@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState, useContext } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import makeAnimated from 'react-select/animated';
-import { ThemeContext } from 'styled-components';
 
 import { Select as StyledSelect } from './Styled';
 import { SelectProps } from './helpers';
@@ -22,8 +21,6 @@ export default function Select({
       : getValues()[name] || []
   );
   const [options, setOptions] = useState<any[]>([]);
-
-  const { colors } = useContext(ThemeContext);
 
   useEffect(() => {
     (async () => {
