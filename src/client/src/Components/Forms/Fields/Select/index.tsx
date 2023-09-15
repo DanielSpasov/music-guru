@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import makeAnimated from 'react-select/animated';
 
 import { Select as StyledSelect } from './Styled';
-import { SelectProps } from './helpers';
+import { SelectProps, handleMenuClose } from './helpers';
 import { Label, Box } from '../../..';
 
 export default function Select({
@@ -21,6 +21,8 @@ export default function Select({
       : getValues()[name] || []
   );
   const [options, setOptions] = useState<any[]>([]);
+
+  const id = useMemo(() => `${name}-select-menu`, [name]);
 
   useEffect(() => {
     (async () => {
@@ -47,7 +49,9 @@ export default function Select({
   return (
     <Box>
       <StyledSelect
+        id={id}
         components={{ ...makeAnimated() }}
+        onMenuClose={() => handleMenuClose(id)}
         options={options}
         onChange={onChange}
         isMulti={props?.multiple}

@@ -4,11 +4,22 @@ import styled, { keyframes } from 'styled-components';
 const Open = keyframes`
   0% {
     opacity: 0;
-    transform: scale(0);
+    transform: translateY(2rem);
   }
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
+  }
+`;
+
+const Close = keyframes`
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(2rem);
   }
 `;
 
@@ -22,6 +33,7 @@ export const Select = styled(ReactSelect)<Props<any, boolean, GroupBase<any>>>`
     background-color: ${({ theme: { colors } }) => colors.baseLight};
     border-color: ${({ theme: { colors } }) => colors.baseLighter};
   }
+  .control--focused:hover,
   .control--focused {
     border-color: ${({ theme: { colors } }) => colors.primary};
   }
@@ -63,7 +75,10 @@ export const Select = styled(ReactSelect)<Props<any, boolean, GroupBase<any>>>`
 
   .menu {
     background-color: ${({ theme: { colors } }) => colors.base};
-    box-shadow: 'rgba(0, 0, 0, 0.45) 0px 0px 5px 3px';
-    animation: ${Open} 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 0px 5px 3px;
+    animation: ${Open} 0.2s ease-in-out;
+  }
+  .menu--close {
+    animation: ${Close} 0.2s ease-in-out;
   }
 `;
