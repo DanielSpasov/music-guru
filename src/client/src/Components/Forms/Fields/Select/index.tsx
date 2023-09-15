@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState, useContext } from 'react';
-import { default as ReactSelect } from 'react-select';
+import makeAnimated from 'react-select/animated';
 import { ThemeContext } from 'styled-components';
 
+import { Select as StyledSelect } from './Styled';
 import { SelectProps } from './helpers';
 import { Label, Box } from '../../..';
 
@@ -48,7 +49,8 @@ export default function Select({
 
   return (
     <Box>
-      <ReactSelect
+      <StyledSelect
+        components={{ ...makeAnimated() }}
         options={options}
         onChange={onChange}
         isMulti={props?.multiple}
@@ -59,55 +61,17 @@ export default function Select({
         isSearchable
         placeholder=""
         isClearable
-        styles={{
-          control: (base, state) => ({
-            ...base,
-            marginTop: '.5em',
-            backgroundColor: colors.baseLight,
-            borderColor: state.isFocused ? colors.primary : colors.baseLighter,
-            borderWidth: '2px',
-            borderRadius: '5px',
-            boxShadow: 'none',
-            '&:hover': {
-              borderColor: state.isFocused
-                ? colors.primary
-                : colors.baseLightest
-            }
-          }),
-          multiValueLabel: base => ({ ...base, color: colors.text }),
-          singleValue: base => ({ ...base, color: colors.text }),
-          multiValue: base => ({
-            ...base,
-            backgroundColor: colors.baseLightest,
-            padding: '.2em'
-          }),
-          valueContainer: (base, state) => ({
-            ...base,
-            ...(state.isMulti ? { padding: '.1em' } : {})
-          }),
-          menu: base => ({
-            ...base,
-            backgroundColor: colors.base,
-            boxShadow: 'rgba(0, 0, 0, 0.45) 0px 0px 5px 3px'
-          }),
-          option: (base, state) => ({
-            ...base,
-            borderRadius: '5px',
-            backgroundColor: state.isSelected ? colors.baseLight : colors.base,
-            '&:hover': { backgroundColor: colors.baseLight }
-          }),
-          clearIndicator: base => ({
-            ...base,
-            '&:hover': { color: colors.primary }
-          }),
-          dropdownIndicator: base => ({
-            ...base,
-            '&:hover': { color: colors.primary }
-          }),
-          indicatorSeparator: base => ({
-            ...base,
-            backgroundColor: colors.baseLightest
-          })
+        classNames={{
+          control: state => (state.isFocused ? 'control--focused' : 'control'),
+          option: state => (state.isSelected ? 'option--selected' : 'option'),
+          valueContainer: state => (state.isMulti ? 'valueContainer' : ''),
+          indicatorSeparator: () => 'indicatorSeparator',
+          dropdownIndicator: () => 'dropdownIndicator',
+          clearIndicator: () => 'clearIndicator',
+          multiValue: () => 'multiValue',
+          multiValueLabel: () => 'label',
+          singleValue: () => 'label',
+          menu: () => 'menu'
         }}
       />
 
