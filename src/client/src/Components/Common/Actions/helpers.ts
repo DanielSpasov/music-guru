@@ -1,8 +1,5 @@
-export type ActionType = 'action' | 'menu';
-
 export type Action = {
   icon: string;
-  type?: ActionType;
   subActions?: SubAction[];
   perform: (props: any) => any;
   disabled?: boolean;
