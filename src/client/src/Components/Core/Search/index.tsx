@@ -83,11 +83,13 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
         right=".2em"
       />
 
-      <Box>
-        <Icon model="search" onClick={toggleOpen} />
-      </Box>
-
-      <Popover open={open} width={width} textAlign="center">
+      <Popover
+        open={open}
+        label={<Icon model="search" onClick={toggleOpen} />}
+        width={width}
+        textAlign="center"
+        padding=".5em"
+      >
         {loading && <Loader size="s" rainbow />}
         {!loading && !hasResults && <Text>No Results.</Text>}
         {!loading && hasResults && (

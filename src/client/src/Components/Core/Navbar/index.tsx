@@ -1,8 +1,8 @@
 import { ThemeContext } from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
-import { Box, Image, Link, Dropdown, Search } from '../../';
+import { Box, Image, Link, Search, Popover, Icon } from '../../';
 import { AuthContext } from '../../../Contexts/Auth';
 import ThemeSwitcher from '../ThemeSwitcher';
 
@@ -10,6 +10,9 @@ export default function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
   const { colors } = useContext(ThemeContext);
   const { pathname } = useLocation();
+
+  const [openTheme, setOpenTheme] = useState(false);
+  const [openUser, setOpenUser] = useState(false);
 
   return (
     <Box
@@ -52,17 +55,31 @@ export default function Navbar() {
           Songs
         </Link>
       </Box>
-      <Box display="flex" alignContent="center" height="60px">
+      <Box display="flex" alignItems="center" height="60px">
         <Search models={['artists', 'songs', 'albums']} width="250px" />
-        <Dropdown label="Settings" icon="theme">
+
+        <Popover
+          open={openTheme}
+          label={
+            <Icon model="theme" onClick={() => setOpenTheme(prev => !prev)} />
+          }
+        >
           <ThemeSwitcher />
-        </Dropdown>
-        <Dropdown label="User Settings" icon="user">
-          <Link to="/me">User</Link>
+        </Popover>
+
+        <Popover
+          open={openUser}
+          label={
+            <Icon model="user" onClick={() => setOpenUser(prev => !prev)} />
+          }
+          minWidth="7rem"
+          padding=".5em"
+        >
+          {isAuthenticated && <Link to="/me">User</Link>}
           {!isAuthenticated && <Link to="/sign-in">Sign In</Link>}
           {!isAuthenticated && <Link to="/sign-up">Sign Up</Link>}
           {isAuthenticated && <Link to="/sign-out">Sign Out</Link>}
-        </Dropdown>
+        </Popover>
       </Box>
     </Box>
   );

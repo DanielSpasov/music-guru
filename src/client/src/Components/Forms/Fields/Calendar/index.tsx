@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { default as ReactCalendar } from 'react-calendar';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { ThemeContext } from 'styled-components';
+import ReactCalendar from 'react-calendar';
 import moment from 'moment';
 
-import { Box, Icon, Label, Popover } from '../../..';
-import { StyledInput } from '../Input/Styled';
-import { StyledCalendar } from './Styled';
+import { Box, Icon, Label, Popover, Text } from '../../..';
+import { StyledCalendar, StyledInput } from './Styled';
 import { CalendarProps } from './helpers';
 
 export default function Calendar({
@@ -21,17 +21,14 @@ export default function Calendar({
   const [value, setValue] = useState<Date | undefined>(defaultValue);
   const [open, setOpen] = useState<boolean>(false);
 
+  const { colors } = useContext(ThemeContext);
+
   useEffect(() => {
     if (!getValues()[name]) setFormValue(name, undefined);
   }, [getValues, name, setFormValue]);
 
-  const toggleOpen = useCallback(
-    () => setTimeout(() => setOpen(prev => !prev), 100),
-    []
-  );
-
   const onChange = useCallback(
-    (date: Date) => {
+    (date: Date | undefined) => {
       setFormValue(name, date);
       setValue(date);
       setOpen(false);
@@ -41,36 +38,47 @@ export default function Calendar({
 
   return (
     <Box>
-      {/* CALENDAR ICON */}
-      <Box position="absolute" zIndex="1" top=".5em" left=".25em">
-        <Icon
-          model="calendar"
-          onClick={toggleOpen}
-          variant={open ? 'primary' : undefined}
-          size="25px"
-        />
-      </Box>
-
-      {/* MAIN INPUT */}
       <StyledInput
         value={value ? moment(value).format('MMMM Do YYYY') : ''}
         placeholder=" "
         onChange={() => null}
-        paddingLeft="2.2em"
-        onClick={toggleOpen}
-        disableCaret
+        onClick={() => setOpen(prev => !prev)}
       />
-      <Label position="absolute" top=".65em" left="2.2em">
+      <Label position="absolute" top=".65em" left=".5em">
         {label}
       </Label>
 
-      {/* CLEAR ALL */}
-      <Box position="absolute" right=".25em" top=".45em">
-        <Icon model="trash" onClick={() => setValue(undefined)} size="25px" />
+      <Box
+        position="absolute"
+        height="100%"
+        padding="2px"
+        right="0"
+        top="0"
+        className="css-4xgw5l-IndicatorsContainer2"
+      >
+        <Box className="css-1xc3v61-indicatorContainer">
+          {value && (
+            <Icon
+              model="close"
+              size="20px"
+              onClick={() => onChange(undefined)}
+            />
+          )}
+        </Box>
+        <Text
+          className="css-1u9des2-indicatorSeparator"
+          style={{ backgroundColor: colors.baseLightest }}
+        />
+        <Box className="css-1xc3v61-indicatorContainer">
+          <Icon
+            model="calendar"
+            size="20px"
+            onClick={() => setOpen(prev => !prev)}
+          />
+        </Box>
       </Box>
 
-      {/* CALENDAR POPOVER */}
-      <Popover open={open} top="2.4em" width="100%">
+      <Popover open={open} width="100%" padding=".5em" marginTop="-3.5em">
         <StyledCalendar>
           <ReactCalendar onChange={onChange} defaultValue={defaultValue} />
         </StyledCalendar>

@@ -55,8 +55,14 @@ export const Select = styled(ReactSelect)<Props<any, boolean, GroupBase<any>>>`
     background-color: ${({ theme: { colors } }) => colors.baseLightest};
   }
 
+  .clearIndicator,
+  .dropdownIndicator {
+    color: ${({ theme: { colors } }) => colors.text};
+  }
+
   .clearIndicator:hover,
   .dropdownIndicator:hover {
+    cursor: pointer;
     color: ${({ theme: { colors } }) => colors.primary};
   }
 

@@ -3,8 +3,12 @@ import styled from 'styled-components';
 import { colors, font, padding, text } from '../../helpers';
 import { TextProps } from './helpers';
 
-export default function Text({ children, ...css }: TextProps) {
-  return <StyledText {...css}>{children}</StyledText>;
+export default function Text({ children, className, ...css }: TextProps) {
+  return (
+    <StyledText className={className} {...css}>
+      {children}
+    </StyledText>
+  );
 }
 
 const StyledText = styled('span')<TextProps>`

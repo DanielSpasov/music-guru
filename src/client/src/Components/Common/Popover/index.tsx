@@ -1,38 +1,50 @@
-import { PopoverProps } from './helpers';
+import styled from 'styled-components';
+
 import { Box, Icon, Text } from '../../HTML';
-import { useContext } from 'react';
-import { ThemeContext } from 'styled-components';
+import { PopoverProps } from './helpers';
 
 export default function Popover({
-  children,
   open,
-  title,
   setOpen,
+  label,
+  title,
+  children,
   ...css
 }: PopoverProps) {
-  const { colors } = useContext(ThemeContext);
-
   return (
-    <Box
-      boxShadow="rgba(0, 0, 0, 0.45) 0px 0px 5px 3px"
-      transform={open ? 'scale(1)' : 'scale(0)'}
-      backgroundColor={colors.base}
-      opacity={open ? '1' : '0'}
-      position="absolute"
-      overflowY="auto"
-      maxHeight="600px"
-      zIndex="9999"
-      top="60px"
-      right="0"
-      {...css}
-    >
-      <Box display="flex" justifyContent={title ? 'space-between' : 'flex-end'}>
-        {title && <Text fontWeight="bold">Select {title}</Text>}
-        {setOpen && (
-          <Icon model="close" variant="danger" onClick={() => setOpen(false)} />
-        )}
-      </Box>
-      {children}
+    <Box>
+      {label && <Box padding=".5em">{label}</Box>}
+      <AnimatedBox open={open} className="popover" {...css}>
+        <Box
+          display="flex"
+          justifyContent={title ? 'space-between' : 'flex-end'}
+        >
+          {title && <Text fontWeight="bold">{title}</Text>}
+          {setOpen && (
+            <Icon
+              model="close"
+              variant="danger"
+              onClick={() => setOpen(false)}
+            />
+          )}
+        </Box>
+        {children}
+      </AnimatedBox>
     </Box>
   );
 }
+
+const AnimatedBox = styled(Box)`
+  background-color: ${({ theme: { colors } }) => colors.base};
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 0px 5px 3px;
+  position: absolute;
+  max-height: 600px;
+  overflow-y: auto;
+  z-index: 9999;
+  top: 1.75em;
+  right: 0;
+
+  transform: ${({ open }) => (open ? 'translateY(1.75em)' : 'translateY(3em)')};
+  visibility: ${({ open }) => (open ? '' : 'hidden')}; // NOT A SOLUTION
+  opacity: ${({ open }) => (open ? '1' : '0')};
+`;
