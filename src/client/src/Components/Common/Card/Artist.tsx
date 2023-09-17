@@ -21,13 +21,24 @@ export default function ArtistCard({ data, onClick }: CardProps<Artist>) {
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
     >
-      <Image
-        src={data.image}
-        onClick={onClick}
-        width="200px"
-        height="200px"
-        borderRadius="50%"
-      />
+      <Box>
+        <Box
+          boxShadow={hover ? `${colors.primary} 0px 0px 35px 0px` : ''}
+          borderRadius="50%"
+          height="200px"
+          width="200px"
+        />
+        <Image
+          src={data.image}
+          onClick={onClick}
+          position="absolute"
+          left="0"
+          top="0"
+          width="200px"
+          height="200px"
+          borderRadius="50%"
+        />
+      </Box>
 
       <Text
         padding="10px"
