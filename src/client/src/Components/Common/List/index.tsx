@@ -13,7 +13,7 @@ export default function List({ data, model, loading = false }: ListProps) {
     [model, navigate]
   );
 
-  if (loading) return <Skeleton />;
+  if (loading) return <Skeleton model={model} />;
   return (
     <>
       {data.map(x => (

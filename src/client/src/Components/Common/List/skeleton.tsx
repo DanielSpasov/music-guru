@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import { Theme } from '../../Core/ThemeSwitcher/helpers';
 import { Box } from '../../HTML';
+import { ModelKeys } from '../../../Api/helpers';
 
 const Animation = keyframes`
   0%,
@@ -16,22 +17,53 @@ const AnimatedBox = styled(Box)<{ theme: Theme }>`
   animation: ${Animation} 1s infinite;
 `;
 
-function CardSkeleton() {
-  return (
-    <Box margin="1em" display="flex" flexDirection="column" alignItems="center">
-      <AnimatedBox width="200px" height="200px" borderRadius="1em" />
-      <AnimatedBox width="60px" height="20px" margin=".5em" />
-    </Box>
-  );
+function CardSkeleton({ model }: { model: ModelKeys }) {
+  switch (model) {
+    case 'artists':
+      return (
+        <Box
+          margin="1em"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <AnimatedBox width="200px" height="200px" borderRadius="50%" />
+          <AnimatedBox width="60px" height="20px" margin=".5em" />
+        </Box>
+      );
+    case 'songs':
+      return (
+        <Box
+          margin="1em"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <AnimatedBox width="200px" height="50px" />
+        </Box>
+      );
+    default:
+      return (
+        <Box
+          margin="1em"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <AnimatedBox width="200px" height="200px" borderRadius="1em" />
+          <AnimatedBox width="60px" height="20px" margin=".5em" />
+        </Box>
+      );
+  }
 }
 
-export default function Skeleton() {
+export default function Skeleton({ model }: { model: ModelKeys }) {
   return (
     <>
       {Array(15)
         .fill(null)
         .map((_, i) => (
-          <CardSkeleton key={i} />
+          <CardSkeleton key={i} model={model} />
         ))}
     </>
   );
