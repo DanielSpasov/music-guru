@@ -5,13 +5,15 @@ export class ListSong extends Serializer {
   uid: string;
   name: string;
   image: string;
+  artist: string;
 
   constructor(song: UnpopulatedSong) {
     super();
 
     this.uid = song.uid;
     this.name = song.name;
-    this.image = song.image;
+    this.image = song.image || '';
+    this.artist = song.artist;
   }
 }
 
@@ -31,7 +33,7 @@ export class DetailedSong extends Serializer {
 
     this.uid = song.uid;
     this.name = song.name;
-    this.image = song.image;
+    this.image = song.image || '';
     this.created_at = song.created_at;
     this.created_by = { uid: song.created_by };
     this.release_date = song.release_date;

@@ -1,5 +1,9 @@
 import { css } from 'styled-components';
 
+export const boxSizing = css<any>`
+  box-sizing: ${({ boxSizing }) => boxSizing};
+`;
+
 export const focus = css<any>`
   tabindex: ${({ tabIndex }) => tabIndex};
 `;

@@ -18,7 +18,8 @@ export class Serializer {
   async populate(
     key: keyof Omit<this, 'populate'>,
     collectionName: Collection,
-    serializer: ISerializer
+    serializer: ISerializer,
+    keys?: string[]
   ) {
     if (!Array.isArray(this[key])) {
       const reference = doc(
@@ -31,7 +32,11 @@ export class Serializer {
       const serialized = await serializers?.[collectionName]?.[serializer]?.(
         data
       );
-      this[key] = serialized || data;
+      const custom = keys?.reduce(
+        (obj, key) => ({ ...obj, [key]: serialized?.[key] }),
+        {}
+      );
+      this[key] = custom || serialized || data;
       return;
     }
 
@@ -47,7 +52,11 @@ export class Serializer {
       querySnap.docs.map(x => {
         const data = x.data();
         const serialized = serializers?.[collectionName]?.[serializer]?.(data);
-        return serialized || data;
+        const custom = keys?.reduce(
+          (obj, key) => ({ ...obj, [key]: serialized[key] }),
+          {}
+        );
+        return custom || serialized || data;
       })
     );
   }

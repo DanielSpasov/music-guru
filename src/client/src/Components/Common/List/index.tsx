@@ -17,12 +17,7 @@ export default function List({ data, model, loading = false }: ListProps) {
   return (
     <>
       {data.map(x => (
-        <Card
-          key={x.uid}
-          title={x.name}
-          image={x.image}
-          onClick={() => onClick(x)}
-        />
+        <Card data={x} key={x.uid} model={model} onClick={() => onClick(x)} />
       ))}
     </>
   );

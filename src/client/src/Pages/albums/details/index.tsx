@@ -2,14 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
 
-import {
-  Box,
-  Card,
-  Heading,
-  Image,
-  Link,
-  PageLayout
-} from '../../../Components';
+import { Box, Card, Heading, Image, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import useActions from '../useActions';
 import { Album } from '../helpers';
@@ -74,17 +67,20 @@ export default function AlbumDetails() {
               <Box>
                 <Heading title="Artist" />
                 <Card
-                  image={album.artist.image}
-                  title={album.artist.name}
+                  data={album.artist}
+                  model="artists"
                   onClick={() => navigate(`/artists/${album.artist.uid}`)}
                 />
               </Box>
               <Box>
                 <Heading title="Songs" />
                 {album.songs.map(song => (
-                  <Link key={song.uid} to={`/songs/${song.uid}`}>
-                    {song.name}
-                  </Link>
+                  <Card
+                    key={song.uid}
+                    data={song}
+                    model="songs"
+                    onClick={() => navigate(`/songs/${song.uid}`)}
+                  />
                 ))}
               </Box>
             </Box>

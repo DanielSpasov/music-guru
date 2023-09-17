@@ -1,4 +1,4 @@
-import Api from '../../../Api';
+import { ModelKeys } from '../../../Api/helpers';
 
 export type InputProps = {
   onChange: (props: any) => any;
@@ -7,8 +7,6 @@ export type InputProps = {
   placeholder?: string;
   [css: string]: any;
 };
-
-type ModelKeys = Exclude<keyof typeof Api, 'prototype'>;
 
 export type SearchBoxProps = {
   models: ModelKeys[];

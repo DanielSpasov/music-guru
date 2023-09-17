@@ -97,8 +97,8 @@ export default function SongDetails() {
               >
                 <Heading title="Artist" />
                 <Card
-                  image={song.artist.image}
-                  title={song.artist.name}
+                  data={song.artist}
+                  model="artists"
                   onClick={() => navigate(`/artists/${song?.artist.uid}`)}
                 />
               </Box>
