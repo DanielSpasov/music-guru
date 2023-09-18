@@ -5,7 +5,7 @@ import { Album } from '../albums/helpers';
 
 export const ArtistSchema = z.object({
   name: z.string(),
-  image: z.string().url({ message: 'Invalid url.' })
+  image: z.instanceof(FileList)
 });
 
 export type ArtistModel = z.infer<typeof ArtistSchema>;

@@ -21,7 +21,7 @@ export const schema: FormSchema = [
         label: 'Image URL',
         Component: Input,
         props: {
-          type: 'text'
+          type: 'file'
         },
         validations: {
           required: true

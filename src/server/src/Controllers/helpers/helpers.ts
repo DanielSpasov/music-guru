@@ -7,9 +7,32 @@ import {
   getDoc,
   updateDoc
 } from 'firebase/firestore/lite';
+import {
+  ref as storageRef,
+  getStorage,
+  getDownloadURL
+} from 'firebase/storage';
 
 import { Collection, Reference } from '../../Database/Types';
+import { File } from '../../Database/Types/File';
 import db from '../../Database';
+
+export async function getUploadLinks(
+  files: File[],
+  collectionName: Collection,
+  uid: string
+) {
+  return await files?.reduce(async (uploads, file: File) => {
+    const key = file.fieldname.split('[]')[0];
+    const name = file.originalname;
+    const fileExt = name.split('.')[name.split('.').length - 1];
+    const imageRef = storageRef(
+      getStorage(),
+      `images/${collectionName}/${uid}.${fileExt}`
+    );
+    return { ...uploads, [key]: await getDownloadURL(imageRef) };
+  }, {});
+}
 
 export async function createReferences<T>(refs: Reference<T>[], data: T) {
   return refs.reduce((obj, { key, collection }) => {

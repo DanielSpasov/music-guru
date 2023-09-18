@@ -1,6 +1,6 @@
 import { UseFormRegister } from 'react-hook-form/dist/types';
 
-export type InputType = 'password' | 'text' | 'email';
+export type InputType = 'password' | 'text' | 'email' | 'file';
 
 export type InputProps = {
   register: UseFormRegister<any>;

@@ -14,7 +14,10 @@ export async function post({
   config = {}
 }: PostProps): Promise<any> {
   const response = await axios.post(url, body, {
-    headers: { Authorization: localStorage.getItem('AUTH') },
+    headers: {
+      Authorization: localStorage.getItem('AUTH'),
+      'Content-Type': 'multipart/form-data'
+    },
     ...config
   });
   return response.data;

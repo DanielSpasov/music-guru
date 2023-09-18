@@ -36,7 +36,7 @@ export default function Form({
   );
 
   return (
-    <StyledForm onSubmit={handleSubmit(submitFn)}>
+    <StyledForm onSubmit={handleSubmit(submitFn)} encType="multipart/form-data">
       <Heading title={header || 'Form'} />
       {schema.map(section => (
         <Section

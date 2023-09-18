@@ -21,6 +21,7 @@ export default function Input({
         {...register(name, { required: validations?.required })}
         name={name}
         type={passVisibility ? 'text' : props?.type}
+        {...(props?.type === 'file' ? { accept: 'image/png, image/jpeg' } : {})}
         placeholder=" "
       />
       <Label position="absolute" top=".65em" left=".75em">
