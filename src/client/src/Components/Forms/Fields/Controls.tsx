@@ -3,21 +3,19 @@ import { Box, Icon, Text } from '../../HTML';
 
 type ControlsProps = {
   customIcon: JSX.Element;
-  onChange: (props: any) => void;
+  onClear: (props: any) => void;
   value: any;
 };
 
 export default function Controls({
   customIcon,
-  onChange,
+  onClear,
   value
 }: ControlsProps) {
   return (
     <WrapperBox>
       <IconBox>
-        {value && (
-          <Icon model="close" size="20px" onClick={() => onChange(undefined)} />
-        )}
+        {value && <Icon model="close" size="20px" onClick={onClear} />}
       </IconBox>
       <Separator />
       <IconBox>{customIcon}</IconBox>

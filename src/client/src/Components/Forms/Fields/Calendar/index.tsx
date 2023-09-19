@@ -48,7 +48,7 @@ export default function Calendar({
 
       <Controls
         value={value}
-        onChange={onChange}
+        onClear={() => onChange(undefined)}
         customIcon={
           <Icon
             model="calendar"
