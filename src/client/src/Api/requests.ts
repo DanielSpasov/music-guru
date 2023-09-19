@@ -11,7 +11,7 @@ import {
 export async function post({
   url = '',
   body,
-  config: { headers, ...config }
+  config: { headers, ...config } = {}
 }: PostProps): Promise<any> {
   const response = await axios.post(url, body, {
     headers: {

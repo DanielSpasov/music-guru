@@ -19,6 +19,43 @@ export default function Input({
 
   const ID = useMemo(() => `${name}-input`, [name]);
 
+  const customIcon = useMemo(() => {
+    switch (props.type) {
+      case 'file':
+        return (
+          <Icon
+            model="upload"
+            size="20px"
+            onClick={() => document.getElementById(ID)?.click()}
+          />
+        );
+      case 'password':
+        return (
+          <Icon
+            size="20px"
+            model={passVisibility ? 'show' : 'hide'}
+            onClick={() => setPassVisibility(!passVisibility)}
+          />
+        );
+      case 'email':
+        return (
+          <Icon
+            size="20px"
+            model="email"
+            onClick={() => document.getElementById(ID)?.focus()}
+          />
+        );
+      default:
+        return (
+          <Icon
+            size="20px"
+            model="text"
+            onClick={() => document.getElementById(ID)?.focus()}
+          />
+        );
+    }
+  }, [props?.type, ID, passVisibility]);
+
   const { onChange, ...reg } = register(name, {
     required: validations?.required
   });
@@ -52,29 +89,7 @@ export default function Input({
         {label}
       </Label>
 
-      {props?.type === 'file' && (
-        <Controls
-          value={value}
-          onClear={handleClear}
-          customIcon={
-            <Icon
-              model="upload"
-              size="20px"
-              onClick={() => document.getElementById(ID)?.click()}
-            />
-          }
-        />
-      )}
-
-      {props?.type === 'password' && (
-        <Box position="absolute" right=".5em" top=".05em">
-          <Icon
-            variant={passVisibility ? 'primary' : 'baseLightest'}
-            onClick={() => setPassVisibility(!passVisibility)}
-            model={passVisibility ? 'show' : 'hide'}
-          />
-        </Box>
-      )}
+      <Controls value={value} onClear={handleClear} customIcon={customIcon} />
     </Box>
   );
 }
