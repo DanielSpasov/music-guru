@@ -1,12 +1,14 @@
 import { UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 
+export type SelectComponentProps = {
+  fetchFn: (props: any) => any;
+  multiple?: boolean;
+};
+
 export type SelectProps = {
   setFormValue: UseFormSetValue<any>;
   getValues: UseFormGetValues<any>;
-  props: {
-    multiple?: boolean;
-    fetchFn?: (props: any) => any;
-  };
+  props: SelectComponentProps;
   validations: {
     required?: boolean;
   };
