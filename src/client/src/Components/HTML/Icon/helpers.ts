@@ -1,14 +1,8 @@
-type IconVariant =
-  | 'success'
-  | 'warning'
-  | 'info'
-  | 'danger'
-  | 'primary'
-  | 'secondary';
+import { Colors } from '../../Core/ThemeSwitcher/helpers';
 
 export type IconProps = {
   model: string;
-  variant?: IconVariant;
+  variant?: keyof Colors;
   size?: string;
   [css: string]: any;
 };
