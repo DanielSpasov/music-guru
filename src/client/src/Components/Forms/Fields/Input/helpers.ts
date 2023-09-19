@@ -1,15 +1,29 @@
-import { UseFormRegister } from 'react-hook-form/dist/types';
+import {
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue
+} from 'react-hook-form/dist/types';
 
-export type InputType = 'password' | 'text' | 'email' | 'file';
+type AcceptTypes = 'image/png' | 'image/jpeg';
+
+type TextProps = {
+  type?: 'password' | 'text' | 'email';
+};
+type FileProps = {
+  type?: 'file';
+  accept: AcceptTypes[];
+};
+
+export type InputComponentProps = TextProps | FileProps;
 
 export type InputProps = {
   register: UseFormRegister<any>;
+  setFormValue: UseFormSetValue<any>;
+  getValues: UseFormGetValues<any>;
   validations: {
     required?: boolean;
   };
-  props: {
-    type?: InputType;
-  };
+  props: InputComponentProps;
   label: string;
   name: string;
 };

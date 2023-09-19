@@ -17,7 +17,10 @@ export default function CreateArtist() {
     async (data: Artist) => {
       try {
         const validData = ArtistSchema.parse(data);
-        const res = await Api.artists.post({ body: validData });
+        const res = await Api.artists.post({
+          body: validData,
+          config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        });
         setErrors([]);
         toast.success(`Successfully created artist: ${res.name}`);
         navigate(`/artists/${res.uid}`);

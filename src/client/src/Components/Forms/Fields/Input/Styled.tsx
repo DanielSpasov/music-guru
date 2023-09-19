@@ -34,4 +34,16 @@ export const StyledInput = styled('input')<any>`
     top: -1.5em;
     left: 0em;
   }
+
+  &[type='file'] {
+    padding-right: 4.5em;
+  }
+  &[type='file']:hover {
+    cursor: pointer;
+    border: 2px dashed ${({ theme: { colors } }) => colors.baseLightest};
+  }
+
+  &[type='file']::file-selector-button {
+    display: none;
+  }
 `;

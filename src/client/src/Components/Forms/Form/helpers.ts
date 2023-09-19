@@ -6,7 +6,8 @@ import {
   UseFormSetValue
 } from 'react-hook-form/dist/types';
 
-import { InputType } from '../Fields/Input/helpers';
+import { SelectComponentProps } from '../Fields/Select/helpers';
+import { InputComponentProps } from '../Fields/Input/helpers';
 
 export type FormField = {
   key: string;
@@ -15,11 +16,7 @@ export type FormField = {
   validations?: {
     required?: boolean;
   };
-  props?: {
-    type?: InputType;
-    fetchFn?: (props: any) => any;
-    multiple?: boolean;
-  };
+  props?: InputComponentProps | SelectComponentProps;
 };
 
 export type FormSection = {

@@ -1,5 +1,5 @@
-import { Input } from '../../../Components';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
+import { Input } from '../../../Components';
 
 export const schema: FormSchema = [
   {
@@ -18,10 +18,11 @@ export const schema: FormSchema = [
       },
       {
         key: 'image',
-        label: 'Image URL',
+        label: 'Image',
         Component: Input,
         props: {
-          type: 'file'
+          type: 'file',
+          accept: ['image/jpeg', 'image/png']
         },
         validations: {
           required: true
