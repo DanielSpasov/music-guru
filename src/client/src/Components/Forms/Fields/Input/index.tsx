@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { Box, Icon, Label } from '../../../HTML';
+import { Box, Label } from '../../../HTML';
 import { InputProps } from './helpers';
 import { StyledInput } from './Styled';
 import Controls from '../Controls';
@@ -19,42 +19,32 @@ export default function Input({
 
   const ID = useMemo(() => `${name}-input`, [name]);
 
-  const customIcon = useMemo(() => {
+  const onClick = useCallback(() => {
     switch (props.type) {
       case 'file':
-        return (
-          <Icon
-            model="upload"
-            size="20px"
-            onClick={() => document.getElementById(ID)?.click()}
-          />
-        );
+        document.getElementById(ID)?.click();
+        return;
       case 'password':
-        return (
-          <Icon
-            size="20px"
-            model={passVisibility ? 'show' : 'hide'}
-            onClick={() => setPassVisibility(!passVisibility)}
-          />
-        );
-      case 'email':
-        return (
-          <Icon
-            size="20px"
-            model="email"
-            onClick={() => document.getElementById(ID)?.focus()}
-          />
-        );
+        setPassVisibility(prev => !prev);
+        return;
       default:
-        return (
-          <Icon
-            size="20px"
-            model="text"
-            onClick={() => document.getElementById(ID)?.focus()}
-          />
-        );
+        document.getElementById(ID)?.focus();
+        return;
     }
-  }, [props?.type, ID, passVisibility]);
+  }, [ID, props?.type]);
+
+  const iconModel = useMemo(() => {
+    switch (props.type) {
+      case 'file':
+        return 'upload';
+      case 'password':
+        return passVisibility ? 'show' : 'hide';
+      case 'email':
+        return 'email';
+      default:
+        return 'text';
+    }
+  }, [props?.type, passVisibility]);
 
   const { onChange, ...reg } = register(name, {
     required: validations?.required
@@ -89,7 +79,12 @@ export default function Input({
         {label}
       </Label>
 
-      <Controls value={value} onClear={handleClear} customIcon={customIcon} />
+      <Controls
+        value={value}
+        onClear={handleClear}
+        onClick={onClick}
+        iconModel={iconModel}
+      />
     </Box>
   );
 }

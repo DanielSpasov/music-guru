@@ -3,7 +3,7 @@ import ReactCalendar from 'react-calendar';
 import moment from 'moment';
 
 import { StyledCalendar, StyledInput } from './Styled';
-import { Box, Icon, Label, Popover } from '../../..';
+import { Box, Label, Popover } from '../../..';
 import { CalendarProps } from './helpers';
 import Controls from '../Controls';
 
@@ -49,13 +49,8 @@ export default function Calendar({
       <Controls
         value={value}
         onClear={() => onChange(undefined)}
-        customIcon={
-          <Icon
-            model="calendar"
-            size="20px"
-            onClick={() => setOpen(prev => !prev)}
-          />
-        }
+        onClick={() => setOpen(prev => !prev)}
+        iconModel="calendar"
       />
 
       <Popover open={open} width="100%" padding=".5em" marginTop="-3.5em">

@@ -1,14 +1,18 @@
 import styled from 'styled-components';
+
+import { IconModel } from '../../HTML/Icon/Icons';
 import { Box, Icon, Text } from '../../HTML';
 
 type ControlsProps = {
-  customIcon: JSX.Element;
   onClear: (props: any) => void;
+  onClick: (props: any) => void;
+  iconModel: IconModel;
   value: any;
 };
 
 export default function Controls({
-  customIcon,
+  iconModel,
+  onClick,
   onClear,
   value
 }: ControlsProps) {
@@ -18,7 +22,9 @@ export default function Controls({
         {value && <Icon model="close" size="20px" onClick={onClear} />}
       </IconBox>
       <Separator />
-      <IconBox>{customIcon}</IconBox>
+      <IconBox>
+        <Icon model={iconModel} size="20px" onClick={onClick} />
+      </IconBox>
     </WrapperBox>
   );
 }
