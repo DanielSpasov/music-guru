@@ -17,6 +17,7 @@ export default function BreadCrumb({ actions }: { actions: Action[] }) {
       position="relative"
       backgroundColor={colors.base}
       boxShadow="rgba(0, 0, 0, 0.45) 0px 3px 4px"
+      borderRadius="0"
       zIndex="9998"
     >
       <Box

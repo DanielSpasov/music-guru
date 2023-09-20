@@ -23,6 +23,7 @@ export default function Navbar() {
       height="60px"
       width="100%"
       backgroundColor={colors.base}
+      borderRadius="0"
       boxShadow="rgba(0, 0, 0, 0.45) 0px 3px 4px"
       zIndex="9999"
     >
