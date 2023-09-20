@@ -9,7 +9,7 @@ export const StyledInput = styled('input')<any>`
   box-sizing: border-box;
   transition: 0.3s;
   margin: 0.5em 0;
-  padding: 0.5em;
+  padding: 0.5em 4.5em 0.5em 0.5em;
   font-size: 1em;
   outline: none;
   width: 100%;
@@ -35,9 +35,6 @@ export const StyledInput = styled('input')<any>`
     left: 0em;
   }
 
-  &[type='file'] {
-    padding-right: 4.5em;
-  }
   &[type='file']:hover {
     cursor: pointer;
     border: 2px dashed ${({ theme: { colors } }) => colors.baseLightest};
