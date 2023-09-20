@@ -8,6 +8,8 @@ export const ArtistSchema = z.object({
   image: z.instanceof(FileList)
 });
 
+export const EditArtistSchema = ArtistSchema.pick({ name: true });
+
 export type ArtistModel = z.infer<typeof ArtistSchema>;
 export interface Artist extends ArtistModel {
   uid: string;
