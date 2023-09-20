@@ -10,8 +10,10 @@ export const ArtistSchema = z.object({
 
 export const EditArtistSchema = ArtistSchema.pick({ name: true });
 
-export type ArtistModel = z.infer<typeof ArtistSchema>;
+const ArtistModelSchema = ArtistSchema.omit({ image: true });
+type ArtistModel = z.infer<typeof ArtistModelSchema>;
 export interface Artist extends ArtistModel {
+  image: string;
   uid: string;
   created_at: Date;
   created_by: User;
