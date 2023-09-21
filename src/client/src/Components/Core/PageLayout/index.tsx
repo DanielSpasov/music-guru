@@ -37,7 +37,7 @@ export default function PageLayout({
       ) : (
         showHeader && <Header padding="60px 0 20px 0" title={title} />
       )}
-      {!loading && children}
+      <Box>{!loading && children}</Box>
     </Box>
   );
 }

@@ -1,15 +1,17 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { Box, Image, List, PageLayout, Text } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
+import { Artist, View, views } from '../helpers';
 import useActions from '../useActions';
-import { Artist } from '../helpers';
 import Api from '../../../Api';
-import { Box, Image, List, PageLayout, Summary } from '../../../Components';
 
 export default function ArtistDetails() {
   const [loading, setLoading] = useState<boolean>(true);
   const [artist, setArtist] = useState<Artist>();
+
+  const [view, setView] = useState<View>();
 
   const actions = useActions({ model: 'artist-details', data: artist });
   const { id = '0' } = useParams();
@@ -31,52 +33,56 @@ export default function ArtistDetails() {
     })();
   }, [id, navigate]);
 
-  const showDiscography = useMemo(() => {
-    if (!artist) return false;
-    return (
-      Boolean(artist.features.length) ||
-      Boolean(artist.albums.length) ||
-      Boolean(artist.songs.length)
-    );
-  }, [artist]);
-
   return (
-    <PageLayout title={artist?.name || ''} loading={loading} actions={actions}>
+    <PageLayout
+      title={artist?.name || ''}
+      showHeader={false}
+      loading={loading}
+      actions={actions}
+    >
       <Box
+        backgroundColor="black"
+        position="absolute"
+        width="100%"
+        height="calc(150px + 3em)"
+        boxSizing="content-box"
+      />
+
+      <Box
+        width="100%"
         display="flex"
-        flexDirection="column"
+        justifyContent="center"
         alignItems="center"
-        margin="0 5%"
+        margin="1.5em 0"
+        height="300px"
       >
-        <Image src={artist?.image || ''} alt={artist?.name} width="350px" />
+        <Image
+          src={artist?.image || ''}
+          alt={artist?.name}
+          height="100%"
+          borderRadius="50%"
+        />
 
-        {showDiscography && artist && (
-          <Box width="100%" margin="0.5em">
-            <Summary label="Discography" open>
-              {Boolean(artist.albums.length) && (
-                <Summary label="Albums" open>
-                  <Box display="flex" flexWrap="wrap">
-                    <List data={artist.albums} model="albums" />
-                  </Box>
-                </Summary>
-              )}
+        <Box display="flex" padding="0 1em">
+          {views.map(view =>
+            artist?.[view.key]?.length ? (
+              <Text
+                key={view.key}
+                padding="0 .25em"
+                fontSize="1.25em"
+                onClick={() => setView(view)}
+              >
+                {view.label}
+              </Text>
+            ) : null
+          )}
+        </Box>
+      </Box>
 
-              {Boolean(artist.songs.length) && (
-                <Summary label="Songs" open>
-                  <Box display="flex" flexWrap="wrap">
-                    <List data={artist.songs} model="songs" />
-                  </Box>
-                </Summary>
-              )}
-
-              {Boolean(artist.features.length) && (
-                <Summary label="Features" open>
-                  <Box display="flex" flexWrap="wrap">
-                    <List data={artist.features} model="songs" />
-                  </Box>
-                </Summary>
-              )}
-            </Summary>
+      <Box display="flex" justifyContent="center">
+        {view && (
+          <Box display="flex" flexWrap="wrap">
+            <List data={artist?.[view.key] || []} model={view.model} />
           </Box>
         )}
       </Box>
