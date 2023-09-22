@@ -1,7 +1,15 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { ThemeContext } from 'styled-components';
 
-import { Box, Image, List, PageLayout, Text } from '../../../Components';
+import {
+  Box,
+  Header,
+  Image,
+  List,
+  PageLayout,
+  Text
+} from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import { Artist, View, views } from '../helpers';
 import useActions from '../useActions';
@@ -12,6 +20,8 @@ export default function ArtistDetails() {
   const [artist, setArtist] = useState<Artist>();
 
   const [view, setView] = useState<View>();
+
+  const { colors } = useContext(ThemeContext);
 
   const actions = useActions({ model: 'artist-details', data: artist });
   const { id = '0' } = useParams();
@@ -61,7 +71,12 @@ export default function ArtistDetails() {
           alt={artist?.name}
           height="100%"
           borderRadius="50%"
+          border={`8px solid ${colors.baseLight}`}
         />
+
+        <Box position="absolute" top="1.25em" left="52.5vw">
+          <Header title={artist?.name || ''} />
+        </Box>
 
         <Box display="flex" padding="0 1em">
           {views.map(view =>
