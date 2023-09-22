@@ -16,4 +16,8 @@ const StyledHeader = styled('header')<HeaderProps>`
   display: flex;
   flex-direction: column;
   text-align: center;
+
+  cursor: ${({ cursor }) => cursor || 'auto'};
+  color: ${({ variant, theme: { colors } }) =>
+    variant ? colors[variant] : colors.text};
 `;

@@ -1,8 +1,8 @@
-type Variant = 'danger' | 'info' | 'success' | 'warning';
+import { Colors } from '../../Core/ThemeSwitcher/helpers';
 
 export type TextProps = {
   children?: any;
-  variant?: Variant;
+  variant?: keyof Colors;
   className?: string;
   [css: string]: any;
 };
