@@ -13,27 +13,17 @@ const artistConverter: FirestoreDataConverter<Partial<Artist>, DBArtist> = {
       uid: snapshot.id,
       name: artist.name,
       image: artist.image,
-      albums: snapshot.get('albums').map((x: DocumentReference) => x.id),
       created_at: artist.created_at.toDate(),
-      created_by: snapshot.get('created_by').id,
-      features: snapshot.get('features').map((x: DocumentReference) => x.id),
-      songs: snapshot.get('songs').map((x: DocumentReference) => x.id)
+      created_by: snapshot.get('created_by').id
     };
   },
   toFirestore: snapshot => {
     const created_at = snapshot.created_at as Timestamp;
-    const albums = snapshot?.albums || [];
-    const features = snapshot?.features || [];
-    const songs = snapshot?.songs || [];
-
     return {
       name: String(snapshot.name),
       image: String(snapshot.image),
       created_at: created_at || Timestamp.fromDate(new Date()),
-      created_by: snapshot.created_by as DocumentReference,
-      albums: albums as DocumentReference[],
-      features: features as DocumentReference[],
-      songs: songs as DocumentReference[]
+      created_by: snapshot.created_by as DocumentReference
     };
   }
 };

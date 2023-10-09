@@ -12,13 +12,7 @@ import { DetailedSong, ListSong } from './Song';
 export const serializers: CollectionSerializer = {
   artists: {
     list: async (data: UnpopulatedArtist) => new ListArtist(data),
-    detailed: async (data: UnpopulatedArtist) => {
-      const artist = new DetailedArtist(data);
-      await artist.populate('albums', 'albums', 'list');
-      await artist.populate('features', 'songs', 'list');
-      await artist.populate('songs', 'songs', 'list');
-      return artist;
-    }
+    detailed: async (data: UnpopulatedArtist) => new DetailedArtist(data)
   },
   albums: {
     list: async (data: UnpopulatedAlbum) => new ListAlbum(data),
