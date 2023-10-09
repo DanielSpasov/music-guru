@@ -14,7 +14,7 @@ const songConverter: FirestoreDataConverter<Partial<Song>, DBSong> = {
       name: song.name,
       image: song.image,
       albums: snapshot.get('albums').map((x: DocumentReference) => x.id),
-      artist: snapshot.get('artist').id,
+      artist: snapshot.get('artist'),
       created_at: song.created_at.toDate(),
       created_by: snapshot.get('created_by').id,
       features: snapshot.get('features').map((x: DocumentReference) => x.id),
