@@ -18,14 +18,6 @@ export const schema: FormSchema = [
         }
       },
       {
-        key: 'image',
-        label: 'Image URL',
-        Component: Input,
-        props: {
-          type: 'text'
-        }
-      },
-      {
         key: 'release_date',
         label: 'Release Date',
         Component: Calendar

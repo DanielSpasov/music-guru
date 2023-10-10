@@ -1,13 +1,10 @@
 import { z } from 'zod';
 
 export const BaseAlbumSchema = z.object({
-  name: z.string(),
-  image: z.string().url({ message: 'Invalid url.' })
+  name: z.string()
 });
 
-const UidSchema = z.string().min(8).max(8);
-
 export const AlbumSchema = BaseAlbumSchema.extend({
-  artist: UidSchema,
-  songs: z.array(UidSchema)
+  artist: z.string().uuid(),
+  songs: z.array(z.string().uuid())
 });

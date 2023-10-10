@@ -2,8 +2,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
 
-import { Box, Card, Heading, Image, PageLayout } from '../../../Components';
+import { Box, Heading, Image, List, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
+import { Artist } from '../../artists/helpers';
+import { Song } from '../../songs/helpers';
 import useActions from '../useActions';
 import { Album } from '../helpers';
 import Api from '../../../Api';
@@ -11,6 +13,12 @@ import Api from '../../../Api';
 export default function AlbumDetails() {
   const [loading, setLoading] = useState<boolean>(true);
   const [album, setAlbum] = useState<Album>();
+
+  const [loadingArtist, setLoadingArtist] = useState<boolean>(true);
+  const [artist, setArtist] = useState<Artist>();
+
+  const [loadingSongs, setLoadingSongs] = useState<boolean>(true);
+  const [songs, setSongs] = useState<Song[]>([]);
 
   const { id = '0' } = useParams();
   const navigate = useNavigate();
@@ -51,6 +59,50 @@ export default function AlbumDetails() {
     })();
   }, [id, navigate]);
 
+  // Artist
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoadingArtist(true);
+        if (!album) return;
+
+        const { data } = await Api.artists.get({
+          id: album.artist,
+          config: { params: { serializer: 'list' } }
+        });
+        setArtist(data);
+        setLoadingArtist(false);
+      } catch (error) {
+        errorHandler(error);
+      }
+    })();
+  }, [album]);
+
+  // Songs
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoadingSongs(true);
+        if (!album) return;
+
+        const songs = await Promise.all(
+          album.songs.map(async songUID => {
+            const { data } = await Api.songs.get({
+              id: songUID,
+              config: { params: { serializer: 'list' } }
+            });
+            return data;
+          })
+        );
+        setSongs(songs);
+      } catch (error) {
+        errorHandler(error);
+      } finally {
+        setLoadingSongs(false);
+      }
+    })();
+  }, [album]);
+
   return (
     <PageLayout title={album?.name || ''} loading={loading} actions={actions}>
       <Box
@@ -66,22 +118,21 @@ export default function AlbumDetails() {
             <Box display="flex" justifyContent="space-between">
               <Box>
                 <Heading title="Artist" />
-                <Card
-                  data={album.artist}
+                <List
+                  data={[artist]}
                   model="artists"
-                  onClick={() => navigate(`/artists/${album.artist.uid}`)}
+                  skeletonLength={1}
+                  loading={loadingArtist}
                 />
               </Box>
               <Box>
                 <Heading title="Songs" />
-                {album.songs.map(song => (
-                  <Card
-                    key={song.uid}
-                    data={song}
-                    model="songs"
-                    onClick={() => navigate(`/songs/${song.uid}`)}
-                  />
-                ))}
+                <List
+                  data={songs}
+                  model="songs"
+                  skeletonLength={3}
+                  loading={loadingSongs}
+                />
               </Box>
             </Box>
           </Box>

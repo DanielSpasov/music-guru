@@ -21,7 +21,10 @@ export default function CreateSong() {
           artist: data.artist?.[0]?.uid,
           features: data?.features?.map((x: any) => x.uid)
         });
-        const res = await Api.songs.post({ body: validData });
+        const res = await Api.songs.post({
+          body: validData,
+          config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        });
         setErrors([]);
         toast.success(`Successfully created song: ${res.name}`);
         navigate(`/songs/${res.uid}`);

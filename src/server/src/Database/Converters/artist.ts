@@ -1,8 +1,4 @@
-import {
-  DocumentReference,
-  FirestoreDataConverter,
-  Timestamp
-} from 'firebase/firestore/lite';
+import { FirestoreDataConverter, Timestamp } from 'firebase/firestore/lite';
 
 import { Artist, DBArtist } from '../Types';
 
@@ -13,8 +9,8 @@ const artistConverter: FirestoreDataConverter<Partial<Artist>, DBArtist> = {
       uid: snapshot.id,
       name: artist.name,
       image: artist.image,
-      created_at: artist.created_at.toDate(),
-      created_by: snapshot.get('created_by').id
+      created_by: artist.created_by,
+      created_at: artist.created_at.toDate()
     };
   },
   toFirestore: snapshot => {
@@ -23,7 +19,7 @@ const artistConverter: FirestoreDataConverter<Partial<Artist>, DBArtist> = {
       name: String(snapshot.name),
       image: String(snapshot.image),
       created_at: created_at || Timestamp.fromDate(new Date()),
-      created_by: snapshot.created_by as DocumentReference
+      created_by: String(snapshot.created_by)
     };
   }
 };

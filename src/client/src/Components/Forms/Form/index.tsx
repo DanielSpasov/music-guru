@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
-import { Heading, Button, Box, Section } from '../../../Components';
+import { Heading, Button, Box, Section, Loader } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import { FormProps } from './helpers';
 
@@ -18,18 +18,18 @@ export default function Form({
   const { register, handleSubmit, setValue, getValues } = useForm({
     defaultValues
   });
-  const [disableSubmit, setDisableSubmit] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const submitFn = useCallback(
     async (e: any) => {
       try {
-        setDisableSubmit(true);
+        setLoading(true);
         await onSubmit(e);
       } catch (error) {
         errorHandler(error);
       } finally {
-        setDisableSubmit(false);
+        setLoading(false);
       }
     },
     [onSubmit]
@@ -53,8 +53,8 @@ export default function Form({
         <Button variant="secondary" type="button" onClick={() => navigate(-1)}>
           Go Back
         </Button>
-        <Button variant="primary" type="submit" disabled={disableSubmit}>
-          Submit
+        <Button variant="primary" type="submit" disabled={loading}>
+          {!loading ? 'Submit' : <Loader size="s" />}
         </Button>
       </Box>
       {additionalInfo}

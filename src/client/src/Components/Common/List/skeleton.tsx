@@ -1,7 +1,9 @@
 import styled, { keyframes } from 'styled-components';
+
 import { Theme } from '../../Core/ThemeSwitcher/helpers';
-import { Box } from '../../HTML';
 import { ModelKeys } from '../../../Api/helpers';
+import { SkeletonProps } from './helpers';
+import { Box } from '../../HTML';
 
 const Animation = keyframes`
   0%,
@@ -57,10 +59,10 @@ function CardSkeleton({ model }: { model: ModelKeys }) {
   }
 }
 
-export default function Skeleton({ model }: { model: ModelKeys }) {
+export default function Skeleton({ model, length = 15 }: SkeletonProps) {
   return (
     <>
-      {Array(15)
+      {Array(length)
         .fill(null)
         .map((_, i) => (
           <CardSkeleton key={i} model={model} />

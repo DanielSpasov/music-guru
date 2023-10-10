@@ -1,33 +1,26 @@
 import { z } from 'zod';
-import { Artist } from '../artists/helpers';
-import { User } from '../auth/helpers';
-import { Song } from '../songs/helpers';
 
 export const Schema = z.object({
   name: z
     .string()
     .min(1, { message: 'Name is required.' })
-    .max(128, { message: 'Name is too long.' }),
-  image: z.string().url({ message: 'Invalid url.' })
+    .max(128, { message: 'Name is too long.' })
 });
 
-const UidSchema = z
-  .string({ required_error: 'Artist is required.' })
-  .min(8, { message: 'Invalid Artist.' })
-  .max(8, { message: 'Invalid Artist.' });
-
 export const AlbumSchema = Schema.extend({
-  artist: UidSchema,
-  songs: z.array(UidSchema)
+  artist: z.string().uuid(),
+  image: z.instanceof(FileList),
+  songs: z.array(z.string().uuid())
 });
 
 type AlbumModel = z.infer<typeof Schema>;
 export interface Album extends AlbumModel {
   uid: string;
+  image: string;
   created_at: Date;
-  created_by: User;
-  artist: Artist;
-  songs: Song[];
+  created_by: string;
+  artist: string;
+  songs: string[];
 }
 
 export type UseActionsProps = {

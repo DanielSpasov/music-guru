@@ -5,7 +5,6 @@ import moment from 'moment';
 
 import {
   Box,
-  Card,
   Heading,
   Image,
   List,
@@ -13,6 +12,8 @@ import {
   Text
 } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
+import { Artist } from '../../artists/helpers';
+import { Album } from '../../albums/helpers';
 import useActions from '../useActions';
 import { Song } from '../helpers';
 import Api from '../../../Api';
@@ -20,6 +21,15 @@ import Api from '../../../Api';
 export default function SongDetails() {
   const [loading, setLoading] = useState<boolean>(true);
   const [song, setSong] = useState<Song>();
+
+  const [loadingFeatures, setLoadingFeatures] = useState<boolean>(true);
+  const [features, setFeatures] = useState<Artist[]>([]);
+
+  const [loadingAlbums, setLoadingAlbums] = useState<boolean>(true);
+  const [albums, setAlbums] = useState<Album[]>([]);
+
+  const [loadingArtist, setLoadingArtist] = useState<boolean>(true);
+  const [artist, setArtist] = useState<Artist>();
 
   const { id = '0' } = useParams();
   const navigate = useNavigate();
@@ -47,6 +57,7 @@ export default function SongDetails() {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const { data } = await Api.songs.get({
           id,
           config: { params: { serializer: 'detailed' } }
@@ -59,6 +70,75 @@ export default function SongDetails() {
       }
     })();
   }, [id, navigate]);
+
+  // Features
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoadingFeatures(true);
+        if (!song) return;
+
+        const features = await Promise.all(
+          song.features.map(async artistUID => {
+            const { data } = await Api.artists.get({
+              id: artistUID,
+              config: { params: { serializer: 'list' } }
+            });
+            return data;
+          })
+        );
+        setFeatures(features);
+      } catch (error) {
+        errorHandler(error);
+      } finally {
+        setLoadingFeatures(false);
+      }
+    })();
+  }, [song]);
+
+  // Albums
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoadingAlbums(true);
+        if (!song) return;
+
+        const albums = await Promise.all(
+          song.albums.map(async albumUID => {
+            const { data } = await Api.albums.get({
+              id: albumUID,
+              config: { params: { serializer: 'list' } }
+            });
+            return data;
+          })
+        );
+        setAlbums(albums);
+      } catch (error) {
+        errorHandler(error);
+      } finally {
+        setLoadingAlbums(false);
+      }
+    })();
+  }, [song]);
+
+  // Artist
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoadingArtist(true);
+        if (!song) return;
+
+        const { data } = await Api.artists.get({
+          id: song.artist,
+          config: { params: { serializer: 'list' } }
+        });
+        setArtist(data);
+        setLoadingArtist(false);
+      } catch (error) {
+        errorHandler(error);
+      }
+    })();
+  }, [song]);
 
   return (
     <PageLayout
@@ -96,25 +176,38 @@ export default function SongDetails() {
                 alignItems="center"
               >
                 <Heading title="Artist" />
-                <Card
-                  data={song.artist}
+                <List
+                  data={[artist]}
                   model="artists"
-                  onClick={() => navigate(`/artists/${song?.artist.uid}`)}
+                  skeletonLength={1}
+                  loading={loadingArtist}
                 />
               </Box>
-              {song.features.length > 0 && (
+
+              {features.length > 0 && (
                 <Box width="50%">
                   <Heading title="Featured Artists" />
                   <Box display="flex" flexWrap="wrap" justifyContent="center">
-                    <List data={song.features} model="artists" />
+                    <List
+                      data={features}
+                      model="artists"
+                      skeletonLength={2}
+                      loading={loadingFeatures}
+                    />
                   </Box>
                 </Box>
               )}
-              {song.albums.length > 0 && (
+
+              {albums.length > 0 && (
                 <Box width="50%">
                   <Heading title="In Albums" />
                   <Box display="flex" flexWrap="wrap" justifyContent="center">
-                    <List data={song.albums} model="albums" />
+                    <List
+                      data={albums}
+                      model="albums"
+                      skeletonLength={1}
+                      loading={loadingAlbums}
+                    />
                   </Box>
                 </Box>
               )}

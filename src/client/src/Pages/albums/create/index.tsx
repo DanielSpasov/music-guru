@@ -21,7 +21,10 @@ export default function CreateAlbum() {
           artist: data.artist[0].uid,
           songs: data.songs.map((x: any) => x.uid)
         });
-        const res = await Api.albums.post({ body: validData });
+        const res = await Api.albums.post({
+          body: validData,
+          config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        });
         setErrors([]);
         toast.success(`Successfully created album: ${res.name}`);
         navigate(`/albums/${res.uid}`);

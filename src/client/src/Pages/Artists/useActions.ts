@@ -23,7 +23,7 @@ export default function useActions({ model, data }: UseActionsProps): Action[] {
         {
           icon: 'edit',
           perform: () => navigate('edit'),
-          disabled: uid !== data?.created_by.uid
+          disabled: uid !== data?.created_by
         }
       ];
     default:

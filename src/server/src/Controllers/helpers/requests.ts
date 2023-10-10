@@ -8,18 +8,15 @@ import {
   updateDoc,
   DocumentData
 } from 'firebase/firestore/lite';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { deleteObject, getStorage, ref, uploadBytes } from 'firebase/storage';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
+import crypto from 'crypto';
 
-import {
-  createReferences,
-  createRelations,
-  removeRelations,
-  updateRelations,
-  getUploadLinks
-} from './helpers';
-import { generateUID, getUser } from '../../Utils';
+import { createReferences, updateRelations, getUploadLinks } from './helpers';
 import { errorHandler } from '../../Error';
+import { getUser } from '../../Utils';
+import env from '../../env';
 
 // Database imports
 import { FileUploadSchema, validationSchemas } from '../../Database/Schemas';
@@ -71,20 +68,33 @@ export function get(collectionName: Collection) {
   };
 }
 
-export function del<T>(collectionName: Collection) {
+export function del(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
+      const token = req.headers?.authorization;
+      if (!token) {
+        res.status(401).json({ message: 'Unauthorized.' });
+        return;
+      }
+      const { uid: userUID } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+
       const reference = doc(db, collectionName, req.params.id);
       const snapshot = await getDoc(reference);
 
-      const user = await getUser(req.headers?.authorization);
-
-      if (snapshot.get('created_by').id !== user.uid) {
+      if (snapshot.get('created_by') !== userUID) {
         res.status(401).json({ message: 'Permission denied.' });
         return;
       }
 
-      await removeRelations<T>(getRefs<T>(collectionName), reference);
+      const image = snapshot.get('image');
+      if (image) {
+        const fileExt = image.split(snapshot.id)[1].split('?')[0];
+        const imageRef = ref(
+          getStorage(),
+          `images/${collectionName}/${snapshot.id}${fileExt}`
+        );
+        await deleteObject(imageRef);
+      }
 
       await deleteDoc(reference);
 
@@ -95,11 +105,16 @@ export function del<T>(collectionName: Collection) {
   };
 }
 
-export function post<T>(collectionName: Collection) {
+export function post(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
-      const user = await getUser(req.headers?.authorization);
-      const uid = await generateUID(collectionName);
+      const token = req.headers?.authorization;
+      if (!token) {
+        res.status(401).json({ message: 'Unauthorized.' });
+        return;
+      }
+      const { uid: userUID } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+      const uid = crypto.randomUUID();
 
       const validationSchema = validationSchemas[collectionName];
       const validatedData = validationSchema.parse(req.body);
@@ -115,8 +130,6 @@ export function post<T>(collectionName: Collection) {
         await uploadBytes(imageRef, validatedFiles[0].buffer);
       }
 
-      const refs = getRefs<T>(collectionName);
-      const references = await createReferences<T>(refs, validatedData);
       const uploadedFiles = await getUploadLinks(
         req?.files as [],
         collectionName,
@@ -125,16 +138,12 @@ export function post<T>(collectionName: Collection) {
 
       const data = {
         ...validatedData,
-        ...references,
         ...uploadedFiles,
-        created_by: doc(db, 'users', user.uid)
+        created_by: userUID
       };
 
       const document = doc(db, collectionName, uid);
-
       await setDoc(document.withConverter(converters[collectionName]), data);
-
-      await createRelations<T>(refs, validatedData, document);
 
       res.status(200).json({ message: 'Success', uid, name: data.name });
     } catch (error) {

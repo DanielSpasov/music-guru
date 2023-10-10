@@ -29,7 +29,7 @@ export default function ArtistCard({ data, onClick }: CardProps<Artist>) {
           width="200px"
         />
         <Image
-          src={data.image}
+          src={data?.image || ''}
           onClick={onClick}
           position="absolute"
           left="0"
@@ -46,7 +46,7 @@ export default function ArtistCard({ data, onClick }: CardProps<Artist>) {
         textAlign="center"
         color={hover ? colors.primary : colors.text}
       >
-        {data.name}
+        {data?.name}
       </Text>
     </Box>
   );

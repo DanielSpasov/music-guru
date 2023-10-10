@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { User } from '../auth/helpers';
+
 import { Song } from '../songs/helpers';
 import { Album } from '../albums/helpers';
 import { ModelKeys } from '../../Api/helpers';
@@ -17,7 +17,7 @@ export interface Artist extends ArtistModel {
   image: string;
   uid: string;
   created_at: Date;
-  created_by: User;
+  created_by: string;
   albums: Album[];
   songs: Song[];
   features: Song[];

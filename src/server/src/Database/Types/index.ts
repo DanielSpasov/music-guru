@@ -1,8 +1,8 @@
 import { FirestoreDataConverter } from 'firebase/firestore/lite';
 
-import { Artist, DBArtist, UnpopulatedArtist } from './Artist';
-import { Album, DBAlbum, UnpopulatedAlbum } from './Album';
-import { Song, DBSong, UnpopulatedSong } from './Song';
+import { Artist, DBArtist } from './Artist';
+import { Album, DBAlbum } from './Album';
+import { Song, DBSong } from './Song';
 import { User } from './User';
 
 export { SignInData, SignUpData } from './User';
@@ -21,13 +21,8 @@ export type Reference<T> = {
 
 export type AnyObj = Song | Artist | Album | User;
 export type AnyDBObj = DBSong | DBArtist | DBAlbum;
-export type AnyUnpopulatedObj =
-  | UnpopulatedAlbum
-  | UnpopulatedArtist
-  | UnpopulatedSong;
 
 export type ObjConverter = FirestoreDataConverter<Partial<AnyObj>, AnyDBObj>;
 
 export { Song, Artist, Album, User };
 export { DBSong, DBArtist, DBAlbum };
-export { UnpopulatedArtist, UnpopulatedAlbum, UnpopulatedSong };

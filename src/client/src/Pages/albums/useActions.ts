@@ -27,12 +27,12 @@ export default function useActions({
         {
           icon: 'edit',
           perform: () => navigate('edit'),
-          disabled: uid !== data?.created_by.uid
+          disabled: uid !== data?.created_by
         },
         {
           icon: 'trash',
           perform: deleteAlbum ? deleteAlbum : () => null,
-          disabled: uid !== data?.created_by.uid
+          disabled: uid !== data?.created_by
         }
       ];
     default:

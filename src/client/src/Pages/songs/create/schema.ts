@@ -19,10 +19,11 @@ export const schema: FormSchema = [
       },
       {
         key: 'image',
-        label: 'Image URL',
+        label: 'Image',
         Component: Input,
         props: {
-          type: 'text'
+          type: 'file',
+          accept: ['image/jpeg', 'image/png']
         }
       },
       {
@@ -49,8 +50,7 @@ export const schema: FormSchema = [
         props: {
           fetchFn: ({ params }: any) =>
             Api.artists.fetch({ config: { params } }),
-          multiple: true,
-          type: 'text'
+          multiple: true
         }
       }
     ]

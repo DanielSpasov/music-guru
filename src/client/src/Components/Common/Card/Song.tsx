@@ -42,9 +42,6 @@ export default function SongCard({ data, onClick }: CardProps<Song>) {
         <Text fontSize="18px" color={colors.text}>
           {data.name}
         </Text>
-        <Text fontSize="18px" color={colors.text}>
-          {data.artist.name}
-        </Text>
       </Box>
     </Box>
   );

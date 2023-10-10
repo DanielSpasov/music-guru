@@ -11,7 +11,7 @@ const router = Router();
 router.get('/', fetch('artists'));
 router.get('/:id', get('artists'));
 
-router.post('/', [authorization, upload.any('image')], post<Artist>('artists'));
+router.post('/', [authorization, upload.any('image')], post('artists'));
 
 router.patch('/:id', authorization, patch<Artist>('artists'));
 

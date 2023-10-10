@@ -70,11 +70,12 @@ export default function ArtistDetails() {
           src={artist?.image || ''}
           alt={artist?.name}
           height="100%"
+          width="300px"
           borderRadius="50%"
           border={`8px solid ${colors.baseLight}`}
         />
 
-        <Box position="absolute" top="1.25em" left="52.5vw">
+        <Box position="absolute" top="1.25em" left="62.5vw">
           <Header title={artist?.name || ''} />
         </Box>
 
