@@ -6,14 +6,15 @@ import {
   doc,
   deleteDoc,
   updateDoc,
-  DocumentData
+  query,
+  where
 } from 'firebase/firestore/lite';
 import { deleteObject, getStorage, ref, uploadBytes } from 'firebase/storage';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import crypto from 'crypto';
 
-import { createReferences, updateRelations, getUploadLinks } from './helpers';
+import { getList, getOp, getUploadLinks, QueryProps } from './helpers';
 import { errorHandler } from '../../Error';
 import { getUser } from '../../Utils';
 import env from '../../env';
@@ -23,25 +24,31 @@ import { FileUploadSchema, validationSchemas } from '../../Database/Schemas';
 import { Collection, Serializer } from '../../Database/Types';
 import { serializers } from '../../Database/Serializers';
 import { converters } from '../../Database/Converters';
-import { getRefs } from '../../Database/References';
 import db from '../../Database';
 
 export function fetch(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
-      const serializer = req.query?.serializer as Serializer;
+      const { serializer = 'list', ...restQuery }: QueryProps = req.query;
+
       const reference = collection(db, collectionName).withConverter(
         converters[collectionName]
       );
-      const snapshot = await getDocs(reference);
-      const list = await Promise.all(
-        snapshot.docs.map(doc => {
-          const data = doc.data();
-          const serialized =
-            serializers?.[collectionName]?.[serializer]?.(data);
-          return serialized || data;
-        })
+
+      const filters = Object.entries(restQuery).map(([name, value]) => {
+        const [key, op] = name.split('__');
+        const operator = getOp(op);
+        return where(key, operator, value);
+      });
+
+      const list = getList(
+        await getDocs(
+          filters.length ? query(reference, ...filters) : reference
+        ),
+        collectionName,
+        serializer
       );
+
       res.status(200).json({ data: list });
     } catch (error) {
       errorHandler(req, res, error);
@@ -152,7 +159,7 @@ export function post(collectionName: Collection) {
   };
 }
 
-export function patch<T>(collectionName: Collection) {
+export function patch(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
       const user = await getUser(req.headers?.authorization);
@@ -168,13 +175,7 @@ export function patch<T>(collectionName: Collection) {
       const validationSchema = validationSchemas[collectionName];
       const validatedData = validationSchema.parse(req.body);
 
-      const refs = getRefs<T>(collectionName);
-      const references = await createReferences<T>(refs, validatedData);
-
-      await updateDoc(reference, { ...validatedData, ...references });
-
-      const oldData = snapshot.data() as DocumentData;
-      await updateRelations<T>(refs, validatedData, oldData, reference);
+      await updateDoc(reference, validatedData);
 
       res.status(200).json({
         message: 'Success',

@@ -6,15 +6,15 @@ import { DetailedSong, ListSong } from './Song';
 
 export const serializers: CollectionSerializer = {
   artists: {
-    list: async (data: Artist) => new ListArtist(data),
-    detailed: async (data: Artist) => new DetailedArtist(data)
+    list: (data: Artist) => new ListArtist(data),
+    detailed: (data: Artist) => new DetailedArtist(data)
   },
   albums: {
-    list: async (data: Album) => new ListAlbum(data),
-    detailed: async (data: Album) => new DetailedAlbum(data)
+    list: (data: Album) => new ListAlbum(data),
+    detailed: (data: Album) => new DetailedAlbum(data)
   },
   songs: {
-    list: async (data: Song) => new ListSong(data),
-    detailed: async (data: Song) => new DetailedSong(data)
+    list: (data: Song) => new ListSong(data),
+    detailed: (data: Song) => new DetailedSong(data)
   }
 };

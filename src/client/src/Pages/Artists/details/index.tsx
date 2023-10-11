@@ -11,15 +11,40 @@ import {
   Text
 } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
-import { Artist, View, views } from '../helpers';
+import { View, views } from './views';
 import useActions from '../useActions';
+import { Artist } from '../helpers';
 import Api from '../../../Api';
 
 export default function ArtistDetails() {
   const [loading, setLoading] = useState<boolean>(true);
   const [artist, setArtist] = useState<Artist>();
 
+  const [loadingView, setLoadingView] = useState<boolean>();
+  const [viewData, setViewData] = useState<any[]>([]);
   const [view, setView] = useState<View>();
+
+  // View
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!view) return;
+        setLoadingView(true);
+
+        const params = view?.params
+          ? { [view?.params.name]: artist?.[view?.params.key] }
+          : {};
+        const { data } = await Api[view.model].fetch({
+          config: { params }
+        });
+        setViewData(data);
+      } catch (error) {
+        errorHandler(error);
+      } finally {
+        setLoadingView(false);
+      }
+    })();
+  }, [view, artist]);
 
   const { colors } = useContext(ThemeContext);
 
@@ -75,30 +100,33 @@ export default function ArtistDetails() {
           border={`8px solid ${colors.baseLight}`}
         />
 
-        <Box position="absolute" top="1.25em" left="62.5vw">
+        <Box position="absolute" top="1.25em" left="52.5vw">
           <Header title={artist?.name || ''} />
         </Box>
 
         <Box display="flex" padding="0 1em">
-          {views.map(view =>
-            artist?.[view.key]?.length ? (
-              <Text
-                key={view.key}
-                padding="0 .25em"
-                fontSize="1.25em"
-                onClick={() => setView(view)}
-              >
-                {view.label}
-              </Text>
-            ) : null
-          )}
+          {views.map((view, i) => (
+            <Text
+              key={i}
+              padding="0 .25em"
+              fontSize="1.25em"
+              onClick={() => setView(view)}
+            >
+              {view.label}
+            </Text>
+          ))}
         </Box>
       </Box>
 
       <Box display="flex" justifyContent="center">
         {view && (
           <Box display="flex" flexWrap="wrap">
-            <List data={artist?.[view.key] || []} model={view.model} />
+            <List
+              data={viewData}
+              model={view.model}
+              loading={loadingView}
+              skeletonLength={2}
+            />
           </Box>
         )}
       </Box>
