@@ -12,6 +12,7 @@ export default function SongCard({ data, onClick }: CardProps<Song>) {
 
   return (
     <Box
+      margin=".5em"
       boxSizing="content-box"
       display="flex"
       alignItems="center"

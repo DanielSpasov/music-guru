@@ -36,7 +36,7 @@ function CardSkeleton({ model }: { model: ModelKeys }) {
     case 'songs':
       return (
         <Box
-          margin="1em"
+          margin=".5em"
           display="flex"
           flexDirection="column"
           alignItems="center"
