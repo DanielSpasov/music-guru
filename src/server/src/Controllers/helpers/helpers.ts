@@ -11,9 +11,7 @@ import { File } from '../../Database/Types/File';
 
 export type QueryProps = {
   serializer?: Serializer;
-  filter?: {
-    [key: string]: string;
-  };
+  [key: string]: any;
 };
 
 export async function getUploadLinks(
