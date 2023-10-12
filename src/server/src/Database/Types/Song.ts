@@ -11,7 +11,6 @@ export interface Song extends z.infer<typeof BaseSongSchema> {
   created_by: string;
   artist: string;
   features: string[];
-  albums: string[];
 }
 
 export interface DBSong {
@@ -22,5 +21,4 @@ export interface DBSong {
   created_by: string;
   artist: string;
   features: string[];
-  albums: string[];
 }

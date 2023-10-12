@@ -22,7 +22,6 @@ export interface Song extends SongModel {
   created_by: string;
   artist: string;
   features: string[];
-  albums: string[];
 }
 
 export type UseActionsProps = {

@@ -12,7 +12,6 @@ const songConverter: FirestoreDataConverter<Partial<Song>, DBSong> = {
       created_at: song.created_at.toDate(),
       release_date: song.release_date.toDate(),
       created_by: song.created_by,
-      albums: song.albums,
       artist: song.artist,
       features: song.features
     };
@@ -31,9 +30,6 @@ const songConverter: FirestoreDataConverter<Partial<Song>, DBSong> = {
       artist: String(snapshot.artist),
       features: snapshot.features
         ? (snapshot.features as string[]).map(x => String(x))
-        : [],
-      albums: snapshot.albums
-        ? (snapshot.albums as string[]).map(x => String(x))
         : []
     };
   }

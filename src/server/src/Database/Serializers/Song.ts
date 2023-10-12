@@ -20,7 +20,6 @@ export class DetailedSong {
   created_by: string;
   release_date: Date;
   artist: string;
-  albums: string[];
   features: string[];
 
   constructor(song: Song) {
@@ -31,7 +30,6 @@ export class DetailedSong {
     this.created_by = song.created_by;
     this.release_date = song.release_date;
     this.artist = song.artist;
-    this.albums = song.albums;
     this.features = song.features;
   }
 }

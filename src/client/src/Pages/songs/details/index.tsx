@@ -103,15 +103,14 @@ export default function SongDetails() {
         setLoadingAlbums(true);
         if (!song) return;
 
-        const albums = await Promise.all(
-          song.albums.map(async albumUID => {
-            const { data } = await Api.albums.get({
-              id: albumUID,
-              config: { params: { serializer: 'list' } }
-            });
-            return data;
-          })
-        );
+        const { data: albums } = await Api.albums.fetch({
+          config: {
+            params: {
+              serializer: 'list',
+              songs__contains: song?.uid
+            }
+          }
+        });
         setAlbums(albums);
       } catch (error) {
         errorHandler(error);

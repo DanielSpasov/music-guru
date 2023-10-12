@@ -3,11 +3,11 @@ import {
   getStorage,
   getDownloadURL
 } from 'firebase/storage';
+import { QuerySnapshot, WhereFilterOp } from 'firebase/firestore/lite';
 
 import { Collection, Serializer } from '../../Database/Types';
 import { serializers } from '../../Database/Serializers';
 import { File } from '../../Database/Types/File';
-import { QuerySnapshot, WhereFilterOp } from 'firebase/firestore/lite';
 
 export type QueryProps = {
   serializer?: Serializer;
