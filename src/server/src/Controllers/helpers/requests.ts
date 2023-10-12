@@ -7,7 +7,8 @@ import {
   deleteDoc,
   updateDoc,
   query,
-  where
+  where,
+  documentId
 } from 'firebase/firestore/lite';
 import { deleteObject, getStorage, ref, uploadBytes } from 'firebase/storage';
 import jwt, { JwtPayload } from 'jsonwebtoken';
@@ -38,7 +39,7 @@ export function fetch(collectionName: Collection) {
       const filters = Object.entries(restQuery).map(([name, value]) => {
         const [key, op] = name.split('__');
         const operator = getOp(op);
-        return where(key, operator, value);
+        return where(key === 'uid' ? documentId() : key, operator, value);
       });
 
       const list = getList(

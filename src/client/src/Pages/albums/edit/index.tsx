@@ -1,37 +1,50 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, Loader, PageLayout } from '../../../Components';
-import { Album, AlbumSchema } from '../helpers';
 import { errorHandler } from '../../../Handlers';
+import { AlbumSchema } from '../helpers';
 import { schema } from './schema';
 import Api from '../../../Api';
 
 export default function EditAlbum() {
+  const [defaultValues, setDefaultValues] = useState({});
   const [loading, setLoading] = useState<boolean>(true);
   const [errors, setErrors] = useState<FormError[]>([]);
-  const [album, setAlbum] = useState<Album>();
+
   const { id = '0' } = useParams();
   const navigate = useNavigate();
-
-  const defaultValues = useMemo(
-    () => ({
-      ...album,
-      artist: [album?.artist]
-    }),
-    [album]
-  );
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await Api.albums.get({
+        const { data: album } = await Api.albums.get({
           id,
           config: { params: { serializer: 'detailed' } }
         });
-        setAlbum(data);
+
+        const [{ data: artist }, { data: songs }] = await Promise.all([
+          Api.artists.get({
+            id: album.artist,
+            config: { params: { serializer: 'list' } }
+          }),
+          Api.songs.fetch({
+            config: {
+              params: {
+                serializer: 'list',
+                uid__in: album.songs
+              }
+            }
+          })
+        ]);
+
+        setDefaultValues({
+          ...album,
+          artist,
+          songs
+        });
       } catch (error) {
         errorHandler(error, navigate);
       } finally {

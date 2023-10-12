@@ -49,6 +49,8 @@ export function getOp(op: string): WhereFilterOp {
   switch (op) {
     case 'contains':
       return 'array-contains';
+    case 'in':
+      return op;
     default:
       return '==';
   }

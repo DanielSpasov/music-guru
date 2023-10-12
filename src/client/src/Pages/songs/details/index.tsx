@@ -165,7 +165,7 @@ export default function SongDetails() {
           </Box>
         </Box>
 
-        {song && (
+        {!loading && (
           <Box width="100%" margin="0.5em">
             <Box display="flex" justifyContent="center">
               <Box
