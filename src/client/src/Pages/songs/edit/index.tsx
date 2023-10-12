@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, Loader, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
-import { SongSchema } from '../helpers';
+import { EditSongSchema } from '../helpers';
 import { schema } from './schema';
 import Api from '../../../Api';
 
@@ -41,7 +41,7 @@ export default function EditSong() {
 
         setDefaultValues({
           ...song,
-          artist,
+          artist: [artist],
           features
         });
       } catch (error) {
@@ -55,9 +55,9 @@ export default function EditSong() {
   const onSubmit = useCallback(
     async (data: any) => {
       try {
-        const validData = SongSchema.parse({
+        const validData = EditSongSchema.parse({
           ...data,
-          artist: data.artist[0]?.uid,
+          artist: data.artist[0].uid,
           features: data?.features?.map((x: any) => x.uid)
         });
         const { data: updated } = await Api.songs.patch({

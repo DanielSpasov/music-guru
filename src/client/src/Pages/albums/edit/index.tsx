@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { FormError } from '../../../Components/Forms/Form/helpers';
 import { Form, Loader, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
-import { AlbumSchema } from '../helpers';
+import { EditAlbumSchema } from '../helpers';
 import { schema } from './schema';
 import Api from '../../../Api';
 
@@ -42,7 +42,7 @@ export default function EditAlbum() {
 
         setDefaultValues({
           ...album,
-          artist,
+          artist: [artist],
           songs
         });
       } catch (error) {
@@ -56,7 +56,7 @@ export default function EditAlbum() {
   const onSubmit = useCallback(
     async (data: any) => {
       try {
-        const validData = AlbumSchema.parse({
+        const validData = EditAlbumSchema.parse({
           ...data,
           artist: data.artist[0].uid,
           songs: data.songs.map((x: any) => x.uid)

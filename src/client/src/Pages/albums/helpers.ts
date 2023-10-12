@@ -7,6 +7,11 @@ export const Schema = z.object({
     .max(128, { message: 'Name is too long.' })
 });
 
+export const EditAlbumSchema = Schema.extend({
+  artist: z.string().uuid(),
+  songs: z.array(z.string().uuid())
+});
+
 export const AlbumSchema = Schema.extend({
   artist: z.string().uuid(),
   image: z.instanceof(FileList),

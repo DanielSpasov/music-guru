@@ -17,7 +17,6 @@ import crypto from 'crypto';
 
 import { getList, getOp, getUploadLinks, QueryProps } from './helpers';
 import { errorHandler } from '../../Error';
-import { getUser } from '../../Utils';
 import env from '../../env';
 
 // Database imports
@@ -163,12 +162,18 @@ export function post(collectionName: Collection) {
 export function patch(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
-      const user = await getUser(req.headers?.authorization);
+      const token = req.headers?.authorization;
+      if (!token) {
+        res.status(401).json({ message: 'Unauthorized.' });
+        return;
+      }
+      const { uid: userUID } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+
       const reference = doc(db, collectionName, req.params.id).withConverter(
         converters[collectionName]
       );
       const snapshot = await getDoc(reference);
-      if (snapshot.get('created_by').id !== user.uid) {
+      if (snapshot.get('created_by') !== userUID) {
         res.status(401).json({ message: 'Permission denied.' });
         return;
       }

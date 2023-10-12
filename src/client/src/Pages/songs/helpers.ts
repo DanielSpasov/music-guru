@@ -8,6 +8,11 @@ export const Schema = z.object({
   release_date: z.coerce.date().optional()
 });
 
+export const EditSongSchema = Schema.extend({
+  artist: z.string().uuid(),
+  features: z.array(z.string().uuid()).optional()
+});
+
 export const SongSchema = Schema.extend({
   artist: z.string().uuid(),
   image: z.instanceof(FileList),
