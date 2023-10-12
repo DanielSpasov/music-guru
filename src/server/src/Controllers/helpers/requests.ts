@@ -24,6 +24,7 @@ import { FileUploadSchema, validationSchemas } from '../../Database/Schemas';
 import { Collection, Serializer } from '../../Database/Types';
 import { serializers } from '../../Database/Serializers';
 import { converters } from '../../Database/Converters';
+import { checks } from '../../Database/checks';
 import db from '../../Database';
 
 export function fetch(collectionName: Collection) {
@@ -90,6 +91,12 @@ export function del(collectionName: Collection) {
 
       if (snapshot.get('created_by') !== userUID) {
         res.status(401).json({ message: 'Permission denied.' });
+        return;
+      }
+
+      const error = await checks?.[collectionName]?.del(snapshot);
+      if (error) {
+        res.status(400).json({ message: error });
         return;
       }
 
