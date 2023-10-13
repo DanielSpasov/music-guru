@@ -14,11 +14,6 @@
         "private": false
       },
       {
-        "path": "add",
-        "filePath": "/artists/create",
-        "private": true
-      },
-      {
         "path": ":id",
         "filePath": "/artists/details",
         "routes": [

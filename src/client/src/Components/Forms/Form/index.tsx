@@ -13,7 +13,8 @@ export default function Form({
   onSubmit = () => null,
   defaultValues = {},
   errors = [],
-  additionalInfo
+  additionalInfo,
+  onClose
 }: FormProps) {
   const { register, handleSubmit, setValue, getValues } = useForm({
     defaultValues
@@ -37,7 +38,7 @@ export default function Form({
 
   return (
     <StyledForm onSubmit={handleSubmit(submitFn)} encType="multipart/form-data">
-      <Heading title={header || 'Form'} />
+      <Heading title={header || 'Form'} size="medium" />
       {schema.map(section => (
         <Section
           key={section.key}
@@ -50,7 +51,11 @@ export default function Form({
         />
       ))}
       <Box display="flex" justifyContent="space-between">
-        <Button variant="secondary" type="button" onClick={() => navigate(-1)}>
+        <Button
+          variant="secondary"
+          type="button"
+          onClick={onClose ? onClose : () => navigate(-1)}
+        >
           Go Back
         </Button>
         <Button variant="primary" type="submit" disabled={loading}>

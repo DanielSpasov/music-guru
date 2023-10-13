@@ -41,6 +41,7 @@ export type FormProps = {
   onSubmit: SubmitHandler<any>;
   schema: FormSchema;
   defaultValues?: any;
+  onClose?: (props: any) => void;
   header?: string;
   errors?: FormError[];
   additionalInfo?: JSX.Element;
