@@ -34,7 +34,8 @@ const StyledBox = styled('div')<BoxProps>`
   ${text};
 
   &:hover {
-    cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
+    cursor: ${({ onClick, cursor }) =>
+      cursor ? cursor : onClick ? 'pointer' : 'auto'};
     ${({ hoverCSS }) => hoverCSS};
   }
 `;

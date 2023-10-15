@@ -25,7 +25,8 @@ export default function Modal({
         width="100%"
         height="100%"
         opacity={open ? '.75' : '0'}
-        onClick={closeOnOutsideClick ? onClose : () => null}
+        cursor="auto"
+        {...(closeOnOutsideClick ? { onClick: onClose } : {})}
       />
       <ModalContent
         transform={`${open ? 'translateY(0em)' : 'translateY(1.25em)'}`}

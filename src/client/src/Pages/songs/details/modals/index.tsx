@@ -5,12 +5,7 @@ import EditSong from './Edit';
 export default function Modals({ openEdit, setOpenEdit }: ModalsProps) {
   return (
     <Box>
-      <Modal
-        open={openEdit}
-        onClose={() => setOpenEdit(false)}
-        // showCloseIcon
-        // showCloseButton
-      >
+      <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
         <EditSong onClose={() => setOpenEdit(false)} />
       </Modal>
     </Box>
