@@ -16,7 +16,7 @@ export default function Form({
   additionalInfo,
   onClose
 }: FormProps) {
-  const { register, handleSubmit, setValue, getValues } = useForm({
+  const { register, handleSubmit, setValue, getValues, reset } = useForm({
     defaultValues
   });
   const [loading, setLoading] = useState(false);
@@ -36,27 +36,34 @@ export default function Form({
     [onSubmit]
   );
 
+  const closeFn = useCallback(
+    (props: any) => {
+      if (onClose) onClose(props);
+      else navigate(-1);
+      reset();
+    },
+    [onClose, navigate, reset]
+  );
+
   return (
     <StyledForm onSubmit={handleSubmit(submitFn)} encType="multipart/form-data">
-      <Heading title={header || 'Form'} size="medium" />
-      {schema.map(section => (
-        <Section
-          key={section.key}
-          title={section.title}
-          fields={section.fields}
-          register={register}
-          setFormValue={setValue}
-          getValues={getValues}
-          errors={errors}
-        />
-      ))}
+      <Box>
+        <Heading title={header || 'Form'} size="medium" />
+        {schema.map(section => (
+          <Section
+            key={section.key}
+            title={section.title}
+            fields={section.fields}
+            register={register}
+            setFormValue={setValue}
+            getValues={getValues}
+            errors={errors}
+          />
+        ))}
+      </Box>
       <Box display="flex" justifyContent="space-between">
-        <Button
-          variant="secondary"
-          type="button"
-          onClick={onClose ? onClose : () => navigate(-1)}
-        >
-          Go Back
+        <Button variant="secondary" type="button" onClick={closeFn}>
+          Close
         </Button>
         <Button variant="primary" type="submit" disabled={loading}>
           {!loading ? 'Submit' : <Loader size="s" />}
@@ -68,17 +75,8 @@ export default function Form({
 }
 
 const StyledForm = styled('form')`
-  background-color: ${({ theme: { colors } }) => colors.base};
-  box-shadow: rgba(0, 0, 0, 0.65) 0px 0px 5px;
-  flex-direction: column;
-  border-radius: 10px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 600px;
-  min-width: 400px;
-  padding: 0.75em;
+  height: 100%;
   display: flex;
-  margin: auto;
-  width: 35%;
-  top: 50%;
+  flex-direction: column;
+  justify-content: space-between;
 `;

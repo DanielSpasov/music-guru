@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useContext } from 'react';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
@@ -11,26 +11,30 @@ import {
   PageLayout,
   Text
 } from '../../../Components';
+import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Artist } from '../../artists/helpers';
 import { Album } from '../../albums/helpers';
-import useActions from '../useActions';
 import { Song } from '../helpers';
 import Api from '../../../Api';
+import Modals from './modals';
 
 export default function SongDetails() {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [song, setSong] = useState<Song>();
 
-  const [loadingFeatures, setLoadingFeatures] = useState<boolean>(true);
+  const [loadingFeatures, setLoadingFeatures] = useState(true);
   const [features, setFeatures] = useState<Artist[]>([]);
 
-  const [loadingAlbums, setLoadingAlbums] = useState<boolean>(true);
+  const [loadingAlbums, setLoadingAlbums] = useState(true);
   const [albums, setAlbums] = useState<Album[]>([]);
 
-  const [loadingArtist, setLoadingArtist] = useState<boolean>(true);
+  const [loadingArtist, setLoadingArtist] = useState(true);
   const [artist, setArtist] = useState<Artist>();
 
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const { uid } = useContext(AuthContext);
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
@@ -47,12 +51,6 @@ export default function SongDetails() {
       setLoading(false);
     }
   }, [song, navigate]);
-
-  const actions = useActions({
-    model: 'song-details',
-    data: song,
-    deleteSong
-  });
 
   useEffect(() => {
     (async () => {
@@ -143,7 +141,18 @@ export default function SongDetails() {
     <PageLayout
       title={song?.name || 'Loading...'}
       loading={loading}
-      actions={actions}
+      actions={[
+        {
+          icon: 'edit',
+          perform: () => setOpenEdit(true),
+          disabled: uid !== song?.created_by
+        },
+        {
+          icon: 'trash',
+          perform: deleteSong,
+          disabled: uid !== song?.created_by
+        }
+      ]}
     >
       <Box
         display="flex"
@@ -214,6 +223,8 @@ export default function SongDetails() {
           </Box>
         )}
       </Box>
+
+      <Modals openEdit={openEdit} setOpenEdit={setOpenEdit} />
     </PageLayout>
   );
 }

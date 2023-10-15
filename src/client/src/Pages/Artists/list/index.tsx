@@ -11,7 +11,7 @@ export default function Artists() {
   const [loading, setLoading] = useState<boolean>(true);
   const [artists, setArtists] = useState<Artist[]>([]);
 
-  const [open, setOpen] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
 
   const { isAuthenticated } = useContext(AuthContext);
 
@@ -38,7 +38,7 @@ export default function Artists() {
       actions={[
         {
           icon: 'add',
-          perform: () => setOpen(true),
+          perform: () => setOpenCreate(true),
           disabled: !isAuthenticated
         }
       ]}
@@ -47,7 +47,11 @@ export default function Artists() {
         <List data={artists} model="artists" loading={loading} />
       </Box>
 
-      <Modals open={open} setOpen={setOpen} fetchArtists={fetchArtists} />
+      <Modals
+        openCreate={openCreate}
+        setOpenCreate={setOpenCreate}
+        fetchArtists={fetchArtists}
+      />
     </PageLayout>
   );
 }

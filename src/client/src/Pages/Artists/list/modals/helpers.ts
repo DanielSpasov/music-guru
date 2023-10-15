@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
 
 export type ModalsProps = {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  openCreate: boolean;
+  setOpenCreate: Dispatch<SetStateAction<boolean>>;
   fetchArtists: () => void;
 };
 

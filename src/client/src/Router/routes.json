@@ -86,11 +86,6 @@
             "path": "index",
             "filePath": "/songs/details",
             "private": false
-          },
-          {
-            "path": "edit",
-            "filePath": "/songs/edit",
-            "private": true
           }
         ]
       }
