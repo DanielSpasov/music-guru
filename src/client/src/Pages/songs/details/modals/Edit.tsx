@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { Calendar, Form, Input, Select } from '../../../../Components';
+import { Calendar, Form, Input, Loader, Select } from '../../../../Components';
 import { FormError } from '../../../../Components/Forms/Form/helpers';
 import { errorHandler } from '../../../../Handlers';
 import { EditSongSchema } from '../../helpers';
@@ -12,12 +12,14 @@ import Api from '../../../../Api';
 export default function EditSong({ onClose }: EditSongProps) {
   const [defaultValues, setDefaultValues] = useState({});
   const [errors, setErrors] = useState<FormError[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const { id = '0' } = useParams();
 
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const { data: song } = await Api.songs.get({
           id,
           config: { params: { serializer: 'detailed' } }
@@ -45,6 +47,8 @@ export default function EditSong({ onClose }: EditSongProps) {
         });
       } catch (error) {
         errorHandler(error);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [id]);
@@ -74,6 +78,7 @@ export default function EditSong({ onClose }: EditSongProps) {
     [id, onClose]
   );
 
+  if (loading) return <Loader />;
   return (
     <Form
       header="Edit Song"
