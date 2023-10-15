@@ -5,6 +5,7 @@ import { ModalProps } from './helpers';
 
 export default function Modal({
   open,
+  type = 'form',
   onClose,
   children,
   closeOnOutsideClick = false,
@@ -29,6 +30,7 @@ export default function Modal({
         {...(closeOnOutsideClick ? { onClick: onClose } : {})}
       />
       <ModalContent
+        type={type}
         transform={`${open ? 'translateY(0em)' : 'translateY(1.25em)'}`}
         visibility={`${open ? '' : 'hidden'}`}
         opacity={`${open ? '1' : '0'}`}
@@ -64,7 +66,7 @@ const ModalContent = styled(Box)`
   width: 35%;
 
   padding: 0.75em;
-  height: 50%;
+  height: ${({ type }) => (type === 'alert' ? '20%' : '50%')};
 
   position: absolute;
   margin: auto;

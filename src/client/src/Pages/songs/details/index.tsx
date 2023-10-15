@@ -33,6 +33,7 @@ export default function SongDetails() {
   const [artist, setArtist] = useState<Artist>();
 
   const [openEdit, setOpenEdit] = useState(false);
+  const [openDel, setOpenDel] = useState(false);
 
   const { uid } = useContext(AuthContext);
   const { id = '0' } = useParams();
@@ -149,7 +150,7 @@ export default function SongDetails() {
         },
         {
           icon: 'trash',
-          perform: deleteSong,
+          perform: () => setOpenDel(true),
           disabled: uid !== song?.created_by
         }
       ]}
@@ -224,7 +225,13 @@ export default function SongDetails() {
         )}
       </Box>
 
-      <Modals openEdit={openEdit} setOpenEdit={setOpenEdit} />
+      <Modals
+        openEdit={openEdit}
+        setOpenEdit={setOpenEdit}
+        openDel={openDel}
+        setOpenDel={setOpenDel}
+        deleteSong={deleteSong}
+      />
     </PageLayout>
   );
 }
