@@ -47,11 +47,7 @@ export default function Artists() {
         <List data={artists} model="artists" loading={loading} />
       </Box>
 
-      <Modals
-        openCreate={openCreate}
-        setOpenCreate={setOpenCreate}
-        fetchArtists={fetchArtists}
-      />
+      <Modals openCreate={openCreate} setOpenCreate={setOpenCreate} />
     </PageLayout>
   );
 }

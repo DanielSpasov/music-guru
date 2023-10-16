@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -8,11 +9,10 @@ import { errorHandler } from '../../../../Handlers';
 import { CreateArtistProps } from './helpers';
 import Api from '../../../../Api';
 
-export default function CreateArtist({
-  onClose,
-  fetchArtists
-}: CreateArtistProps) {
+export default function CreateArtist({ onClose }: CreateArtistProps) {
   const [errors, setErrors] = useState<FormError[]>([]);
+
+  const navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (data: Artist) => {
@@ -24,14 +24,14 @@ export default function CreateArtist({
         });
         setErrors([]);
         toast.success(`Successfully created artist: ${res.name}`);
-        fetchArtists();
         onClose();
+        navigate(`/artists/${res.uid}`);
       } catch (error) {
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);
       }
     },
-    [onClose, fetchArtists]
+    [onClose, navigate]
   );
 
   return (
