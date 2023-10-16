@@ -13,3 +13,8 @@ export type EditSongProps = {
   onClose: () => void;
   fetchSong: () => Promise<void>;
 };
+
+export type DeleteSongProps = {
+  setOpenDel: Dispatch<SetStateAction<boolean>>;
+  deleteSong: () => Promise<void>;
+};
