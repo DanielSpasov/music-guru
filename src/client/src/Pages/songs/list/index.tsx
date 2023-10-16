@@ -47,11 +47,7 @@ export default function Songs() {
         <List data={songs} model="songs" loading={loading} />
       </Box>
 
-      <Modals
-        fetchSongs={fetchSongs}
-        openCreate={openCreate}
-        setOpenCreate={setOpenCreate}
-      />
+      <Modals openCreate={openCreate} setOpenCreate={setOpenCreate} />
     </PageLayout>
   );
 }

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -8,8 +9,10 @@ import { CreateSongProps } from './helpers';
 import { SongSchema } from '../../helpers';
 import Api from '../../../../Api';
 
-export default function CreateSong({ onClose, fetchSongs }: CreateSongProps) {
+export default function CreateSong({ onClose }: CreateSongProps) {
   const [errors, setErrors] = useState<FormError[]>([]);
+
+  const navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (data: any) => {
@@ -25,14 +28,14 @@ export default function CreateSong({ onClose, fetchSongs }: CreateSongProps) {
         });
         setErrors([]);
         toast.success(`Successfully created song: ${res.name}`);
-        await fetchSongs();
         onClose();
+        navigate(`/songs/${res.uid}`);
       } catch (error) {
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);
       }
     },
-    [onClose, fetchSongs]
+    [onClose, navigate]
   );
 
   return (
