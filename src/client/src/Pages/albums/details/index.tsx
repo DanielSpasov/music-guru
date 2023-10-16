@@ -1,16 +1,22 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useContext } from 'react';
 import { toast } from 'react-toastify';
 
 import { Box, Heading, Image, List, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Artist } from '../../artists/helpers';
 import { Song } from '../../songs/helpers';
-import useActions from '../useActions';
 import { Album } from '../helpers';
 import Api from '../../../Api';
+import Modals from './modals';
 
 export default function AlbumDetails() {
+  const { uid: userUID } = useContext(AuthContext);
+
+  const { id = '0' } = useParams();
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState<boolean>(true);
   const [album, setAlbum] = useState<Album>();
 
@@ -20,8 +26,8 @@ export default function AlbumDetails() {
   const [loadingSongs, setLoadingSongs] = useState<boolean>(true);
   const [songs, setSongs] = useState<Song[]>([]);
 
-  const { id = '0' } = useParams();
-  const navigate = useNavigate();
+  const [openEdit, setOpenEdit] = useState<boolean>(false);
+  const [openDel, setOpenDel] = useState<boolean>(false);
 
   const deleteAlbum = useCallback(async () => {
     try {
@@ -37,27 +43,23 @@ export default function AlbumDetails() {
     }
   }, [album, navigate]);
 
-  const actions = useActions({
-    model: 'album-details',
-    data: album,
-    deleteAlbum
-  });
+  const fetchAlbum = useCallback(async () => {
+    try {
+      const { data } = await Api.albums.get({
+        id,
+        config: { params: { serializer: 'detailed' } }
+      });
+      setAlbum(data);
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await Api.albums.get({
-          id,
-          config: { params: { serializer: 'detailed' } }
-        });
-        setAlbum(data);
-      } catch (error) {
-        errorHandler(error, navigate);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [id, navigate]);
+    (async () => await fetchAlbum())();
+  }, [fetchAlbum]);
 
   // Artist
   useEffect(() => {
@@ -104,7 +106,22 @@ export default function AlbumDetails() {
   }, [album]);
 
   return (
-    <PageLayout title={album?.name || ''} loading={loading} actions={actions}>
+    <PageLayout
+      title={album?.name || ''}
+      loading={loading}
+      actions={[
+        {
+          icon: 'edit',
+          perform: () => setOpenEdit(true),
+          disabled: userUID !== album?.created_by
+        },
+        {
+          icon: 'trash',
+          perform: () => setOpenDel(true),
+          disabled: userUID !== album?.created_by
+        }
+      ]}
+    >
       <Box
         display="flex"
         flexDirection="column"
@@ -138,6 +155,15 @@ export default function AlbumDetails() {
           </Box>
         )}
       </Box>
+
+      <Modals
+        openDel={openDel}
+        setOpenDel={setOpenDel}
+        openEdit={openEdit}
+        setOpenEdit={setOpenEdit}
+        fetchAlbum={fetchAlbum}
+        deleteAlbum={deleteAlbum}
+      />
     </PageLayout>
   );
 }
