@@ -36,11 +36,6 @@
         "private": false
       },
       {
-        "path": "add",
-        "filePath": "/albums/create",
-        "private": true
-      },
-      {
         "path": ":id",
         "filePath": "/albums/details",
         "routes": [
@@ -48,11 +43,6 @@
             "path": "index",
             "filePath": "/albums/details",
             "private": false
-          },
-          {
-            "path": "edit",
-            "filePath": "/albums/edit",
-            "private": true
           }
         ]
       }
@@ -66,11 +56,6 @@
         "path": "index",
         "filePath": "/songs/list",
         "private": false
-      },
-      {
-        "path": "add",
-        "filePath": "/songs/create",
-        "private": true
       },
       {
         "path": ":id",
