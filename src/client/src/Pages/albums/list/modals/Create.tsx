@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -8,11 +9,10 @@ import { CreateAlbumProps } from './helpers';
 import { AlbumSchema } from '../../helpers';
 import Api from '../../../../Api';
 
-export default function CreateAlbum({
-  fetchAlbums,
-  onClose
-}: CreateAlbumProps) {
+export default function CreateAlbum({ onClose }: CreateAlbumProps) {
   const [errors, setErrors] = useState<FormError[]>([]);
+
+  const navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (data: any) => {
@@ -28,14 +28,14 @@ export default function CreateAlbum({
         });
         setErrors([]);
         toast.success(`Successfully created album: ${res.name}`);
-        await fetchAlbums();
         onClose();
+        navigate(`/albums/${res.uid}`);
       } catch (error) {
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);
       }
     },
-    [onClose, fetchAlbums]
+    [onClose, navigate]
   );
 
   return (

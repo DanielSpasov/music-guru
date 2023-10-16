@@ -46,11 +46,7 @@ export default function Albums() {
         <List data={albums} model="albums" loading={loading} />
       </Box>
 
-      <Modals
-        openCreate={openCreate}
-        setOpenCreate={setOpenCreate}
-        fetchAlbums={fetchAlbums}
-      />
+      <Modals openCreate={openCreate} setOpenCreate={setOpenCreate} />
     </PageLayout>
   );
 }
