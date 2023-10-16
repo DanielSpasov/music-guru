@@ -9,7 +9,7 @@ import { EditSongSchema } from '../../helpers';
 import { EditSongProps } from './helpers';
 import Api from '../../../../Api';
 
-export default function EditSong({ onClose }: EditSongProps) {
+export default function EditSong({ onClose, fetchSong }: EditSongProps) {
   const [defaultValues, setDefaultValues] = useState({});
   const [errors, setErrors] = useState<FormError[]>([]);
   const [loading, setLoading] = useState(true);
@@ -66,16 +66,15 @@ export default function EditSong({ onClose }: EditSongProps) {
           body: validData
         });
         setErrors([]);
-        toast.success(
-          `Successfully updated information about song: ${updated.name}`
-        );
+        toast.success(`Successfully updated song: ${updated.name}`);
+        await fetchSong();
         onClose();
       } catch (error) {
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);
       }
     },
-    [id, onClose]
+    [id, onClose, fetchSong]
   );
 
   if (loading) return <Loader />;

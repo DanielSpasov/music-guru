@@ -39,6 +39,21 @@ export default function SongDetails() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
+  const fetchSong = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data } = await Api.songs.get({
+        id,
+        config: { params: { serializer: 'detailed' } }
+      });
+      setSong(data);
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
   const deleteSong = useCallback(async () => {
     try {
       setLoading(true);
@@ -47,28 +62,15 @@ export default function SongDetails() {
       navigate('/songs');
       toast.success(`Successfully deleted song: ${song?.name}`);
     } catch (error) {
-      errorHandler(error, navigate);
+      errorHandler(error);
     } finally {
       setLoading(false);
     }
   }, [song, navigate]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { data } = await Api.songs.get({
-          id,
-          config: { params: { serializer: 'detailed' } }
-        });
-        setSong(data);
-      } catch (error) {
-        errorHandler(error, navigate);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [id, navigate]);
+    (async () => await fetchSong())();
+  }, [fetchSong]);
 
   // Features
   useEffect(() => {
@@ -231,6 +233,7 @@ export default function SongDetails() {
         openDel={openDel}
         setOpenDel={setOpenDel}
         deleteSong={deleteSong}
+        fetchSong={fetchSong}
       />
     </PageLayout>
   );

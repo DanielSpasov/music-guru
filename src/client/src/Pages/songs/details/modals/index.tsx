@@ -7,12 +7,13 @@ export default function Modals({
   setOpenEdit,
   openDel,
   setOpenDel,
-  deleteSong
+  deleteSong,
+  fetchSong
 }: ModalsProps) {
   return (
     <Box>
       <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
-        <EditSong onClose={() => setOpenEdit(false)} />
+        <EditSong onClose={() => setOpenEdit(false)} fetchSong={fetchSong} />
       </Modal>
 
       <Modal open={openDel} onClose={() => setOpenDel(false)} type="alert">

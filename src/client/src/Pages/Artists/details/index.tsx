@@ -1,6 +1,6 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { ThemeContext } from 'styled-components';
+import { useParams } from 'react-router-dom';
 
 import {
   Box,
@@ -10,21 +10,29 @@ import {
   PageLayout,
   Text
 } from '../../../Components';
+import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { View, views } from './views';
-import useActions from '../useActions';
 import { Artist } from '../helpers';
 import Api from '../../../Api';
+import Modals from './modals';
 
 export default function ArtistDetails() {
+  const { uid: userUID } = useContext(AuthContext);
+  const { colors } = useContext(ThemeContext);
+
+  const { id = '0' } = useParams();
+
   const [loading, setLoading] = useState<boolean>(true);
   const [artist, setArtist] = useState<Artist>();
+
+  const [openEdit, setOpenEdit] = useState<boolean>(false);
 
   const [loadingView, setLoadingView] = useState<boolean>();
   const [viewData, setViewData] = useState<any[]>([]);
   const [view, setView] = useState<View>();
 
-  // View
+  // Views
   useEffect(() => {
     (async () => {
       try {
@@ -46,34 +54,36 @@ export default function ArtistDetails() {
     })();
   }, [view, artist]);
 
-  const { colors } = useContext(ThemeContext);
-
-  const actions = useActions({ model: 'artist-details', data: artist });
-  const { id = '0' } = useParams();
-  const navigate = useNavigate();
+  const fetchArtist = useCallback(async () => {
+    try {
+      const { data } = await Api.artists.get({
+        id,
+        config: { params: { serializer: 'detailed' } }
+      });
+      setArtist(data);
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await Api.artists.get({
-          id,
-          config: { params: { serializer: 'detailed' } }
-        });
-        setArtist(data);
-      } catch (error) {
-        errorHandler(error, navigate);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [id, navigate]);
+    (async () => await fetchArtist())();
+  }, [fetchArtist]);
 
   return (
     <PageLayout
       title={artist?.name || ''}
       showHeader={false}
       loading={loading}
-      actions={actions}
+      actions={[
+        {
+          icon: 'edit',
+          perform: () => setOpenEdit(true),
+          disabled: userUID !== artist?.created_by
+        }
+      ]}
     >
       <Box
         backgroundColor="black"
@@ -130,6 +140,12 @@ export default function ArtistDetails() {
           </Box>
         )}
       </Box>
+
+      <Modals
+        openEdit={openEdit}
+        setOpenEdit={setOpenEdit}
+        fetchArtist={fetchArtist}
+      />
     </PageLayout>
   );
 }

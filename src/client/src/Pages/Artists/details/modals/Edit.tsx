@@ -1,20 +1,19 @@
-import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { FormError } from '../../../Components/Forms/Form/helpers';
-import { Form, Loader, PageLayout } from '../../../Components';
-import { Artist, EditArtistSchema } from '../helpers';
-import { errorHandler } from '../../../Handlers';
-import { schema } from './schema';
-import Api from '../../../Api';
+import { FormError } from '../../../../Components/Forms/Form/helpers';
+import { Form, Input, Loader } from '../../../../Components';
+import { Artist, EditArtistSchema } from '../../helpers';
+import { errorHandler } from '../../../../Handlers';
+import { EditArtistProps } from './helpers';
+import Api from '../../../../Api';
 
-export default function EditArtist() {
+export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
   const [defaultData, setDefaultData] = useState<Partial<Artist>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [errors, setErrors] = useState<FormError[]>([]);
   const { id = '0' } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -25,12 +24,12 @@ export default function EditArtist() {
         });
         setDefaultData(data);
       } catch (error) {
-        errorHandler(error, navigate);
+        errorHandler(error);
       } finally {
         setLoading(false);
       }
     })();
-  }, [id, navigate]);
+  }, [id]);
 
   const onSubmit = useCallback(
     async (data: Artist) => {
@@ -44,28 +43,42 @@ export default function EditArtist() {
         toast.success(
           `Successfully updated information about artist: ${updated.name}`
         );
-        navigate(`/artists/${updated.uid}`);
+        await fetchArtist();
+        onClose();
       } catch (error) {
         const handledErrors = errorHandler(error);
         setErrors(handledErrors);
       }
     },
-    [navigate, id]
+    [onClose, fetchArtist, id]
   );
 
+  if (loading) return <Loader />;
   return (
-    <PageLayout title="Edit Artist" showHeader={false}>
-      {loading ? (
-        <Loader rainbow fullscreen />
-      ) : (
-        <Form
-          header="Edit Artist"
-          defaultValues={defaultData}
-          onSubmit={onSubmit}
-          schema={schema}
-          errors={errors}
-        />
-      )}
-    </PageLayout>
+    <Form
+      defaultValues={defaultData}
+      header="Edit Artist"
+      onSubmit={onSubmit}
+      onClose={onClose}
+      errors={errors}
+      schema={[
+        {
+          key: 'filter',
+          fields: [
+            {
+              key: 'name',
+              label: 'Name',
+              Component: Input,
+              props: {
+                type: 'text'
+              },
+              validations: {
+                required: true
+              }
+            }
+          ]
+        }
+      ]}
+    />
   );
 }

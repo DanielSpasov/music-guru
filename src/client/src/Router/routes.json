@@ -21,11 +21,6 @@
             "path": "index",
             "filePath": "/artists/details",
             "private": false
-          },
-          {
-            "path": "edit",
-            "filePath": "/artists/edit",
-            "private": true
           }
         ]
       }

@@ -5,9 +5,11 @@ export type ModalsProps = {
   setOpenEdit: Dispatch<SetStateAction<boolean>>;
   openDel: boolean;
   setOpenDel: Dispatch<SetStateAction<boolean>>;
-  deleteSong: () => void;
+  deleteSong: () => Promise<void>;
+  fetchSong: () => Promise<void>;
 };
 
 export type EditSongProps = {
   onClose: () => void;
+  fetchSong: () => Promise<void>;
 };
