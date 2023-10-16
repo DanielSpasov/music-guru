@@ -84,6 +84,7 @@ export default function EditSong({ onClose, fetchSong }: EditSongProps) {
       defaultValues={defaultValues}
       onSubmit={onSubmit}
       onClose={onClose}
+      errors={errors}
       schema={[
         {
           key: 'fields',
@@ -129,7 +130,6 @@ export default function EditSong({ onClose, fetchSong }: EditSongProps) {
           ]
         }
       ]}
-      errors={errors}
     />
   );
 }
