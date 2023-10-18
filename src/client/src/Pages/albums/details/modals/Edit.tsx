@@ -33,7 +33,7 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
             config: {
               params: {
                 serializer: 'list',
-                uid__in: album.songs
+                uid__in: [...album.songs, ' ']
               }
             }
           })
