@@ -20,7 +20,7 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
         const validData = AlbumSchema.parse({
           ...data,
           artist: data.artist[0].uid,
-          songs: data.songs.map((x: any) => x.uid)
+          songs: data.songs?.map((x: any) => x.uid)
         });
         const res = await Api.albums.post({
           body: validData,
@@ -91,9 +91,6 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
                 fetchFn: ({ params }) =>
                   Api.songs.fetch({ config: { params } }),
                 multiple: true
-              },
-              validations: {
-                required: true
               }
             }
           ]

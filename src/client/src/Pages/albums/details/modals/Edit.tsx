@@ -58,7 +58,7 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
         const validData = EditAlbumSchema.parse({
           ...data,
           artist: data.artist[0].uid,
-          songs: data.songs.map((x: any) => x.uid)
+          songs: data.songs?.map((x: any) => x.uid)
         });
         const { data: updated } = await Api.albums.patch({
           id,
@@ -121,9 +121,6 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
                 fetchFn: ({ params }) =>
                   Api.songs.fetch({ config: { params } }),
                 multiple: true
-              },
-              validations: {
-                required: true
               }
             }
           ]

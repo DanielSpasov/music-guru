@@ -9,13 +9,13 @@ export const Schema = z.object({
 
 export const EditAlbumSchema = Schema.extend({
   artist: z.string().uuid(),
-  songs: z.array(z.string().uuid())
+  songs: z.array(z.string().uuid()).optional()
 });
 
 export const AlbumSchema = Schema.extend({
   artist: z.string().uuid(),
   image: z.instanceof(FileList),
-  songs: z.array(z.string().uuid())
+  songs: z.array(z.string().uuid()).optional()
 });
 
 type AlbumModel = z.infer<typeof Schema>;
