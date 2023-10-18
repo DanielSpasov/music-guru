@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { IconProps } from './helpers';
+import { IconProps } from './';
 
 export const SVG = styled('svg')<IconProps>`
   xmlns: 'http://www.w3.org/2000/svg';
