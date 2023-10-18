@@ -36,6 +36,10 @@ const StyledLink = styled(LinkSwitch)<LinkProps>`
   padding: ${({ type }) => (type === 'navlink' ? '18px 0.25em' : '0.25em')};
   transition: 0.3s;
 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
   ${positioning};
   ${dimensions};
   ${padding};
