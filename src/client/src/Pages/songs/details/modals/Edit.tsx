@@ -3,15 +3,14 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { Calendar, Form, Input, Loader, Select } from '../../../../Components';
-import { FormError } from '../../../../Components/Forms/Form/helpers';
 import { errorHandler } from '../../../../Handlers';
+import { Artist } from '../../../artists/helpers';
 import { EditSongSchema } from '../../helpers';
 import { EditSongProps } from './helpers';
 import Api from '../../../../Api';
 
 export default function EditSong({ onClose, fetchSong }: EditSongProps) {
   const [defaultValues, setDefaultValues] = useState({});
-  const [errors, setErrors] = useState<FormError[]>([]);
   const [loading, setLoading] = useState(true);
 
   const { id = '0' } = useParams();
@@ -56,22 +55,21 @@ export default function EditSong({ onClose, fetchSong }: EditSongProps) {
   const onSubmit = useCallback(
     async (data: any) => {
       try {
-        const validData = EditSongSchema.parse({
+        const payload = {
           ...data,
           artist: data.artist[0].uid,
-          features: data?.features?.map((x: any) => x.uid)
-        });
+          features: data?.features?.map((x: Partial<Artist>) => x?.uid)
+        };
         const { data: updated } = await Api.songs.patch({
           id,
-          body: validData
+          body: payload
         });
-        setErrors([]);
         toast.success(`Successfully updated song: ${updated.name}`);
         await fetchSong();
         onClose();
       } catch (error) {
-        const handledErrors = errorHandler(error);
-        setErrors(handledErrors);
+        const errors = errorHandler(error);
+        toast.error(errors?.[0]?.message);
       }
     },
     [id, onClose, fetchSong]
@@ -80,11 +78,11 @@ export default function EditSong({ onClose, fetchSong }: EditSongProps) {
   if (loading) return <Loader />;
   return (
     <Form
-      header="Edit Song"
+      validationSchema={EditSongSchema}
       defaultValues={defaultValues}
       onSubmit={onSubmit}
+      header="Edit Song"
       onClose={onClose}
-      errors={errors}
       schema={[
         {
           key: 'fields',
@@ -97,7 +95,10 @@ export default function EditSong({ onClose, fetchSong }: EditSongProps) {
                 type: 'text'
               },
               validations: {
-                required: true
+                required: {
+                  value: true,
+                  message: 'Name is required.'
+                }
               }
             },
             {
@@ -114,7 +115,10 @@ export default function EditSong({ onClose, fetchSong }: EditSongProps) {
                   Api.artists.fetch({ config: { params } })
               },
               validations: {
-                required: true
+                required: {
+                  value: true,
+                  message: 'Name is required.'
+                }
               }
             },
             {

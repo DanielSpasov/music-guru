@@ -16,7 +16,7 @@ export default function Modals({
         <EditAlbum onClose={() => setOpenEdit(false)} fetchAlbum={fetchAlbum} />
       </Modal>
 
-      <Modal open={openDel} onClose={() => setOpenDel(false)} type="alert">
+      <Modal open={openDel} onClose={() => setOpenDel(false)}>
         <Box
           display="flex"
           flexDirection="column"
@@ -31,10 +31,10 @@ export default function Modals({
             <Heading title="This action cannot be undone." size="small" />
           </Box>
           <Box display="flex" justifyContent="space-between">
-            <Button onClick={deleteAlbum}>Proceed</Button>
             <Button variant="secondary" onClick={() => setOpenDel(false)}>
               Cancel
             </Button>
+            <Button onClick={deleteAlbum}>Proceed</Button>
           </Box>
         </Box>
       </Modal>

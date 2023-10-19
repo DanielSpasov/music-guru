@@ -1,19 +1,6 @@
-import { UseFormGetValues, UseFormSetValue } from 'react-hook-form';
-
-export type SelectComponentProps = {
+export type SelectProps = {
   fetchFn: (props: any) => any;
   multiple?: boolean;
-};
-
-export type SelectProps = {
-  setFormValue: UseFormSetValue<any>;
-  getValues: UseFormGetValues<any>;
-  props: SelectComponentProps;
-  validations: {
-    required?: boolean;
-  };
-  label: string;
-  name: string;
 };
 
 export const handleMenuClose = (id: string) => {

@@ -1,38 +1,35 @@
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useCallback } from 'react';
 
 import { Calendar, Form, Input, Select } from '../../../../Components';
-import { FormError } from '../../../../Components/Forms/Form/helpers';
 import { errorHandler } from '../../../../Handlers';
+import { Artist } from '../../../artists/helpers';
 import { CreateSongProps } from './helpers';
 import { SongSchema } from '../../helpers';
 import Api from '../../../../Api';
 
 export default function CreateSong({ onClose }: CreateSongProps) {
-  const [errors, setErrors] = useState<FormError[]>([]);
-
   const navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (data: any) => {
       try {
-        const validData = SongSchema.parse({
+        const payload = {
           ...data,
           artist: data.artist?.[0]?.uid,
-          features: data?.features?.map((x: any) => x.uid)
-        });
+          features: data?.features?.map((x: Partial<Artist>) => x.uid)
+        };
         const res = await Api.songs.post({
-          body: validData,
+          body: payload,
           config: { headers: { 'Content-Type': 'multipart/form-data' } }
         });
-        setErrors([]);
         toast.success(`Successfully created song: ${res.name}`);
         onClose();
         navigate(`/songs/${res.uid}`);
       } catch (error) {
-        const handledErrors = errorHandler(error);
-        setErrors(handledErrors);
+        const errors = errorHandler(error);
+        toast.error(errors?.[0]?.message);
       }
     },
     [onClose, navigate]
@@ -41,9 +38,9 @@ export default function CreateSong({ onClose }: CreateSongProps) {
   return (
     <Form
       header="Create Song"
+      validationSchema={SongSchema}
       onSubmit={onSubmit}
       onClose={onClose}
-      errors={errors}
       schema={[
         {
           key: 'fields',
@@ -56,7 +53,10 @@ export default function CreateSong({ onClose }: CreateSongProps) {
                 type: 'text'
               },
               validations: {
-                required: true
+                required: {
+                  value: true,
+                  message: 'Name is required.'
+                }
               }
             },
             {
@@ -82,7 +82,10 @@ export default function CreateSong({ onClose }: CreateSongProps) {
                   Api.artists.fetch({ config: { params } })
               },
               validations: {
-                required: true
+                required: {
+                  value: true,
+                  message: 'Artist is required.'
+                }
               }
             },
             {

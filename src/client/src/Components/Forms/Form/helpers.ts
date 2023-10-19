@@ -1,10 +1,10 @@
-import { FC } from 'react';
 import {
+  Control,
   SubmitHandler,
-  UseFormGetValues,
-  UseFormRegister,
   UseFormSetValue
 } from 'react-hook-form/dist/types';
+import { ZodObject } from 'zod';
+import { FC } from 'react';
 
 import { SelectComponentProps } from '../Fields/Select/helpers';
 import { InputComponentProps } from '../Fields/Input/helpers';
@@ -13,9 +13,7 @@ export type FormField = {
   key: string;
   label: string;
   Component: FC<any>;
-  validations?: {
-    required?: boolean;
-  };
+  validations?: any;
   props?: InputComponentProps | SelectComponentProps;
 };
 
@@ -40,17 +38,24 @@ export type FormError = {
 export type FormProps = {
   onSubmit: SubmitHandler<any>;
   schema: FormSchema;
-  defaultValues?: any;
-  onClose?: (props?: any) => void;
   header?: string;
-  errors?: FormError[];
+  defaultValues?: any;
+  validationSchema?: ZodObject<any>;
   additionalInfo?: JSX.Element;
+  onClose?: (props?: any) => void;
+};
+
+export type SectionProps = {
+  title?: string;
+  fields: FormField[];
+  validateField: (name: string, value: any) => void;
+  setValue: UseFormSetValue<any>;
+  control: Control;
 };
 
 export type FieldProps = {
-  register: UseFormRegister<any>;
-  getValues: UseFormGetValues<any>;
+  validateField: (name: string, value: any) => void;
   setValue: UseFormSetValue<any>;
+  control: Control;
   field: FormField;
-  error?: FormError;
 };

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { FormError } from '../../../../Components/Forms/Form/helpers';
 import { Form, Input, Loader } from '../../../../Components';
 import { Artist, EditArtistSchema } from '../../helpers';
 import { errorHandler } from '../../../../Handlers';
@@ -12,7 +11,6 @@ import Api from '../../../../Api';
 export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
   const [defaultData, setDefaultData] = useState<Partial<Artist>>({});
   const [loading, setLoading] = useState<boolean>(true);
-  const [errors, setErrors] = useState<FormError[]>([]);
   const { id = '0' } = useParams();
 
   useEffect(() => {
@@ -32,22 +30,17 @@ export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
   }, [id]);
 
   const onSubmit = useCallback(
-    async (data: Artist) => {
+    async (body: Artist) => {
       try {
-        const validData = EditArtistSchema.parse(data);
-        const { data: updated } = await Api.artists.patch({
-          id,
-          body: validData
-        });
-        setErrors([]);
+        const { data: updated } = await Api.artists.patch({ id, body });
         toast.success(
           `Successfully updated information about artist: ${updated.name}`
         );
         await fetchArtist();
         onClose();
       } catch (error) {
-        const handledErrors = errorHandler(error);
-        setErrors(handledErrors);
+        const errors = errorHandler(error);
+        toast.error(errors?.[0]?.message);
       }
     },
     [onClose, fetchArtist, id]
@@ -56,11 +49,11 @@ export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
   if (loading) return <Loader />;
   return (
     <Form
+      validationSchema={EditArtistSchema}
       defaultValues={defaultData}
       header="Edit Artist"
       onSubmit={onSubmit}
       onClose={onClose}
-      errors={errors}
       schema={[
         {
           key: 'filter',
@@ -73,7 +66,10 @@ export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
                 type: 'text'
               },
               validations: {
-                required: true
+                required: {
+                  value: true,
+                  message: 'Name is required.'
+                }
               }
             }
           ]

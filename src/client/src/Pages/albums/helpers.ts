@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { FileSchema } from '../../Utils/FileSchema';
+
 export const Schema = z.object({
   name: z
     .string()
@@ -8,14 +10,14 @@ export const Schema = z.object({
 });
 
 export const EditAlbumSchema = Schema.extend({
-  artist: z.string().uuid(),
-  songs: z.array(z.string().uuid()).optional()
+  artist: z.array(z.object({ uid: z.string().uuid() })).length(1),
+  songs: z.array(z.object({ uid: z.string().uuid() })).optional()
 });
 
 export const AlbumSchema = Schema.extend({
-  artist: z.string().uuid(),
-  image: z.instanceof(FileList),
-  songs: z.array(z.string().uuid()).optional()
+  artist: z.array(z.object({ uid: z.string().uuid() })).length(1),
+  image: FileSchema,
+  songs: z.array(z.object({ uid: z.string().uuid() })).optional()
 });
 
 type AlbumModel = z.infer<typeof Schema>;

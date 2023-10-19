@@ -2,10 +2,11 @@ import { z } from 'zod';
 
 import { Song } from '../songs/helpers';
 import { Album } from '../albums/helpers';
+import { FileSchema } from '../../Utils/FileSchema';
 
 export const ArtistSchema = z.object({
   name: z.string(),
-  image: z.instanceof(FileList)
+  image: FileSchema
 });
 
 export const EditArtistSchema = ArtistSchema.pick({ name: true });

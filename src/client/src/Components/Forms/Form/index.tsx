@@ -3,46 +3,62 @@ import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
-import { Heading, Button, Box, Section, Loader } from '../../../Components';
+import { Heading, Button, Box, Loader } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import { FormProps } from './helpers';
+import Section from './Section';
 
 export default function Form({
   header,
   schema,
   onSubmit = () => null,
   defaultValues = {},
-  errors = [],
   additionalInfo,
+  validationSchema,
   onClose
 }: FormProps) {
-  const { register, handleSubmit, setValue, getValues, reset } = useForm({
+  const { handleSubmit, control, setError, setValue, clearErrors } = useForm({
     defaultValues
   });
+
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const validateField = useCallback(
+    (name: string, value: any) => {
+      try {
+        validationSchema?.shape?.[name]?.parse?.(value);
+        clearErrors(name);
+      } catch (err) {
+        const [error] = errorHandler(err);
+        setError(name, error);
+      }
+    },
+    [validationSchema, clearErrors, setError]
+  );
+
   const submitFn = useCallback(
-    async (e: any) => {
+    async (data: any) => {
       try {
         setLoading(true);
-        await onSubmit(e);
+        const validData = validationSchema?.parse(data);
+        await onSubmit(validData);
       } catch (error) {
-        errorHandler(error);
+        const errors = errorHandler(error);
+        errors.forEach((error: any) => setError(error.path[0], error));
       } finally {
         setLoading(false);
       }
     },
-    [onSubmit]
+    [onSubmit, setError, validationSchema]
   );
 
   const closeFn = useCallback(
     (props: any) => {
       if (onClose) onClose(props);
       else navigate(-1);
-      reset();
     },
-    [onClose, navigate, reset]
+    [onClose, navigate]
   );
 
   return (
@@ -51,13 +67,12 @@ export default function Form({
         <Heading title={header || 'Form'} size="medium" />
         {schema.map(section => (
           <Section
+            control={control}
+            setValue={setValue}
+            validateField={validateField}
             key={section.key}
             title={section.title}
             fields={section.fields}
-            register={register}
-            setFormValue={setValue}
-            getValues={getValues}
-            errors={errors}
           />
         ))}
       </Box>

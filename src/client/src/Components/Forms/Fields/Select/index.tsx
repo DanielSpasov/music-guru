@@ -1,25 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import makeAnimated from 'react-select/animated';
 
-import { Select as StyledSelect } from './Styled';
 import { SelectProps, handleMenuClose } from './helpers';
+import { Select as StyledSelect } from './Styled';
+import { FieldProps } from '../helpers';
 import { Label, Box } from '../../..';
 
 export default function Select({
-  setFormValue,
-  getValues,
-  props,
+  value = [],
   label,
   name,
-  validations
-}: SelectProps) {
-  const [selected, setSelected] = useState<any[]>(
-    !props?.multiple
-      ? getValues()[name]
-        ? [getValues()[name]]
-        : []
-      : getValues()[name] || []
-  );
+  onChange,
+  props
+}: FieldProps<any[], SelectProps>) {
+  const [selected, setSelected] = useState<any[]>(value);
   const [options, setOptions] = useState<any[]>([]);
 
   const id = useMemo(() => `${name}-select-menu`, [name]);
@@ -32,18 +26,14 @@ export default function Select({
     })();
   }, [props]);
 
-  const onChange = useCallback(
+  const _onChange = useCallback(
     (option: any, settings: any) => {
-      switch (settings?.action) {
-        case 'clear':
-          setSelected([]);
-          break;
-        default:
-          setFormValue(name, props?.multiple ? option : [option]);
-          setSelected(props?.multiple ? option : [option]);
-      }
+      if (settings?.action === 'clear') return setSelected([]);
+      const value = props?.multiple ? option : [option];
+      onChange({ target: { value } });
+      setSelected(value);
     },
-    [name, setFormValue, props?.multiple]
+    [onChange, props?.multiple]
   );
 
   return (
@@ -53,10 +43,9 @@ export default function Select({
         components={{ ...makeAnimated() }}
         onMenuClose={() => handleMenuClose(id)}
         options={options}
-        onChange={onChange}
+        onChange={_onChange}
         isMulti={props?.multiple}
-        defaultValue={getValues()[name]}
-        required={validations?.required}
+        defaultValue={value}
         formatOptionLabel={option => option?.name}
         getOptionValue={option => option?.uid}
         isSearchable

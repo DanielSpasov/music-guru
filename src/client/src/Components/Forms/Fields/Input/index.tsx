@@ -1,77 +1,36 @@
-import { useCallback, useMemo, useState } from 'react';
-
 import { Box, Label } from '../../../HTML';
+import { FieldProps } from '../helpers';
 import { InputProps } from './helpers';
 import { StyledInput } from './Styled';
+import { useInput } from './useInput';
 import Controls from '../Controls';
 
 export default function Input({
-  register,
-  setFormValue,
-  getValues,
-  validations,
   props,
+  name,
   label,
-  name
-}: InputProps) {
-  const [passVisibility, setPassVisibility] = useState(false);
-  const [value, setValue] = useState(getValues()[name]);
-
-  const ID = useMemo(() => `${name}-input`, [name]);
-
-  const onClick = useCallback(() => {
-    switch (props.type) {
-      case 'file':
-        document.getElementById(ID)?.click();
-        return;
-      case 'password':
-        setPassVisibility(prev => !prev);
-        return;
-      default:
-        document.getElementById(ID)?.focus();
-        return;
-    }
-  }, [ID, props?.type]);
-
-  const iconModel = useMemo(() => {
-    switch (props.type) {
-      case 'file':
-        return 'upload';
-      case 'password':
-        return passVisibility ? 'show' : 'hide';
-      case 'email':
-        return 'email';
-      default:
-        return 'text';
-    }
-  }, [props?.type, passVisibility]);
-
-  const { onChange, ...reg } = register(name, {
-    required: validations?.required
-  });
-
-  const handleChange = useCallback(
-    (e: InputEvent) => {
-      const input = e.target as HTMLInputElement;
-      setValue(input.value);
-      return onChange(e);
-    },
-    [onChange]
-  );
-
-  const handleClear = useCallback(() => {
-    setValue('');
-    setFormValue(name, undefined);
-  }, [setFormValue, name]);
+  onChange,
+  setValue,
+  value = '',
+  validateField
+}: FieldProps<string, InputProps>) {
+  const { iconModel, id, inputType, _onIconClick, _onChange, _onClear } =
+    useInput({
+      name,
+      type: props?.type,
+      onChange,
+      setValue,
+      validateField
+    });
 
   return (
     <Box>
       <StyledInput
-        {...reg}
-        onChange={handleChange}
-        id={ID}
+        id={id}
         name={name}
-        type={passVisibility ? 'text' : props?.type}
+        type={inputType}
+        onChange={_onChange}
+        {...(props?.type !== 'file' && { value })}
         {...(props?.type === 'file' && { accept: props.accept })}
         placeholder=" "
       />
@@ -81,8 +40,8 @@ export default function Input({
 
       <Controls
         value={value}
-        onClear={handleClear}
-        onClick={onClick}
+        onClear={_onClear}
+        onClick={_onIconClick}
         iconModel={iconModel}
       />
     </Box>

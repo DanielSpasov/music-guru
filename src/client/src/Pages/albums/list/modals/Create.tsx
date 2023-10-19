@@ -1,38 +1,35 @@
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useCallback } from 'react';
 
-import { FormError } from '../../../../Components/Forms/Form/helpers';
 import { Form, Input, Select } from '../../../../Components';
 import { errorHandler } from '../../../../Handlers';
+import { Song } from '../../../songs/helpers';
 import { CreateAlbumProps } from './helpers';
 import { AlbumSchema } from '../../helpers';
 import Api from '../../../../Api';
 
 export default function CreateAlbum({ onClose }: CreateAlbumProps) {
-  const [errors, setErrors] = useState<FormError[]>([]);
-
   const navigate = useNavigate();
 
   const onSubmit = useCallback(
-    async (data: any) => {
+    async (body: any) => {
       try {
-        const validData = AlbumSchema.parse({
-          ...data,
-          artist: data.artist[0].uid,
-          songs: data.songs?.map((x: any) => x.uid)
-        });
+        const payload = {
+          ...body,
+          artist: body?.artist?.[0]?.uid,
+          songs: body?.songs?.map((x: Partial<Song>) => x?.uid)
+        };
         const res = await Api.albums.post({
-          body: validData,
+          body: payload,
           config: { headers: { 'Content-Type': 'multipart/form-data' } }
         });
-        setErrors([]);
         toast.success(`Successfully created album: ${res.name}`);
         onClose();
         navigate(`/albums/${res.uid}`);
       } catch (error) {
-        const handledErrors = errorHandler(error);
-        setErrors(handledErrors);
+        const errors = errorHandler(error);
+        toast.error(errors?.[0]?.message);
       }
     },
     [onClose, navigate]
@@ -40,10 +37,10 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
 
   return (
     <Form
+      validationSchema={AlbumSchema}
       header="Create Album"
       onSubmit={onSubmit}
       onClose={onClose}
-      errors={errors}
       schema={[
         {
           key: 'details',
@@ -56,7 +53,10 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
                 type: 'text'
               },
               validations: {
-                required: true
+                required: {
+                  value: true,
+                  message: 'Name is required.'
+                }
               }
             },
             {
@@ -68,7 +68,10 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
                 accept: ['image/jpeg', 'image/png']
               },
               validations: {
-                required: true
+                required: {
+                  value: true,
+                  message: 'Image is required.'
+                }
               }
             },
             {
@@ -76,11 +79,14 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
               label: 'Artist',
               Component: Select,
               props: {
-                fetchFn: ({ params }) =>
+                fetchFn: ({ params }: any) =>
                   Api.artists.fetch({ config: { params } })
               },
               validations: {
-                required: true
+                required: {
+                  value: true,
+                  message: 'Artist is required.'
+                }
               }
             },
             {
@@ -88,7 +94,7 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
               label: 'Songs',
               Component: Select,
               props: {
-                fetchFn: ({ params }) =>
+                fetchFn: ({ params }: any) =>
                   Api.songs.fetch({ config: { params } }),
                 multiple: true
               }

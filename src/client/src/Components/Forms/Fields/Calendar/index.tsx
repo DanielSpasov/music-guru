@@ -1,37 +1,25 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import ReactCalendar from 'react-calendar';
 import moment from 'moment';
 
 import { StyledCalendar, StyledInput } from './Styled';
 import { Box, Label, Popover } from '../../..';
-import { CalendarProps } from './helpers';
+import { FieldProps } from '../helpers';
 import Controls from '../Controls';
 
 export default function Calendar({
   label,
-  name,
-  setFormValue,
-  getValues
-}: CalendarProps) {
-  const defaultValue = useMemo(
-    () => (getValues()[name] ? moment(getValues()[name]).toDate() : undefined),
-    [getValues, name]
-  );
-
-  const [value, setValue] = useState<Date | undefined>(defaultValue);
+  value,
+  onChange
+}: FieldProps<Date, never>) {
   const [open, setOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!getValues()[name]) setFormValue(name, undefined);
-  }, [getValues, name, setFormValue]);
-
-  const onChange = useCallback(
+  const _onChange = useCallback(
     (date: Date | undefined) => {
-      setFormValue(name, date);
-      setValue(date);
+      onChange(date);
       setOpen(false);
     },
-    [setFormValue, name]
+    [onChange]
   );
 
   return (
@@ -48,14 +36,17 @@ export default function Calendar({
 
       <Controls
         value={value}
-        onClear={() => onChange(undefined)}
+        onClear={() => _onChange(undefined)}
         onClick={() => setOpen(prev => !prev)}
         iconModel="calendar"
       />
 
       <Popover open={open} width="100%" padding=".5em" marginTop="-3.5em">
         <StyledCalendar>
-          <ReactCalendar onChange={onChange} defaultValue={defaultValue} />
+          <ReactCalendar
+            onChange={_onChange}
+            defaultValue={moment(value).toDate()}
+          />
         </StyledCalendar>
       </Popover>
     </Box>

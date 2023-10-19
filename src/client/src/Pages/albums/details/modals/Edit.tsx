@@ -2,17 +2,16 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { FormError } from '../../../../Components/Forms/Form/helpers';
 import { Form, Input, Loader, Select } from '../../../../Components';
 import { errorHandler } from '../../../../Handlers';
 import { EditAlbumSchema } from '../../helpers';
+import { Song } from '../../../songs/helpers';
 import { EditAlbumProps } from './helpers';
 import Api from '../../../../Api';
 
 export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
   const [defaultValues, setDefaultValues] = useState({});
   const [loading, setLoading] = useState<boolean>(true);
-  const [errors, setErrors] = useState<FormError[]>([]);
 
   const { id = '0' } = useParams();
 
@@ -55,24 +54,23 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
   const onSubmit = useCallback(
     async (data: any) => {
       try {
-        const validData = EditAlbumSchema.parse({
+        const payload = {
           ...data,
           artist: data.artist[0].uid,
-          songs: data.songs?.map((x: any) => x.uid)
-        });
+          songs: data.songs?.map((x: Partial<Song>) => x.uid)
+        };
         const { data: updated } = await Api.albums.patch({
           id,
-          body: validData
+          body: payload
         });
-        setErrors([]);
         toast.success(
           `Successfully updated information about album: ${updated.name}`
         );
         await fetchAlbum();
         onClose();
       } catch (error) {
-        const handledErrors = errorHandler(error);
-        setErrors(handledErrors);
+        const errors = errorHandler(error);
+        toast.error(errors?.[0]?.message);
       }
     },
     [onClose, fetchAlbum, id]
@@ -81,11 +79,11 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
   if (loading) return <Loader />;
   return (
     <Form
+      validationSchema={EditAlbumSchema}
       defaultValues={defaultValues}
       header="Edit Album"
       onSubmit={onSubmit}
       onClose={onClose}
-      errors={errors}
       schema={[
         {
           key: 'details',
@@ -98,7 +96,10 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
                 type: 'text'
               },
               validations: {
-                required: true
+                required: {
+                  value: true,
+                  message: 'Name is required.'
+                }
               }
             },
             {
@@ -110,7 +111,10 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
                   Api.artists.fetch({ config: { params } })
               },
               validations: {
-                required: true
+                required: {
+                  value: true,
+                  message: 'Artist is required.'
+                }
               }
             },
             {
@@ -118,7 +122,7 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
               label: 'Songs',
               Component: Select,
               props: {
-                fetchFn: ({ params }) =>
+                fetchFn: ({ params }: any) =>
                   Api.songs.fetch({ config: { params } }),
                 multiple: true
               }

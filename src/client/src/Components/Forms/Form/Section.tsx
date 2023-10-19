@@ -5,10 +5,9 @@ import Field from '../Form/Field';
 export default function Section({
   title,
   fields,
-  register,
-  setFormValue,
-  getValues,
-  errors
+  control,
+  setValue,
+  validateField
 }: SectionProps) {
   return (
     <Box margin=".75em 0">
@@ -20,11 +19,10 @@ export default function Section({
         {fields.map(field => (
           <Field
             key={field.key}
+            control={control}
+            validateField={validateField}
             field={field}
-            error={errors.find(x => x.path.includes(field.key))}
-            register={register}
-            getValues={getValues}
-            setValue={setFormValue}
+            setValue={setValue}
           />
         ))}
       </Box>

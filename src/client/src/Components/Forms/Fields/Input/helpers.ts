@@ -1,29 +1,34 @@
-import {
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue
-} from 'react-hook-form/dist/types';
+import { UseFormSetValue } from 'react-hook-form';
+
+import { IconModel } from '../../../HTML/Icon/Icons';
 
 type AcceptTypes = 'image/png' | 'image/jpeg';
 
+type InputType = 'password' | 'text' | 'email' | 'file';
+
 type TextProps = {
-  type?: 'password' | 'text' | 'email';
+  type?: Exclude<InputType, 'file'>;
 };
 type FileProps = {
-  type?: 'file';
+  type?: Extract<InputType, 'file'>;
   accept: AcceptTypes[];
 };
 
-export type InputComponentProps = TextProps | FileProps;
+export type InputProps = TextProps | FileProps;
 
-export type InputProps = {
-  register: UseFormRegister<any>;
-  setFormValue: UseFormSetValue<any>;
-  getValues: UseFormGetValues<any>;
-  validations: {
-    required?: boolean;
-  };
-  props: InputComponentProps;
-  label: string;
+export type UseInputProps = {
+  type?: InputType;
   name: string;
+  validateField: (name: string, value: any) => void;
+  onChange: (...event: any[]) => void;
+  setValue: UseFormSetValue<any>;
+};
+
+export type UseInputReturnType = {
+  id: string;
+  inputType: InputType;
+  iconModel: IconModel;
+  _onChange: (...event: any[]) => void;
+  _onIconClick: () => void;
+  _onClear: () => void;
 };

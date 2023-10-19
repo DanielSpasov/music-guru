@@ -108,11 +108,11 @@ export default function DeleteSong({
       ) : null}
 
       <Box display="flex" justifyContent="space-between" marginTop="1em">
-        <Button onClick={deleteSong} disabled={albums.length}>
-          Proceed
-        </Button>
         <Button variant="secondary" onClick={() => setOpenDel(false)}>
           Cancel
+        </Button>
+        <Button onClick={deleteSong} disabled={albums.length}>
+          Proceed
         </Button>
       </Box>
     </Box>
