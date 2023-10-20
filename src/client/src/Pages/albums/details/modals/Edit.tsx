@@ -9,7 +9,7 @@ import { Song } from '../../../songs/helpers';
 import { EditAlbumProps } from './helpers';
 import Api from '../../../../Api';
 
-export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
+export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
   const [defaultValues, setDefaultValues] = useState({});
   const [loading, setLoading] = useState<boolean>(true);
 

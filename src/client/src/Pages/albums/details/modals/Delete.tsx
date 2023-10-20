@@ -1,18 +1,13 @@
-import { Heading } from '../../../../Components';
 import { DeleteProps } from './helpers';
 
-export default function DeleteSong({ setOpenDel, deleteAlbum }: DeleteProps) {
+export default function Delete({ setOpenDel, deleteAlbum }: DeleteProps) {
   return (
     <div>
-      <div>
-        <Heading
-          title="Are you sure you want to delete this album."
-          size="small"
-        />
-        <Heading title="This action cannot be undone." size="small" />
-      </div>
+      <h1 className="text-center font-bold text-lg">
+        Are you sure you want to delete this song, this action cannot be undone.
+      </h1>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-4">
         <button className="bg-secondary" onClick={() => setOpenDel(false)}>
           Cancel
         </button>

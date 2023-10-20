@@ -7,10 +7,7 @@ import { Album } from '../../../albums/helpers';
 import { DeleteSongProps } from './helpers';
 import Api from '../../../../Api';
 
-export default function DeleteSong({
-  deleteSong,
-  setOpenDel
-}: DeleteSongProps) {
+export default function Delete({ deleteSong, setOpenDel }: DeleteSongProps) {
   const [loading, setLoading] = useState<string[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
 
@@ -59,7 +56,7 @@ export default function DeleteSong({
 
   return (
     <div>
-      <h1 className="text-center font-bold text-xl">
+      <h1 className="text-center font-bold text-lg">
         {albums.length
           ? 'Cannot delete song.'
           : 'Are you sure you want to delete this song, this action cannot be undone.'}

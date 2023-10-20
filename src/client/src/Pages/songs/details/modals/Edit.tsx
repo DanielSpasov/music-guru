@@ -9,7 +9,7 @@ import { EditSongSchema } from '../../helpers';
 import { EditSongProps } from './helpers';
 import Api from '../../../../Api';
 
-export default function EditSong({ onClose, fetchSong }: EditSongProps) {
+export default function Edit({ onClose, fetchSong }: EditSongProps) {
   const [defaultValues, setDefaultValues] = useState({});
   const [loading, setLoading] = useState(true);
 
