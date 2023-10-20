@@ -1,4 +1,3 @@
-import { Box, Heading } from '../../HTML';
 import { SectionProps } from './helpers';
 import Field from '../Form/Field';
 
@@ -10,12 +9,10 @@ export default function Section({
   validateField
 }: SectionProps) {
   return (
-    <Box margin=".75em 0">
-      {title && (
-        <Heading title={title} textAlign="start" size="small" margin="0" />
-      )}
+    <section>
+      <h1 className="font-bold">{title}</h1>
 
-      <Box>
+      <div>
         {fields.map(field => (
           <Field
             key={field.key}
@@ -25,7 +22,7 @@ export default function Section({
             setValue={setValue}
           />
         ))}
-      </Box>
-    </Box>
+      </div>
+    </section>
   );
 }

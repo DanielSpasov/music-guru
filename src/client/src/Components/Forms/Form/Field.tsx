@@ -1,5 +1,5 @@
 import { useController } from 'react-hook-form';
-import { Box, Text } from '../../HTML';
+
 import { FieldProps } from './helpers';
 
 export default function Field({
@@ -18,29 +18,28 @@ export default function Field({
   });
 
   return (
-    <Box position="relative" margin=".5em 0" key={field.key}>
-      <Box display="flex" justifyContent="flex-end">
-        <Text
-          variant={field?.validations?.required ? 'danger' : undefined}
-          color={!field?.validations?.required ? 'gray' : undefined}
+    <div className="my-2">
+      <div className="text-end">
+        <span
+          className={
+            field?.validations?.required ? 'text-red-400' : 'text-neutral-500'
+          }
         >
           {field?.validations?.required ? '*' : 'Optional'}
-        </Text>
-      </Box>
+        </span>
+      </div>
 
-      <Box>
-        <field.Component
-          value={value}
-          setValue={setValue}
-          validateField={validateField}
-          onChange={onChange}
-          name={field.key}
-          label={field.label}
-          props={field?.props}
-        />
-      </Box>
+      <field.Component
+        value={value}
+        setValue={setValue}
+        validateField={validateField}
+        onChange={onChange}
+        name={field.key}
+        label={field.label}
+        props={field?.props}
+      />
 
-      {error && <Text variant="danger">{error?.message}</Text>}
-    </Box>
+      {error && <span className="text-red-400">{error?.message}</span>}
+    </div>
   );
 }
