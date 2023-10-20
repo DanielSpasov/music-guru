@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useCallback } from 'react';
 
-import { Box, List, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Artist } from '../helpers';
@@ -43,9 +43,7 @@ export default function Artists() {
         }
       ]}
     >
-      <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={artists} model="artists" loading={loading} />
-      </Box>
+      <List data={artists} model="artists" loading={loading} />
 
       <Modals openCreate={openCreate} setOpenCreate={setOpenCreate} />
     </PageLayout>

@@ -1,10 +1,10 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 
-import { Box, List, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Song } from '../helpers';
 import Api from '../../../Api';
-import { AuthContext } from '../../../Contexts/Auth';
 import Modals from './modals';
 
 export default function Songs() {
@@ -43,9 +43,7 @@ export default function Songs() {
         }
       ]}
     >
-      <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={songs} model="songs" loading={loading} />
-      </Box>
+      <List data={songs} model="songs" loading={loading} />
 
       <Modals openCreate={openCreate} setOpenCreate={setOpenCreate} />
     </PageLayout>

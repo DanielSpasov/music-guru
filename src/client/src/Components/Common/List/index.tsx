@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 
 import { ListProps, Model } from './helpers';
-import { Heading } from '../../HTML';
 import Skeleton from './skeleton';
 import Card from '../Card';
 
@@ -24,14 +23,17 @@ export default function List({
   }
 
   if (!data.length) {
-    return <Heading title={`No ${model} available.`} size="small" />;
+    return (
+      <h1 className="text-center text-lg text-white">No {model} available.</h1>
+    );
   }
 
   return (
-    <>
+    <section className="flex flex-wrap mx-12">
+      {loading && <Skeleton model={model} length={skeletonLength} />}
       {data.map(x => (
         <Card data={x} key={x?.uid} model={model} onClick={() => onClick(x)} />
       ))}
-    </>
+    </section>
   );
 }

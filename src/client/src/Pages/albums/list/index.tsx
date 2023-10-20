@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 
-import { Box, List, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Album } from '../helpers';
@@ -42,9 +42,7 @@ export default function Albums() {
         }
       ]}
     >
-      <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={albums} model="albums" loading={loading} />
-      </Box>
+      <List data={albums} model="albums" loading={loading} />
 
       <Modals openCreate={openCreate} setOpenCreate={setOpenCreate} />
     </PageLayout>

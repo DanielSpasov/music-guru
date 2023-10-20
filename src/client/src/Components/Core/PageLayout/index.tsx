@@ -27,7 +27,7 @@ export default function PageLayout({
       ) : (
         <>
           {showHeader && (
-            <h1 className="p-2 text-white text-center text-3xl font-bold">
+            <h1 className="p-2 my-4 text-white text-center text-3xl font-bold">
               {title}
             </h1>
           )}

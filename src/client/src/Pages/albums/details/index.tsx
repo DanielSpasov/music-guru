@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { toast } from 'react-toastify';
 
-import { Box, Heading, Image, List, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Artist } from '../../artists/helpers';
@@ -122,39 +122,34 @@ export default function AlbumDetails() {
         }
       ]}
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        margin="0 5%"
-      >
-        <Image src={album?.image || ''} alt={album?.name} width="350px" />
+      <section className="flex flex-col items-center text-white">
+        <img
+          src={album?.image || ''}
+          alt={album?.name}
+          className="w-64 h-64 rounded-lg"
+        />
 
-        {album && (
-          <Box width="100%" margin="0.5em">
-            <Box display="flex" justifyContent="space-between">
-              <Box>
-                <Heading title="Artist" />
-                <List
-                  data={[artist]}
-                  model="artists"
-                  skeletonLength={1}
-                  loading={loadingArtist}
-                />
-              </Box>
-              <Box>
-                <Heading title="Songs" />
-                <List
-                  data={songs}
-                  model="songs"
-                  skeletonLength={3}
-                  loading={loadingSongs}
-                />
-              </Box>
-            </Box>
-          </Box>
-        )}
-      </Box>
+        <div className="flex justify-between w-full">
+          <div>
+            <h1 className="text-xl font-bold text-center">Artist</h1>
+            <List
+              data={[artist]}
+              model="artists"
+              skeletonLength={1}
+              loading={loadingArtist}
+            />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-center">Songs</h1>
+            <List
+              data={songs}
+              model="songs"
+              skeletonLength={3}
+              loading={loadingSongs}
+            />
+          </div>
+        </div>
+      </section>
 
       <Modals
         openDel={openDel}

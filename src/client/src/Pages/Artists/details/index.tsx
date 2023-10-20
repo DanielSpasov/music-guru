@@ -1,15 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { ThemeContext } from 'styled-components';
 import { useParams } from 'react-router-dom';
 
-import {
-  Box,
-  Header,
-  Image,
-  List,
-  PageLayout,
-  Text
-} from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { View, views } from './views';
@@ -19,7 +11,6 @@ import Modals from './modals';
 
 export default function ArtistDetails() {
   const { uid: userUID } = useContext(AuthContext);
-  const { colors } = useContext(ThemeContext);
 
   const { id = '0' } = useParams();
 
@@ -75,7 +66,6 @@ export default function ArtistDetails() {
   return (
     <PageLayout
       title={artist?.name || ''}
-      showHeader={false}
       loading={loading}
       actions={[
         {
@@ -85,61 +75,36 @@ export default function ArtistDetails() {
         }
       ]}
     >
-      <Box
-        backgroundColor="black"
-        position="absolute"
-        width="100%"
-        height="calc(150px + 3em)"
-        boxSizing="content-box"
-      />
+      <section className="text-white">
+        <div className="w-full flex justify-center items-center">
+          <img
+            src={artist?.image || ''}
+            alt={artist?.name}
+            className="h-72 w-72 border-neutral-800 border-8 rounded-full"
+          />
 
-      <Box
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        margin="1.5em 0"
-        height="300px"
-      >
-        <Image
-          src={artist?.image || ''}
-          alt={artist?.name}
-          height="100%"
-          width="300px"
-          borderRadius="50%"
-          border={`8px solid ${colors.baseLight}`}
-        />
+          <div className="flex px-4">
+            {views.map((view, i) => (
+              <span
+                key={i}
+                onClick={() => setView(view)}
+                className="px-1 text-lg duration-200 hover:text-primary cursor-pointer"
+              >
+                {view.label}
+              </span>
+            ))}
+          </div>
+        </div>
 
-        <Box position="absolute" top="1.25em" left="52.5vw">
-          <Header title={artist?.name || ''} />
-        </Box>
-
-        <Box display="flex" padding="0 1em">
-          {views.map((view, i) => (
-            <Text
-              key={i}
-              padding="0 .25em"
-              fontSize="1.25em"
-              onClick={() => setView(view)}
-            >
-              {view.label}
-            </Text>
-          ))}
-        </Box>
-      </Box>
-
-      <Box display="flex" justifyContent="center">
         {view && (
-          <Box display="flex" flexWrap="wrap">
-            <List
-              data={viewData}
-              model={view.model}
-              loading={loadingView}
-              skeletonLength={2}
-            />
-          </Box>
+          <List
+            data={viewData}
+            model={view.model}
+            loading={loadingView}
+            skeletonLength={2}
+          />
         )}
-      </Box>
+      </section>
 
       <Modals
         openEdit={openEdit}
