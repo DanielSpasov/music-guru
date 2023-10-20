@@ -1,6 +1,26 @@
-import { MenuOption } from './OptionMenu/helpers';
+import { Dispatch } from 'react';
+
 import { User } from '../helpers';
 import Api from '../../../Api';
+
+export type MenuOption = {
+  label: string;
+  field: keyof User;
+  type: 'string' | 'boolean' | 'date';
+  editable?: boolean;
+  action?: {
+    label: string;
+    disabled?: boolean;
+    hide?: boolean;
+    onClick: () => any;
+  };
+};
+
+export type OptionProps = {
+  data: MenuOption;
+  user: User;
+  setUser: Dispatch<User>;
+};
 
 export const infoConfig: MenuOption[] = [
   {

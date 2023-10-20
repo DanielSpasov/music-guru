@@ -1,17 +1,15 @@
 import { ChangeEvent, useCallback, useContext, useState } from 'react';
-import { ThemeContext } from 'styled-components';
 import { toast } from 'react-toastify';
 
-import { StyledInput } from '../../../../Components/Forms/Fields/Input/Styled';
-import { Box, Button, Icon, Text } from '../../../../Components';
-import { AuthContext } from '../../../../Contexts/Auth';
-import { errorHandler } from '../../../../Handlers';
-import { fromatDate } from '../../../../Utils';
+import { StyledInput } from '../../../Components/Forms/Fields/Input/Styled';
+import { AuthContext } from '../../../Contexts/Auth';
+import { errorHandler } from '../../../Handlers';
+import { fromatDate } from '../../../Utils';
+import { Icon } from '../../../Components';
 import { OptionProps } from './helpers';
-import Api from '../../../../Api';
+import Api from '../../../Api';
 
 export default function Option({ data, user, setUser }: OptionProps) {
-  const { colors } = useContext(ThemeContext);
   const { uid } = useContext(AuthContext);
 
   const [value, setValue] = useState(user[data.field]);
@@ -47,15 +45,8 @@ export default function Option({ data, user, setUser }: OptionProps) {
   }, [uid, data, value, setUser]);
 
   return (
-    <Box
-      backgroundColor={colors.base}
-      padding="1em"
-      margin=".5em"
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-    >
-      <Box width="2.5em">
+    <div className="flex items-center bg-neutral-800 rounded-md p-3 m-1">
+      <div className="w-10">
         {data?.editable &&
           (isEditing ? (
             <Icon
@@ -66,15 +57,19 @@ export default function Option({ data, user, setUser }: OptionProps) {
               }}
             />
           ) : (
-            <Icon model="edit" onClick={() => setIsEditing(prev => !prev)} />
+            <Icon
+              model="edit"
+              size="1.5em"
+              onClick={() => setIsEditing(prev => !prev)}
+            />
           ))}
-      </Box>
+      </div>
 
-      <Box flex="1">
-        <Text fontWeight="bold">{data.label}: </Text>
-      </Box>
+      <div className="flex-1">
+        <span className="font-bold">{data.label}:</span>
+      </div>
 
-      <Box flex="2">
+      <div className="flex-1">
         {isEditing ? (
           <StyledInput
             margin="0"
@@ -85,7 +80,7 @@ export default function Option({ data, user, setUser }: OptionProps) {
           />
         ) : (
           <>
-            {data.type === 'string' && <Text>{user[data.field]}</Text>}
+            {data.type === 'string' && <span>{user[data.field]}</span>}
             {data.type === 'boolean' && (
               <Icon
                 model={user[data.field] ? 'check' : 'close'}
@@ -93,26 +88,25 @@ export default function Option({ data, user, setUser }: OptionProps) {
               />
             )}
             {data.type === 'date' && (
-              <Text>
+              <span>
                 {fromatDate({ date: user[data.field] as any as Date })}
-              </Text>
+              </span>
             )}
           </>
         )}
-      </Box>
+      </div>
 
-      <Box flex="2" textAlign="end">
+      <div className="flex flex-1 justify-end">
         {data?.action && !data?.action?.hide && (
-          <Button
-            margin="0"
-            padding=".6em"
+          <button
+            className="bg-primary rounded-md p-1.5 font-bold"
             onClick={handleOnClick}
             disabled={loading || data.action?.disabled}
           >
-            {data.action.label}
-          </Button>
+            {data.action?.label}
+          </button>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }

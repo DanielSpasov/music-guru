@@ -1,37 +1,27 @@
-import { useCallback, useContext, useState } from 'react';
-import { ThemeContext } from 'styled-components';
+import { useCallback, useState } from 'react';
 
-import { Box, Heading, Icon } from '../../HTML';
 import { SummaryProps } from './helpers';
+import { Icon } from '../../HTML';
 
 export default function Summary({
   children,
   label,
   open = false
 }: SummaryProps) {
-  const { colors } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState<boolean>(open);
 
   const toggleSummary = useCallback(() => setIsOpen(prev => !prev), []);
 
   return (
-    <Box
-      width="100%"
-      backgroundColor={isOpen ? colors.baseLighter : 'transparent'}
-      hoverCSS={{ backgroundColor: colors.baseLighter }}
-      padding="0.5em"
-      position="relative"
-    >
-      <Box
-        display="flex"
-        alignItems="center"
+    <div className="w-full bg-neutral-700 text-white rounded-md p-2 duration-200 hover:bg-neutral-600">
+      <div
+        className="flex items-center py-2 hover:cursor-pointer"
         onClick={toggleSummary}
-        padding="0 .5em"
       >
         <Icon model={isOpen ? 'up' : 'down'} />
-        <Heading title={label} size="medium" textAlign="start" />
-      </Box>
+        <h1 className="text-lg font-bold">{label}</h1>
+      </div>
       {isOpen && children}
-    </Box>
+    </div>
   );
 }
