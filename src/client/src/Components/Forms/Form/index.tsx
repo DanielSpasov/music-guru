@@ -77,18 +77,10 @@ export default function Form({
       </article>
 
       <div className="flex justify-between">
-        <button
-          className="bg-secondary py-3 px-4 rounded-md font-bold"
-          type="button"
-          onClick={closeFn}
-        >
+        <button className="bg-secondary" type="button" onClick={closeFn}>
           Close
         </button>
-        <button
-          className="bg-primary py-3 px-4 rounded-md font-bold"
-          type="submit"
-          disabled={loading}
-        >
+        <button className="bg-primary" type="submit" disabled={loading}>
           {!loading ? 'Submit' : <Loader size="s" />}
         </button>
       </div>

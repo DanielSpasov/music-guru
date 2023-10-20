@@ -2,14 +2,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { toast } from 'react-toastify';
 
-import { List, PageLayout } from '../../../Components';
+import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Artist } from '../../artists/helpers';
 import { Song } from '../../songs/helpers';
+import Delete from './modals/Delete';
 import { Album } from '../helpers';
+import Edit from './modals/Edit';
 import Api from '../../../Api';
-import Modals from './modals';
 
 export default function AlbumDetails() {
   const { uid: userUID } = useContext(AuthContext);
@@ -151,14 +152,15 @@ export default function AlbumDetails() {
         </div>
       </section>
 
-      <Modals
-        openDel={openDel}
-        setOpenDel={setOpenDel}
-        openEdit={openEdit}
-        setOpenEdit={setOpenEdit}
-        fetchAlbum={fetchAlbum}
-        deleteAlbum={deleteAlbum}
-      />
+      <section>
+        <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
+          <Edit onClose={() => setOpenEdit(false)} fetchAlbum={fetchAlbum} />
+        </Modal>
+
+        <Modal open={openDel} onClose={() => setOpenDel(false)} showCloseButton>
+          <Delete deleteAlbum={deleteAlbum} setOpenDel={setOpenDel} />
+        </Modal>
+      </section>
     </PageLayout>
   );
 }

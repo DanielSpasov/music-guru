@@ -2,3 +2,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  button {
+    @apply bg-primary rounded-md py-3 px-4 font-bold duration-200 hover:opacity-70 disabled:opacity-50;
+  }
+}

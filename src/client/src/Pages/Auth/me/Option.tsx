@@ -99,7 +99,7 @@ export default function Option({ data, user, setUser }: OptionProps) {
       <div className="flex flex-1 justify-end">
         {data?.action && !data?.action?.hide && (
           <button
-            className="bg-primary rounded-md p-1.5 font-bold"
+            className="py-1.5 p-3"
             onClick={handleOnClick}
             disabled={loading || data.action?.disabled}
           >

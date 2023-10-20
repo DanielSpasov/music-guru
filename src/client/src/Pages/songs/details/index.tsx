@@ -3,14 +3,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
-import { List, PageLayout } from '../../../Components';
+import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Artist } from '../../artists/helpers';
 import { Album } from '../../albums/helpers';
+import Delete from './modals/Delete';
 import { Song } from '../helpers';
+import Edit from './modals/Edit';
 import Api from '../../../Api';
-import Modals from './modals';
 
 export default function SongDetails() {
   const [loading, setLoading] = useState(true);
@@ -208,14 +209,15 @@ export default function SongDetails() {
         </div>
       </section>
 
-      <Modals
-        openEdit={openEdit}
-        setOpenEdit={setOpenEdit}
-        openDel={openDel}
-        setOpenDel={setOpenDel}
-        deleteSong={deleteSong}
-        fetchSong={fetchSong}
-      />
+      <section>
+        <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
+          <Edit onClose={() => setOpenEdit(false)} fetchSong={fetchSong} />
+        </Modal>
+
+        <Modal open={openDel} onClose={() => setOpenDel(false)}>
+          <Delete deleteSong={deleteSong} setOpenDel={setOpenDel} />
+        </Modal>
+      </section>
     </PageLayout>
   );
 }

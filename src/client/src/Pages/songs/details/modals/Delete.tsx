@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Box, Button, Heading, Icon, Link, Text } from '../../../../Components';
+import { Icon, Link } from '../../../../Components';
 import { errorHandler } from '../../../../Handlers';
 import { Album } from '../../../albums/helpers';
 import { DeleteSongProps } from './helpers';
@@ -58,63 +58,50 @@ export default function DeleteSong({
   );
 
   return (
-    <Box>
-      <Heading
-        title={
-          albums.length
-            ? 'Cannot delete song.'
-            : 'Are you sure you want to delete this song, this action cannot be undone.'
-        }
-        size="small"
-        margin="0 0 1em 0"
-      />
+    <div>
+      <h1 className="text-center font-bold text-xl">
+        {albums.length
+          ? 'Cannot delete song.'
+          : 'Are you sure you want to delete this song, this action cannot be undone.'}
+      </h1>
 
       {albums.length ? (
-        <Box>
-          <Box padding="1em 0">
-            <b>Remove song from the following albums:</b>
-          </Box>
+        <article>
+          <span>Remove song from the following albums:</span>
           {albums.map((album, i) => {
             const disabled = loading.includes(album.uid);
             return (
-              <Box
-                key={album.uid}
-                padding="0 1em"
-                display="flex"
-                alignItems="center"
-              >
-                <Box flexGrow=".25">
-                  <Text>#{i + 1}</Text>
-                </Box>
+              <div key={album.uid} className="flex items-center px-4">
+                <span className="grow w-24">#{i + 1}</span>
 
-                <Box flexGrow="9.5" width="100px">
+                <div className="grow">
                   <Link to={`/albums/${album.uid}`} fontSize="1em">
                     {album.name}
                   </Link>
-                </Box>
+                </div>
 
-                <Box flexGrow=".25" display="flex" justifyContent="flex-end">
+                <div className="flex justify-end grow">
                   <Icon
                     model="trash"
                     size="1.5em"
                     disabled={disabled}
                     onClick={!disabled ? () => editFn(album) : () => null}
                   />
-                </Box>
-              </Box>
+                </div>
+              </div>
             );
           })}
-        </Box>
+        </article>
       ) : null}
 
-      <Box display="flex" justifyContent="space-between" marginTop="1em">
-        <Button variant="secondary" onClick={() => setOpenDel(false)}>
+      <div className="flex justify-between mt-4">
+        <button className="bg-secondary" onClick={() => setOpenDel(false)}>
           Cancel
-        </Button>
-        <Button onClick={deleteSong} disabled={albums.length}>
+        </button>
+        <button onClick={deleteSong} disabled={Boolean(albums.length)}>
           Proceed
-        </Button>
-      </Box>
-    </Box>
+        </button>
+      </div>
+    </div>
   );
 }

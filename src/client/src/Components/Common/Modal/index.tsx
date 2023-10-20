@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { Box, Button, Icon } from '../..';
 import { ModalProps } from './helpers';
+import { Box, Icon } from '../..';
 
 export default function Modal({
   open,
@@ -50,9 +50,9 @@ export default function Modal({
           {children}
           {showCloseButton && (
             <Box display="flex" justifyContent="flex-end">
-              <Button variant="danger" onClick={onClose}>
+              <button className="bg-red-500" onClick={onClose}>
                 Close
-              </Button>
+              </button>
             </Box>
           )}
         </ModalContent>
