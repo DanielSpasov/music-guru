@@ -46,9 +46,7 @@ export default function SignUp() {
         flexDirection="column"
       >
         <header>
-          <h1 className="text-lg font-bold">
-            {loading ? 'Verifying Email' : 'Redirecting'}...
-          </h1>
+          <h4>{loading ? 'Verifying Email' : 'Redirecting'}...</h4>
         </header>
         <Loader rainbow />
       </Box>

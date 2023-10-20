@@ -19,7 +19,7 @@ export default function Summary({
         onClick={toggleSummary}
       >
         <Icon model={isOpen ? 'up' : 'down'} />
-        <h1 className="text-lg font-bold">{label}</h1>
+        <h4>{label}</h4>
       </div>
       {isOpen && children}
     </div>

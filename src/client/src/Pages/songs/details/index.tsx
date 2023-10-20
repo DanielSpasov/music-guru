@@ -172,7 +172,7 @@ export default function SongDetails() {
 
         <div className="flex flex-wrap">
           <div>
-            <h1 className="text-xl font-bold text-center">Artist</h1>
+            <h3 className="text-center">Artist</h3>
             <List
               data={[artist]}
               model="artists"
@@ -183,9 +183,7 @@ export default function SongDetails() {
 
           {features.length > 0 && (
             <div>
-              <h1 className="text-xl font-bold text-center">
-                Featured Artists
-              </h1>
+              <h3 className="text-center">Featured Artists</h3>
               <List
                 data={features}
                 model="artists"
@@ -197,7 +195,7 @@ export default function SongDetails() {
 
           {albums.length > 0 && (
             <div>
-              <h1 className="text-xl font-bold text-center">In Albums</h1>
+              <h3 className="text-center">In Albums</h3>
               <List
                 data={albums}
                 model="albums"

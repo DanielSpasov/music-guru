@@ -10,8 +10,7 @@ export default function Section({
 }: SectionProps) {
   return (
     <section>
-      <h1 className="font-bold">{title}</h1>
-
+      <h4>{title}</h4>
       <div>
         {fields.map(field => (
           <Field

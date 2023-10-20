@@ -56,11 +56,11 @@ export default function Delete({ deleteSong, setOpenDel }: DeleteSongProps) {
 
   return (
     <div>
-      <h1 className="text-center font-bold text-lg">
+      <h4 className="text-center">
         {albums.length
           ? 'Cannot delete song.'
           : 'Are you sure you want to delete this song, this action cannot be undone.'}
-      </h1>
+      </h4>
 
       {albums.length ? (
         <article>

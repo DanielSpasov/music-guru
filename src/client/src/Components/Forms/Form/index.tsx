@@ -63,7 +63,7 @@ export default function Form({
   return (
     <form onSubmit={handleSubmit(submitFn)} encType="multipart/form-data">
       <article>
-        <h1 className="text-center text-xl font-bold">{header || 'Form'}</h1>
+        <h3 className="text-center">{header || 'Form'}</h3>
         {schema.map(section => (
           <Section
             control={control}

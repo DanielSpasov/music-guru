@@ -23,9 +23,7 @@ export default function List({
   }
 
   if (!data.length) {
-    return (
-      <h1 className="text-center text-lg text-white">No {model} available.</h1>
-    );
+    return <h4 className="text-center">No {model} available.</h4>;
   }
 
   return (

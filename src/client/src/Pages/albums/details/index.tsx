@@ -132,7 +132,7 @@ export default function AlbumDetails() {
 
         <div className="flex justify-between w-full">
           <div>
-            <h1 className="text-xl font-bold text-center">Artist</h1>
+            <h3 className="text-center">Artist</h3>
             <List
               data={[artist]}
               model="artists"
@@ -141,7 +141,7 @@ export default function AlbumDetails() {
             />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-center">Songs</h1>
+            <h3 className="text-center">Songs</h3>
             <List
               data={songs}
               model="songs"

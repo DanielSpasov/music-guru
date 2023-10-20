@@ -28,9 +28,7 @@ export default function PageLayout({
         <>
           {showHeader && (
             <header>
-              <h1 className="p-2 my-4 text-white text-center text-3xl font-bold">
-                {title}
-              </h1>
+              <h1 className="text-center p-2 my-4">{title}</h1>
             </header>
           )}
           <article>{!loading && children}</article>
