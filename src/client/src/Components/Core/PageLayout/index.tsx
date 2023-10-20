@@ -1,7 +1,6 @@
-import { useEffect, useContext } from 'react';
-import { ThemeContext } from 'styled-components';
+import { useEffect } from 'react';
 
-import { Box, BreadCrumb, Header, Loader, Navbar } from '../../';
+import { BreadCrumb, Loader, Navbar } from '../../';
 import { PageLayoutProps } from './helpers';
 
 export default function PageLayout({
@@ -13,31 +12,28 @@ export default function PageLayout({
   actions = [],
   loading = false
 }: PageLayoutProps) {
-  const { colors } = useContext(ThemeContext);
-
   useEffect(() => {
     document.title = loading ? 'Loading...' : title;
   }, [title, loading]);
 
   return (
-    <Box
-      minHeight="100vh"
-      height="100%"
-      backgroundColor={colors.baseLight}
-      display="flex"
-      flexDirection="column"
-      alignContent="center"
-    >
+    <main className="h-screen bg-neutral-900">
       {showNavbar && <Navbar />}
       {showBreadCrumb && <BreadCrumb actions={actions} />}
       {loading ? (
-        <Box textAlign="center" margin="1em 0">
+        <div className="text-center m-4">
           <Loader rainbow />
-        </Box>
+        </div>
       ) : (
-        showHeader && <Header padding="60px 0 20px 0" title={title} />
+        <>
+          {showHeader && (
+            <h1 className="p-2 text-white text-center text-3xl font-bold">
+              {title}
+            </h1>
+          )}
+          <article>{!loading && children}</article>
+        </>
       )}
-      <Box>{!loading && children}</Box>
-    </Box>
+    </main>
   );
 }
