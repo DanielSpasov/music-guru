@@ -2,7 +2,7 @@ import { ThemeContext } from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useContext, useState } from 'react';
 
-import { Box, Image, Link, Search, Popover, Icon } from '../../';
+import { Box, Link, Search, Popover, Icon } from '../../';
 import { AuthContext } from '../../../Contexts/Auth';
 import ThemeSwitcher from '../ThemeSwitcher';
 
@@ -27,16 +27,13 @@ export default function Navbar() {
       boxShadow="rgba(0, 0, 0, 0.45) 0px 3px 4px"
       zIndex="9999"
     >
-      <Box height="60px">
-        <Link to="/">
-          <Image
-            src="/images/logo/blue-logo192.png"
-            alt="Music Nerd"
-            width="60px"
-            height="60px"
-          />
-        </Link>
-      </Box>
+      <Link to="/">
+        <img
+          src="/images/logo/blue-logo192.png"
+          alt="Music Nerd"
+          className="w-16 h-16"
+        />
+      </Link>
       <Box height="60px" display="flex" alignContent="center">
         <Link
           to="/artists"
