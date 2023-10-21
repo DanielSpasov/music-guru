@@ -1,5 +1,4 @@
 export { default as Summary } from './Summary';
-export { default as Actions } from './Actions';
 export { default as Popover } from './Popover';
 export { default as Modal } from './Modal';
 export { default as Card } from './Card';

@@ -22,8 +22,3 @@ export interface Artist extends ArtistModel {
   songs: Song[];
   features: Song[];
 }
-
-export type UseActionsProps = {
-  model: string;
-  data?: Artist;
-};

@@ -29,9 +29,3 @@ export interface Song extends SongModel {
   artist: string;
   features: string[];
 }
-
-export type UseActionsProps = {
-  model: string;
-  data?: Song;
-  deleteSong?: (props: any) => any;
-};

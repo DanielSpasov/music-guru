@@ -1,40 +1,26 @@
-import { ThemeContext } from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useContext, useState } from 'react';
 
-import { Box, Link, Search, Popover, Icon } from '../../';
+import { Link, Search, Popover, Icon } from '../../';
 import { AuthContext } from '../../../Contexts/Auth';
 import ThemeSwitcher from '../ThemeSwitcher';
 
 export default function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
-  const { colors } = useContext(ThemeContext);
   const { pathname } = useLocation();
 
   const [openTheme, setOpenTheme] = useState(false);
   const [openUser, setOpenUser] = useState(false);
 
   return (
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      flexWrap="no-wrap"
-      alignItems="center"
-      height="60px"
-      width="100%"
-      backgroundColor={colors.base}
-      borderRadius="0"
-      boxShadow="rgba(0, 0, 0, 0.45) 0px 3px 4px"
-      zIndex="9999"
-    >
-      <Link to="/">
-        <img
-          src="/images/logo/blue-logo192.png"
-          alt="Music Nerd"
-          className="w-16 h-16"
-        />
-      </Link>
-      <Box height="60px" display="flex" alignContent="center">
+    <nav className="h-16 flex justify-between shadow-md shadow-black z-50">
+      <div className="w-16 h-16">
+        <Link to="/">
+          <img src="/images/logo/blue-logo192.png" alt="Music Nerd" />
+        </Link>
+      </div>
+
+      <div className="flex items-center">
         <Link
           to="/artists"
           type="navlink"
@@ -52,8 +38,9 @@ export default function Navbar() {
         <Link to="/songs" type="navlink" isActive={pathname.includes('/songs')}>
           Songs
         </Link>
-      </Box>
-      <Box display="flex" alignItems="center" height="60px">
+      </div>
+
+      <div className="flex items-center h-16">
         <Search models={['artists', 'songs', 'albums']} width="250px" />
 
         <Popover
@@ -80,7 +67,7 @@ export default function Navbar() {
             {isAuthenticated && <Link to="/sign-out">Sign Out</Link>}
           </div>
         </Popover>
-      </Box>
-    </Box>
+      </div>
+    </nav>
   );
 }

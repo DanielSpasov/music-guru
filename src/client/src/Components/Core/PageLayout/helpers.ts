@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { Action } from '../../Common/Actions/helpers';
+import { Action } from '../../Core/BreadCrumb/helpers';
 
 export type PageLayoutProps = {
   title: string;

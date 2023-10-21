@@ -6,6 +6,6 @@ export type Action = {
   disabled?: boolean;
 };
 
-export type ActionsProps = {
+export type BreadCrumbProps = {
   actions: Action[];
 };
