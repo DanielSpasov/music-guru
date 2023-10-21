@@ -82,7 +82,7 @@ export default function SearchBox({ models }: SearchBoxProps) {
                 <div>
                   {data.map(obj => (
                     <div
-                      className="flex items-center duration-200 p-1.5 rounded-md hover:bg-neutral-700 cursor-pointer"
+                      className="flex items-center p-1.5 rounded-md hover:bg-neutral-700 cursor-pointer"
                       key={obj.uid}
                       onClick={() => {
                         navigate(`/${model}/${obj.uid}`);

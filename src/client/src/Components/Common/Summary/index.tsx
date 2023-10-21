@@ -13,7 +13,7 @@ export default function Summary({
   const toggleSummary = useCallback(() => setIsOpen(prev => !prev), []);
 
   return (
-    <div className="w-full bg-neutral-700 text-white rounded-md p-2 duration-200 hover:bg-neutral-600">
+    <div className="w-full bg-neutral-700 rounded-md p-2 hover:bg-neutral-600">
       <div
         className="flex items-center py-2 hover:cursor-pointer"
         onClick={toggleSummary}

@@ -12,17 +12,14 @@ export default function CustomLink({
   return type === 'navlink' ? (
     <NavLink
       to={to}
-      className={`text-xl py-4 px-2 duration-200 ${
+      className={`text-xl py-4 px-2 ${
         isActive ? 'text-primary' : 'text-white'
       } hover:text-primary ${className}`}
     >
       {children}
     </NavLink>
   ) : (
-    <Link
-      to={to}
-      className={`text-lg duration-200 hover:text-primary ${className}`}
-    >
+    <Link to={to} className={`text-lg hover:text-primary ${className}`}>
       {children}
     </Link>
   );

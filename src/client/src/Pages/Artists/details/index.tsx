@@ -88,7 +88,7 @@ export default function ArtistDetails() {
               <span
                 key={i}
                 onClick={() => setView(view)}
-                className="px-1 text-lg duration-200 hover:text-primary cursor-pointer"
+                className="px-1 text-lg hover:text-primary cursor-pointer"
               >
                 {view.label}
               </span>

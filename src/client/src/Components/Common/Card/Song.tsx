@@ -4,7 +4,7 @@ import { CardProps } from './helpers';
 export default function SongCard({ data, onClick }: CardProps<Song>) {
   return (
     <div
-      className="flex items-center w-48 h-16 p-2 m-2 text-white duration-200 rounded-md hover:bg-neutral-700 cursor-pointer"
+      className="flex items-center w-48 h-16 p-2 m-2 rounded-md hover:bg-neutral-700 cursor-pointer"
       onClick={onClick}
     >
       <img
