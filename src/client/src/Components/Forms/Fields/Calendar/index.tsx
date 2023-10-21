@@ -3,8 +3,8 @@ import ReactCalendar from 'react-calendar';
 import moment from 'moment';
 
 import { StyledCalendar, StyledInput } from './Styled';
-import { Box, Label, Popover } from '../../..';
 import { FieldProps } from '../helpers';
+import { Popover } from '../../..';
 import Controls from '../Controls';
 
 export default function Calendar({
@@ -23,16 +23,14 @@ export default function Calendar({
   );
 
   return (
-    <Box>
+    <div className="relative">
       <StyledInput
         value={value ? moment(value).format('MMMM Do YYYY') : ''}
         placeholder=" "
         onChange={() => null}
         onClick={() => setOpen(prev => !prev)}
       />
-      <Label position="absolute" top=".65em" left=".5em">
-        {label}
-      </Label>
+      <label className="absolute top-3 left-3">{label}</label>
 
       <Controls
         value={value}
@@ -49,6 +47,6 @@ export default function Calendar({
           />
         </StyledCalendar>
       </Popover>
-    </Box>
+    </div>
   );
 }

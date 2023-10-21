@@ -1,4 +1,4 @@
-import { Box, Modal } from '../../../../Components';
+import { Modal } from '../../../../Components';
 import { ModalsProps } from './helpers';
 import EditArtist from './Edit';
 
@@ -8,13 +8,13 @@ export default function Modals({
   fetchArtist
 }: ModalsProps) {
   return (
-    <Box>
+    <div>
       <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
         <EditArtist
           onClose={() => setOpenEdit(false)}
           fetchArtist={fetchArtist}
         />
       </Modal>
-    </Box>
+    </div>
   );
 }

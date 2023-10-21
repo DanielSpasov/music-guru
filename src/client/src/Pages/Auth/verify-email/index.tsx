@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { Box, Loader, PageLayout } from '../../../Components';
+import { Loader, PageLayout } from '../../../Components';
 import Api from '../../../Api';
 
 export default function SignUp() {
@@ -38,18 +38,10 @@ export default function SignUp() {
       showNavbar={false}
       showBreadCrumb={false}
     >
-      <Box
-        padding="30vh 0"
-        width="100%"
-        display="flex"
-        alignItems="center"
-        flexDirection="column"
-      >
-        <header>
-          <h4>{loading ? 'Verifying Email' : 'Redirecting'}...</h4>
-        </header>
+      <header className="text-center">
+        <h4>{loading ? 'Verifying Email' : 'Redirecting'}...</h4>
         <Loader rainbow />
-      </Box>
+      </header>
     </PageLayout>
   );
 }

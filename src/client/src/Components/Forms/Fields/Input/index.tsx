@@ -1,4 +1,3 @@
-import { Box, Label } from '../../../HTML';
 import { FieldProps } from '../helpers';
 import { InputProps } from './helpers';
 import { StyledInput } from './Styled';
@@ -24,7 +23,7 @@ export default function Input({
     });
 
   return (
-    <Box>
+    <div className="relative">
       <StyledInput
         id={id}
         name={name}
@@ -34,9 +33,7 @@ export default function Input({
         {...(props?.type === 'file' && { accept: props.accept })}
         placeholder=" "
       />
-      <Label position="absolute" top=".65em" left=".75em">
-        {label}
-      </Label>
+      <label className="absolute top-3 left-3">{label}</label>
 
       <Controls
         value={value}
@@ -44,6 +41,6 @@ export default function Input({
         onClick={_onIconClick}
         iconModel={iconModel}
       />
-    </Box>
+    </div>
   );
 }
