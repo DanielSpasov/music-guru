@@ -1,13 +1,18 @@
 import { ActionsProps } from './helpers';
-import { Box } from '../../HTML';
-import Action from './Action';
+import { Icon } from '../../HTML';
 
 export default function Actions({ actions }: ActionsProps) {
   return (
-    <Box position="relative" display="flex" alignItems="center" height="100%">
+    <div className="flex">
       {actions.map((action, i) => (
-        <Action key={i} action={action} />
+        <div key={i} className="p-2">
+          <Icon
+            onClick={!action.disabled ? action.perform : null}
+            disabled={action.disabled}
+            model={action.icon}
+          />
+        </div>
       ))}
-    </Box>
+    </div>
   );
 }

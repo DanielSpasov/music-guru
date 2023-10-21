@@ -1,23 +1,11 @@
-export type Action = {
-  icon: string;
-  subActions?: SubAction[];
-  perform: (props: any) => any;
-  disabled?: boolean;
-};
+import { IconModel } from '../../HTML/Icon/Icons';
 
-export type SubAction = {
-  label: string;
+export type Action = {
+  icon: IconModel;
   perform: (props: any) => any;
   disabled?: boolean;
 };
 
 export type ActionsProps = {
   actions: Action[];
-};
-
-export type ActionProps = {
-  action: Action;
-};
-export type SubActionProps = {
-  action: SubAction;
 };
