@@ -19,7 +19,11 @@ export default function List({
   );
 
   if (loading) {
-    return <Skeleton model={model} length={skeletonLength} />;
+    return (
+      <section className="flex flex-wrap mx-12">
+        <Skeleton model={model} length={skeletonLength} />
+      </section>
+    );
   }
 
   if (!data.length) {
