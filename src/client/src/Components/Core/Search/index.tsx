@@ -1,19 +1,11 @@
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  useContext,
-  useMemo
-} from 'react';
-import { ThemeContext } from 'styled-components';
+import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { startCase } from 'lodash';
 
-import { ResultProps, SearchBoxProps, Results } from './helpers';
-import { Box, Icon, Image, Text, Loader } from '../..';
 import useDebounce from '../../../Hooks/useDebounce';
+import { SearchBoxProps, Results } from './helpers';
 import Popover from '../../Common/Popover';
+import { Icon, Loader } from '../..';
 import Api from '../../../Api';
 import Input from './Input';
 
@@ -49,7 +41,7 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
         const results: Results = await Promise.all(
           models.map(async model => {
             const { data } = await Api[model].fetch({
-              config: { params: { search } }
+              config: { params: { name: search } }
             });
             return [model, data];
           })
@@ -57,7 +49,6 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
 
         setResults(results);
       } catch (err) {
-        console.error(err);
         setResults([]);
       } finally {
         setLoading(false);
@@ -66,13 +57,7 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
   }, [search, models]);
 
   return (
-    <Box
-      height="100%"
-      display="flex"
-      alignItems="center"
-      padding="0 .5em"
-      onBlur={toggleOpen}
-    >
+    <div className="relative flex items-center py-2" onBlur={toggleOpen}>
       <Input
         onChange={onChange}
         value={value}
@@ -91,60 +76,32 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
         padding=".5em"
       >
         {loading && <Loader size="s" rainbow />}
-        {!loading && !hasResults && <Text>No Results.</Text>}
+        {!loading && !hasResults && <span>No Results.</span>}
         {!loading && hasResults && (
-          <Box textAlign="start">
+          <article className="text-start">
             {results.map(([model, data]) => (
-              <Box key={model}>
-                <Text fontSize="1.2em" fontWeight="bold">
-                  {data.length ? startCase(model) : null}
-                </Text>
-                <Box marginTop=".25em">
+              <section key={model}>
+                <h4>{data.length ? startCase(model) : null}</h4>
+                <div>
                   {data.map(obj => (
-                    <Result
+                    <div
+                      className="flex items-center duration-200 p-1.5 rounded-md hover:bg-neutral-700 cursor-pointer"
                       key={obj.uid}
-                      data={obj}
                       onClick={() => {
                         navigate(`/${model}/${obj.uid}`);
                         toggleOpen();
                       }}
-                    />
+                    >
+                      <img src={obj.image} className="h-10 rounded-md" />
+                      <span className="p-2">{obj.name}</span>
+                    </div>
                   ))}
-                </Box>
-              </Box>
+                </div>
+              </section>
             ))}
-          </Box>
+          </article>
         )}
       </Popover>
-    </Box>
-  );
-}
-
-export function Result({ data, onClick, selected }: ResultProps<any>) {
-  const { colors } = useContext(ThemeContext);
-
-  return (
-    <Box
-      display="flex"
-      padding=".3em"
-      alignItems="center"
-      key={data.uid}
-      backgroundColor={selected ? colors.baseLight : 'transparent'}
-      hoverCSS={{ backgroundColor: colors.baseLight }}
-      onClick={onClick}
-    >
-      <Image src={data.image} height="40px" hoverCSS={{ cursor: 'pointer' }} />
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        width="100%"
-      >
-        <Text padding="0 0.5em" fontSize="1em" color={colors.text}>
-          {data.name}
-        </Text>
-        {selected && <Icon model="check" variant="success" />}
-      </Box>
-    </Box>
+    </div>
   );
 }

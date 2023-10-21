@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 
-import { Box, Icon, Text } from '../../HTML';
 import { PopoverProps } from './helpers';
+import { Box, Icon } from '../../HTML';
 
 export default function Popover({
   open,
   setOpen,
   label,
-  title,
   children,
   ...css
 }: PopoverProps) {
@@ -15,11 +14,7 @@ export default function Popover({
     <Box>
       {label && <Box padding=".5em">{label}</Box>}
       <AnimatedBox open={open} className="popover" {...css}>
-        <Box
-          display="flex"
-          justifyContent={title ? 'space-between' : 'flex-end'}
-        >
-          {title && <Text fontWeight="bold">{title}</Text>}
+        <Box display="flex" justifyContent="flex-end">
           {setOpen && (
             <Icon
               model="close"

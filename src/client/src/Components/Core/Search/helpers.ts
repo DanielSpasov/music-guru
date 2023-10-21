@@ -13,10 +13,4 @@ export type SearchBoxProps = {
   width?: string;
 };
 
-export type ResultProps<T> = {
-  data: T;
-  onClick: (props: any) => any;
-  selected?: boolean;
-};
-
 export type Results = [ModelKeys, any[]][];
