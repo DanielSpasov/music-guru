@@ -9,7 +9,7 @@ import { Icon, Loader } from '../..';
 import Api from '../../../Api';
 import Input from './Input';
 
-export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
+export default function SearchBox({ models }: SearchBoxProps) {
   const navigate = useNavigate();
 
   const [results, setResults] = useState<Results>([]);
@@ -19,7 +19,6 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
 
   const search = useDebounce({ value, delay: 500 });
 
-  const toggleOpen = useCallback(() => setOpen(prev => !prev), []);
   const onChange = useCallback((e: any) => setValue(e?.target?.value), []);
 
   const hasResults = useMemo(
@@ -57,23 +56,21 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
   }, [search, models]);
 
   return (
-    <div className="relative flex items-center py-2" onBlur={toggleOpen}>
+    <div className="relative flex items-center" onBlur={() => setOpen(false)}>
       <Input
         onChange={onChange}
         value={value}
         open={open}
         placeholder="Search..."
         position="absolute"
-        width={width}
+        width="250px"
         right=".2em"
       />
 
       <Popover
         open={open}
-        label={<Icon model="search" onClick={toggleOpen} />}
-        width={width}
-        textAlign="center"
-        padding=".5em"
+        label={<Icon model="search" onClick={() => setOpen(prev => !prev)} />}
+        className="w-64"
       >
         {loading && <Loader size="s" rainbow />}
         {!loading && !hasResults && <span>No Results.</span>}
@@ -89,7 +86,7 @@ export default function SearchBox({ models, width = '200px' }: SearchBoxProps) {
                       key={obj.uid}
                       onClick={() => {
                         navigate(`/${model}/${obj.uid}`);
-                        toggleOpen();
+                        setOpen(false);
                       }}
                     >
                       <img src={obj.image} className="h-10 rounded-md" />

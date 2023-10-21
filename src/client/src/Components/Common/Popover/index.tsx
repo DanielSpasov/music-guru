@@ -1,45 +1,51 @@
-import styled from 'styled-components';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { PopoverProps } from './helpers';
-import { Box, Icon } from '../../';
 
 export default function Popover({
   open,
-  setOpen,
   label,
   children,
-  ...css
+  className
 }: PopoverProps) {
+  const id = useMemo(() => `popover-${Math.random()}`, []); // TODO: This is tricky, please change
+
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    const box = document.getElementById(id);
+    if (!box) return;
+
+    if (open) {
+      box.classList.remove('hidden');
+      setTimeout(() => {
+        box.classList.remove('scale-0');
+        box.classList.remove('opacity-0');
+      }, 20);
+    } else {
+      box.classList.add('opacity-0');
+      box.classList.add('scale-0');
+      box.addEventListener('transitionend', () => box.classList.add('hidden'), {
+        capture: false,
+        once: true,
+        passive: false
+      });
+    }
+  }, [id, open]);
+
   return (
-    <Box>
-      {label && <Box padding=".5em">{label}</Box>}
-      <AnimatedBox open={open} className="popover" {...css}>
-        <Box display="flex" justifyContent="flex-end">
-          {setOpen && (
-            <Icon
-              model="close"
-              variant="danger"
-              onClick={() => setOpen(false)}
-            />
-          )}
-        </Box>
+    <div className="relative">
+      {label && <div className="p-2">{label}</div>}
+      <div
+        id={id}
+        className={`absolute right-0 bg-neutral-800 shadow-md shadow-black p-2 rounded-md duration-200 opacity-0 hidden scale-0 ${className}`}
+      >
         {children}
-      </AnimatedBox>
-    </Box>
+      </div>
+    </div>
   );
 }
-
-const AnimatedBox = styled(Box)`
-  background-color: ${({ theme: { colors } }) => colors.base};
-  box-shadow: rgba(0, 0, 0, 0.45) 0px 0px 5px 3px;
-  position: absolute;
-  max-height: 600px;
-  overflow-y: auto;
-  z-index: 9999;
-  top: 1.75em;
-  right: 0;
-
-  transform: ${({ open }) => (open ? 'translateY(1.75em)' : 'translateY(3em)')};
-  visibility: ${({ open }) => (open ? '' : 'hidden')}; // NOT A SOLUTION
-  opacity: ${({ open }) => (open ? '1' : '0')};
-`;

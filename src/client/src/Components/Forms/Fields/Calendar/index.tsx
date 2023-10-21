@@ -41,7 +41,7 @@ export default function Calendar({
         iconModel="calendar"
       />
 
-      <Popover open={open} width="100%" padding=".5em" marginTop="-3.5em">
+      <Popover open={open}>
         <StyledCalendar>
           <ReactCalendar
             onChange={_onChange}

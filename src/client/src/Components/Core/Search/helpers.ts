@@ -10,7 +10,6 @@ export type InputProps = {
 
 export type SearchBoxProps = {
   models: ModelKeys[];
-  width?: string;
 };
 
 export type Results = [ModelKeys, any[]][];

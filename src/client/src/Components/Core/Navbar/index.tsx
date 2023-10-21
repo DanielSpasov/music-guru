@@ -41,7 +41,7 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center h-16">
-        <Search models={['artists', 'songs', 'albums']} width="250px" />
+        <Search models={['artists', 'songs', 'albums']} />
 
         <Popover
           open={openTheme}
@@ -57,8 +57,7 @@ export default function Navbar() {
           label={
             <Icon model="user" onClick={() => setOpenUser(prev => !prev)} />
           }
-          minWidth="7rem"
-          padding=".5em"
+          className="w-24"
         >
           <div className="flex flex-col">
             {isAuthenticated && <Link to="/me">User</Link>}
