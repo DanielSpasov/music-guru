@@ -78,7 +78,7 @@ export default function Delete({ deleteSong, setOpenDel }: DeleteSongProps) {
                 <div className="w-1/12 flex justify-end">
                   <Icon
                     model="trash"
-                    size="1.5em"
+                    className="w-6 h-6"
                     disabled={disabled}
                     onClick={!disabled ? () => editFn(album) : () => null}
                   />

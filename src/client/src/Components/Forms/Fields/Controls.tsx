@@ -16,11 +16,11 @@ export default function Controls({
   return (
     <div className="absolute top-0 right-0 p-1 flex items-center">
       <div className="p-2">
-        {value && <Icon model="close" size="20px" onClick={onClear} />}
+        {value && <Icon model="close" className="w-5 h-5" onClick={onClear} />}
       </div>
       <span className="bg-neutral-600 my-2 w-px self-stretch" />
       <div className="p-2">
-        <Icon model={iconModel} size="20px" onClick={onClick} />
+        <Icon model={iconModel} className="w-5 h-5" onClick={onClick} />
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ export default function Me() {
       {user && (
         <>
           <div className="flex items-start m-3">
-            <Icon model="user" variant="primary" size="60px" />
+            <Icon model="user" variant="primary" className="h-16 w-16" />
             <Summary label="Information" open>
               {infoConfig.map((data, i) => (
                 <Option data={data} key={i} setUser={setUser} user={user} />
@@ -38,7 +38,7 @@ export default function Me() {
           </div>
 
           <div className="flex items-start m-3">
-            <Icon model="lock" variant="primary" size="60px" />
+            <Icon model="lock" className="h-16 w-16" />
             <Summary label="MFA" open>
               {getMFAConfig(user).map((data, i) => (
                 <Option data={data} key={i} setUser={setUser} user={user} />

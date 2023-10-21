@@ -1,13 +1,19 @@
-import { Colors } from '../../Core/ThemeSwitcher/helpers';
+import { ReactNode } from 'react';
+
 import { Icons, IconModel as IconModels } from './Icons';
+
 export { default as SVG } from './SVG';
 
 export type IconProps = {
   model: IconModels;
-  variant?: keyof Colors;
-  size?: string;
-  [css: string]: any;
+  variant?: string;
+  viewBox?: string;
+  className?: string;
+  children?: ReactNode;
+  disabled?: boolean;
+  onClick?: any;
 };
+export type SVGProps = Omit<IconProps, 'model'>;
 
 export type IconModel = IconModels;
 

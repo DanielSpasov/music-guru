@@ -59,7 +59,7 @@ export default function Option({ data, user, setUser }: OptionProps) {
           ) : (
             <Icon
               model="edit"
-              size="1.5em"
+              className="w-6 h-6"
               onClick={() => setIsEditing(prev => !prev)}
             />
           ))}
