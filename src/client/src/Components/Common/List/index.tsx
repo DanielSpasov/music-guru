@@ -32,7 +32,6 @@ export default function List({
 
   return (
     <section className="flex flex-wrap mx-12">
-      {loading && <Skeleton model={model} length={skeletonLength} />}
       {data.map(x => (
         <Card data={x} key={x?.uid} model={model} onClick={() => onClick(x)} />
       ))}
