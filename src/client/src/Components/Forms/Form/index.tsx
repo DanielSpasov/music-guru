@@ -61,7 +61,11 @@ export default function Form({
   );
 
   return (
-    <form onSubmit={handleSubmit(submitFn)} encType="multipart/form-data">
+    <form
+      onSubmit={handleSubmit(submitFn)}
+      encType="multipart/form-data"
+      className="flex flex-col justify-between h-full"
+    >
       <article>
         <h3 className="text-center">{header || 'Form'}</h3>
         {schema.map(section => (
@@ -76,7 +80,7 @@ export default function Form({
         ))}
       </article>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between pt-6">
         <button className="bg-secondary" type="button" onClick={closeFn}>
           Close
         </button>

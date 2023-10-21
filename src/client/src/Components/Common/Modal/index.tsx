@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { ModalProps } from './helpers';
-import { Box, Icon } from '../..';
+import { Icon } from '../..';
 
 export default function Modal({
   open,
@@ -11,63 +11,65 @@ export default function Modal({
   showCloseButton = false,
   showCloseIcon = false
 }: ModalProps) {
+  const id = useMemo(() => `modal-${Math.random()}`, []); // TODO: This is tricky, please change
+
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    const box = document.getElementById(id);
+    if (!box) return;
+
+    if (open) {
+      box.classList.remove('hidden');
+      setTimeout(() => {
+        box.classList.remove('scale-0');
+        box.classList.remove('opacity-0');
+      }, 50);
+    } else {
+      box.classList.add('opacity-0');
+      box.classList.add('scale-0');
+      box.addEventListener('transitionend', () => box.classList.add('hidden'), {
+        capture: false,
+        once: true,
+        passive: false
+      });
+    }
+  }, [id, open]);
+
   return (
-    <Box
-      position="fixed"
-      top="0"
-      width="100%"
-      height="100%"
-      zIndex="9999"
-      pointerEvents={open ? 'auto' : 'none'}
+    <div
+      className={`fixed top-0 w-full h-full ${
+        open ? 'pointer-events-auto' : 'pointer-events-none'
+      }`}
     >
-      <Box
-        backgroundColor="black"
-        width="100%"
-        height="100%"
-        opacity={open ? '.75' : '0'}
-        cursor="auto"
+      <div
+        className={`bg-black h-full w-full ${
+          open ? 'opacity-75' : 'opacity-0'
+        }`}
         {...(closeOnOutsideClick ? { onClick: onClose } : {})}
       />
-      <Box
-        justifyContent="center"
-        alignItems="center"
-        display="flex"
-        position="absolute"
-        bottom="0"
-        right="0"
-        left="0"
-        top="0"
-        transform={`${open ? 'translateY(0em)' : 'translateY(1.25em)'}`}
-        visibility={`${open ? '' : 'hidden'}`}
-        opacity={`${open ? '1' : '0'}`}
+      <div
+        id={id}
+        className="absolute duration-500 m-auto p-4 inset-0 justify-center overflow-y-auto items-center bg-neutral-900 rounded-md w-1/2 h-2/3 shadow-black shadow-lg hidden opacity-0 scale-0"
       >
-        <ModalContent>
-          {showCloseIcon && (
-            <Box position="absolute" top="0" right="0">
-              <Icon model="close" onClick={onClose} />
-            </Box>
-          )}
-          {children}
-          {showCloseButton && (
-            <Box display="flex" justifyContent="flex-end">
-              <button className="bg-red-500" onClick={onClose}>
-                Close
-              </button>
-            </Box>
-          )}
-        </ModalContent>
-      </Box>
-    </Box>
+        {showCloseIcon && (
+          <div className="absolute top-0 right-0">
+            <Icon model="close" onClick={onClose} />
+          </div>
+        )}
+        {children}
+        {showCloseButton && (
+          <div className="flex justify-end">
+            <button className="bg-red-500" onClick={onClose}>
+              Close
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
-
-const ModalContent = styled(Box)`
-  box-sizing: content-box;
-  background-color: ${({ theme: { colors } }) => colors.base};
-  box-shadow: rgba(0, 0, 0, 0.65) 0px 0px 5px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  min-width: 400px;
-  padding: 0.75em;
-  width: 35%;
-`;
