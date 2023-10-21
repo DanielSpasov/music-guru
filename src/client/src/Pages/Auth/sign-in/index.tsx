@@ -1,29 +1,26 @@
-import { useCallback, useState, useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { Form, PageLayout, Box, Link, Text } from '../../../Components';
+import { Form, PageLayout, Link, Input } from '../../../Components';
 import { SignInData, SignInSchema } from '../helpers';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import Api from '../../../Api';
-import schema from './schema';
 
 export default function SignIn() {
   const { dispatch } = useContext(AuthContext);
-  const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (data: SignInData) => {
       try {
-        const validatedData = SignInSchema.parse(data);
-        const { uid, token } = await Api.user.signIn(validatedData);
+        const { uid, token } = await Api.user.signIn(data);
         dispatch({ type: 'SIGNIN', payload: { uid, token } });
-        setErrors([]);
         navigate('/');
       } catch (error: any) {
-        const handledErrors = errorHandler(error);
-        setErrors(handledErrors);
+        const errors = errorHandler(error);
+        toast.error(errors?.[0]?.message);
       }
     },
     [navigate, dispatch]
@@ -31,26 +28,58 @@ export default function SignIn() {
 
   return (
     <PageLayout title="Sign In" showHeader={false}>
-      <Form
-        header="Sign In"
-        schema={schema}
-        onSubmit={onSubmit}
-        errors={errors}
-        additionalInfo={
-          <Box textAlign="center" padding="1em">
-            <Text>Or</Text>
-            <Link
-              to="/sign-up"
-              fontSize="1em"
-              textDecoration="underline"
-              display="inline"
-            >
-              sign up
-            </Link>
-            <Text>if you don&apos;t have an account yet.</Text>
-          </Box>
-        }
-      />
+      <div className="w-1/2 m-auto mt-5">
+        <Form
+          validationSchema={SignInSchema}
+          onSubmit={onSubmit}
+          header="Sign In"
+          additionalInfo={
+            <div className="text-center p-4">
+              <span>Or</span>
+              <Link
+                to="/sign-up"
+                fontSize="1em"
+                textDecoration="underline"
+                display="inline"
+              >
+                sign up
+              </Link>
+              <span>if you don&apos;t have an account yet.</span>
+            </div>
+          }
+          schema={[
+            {
+              key: 'fields',
+              fields: [
+                {
+                  key: 'email',
+                  label: 'Email',
+                  Component: Input,
+                  props: { type: 'email' },
+                  validations: {
+                    required: {
+                      value: true,
+                      message: 'Email is required.'
+                    }
+                  }
+                },
+                {
+                  key: 'password',
+                  label: 'Password',
+                  Component: Input,
+                  props: { type: 'password' },
+                  validations: {
+                    required: {
+                      value: true,
+                      message: 'Password is required.'
+                    }
+                  }
+                }
+              ]
+            }
+          ]}
+        />
+      </div>
     </PageLayout>
   );
 }
