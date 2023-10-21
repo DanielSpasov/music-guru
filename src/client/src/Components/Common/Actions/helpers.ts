@@ -1,4 +1,4 @@
-import { IconModel } from '../../HTML/Icon/Icons';
+import { IconModel } from '../../';
 
 export type Action = {
   icon: IconModel;

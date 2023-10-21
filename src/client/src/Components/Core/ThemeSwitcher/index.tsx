@@ -2,7 +2,7 @@ import { ThemeContext } from 'styled-components';
 import { useContext } from 'react';
 
 import { ThemeProps } from './helpers';
-import { Box, Icon } from '../../HTML';
+import { Box, Icon } from '../../';
 import themes from './themes';
 
 export default function ThemeSwitcher() {

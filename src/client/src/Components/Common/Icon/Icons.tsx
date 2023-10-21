@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-import { SVG } from './SVG';
+import SVG from './SVG';
 
 type CSS = { [key: string]: any };
 

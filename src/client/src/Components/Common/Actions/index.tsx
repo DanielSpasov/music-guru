@@ -1,5 +1,5 @@
 import { ActionsProps } from './helpers';
-import { Icon } from '../../HTML';
+import { Icon } from '../../';
 
 export default function Actions({ actions }: ActionsProps) {
   return (

@@ -2,7 +2,7 @@ import { ThemeContext } from 'styled-components';
 import { useContext } from 'react';
 
 import { TagProps } from './helpers';
-import { Box, Icon } from '../../HTML';
+import { Box, Icon } from '../../';
 
 export default function Tag({ children, onRemove, variant }: TagProps) {
   const { colors } = useContext(ThemeContext);

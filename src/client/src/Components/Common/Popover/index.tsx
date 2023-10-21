@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { PopoverProps } from './helpers';
-import { Box, Icon } from '../../HTML';
+import { Box, Icon } from '../../';
 
 export default function Popover({
   open,

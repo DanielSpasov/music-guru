@@ -1,5 +1,4 @@
-import { IconModel } from '../../HTML/Icon/Icons';
-import { Icon } from '../../HTML';
+import { Icon, IconModel } from '../../';
 
 type ControlsProps = {
   onClear: (props: any) => void;

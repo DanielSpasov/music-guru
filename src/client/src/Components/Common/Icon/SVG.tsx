@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { IconProps } from './';
 
-export const SVG = styled('svg')<IconProps>`
+const SVG = styled('svg')<IconProps>`
   xmlns: 'http://www.w3.org/2000/svg';
   width: ${({ size }) => size || '34px'};
   height: ${({ size }) => size || '34px'};
@@ -28,3 +28,5 @@ export const SVG = styled('svg')<IconProps>`
     }};
   }
 `;
+
+export default SVG;

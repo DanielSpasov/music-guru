@@ -1,6 +1,6 @@
 import { UseFormSetValue } from 'react-hook-form';
 
-import { IconModel } from '../../../HTML/Icon/Icons';
+import { IconModel } from '../../../';
 
 type AcceptTypes = 'image/png' | 'image/jpeg';
 

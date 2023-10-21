@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import { SummaryProps } from './helpers';
-import { Icon } from '../../HTML';
+import { Icon } from '../../';
 
 export default function Summary({
   children,

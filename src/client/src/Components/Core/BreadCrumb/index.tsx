@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
 import { Action } from '../../Common/Actions/helpers';
-import { Box, Icon } from '../../HTML';
 import { Actions } from '../../Common';
+import { Box, Icon } from '../../';
 
 export default function BreadCrumb({ actions }: { actions: Action[] }) {
   const { colors } = useContext(ThemeContext);
