@@ -69,15 +69,13 @@ export default function Delete({ deleteSong, setOpenDel }: DeleteSongProps) {
             const disabled = loading.includes(album.uid);
             return (
               <div key={album.uid} className="flex items-center px-4">
-                <span className="grow w-24">#{i + 1}</span>
+                <span className="w-1/12">#{i + 1}</span>
 
-                <div className="grow">
-                  <Link to={`/albums/${album.uid}`} fontSize="1em">
-                    {album.name}
-                  </Link>
+                <div className="w-10/12">
+                  <Link to={`/albums/${album.uid}`}>{album.name}</Link>
                 </div>
 
-                <div className="flex justify-end grow">
+                <div className="w-1/12 flex justify-end">
                   <Icon
                     model="trash"
                     size="1.5em"

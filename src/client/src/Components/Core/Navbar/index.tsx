@@ -28,7 +28,7 @@ export default function Navbar() {
       zIndex="9999"
     >
       <Box height="60px">
-        <Link to="/" height="60px" padding="0">
+        <Link to="/">
           <Image
             src="/images/logo/blue-logo192.png"
             alt="Music Nerd"
@@ -76,10 +76,12 @@ export default function Navbar() {
           minWidth="7rem"
           padding=".5em"
         >
-          {isAuthenticated && <Link to="/me">User</Link>}
-          {!isAuthenticated && <Link to="/sign-in">Sign In</Link>}
-          {!isAuthenticated && <Link to="/sign-up">Sign Up</Link>}
-          {isAuthenticated && <Link to="/sign-out">Sign Out</Link>}
+          <div className="flex flex-col">
+            {isAuthenticated && <Link to="/me">User</Link>}
+            {!isAuthenticated && <Link to="/sign-in">Sign In</Link>}
+            {!isAuthenticated && <Link to="/sign-up">Sign Up</Link>}
+            {isAuthenticated && <Link to="/sign-out">Sign Out</Link>}
+          </div>
         </Popover>
       </Box>
     </Box>

@@ -36,12 +36,7 @@ export default function SignUp() {
           additionalInfo={
             <div className="text-center p-4">
               <span>Or</span>
-              <Link
-                to="/sign-in"
-                fontSize="1em"
-                textDecoration="underline"
-                display="inline"
-              >
+              <Link to="/sign-in" className="underline p-1">
                 sign in
               </Link>
               <span>if you already have an account.</span>

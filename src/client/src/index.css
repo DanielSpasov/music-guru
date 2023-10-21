@@ -12,6 +12,10 @@
     @apply text-white;
   }
 
+  a {
+    @apply text-white;
+  }
+
   h1 {
     @apply text-white font-bold text-3xl;
   }
