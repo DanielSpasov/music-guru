@@ -1,8 +1,8 @@
 import { FieldProps } from '../helpers';
 import { InputProps } from './helpers';
-import { StyledInput } from './Styled';
 import { useInput } from './useInput';
 import Controls from '../Controls';
+import File from './File';
 
 export default function Input({
   props,
@@ -12,7 +12,7 @@ export default function Input({
   setValue,
   value = '',
   validateField
-}: FieldProps<string, InputProps>) {
+}: FieldProps<string | File, InputProps>) {
   const { iconModel, id, inputType, _onIconClick, _onChange, _onClear } =
     useInput({
       name,
@@ -22,18 +22,41 @@ export default function Input({
       validateField
     });
 
+  const hoverProps = 'hover:border-neutral-500';
+  const focusProps =
+    'focus:border-primary [&~label]:focus:-top-7 [&~label]:focus:left-1';
+
   return (
-    <div className="relative">
-      <StyledInput
-        id={id}
-        name={name}
-        type={inputType}
-        onChange={_onChange}
-        {...(props?.type !== 'file' && { value })}
-        {...(props?.type === 'file' && { accept: props.accept })}
-        placeholder=" "
-      />
-      <label className="absolute top-3 left-3">{label}</label>
+    <div className="relative my-2">
+      {props?.type === 'file' ? (
+        <File
+          id={id}
+          name={name}
+          label={label}
+          value={value as File}
+          _onChange={_onChange}
+          accept={props.accept}
+        />
+      ) : (
+        <>
+          <input
+            id={id}
+            name={name}
+            value={value as string}
+            type={inputType}
+            onChange={_onChange}
+            placeholder=" "
+            className={`bg-neutral-800 w-full h-11 rounded-md border-2 border-neutral-600 p-2 outline-none ${focusProps} ${hoverProps}`}
+          />
+          <label
+            className={`absolute ${
+              !value ? 'top-2.5 left-3' : '-top-7 left-1'
+            }`}
+          >
+            {label}
+          </label>
+        </>
+      )}
 
       <Controls
         value={value}
