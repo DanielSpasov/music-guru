@@ -66,7 +66,16 @@ export default function Form({
       encType="multipart/form-data"
       className="flex flex-col justify-between h-full"
     >
-      <article>
+      {loading && (
+        <div className="absolute w-full h-full z-50">
+          <div className="absolute w-full h-full bg-black opacity-75" />
+          <div className="flex justify-center items-center h-full">
+            <Loader size="sm" />
+          </div>
+        </div>
+      )}
+
+      <article className="p-4">
         <h3 className="text-center">{header || 'Form'}</h3>
         {schema.map(section => (
           <Section
@@ -80,12 +89,12 @@ export default function Form({
         ))}
       </article>
 
-      <div className="flex justify-between pt-6">
+      <div className="flex justify-between p-4">
         <button className="bg-secondary" type="button" onClick={closeFn}>
           Close
         </button>
         <button className="bg-primary" type="submit" disabled={loading}>
-          {!loading ? 'Submit' : <Loader size="s" />}
+          Submit
         </button>
       </div>
 

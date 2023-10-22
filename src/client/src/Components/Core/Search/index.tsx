@@ -72,7 +72,7 @@ export default function SearchBox({ models }: SearchBoxProps) {
         label={<Icon model="search" onClick={() => setOpen(prev => !prev)} />}
         className="w-64"
       >
-        {loading && <Loader size="s" rainbow />}
+        {loading && <Loader size="sm" />}
         {!loading && !hasResults && <span>No Results.</span>}
         {!loading && hasResults && (
           <article className="text-start">

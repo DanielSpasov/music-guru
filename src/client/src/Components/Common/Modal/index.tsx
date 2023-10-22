@@ -54,14 +54,14 @@ export default function Modal({
       />
       <div
         id={id}
-        className="absolute duration-500 m-auto p-4 inset-0 justify-center overflow-y-auto items-center bg-neutral-900 rounded-md w-1/2 h-2/3 shadow-black shadow-lg hidden opacity-0 scale-0"
+        className="absolute duration-500 m-auto inset-0 justify-center overflow-y-auto items-center bg-neutral-900 rounded-md w-1/2 h-2/3 shadow-black shadow-lg hidden opacity-0 scale-0"
       >
         {showCloseIcon && (
           <div className="absolute top-0 right-0">
             <Icon model="close" onClick={onClose} />
           </div>
         )}
-        {children}
+        <div className="relative h-full">{children}</div>
         {showCloseButton && (
           <div className="flex justify-end">
             <button className="bg-red-500" onClick={onClose}>

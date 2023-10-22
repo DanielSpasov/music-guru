@@ -21,8 +21,8 @@ export default function PageLayout({
       {showNavbar && <Navbar />}
       {showBreadCrumb && <BreadCrumb actions={actions} />}
       {loading ? (
-        <div className="text-center m-4">
-          <Loader rainbow />
+        <div className="mt-12">
+          <Loader size="sm" />
         </div>
       ) : (
         <>
@@ -31,7 +31,7 @@ export default function PageLayout({
               <h1 className="text-center p-2 my-4">{title}</h1>
             </header>
           )}
-          <article>{!loading && children}</article>
+          <article>{children}</article>
         </>
       )}
     </main>

@@ -75,7 +75,7 @@ export default function Edit({ onClose, fetchSong }: EditSongProps) {
     [id, onClose, fetchSong]
   );
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader size="sm" />;
   return (
     <Form
       validationSchema={EditSongSchema}

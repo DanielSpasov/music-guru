@@ -76,7 +76,7 @@ export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
     [onClose, fetchAlbum, id]
   );
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader size="sm" />;
   return (
     <Form
       validationSchema={EditAlbumSchema}

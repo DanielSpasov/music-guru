@@ -38,9 +38,11 @@ export default function SignUp() {
       showNavbar={false}
       showBreadCrumb={false}
     >
-      <header className="text-center">
-        <h4>{loading ? 'Verifying Email' : 'Redirecting'}...</h4>
-        <Loader rainbow />
+      <header className="h-screen flex flex-col items-center justify-center">
+        <h2>{loading ? 'Verifying Email' : 'Redirecting'}...</h2>
+        <div className="p-12">
+          <Loader />
+        </div>
       </header>
     </PageLayout>
   );

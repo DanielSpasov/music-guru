@@ -46,7 +46,7 @@ export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
     [onClose, fetchArtist, id]
   );
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader size="sm" />;
   return (
     <Form
       validationSchema={EditArtistSchema}
