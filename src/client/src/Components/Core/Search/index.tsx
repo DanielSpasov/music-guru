@@ -7,7 +7,6 @@ import { SearchBoxProps, Results } from './helpers';
 import Popover from '../../Common/Popover';
 import { Icon, Loader } from '../..';
 import Api from '../../../Api';
-import Input from './Input';
 
 export default function SearchBox({ models }: SearchBoxProps) {
   const navigate = useNavigate();
@@ -56,24 +55,33 @@ export default function SearchBox({ models }: SearchBoxProps) {
   }, [search, models]);
 
   return (
-    <div className="relative flex items-center" onBlur={() => setOpen(false)}>
-      <Input
-        onChange={onChange}
+    <div className="relative flex items-center">
+      <input
         value={value}
-        open={open}
+        disabled={!open}
+        onChange={onChange}
         placeholder="Search..."
-        position="absolute"
-        width="250px"
-        right=".2em"
+        className={`absolute ${
+          open ? 'w-64 opacity-100' : 'w-12 opacity-0'
+        } right-0 border-2 border-neutral-600 bg-neutral-800 p-2 rounded-md outline-none hover:border-neutral-500 focus:border-primary`}
       />
 
       <Popover
         open={open}
-        label={<Icon model="search" onClick={() => setOpen(prev => !prev)} />}
+        label={
+          <Icon
+            model={!open ? 'search' : 'right'}
+            onClick={() => setOpen(prev => !prev)}
+          />
+        }
         className="w-64"
       >
         {loading && <Loader size="sm" />}
-        {!loading && !hasResults && <span>No Results.</span>}
+        {!loading && !hasResults && (
+          <div className="text-center font-bold p-2">
+            <span>No Results.</span>
+          </div>
+        )}
         {!loading && hasResults && (
           <article className="text-start">
             {results.map(([model, data]) => (
