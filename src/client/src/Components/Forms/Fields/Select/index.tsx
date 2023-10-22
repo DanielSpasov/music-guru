@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import makeAnimated from 'react-select/animated';
+import ReactSelect from 'react-select';
 
-import { SelectProps, handleMenuClose } from './helpers';
-import { Select as StyledSelect } from './Styled';
+import { SelectProps } from './helpers';
 import { FieldProps } from '../helpers';
-import { Label, Box } from '../../..';
 
 export default function Select({
   value = [],
@@ -37,11 +36,10 @@ export default function Select({
   );
 
   return (
-    <Box>
-      <StyledSelect
+    <div className="relative">
+      <ReactSelect
         id={id}
         components={{ ...makeAnimated() }}
-        onMenuClose={() => handleMenuClose(id)}
         options={options}
         onChange={_onChange}
         isMulti={props?.multiple}
@@ -51,27 +49,95 @@ export default function Select({
         isSearchable
         placeholder=""
         isClearable
-        classNames={{
-          control: state => (state.isFocused ? 'control--focused' : 'control'),
-          option: state => (state.isSelected ? 'option--selected' : 'option'),
-          valueContainer: state => (state.isMulti ? 'valueContainer' : ''),
-          indicatorSeparator: () => 'indicatorSeparator',
-          dropdownIndicator: () => 'dropdownIndicator',
-          clearIndicator: () => 'clearIndicator',
-          multiValue: () => 'multiValue',
-          multiValueLabel: () => 'label',
-          singleValue: () => 'label',
-          menu: () => 'menu'
+        styles={{
+          control: (base, state) => ({
+            ...base,
+            transition: '200ms',
+            marginTop: '0.5em',
+            borderWidth: '2px',
+            borderRadius: '5px',
+            boxShadow: 'none',
+            backgroundColor: state.theme.colors.neutral80,
+            borderColor: state.isFocused
+              ? state.theme.colors.primary
+              : state.theme.colors.neutral70,
+            '&:hover': {
+              borderColor: state.isFocused
+                ? state.theme.colors.primary
+                : state.theme.colors.neutral60
+            }
+          }),
+          option: (base, state) => ({
+            ...base,
+            borderRadius: '4px',
+            backgroundColor: state.isSelected
+              ? state.theme.colors.neutral80
+              : state.theme.colors.neutral90,
+            '&:hover': {
+              backgroundColor: state.theme.colors.neutral80
+            }
+          }),
+          indicatorSeparator: (base, state) => ({
+            ...base,
+            backgroundColor: state.theme.colors.neutral70
+          }),
+          clearIndicator: (base, state) => ({
+            ...base,
+            cursor: 'pointer',
+            '&:hover': {
+              svg: {
+                fill: state.theme.colors.primary
+              }
+            }
+          }),
+          dropdownIndicator: (base, state) => ({
+            ...base,
+            cursor: 'pointer',
+            '&:hover': {
+              svg: {
+                fill: state.theme.colors.primary
+              }
+            }
+          }),
+          valueContainer: base => ({
+            ...base,
+            padding: '4px'
+          }),
+          multiValue: (base, state) => ({
+            ...base,
+            backgroundColor: state.theme.colors.neutral70
+          }),
+          multiValueLabel: base => ({
+            ...base,
+            color: 'white',
+            padding: '.2em'
+          }),
+          singleValue: base => ({
+            ...base,
+            color: 'white',
+            paddingLeft: '.25em'
+          }),
+          menu: (base, state) => ({
+            ...base,
+            backgroundColor: state.theme.colors.neutral90,
+            boxShadow: 'rgba(0, 0, 0, 0.45) 0px 0px 5px 3px'
+          }),
+          multiValueRemove: (base, state) => ({
+            ...base,
+            '&:hover': {
+              backgroundColor: state.theme.colors.danger
+            }
+          })
         }}
       />
 
-      <Label
-        position="absolute"
-        top={!selected.length ? '.65em' : '-1.5em'}
-        left={!selected.length ? '.75em' : '0'}
+      <label
+        className={`absolute duration-300 ${
+          !selected.length ? 'top-2.5 left-3' : '-top-7 left-1'
+        }`}
       >
         {label}
-      </Label>
-    </Box>
+      </label>
+    </div>
   );
 }
