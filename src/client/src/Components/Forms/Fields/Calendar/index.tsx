@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 import ReactCalendar from 'react-calendar';
 import moment from 'moment';
 
-import { StyledCalendar, StyledInput } from './Styled';
 import { FieldProps } from '../helpers';
 import { Popover } from '../../..';
 import Controls from '../Controls';
@@ -23,14 +22,19 @@ export default function Calendar({
   );
 
   return (
-    <div className="relative">
-      <StyledInput
+    <div className="relative my-2">
+      <input
         value={value ? moment(value).format('MMMM Do YYYY') : ''}
         placeholder=" "
         onChange={() => null}
         onClick={() => setOpen(prev => !prev)}
+        className=" w-full h-11 outline-none bg-neutral-800 border-2 border-neutral-700 rounded-md p-2 hover:border-neutral-500 focus:border-primary"
       />
-      <label className="absolute top-3 left-3">{label}</label>
+      <label
+        className={`absolute ${!value ? 'top-2.5 left-3' : '-top-7 left-1'}`}
+      >
+        {label}
+      </label>
 
       <Controls
         value={value}
@@ -39,13 +43,11 @@ export default function Calendar({
         iconModel="calendar"
       />
 
-      <Popover open={open}>
-        <StyledCalendar>
-          <ReactCalendar
-            onChange={_onChange}
-            defaultValue={moment(value).toDate()}
-          />
-        </StyledCalendar>
+      <Popover open={open} className="z-50">
+        <ReactCalendar
+          onChange={_onChange}
+          defaultValue={moment(value).toDate()}
+        />
       </Popover>
     </div>
   );

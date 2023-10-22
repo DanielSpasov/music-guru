@@ -36,7 +36,7 @@ export default function Select({
   );
 
   return (
-    <div className="relative">
+    <div className="relative my-2">
       <ReactSelect
         id={id}
         components={{ ...makeAnimated() }}
@@ -132,7 +132,7 @@ export default function Select({
       />
 
       <label
-        className={`absolute duration-300 ${
+        className={`absolute ${
           !selected.length ? 'top-2.5 left-3' : '-top-7 left-1'
         }`}
       >
