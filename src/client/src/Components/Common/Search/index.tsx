@@ -4,7 +4,7 @@ import { startCase } from 'lodash';
 
 import useDebounce from '../../../Hooks/useDebounce';
 import { SearchBoxProps, Results } from './helpers';
-import Popover from '../../Common/Popover';
+import Popover from '../Popover';
 import { Icon, Loader } from '../..';
 import Api from '../../../Api';
 
