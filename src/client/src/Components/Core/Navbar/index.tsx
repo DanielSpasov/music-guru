@@ -1,19 +1,30 @@
 import { useLocation } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 
+import { ThemeContext, AuthContext, Theme } from '../../../Contexts';
 import { Link, Search, Popover, Icon } from '../../';
-import { AuthContext } from '../../../Contexts/Auth';
-import ThemeSwitcher from '../ThemeSwitcher';
 
 export default function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
+  const { theme, setTheme } = useContext(ThemeContext);
   const { pathname } = useLocation();
 
-  const [openTheme, setOpenTheme] = useState(false);
+  const [animateTheme, setAnimateTheme] = useState(false);
   const [openUser, setOpenUser] = useState(false);
 
+  const toggleTheme = useCallback(() => {
+    const currentTheme = localStorage.getItem('theme');
+    setAnimateTheme(true);
+
+    if (currentTheme === 'dark') {
+      localStorage.setItem('theme', 'light');
+      return;
+    }
+    localStorage.setItem('theme', 'dark');
+  }, []);
+
   return (
-    <nav className="h-16 flex justify-between shadow-md shadow-black z-50">
+    <nav className="h-16 flex justify-between shadow-md shadow-black z-50 dark:bg-neutral-900 bg-blue-600">
       <div className="w-16 h-16">
         <Link to="/">
           <img src="/images/logo/blue-logo192.png" alt="Music Nerd" />
@@ -42,15 +53,19 @@ export default function Navbar() {
 
       <div className="flex items-center h-16">
         <Search models={['artists', 'songs', 'albums']} />
-
-        <Popover
-          open={openTheme}
-          label={
-            <Icon model="theme" onClick={() => setOpenTheme(prev => !prev)} />
-          }
+        <div
+          className={`p-2 ${animateTheme ? 'scale-0 rotate-180' : 'scale-100'}`}
+          onTransitionEnd={e => {
+            if (e.propertyName !== 'transform') return;
+            setTheme(localStorage.getItem('theme') as Theme);
+            setAnimateTheme(false);
+          }}
         >
-          <ThemeSwitcher />
-        </Popover>
+          <Icon
+            model={theme === 'dark' ? 'dark' : 'light'}
+            onClick={toggleTheme}
+          />
+        </div>
 
         <Popover
           open={openUser}

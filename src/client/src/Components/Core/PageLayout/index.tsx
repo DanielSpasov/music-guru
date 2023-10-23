@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { BreadCrumb, Loader, Navbar } from '../../';
 import { PageLayoutProps } from './helpers';
+import { ThemeContext } from '../../../Contexts';
 
 export default function PageLayout({
   title,
@@ -12,12 +13,14 @@ export default function PageLayout({
   actions = [],
   loading = false
 }: PageLayoutProps) {
+  const { theme } = useContext(ThemeContext);
+
   useEffect(() => {
     document.title = loading ? 'Loading...' : title;
   }, [title, loading]);
 
   return (
-    <main className="h-screen bg-neutral-900">
+    <main className={`h-screen ${theme}`}>
       {showNavbar && <Navbar />}
       {showBreadCrumb && <BreadCrumb actions={actions} />}
       {loading ? (

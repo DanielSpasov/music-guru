@@ -4,9 +4,14 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    font-family: 'Maven Pro', sans-serif;
+  }
+
   * {
     @apply text-white duration-200;
   }
+
   button {
     @apply bg-primary rounded-md py-3 px-4 font-bold hover:opacity-70 disabled:opacity-50;
   }
