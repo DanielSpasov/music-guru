@@ -3,7 +3,9 @@ import {
   SetStateAction,
   useState,
   createContext,
-  ReactNode
+  ReactNode,
+  useEffect,
+  useRef
 } from 'react';
 
 export type Theme = 'light' | 'dark';
@@ -22,6 +24,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(
     localStorage.getItem('theme') as Theme
   );
+
+  const body = useRef<HTMLBodyElement>(document.querySelector('body'));
+
+  useEffect(() => {
+    if (!body.current) return;
+    body.current.className = `${theme} ${
+      theme === 'dark' ? 'bg-neutral-900' : 'bg-neutral-50'
+    }`;
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
