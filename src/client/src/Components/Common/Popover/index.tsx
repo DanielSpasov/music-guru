@@ -42,7 +42,7 @@ export default function Popover({
       {label && <div className="p-2">{label}</div>}
       <div
         id={id}
-        className={`absolute right-0 bg-neutral-800 shadow-md shadow-black p-2 rounded-md opacity-0 hidden scale-0 ${className}`}
+        className={`absolute right-0 bg-neutral-900 shadow-md shadow-black p-2 rounded-md opacity-0 hidden scale-0 ${className}`}
       >
         {children}
       </div>
