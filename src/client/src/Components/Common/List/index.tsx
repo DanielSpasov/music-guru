@@ -20,7 +20,7 @@ export default function List({
 
   if (loading) {
     return (
-      <section className="flex flex-wrap mx-12">
+      <section className="flex flex-wrap mx-10">
         <Skeleton model={model} length={skeletonLength} />
       </section>
     );
@@ -31,7 +31,7 @@ export default function List({
   }
 
   return (
-    <section className="flex flex-wrap mx-12">
+    <section className="flex flex-wrap mx-10">
       {data.map(x => (
         <Card data={x} key={x?.uid} model={model} onClick={() => onClick(x)} />
       ))}
