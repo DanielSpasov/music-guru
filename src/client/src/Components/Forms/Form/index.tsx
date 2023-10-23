@@ -90,10 +90,18 @@ export default function Form({
       </article>
 
       <div className="flex justify-between p-4">
-        <button className="bg-secondary" type="button" onClick={closeFn}>
+        <button
+          className="bg-secondary dark:bg-secondary-dark"
+          type="button"
+          onClick={closeFn}
+        >
           Close
         </button>
-        <button className="bg-primary" type="submit" disabled={loading}>
+        <button
+          className="bg-primary dark:bg-primary-dark"
+          type="submit"
+          disabled={loading}
+        >
           Submit
         </button>
       </div>

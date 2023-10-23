@@ -17,7 +17,7 @@ export default function PageLayout({
   }, [title, loading]);
 
   return (
-    <main className="h-screen">
+    <main className="min-h-screen">
       {showNavbar && <Navbar />}
       {showBreadCrumb && <BreadCrumb actions={actions} />}
       {loading ? (

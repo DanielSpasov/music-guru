@@ -1,13 +1,18 @@
 import { ChangeEvent, useCallback, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { StyledInput } from '../../../Components/Forms/Fields/Input/Styled';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { fromatDate } from '../../../Utils';
 import { Icon } from '../../../Components';
 import { OptionProps } from './helpers';
 import Api from '../../../Api';
+
+const hoverProps = 'hover:border-neutral-300';
+const focusProps =
+  'focus:border-primary dark:focus:border-primary-dark [&~label]:focus:-top-7 [&~label]:focus:left-1';
+const darkProps =
+  'dark:bg-neutral-800 dark:border-neutral-600 dark:hover:border-neutral-500';
 
 export default function Option({ data, user, setUser }: OptionProps) {
   const { uid } = useContext(AuthContext);
@@ -71,12 +76,12 @@ export default function Option({ data, user, setUser }: OptionProps) {
 
       <div className="flex-1">
         {isEditing ? (
-          <StyledInput
-            margin="0"
-            value={value}
+          <input
+            value={value as string}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setValue(e?.target?.value)
             }
+            className={`w-full h-11 rounded-md bg-neutral-100 border-2 border-neutral-200 p-2 outline-none ${darkProps} ${focusProps} ${hoverProps}`}
           />
         ) : (
           <>

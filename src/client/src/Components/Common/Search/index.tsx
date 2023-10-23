@@ -8,6 +8,9 @@ import Popover from '../Popover';
 import { Icon, Loader } from '../..';
 import Api from '../../../Api';
 
+const inputDarkProps =
+  'dark:focus:border-primary-dark dark:border-neutral-600 dark:bg-neutral-800 dark:hover:border-neutral-500';
+
 export default function SearchBox({ models }: SearchBoxProps) {
   const navigate = useNavigate();
 
@@ -63,7 +66,7 @@ export default function SearchBox({ models }: SearchBoxProps) {
         placeholder="Search..."
         className={`absolute ${
           open ? 'w-64 opacity-100' : 'w-12 opacity-0'
-        } right-0 border-2 border-neutral-600 bg-neutral-800 p-2 rounded-md outline-none hover:border-neutral-500 focus:border-primary`}
+        } right-0 border-2 p-2 rounded-md outline-none hover:border-neutral-300 focus:border-primary ${inputDarkProps}`}
       />
 
       <Popover
@@ -90,7 +93,7 @@ export default function SearchBox({ models }: SearchBoxProps) {
                 <div>
                   {data.map(obj => (
                     <div
-                      className="flex items-center p-1.5 rounded-md hover:bg-neutral-700 cursor-pointer"
+                      className="flex items-center p-1.5 rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-700 cursor-pointer"
                       key={obj.uid}
                       onClick={() => {
                         navigate(`/${model}/${obj.uid}`);

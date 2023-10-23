@@ -28,7 +28,7 @@ export default function Calendar({
         placeholder=" "
         onChange={() => null}
         onClick={() => setOpen(prev => !prev)}
-        className=" w-full h-11 outline-none bg-neutral-800 border-2 border-neutral-700 rounded-md p-2 hover:border-neutral-500 focus:border-primary"
+        className="w-full h-11 outline-none bg-neutral-800 border-2 border-neutral-700 rounded-md p-2 hover:border-neutral-500 focus:border-primary"
       />
       <label
         className={`absolute ${!value ? 'top-2.5 left-3' : '-top-7 left-1'}`}

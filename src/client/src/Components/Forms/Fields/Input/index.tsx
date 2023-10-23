@@ -4,6 +4,12 @@ import { useInput } from './useInput';
 import Controls from '../Controls';
 import File from './File';
 
+const hoverProps = 'hover:border-neutral-300';
+const focusProps =
+  'focus:border-primary dark:focus:border-primary-dark [&~label]:focus:-top-7 [&~label]:focus:left-1';
+const darkProps =
+  'dark:bg-neutral-800 dark:border-neutral-600 dark:hover:border-neutral-500';
+
 export default function Input({
   props,
   name,
@@ -21,10 +27,6 @@ export default function Input({
       setValue,
       validateField
     });
-
-  const hoverProps = 'hover:border-neutral-500';
-  const focusProps =
-    'focus:border-primary [&~label]:focus:-top-7 [&~label]:focus:left-1';
 
   return (
     <div className="relative my-2">
@@ -46,7 +48,7 @@ export default function Input({
             type={inputType}
             onChange={_onChange}
             placeholder=" "
-            className={`bg-neutral-800 w-full h-11 rounded-md border-2 border-neutral-600 p-2 outline-none ${focusProps} ${hoverProps}`}
+            className={`w-full h-11 rounded-md bg-neutral-100 border-2 border-neutral-200 p-2 outline-none ${darkProps} ${focusProps} ${hoverProps}`}
           />
           <label
             className={`absolute ${

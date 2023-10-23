@@ -3,6 +3,8 @@ import { useEffect, useMemo, useRef } from 'react';
 import { ModalProps } from './helpers';
 import { Icon } from '../..';
 
+const darkProps = 'dark:bg-neutral-900 dark:shadow-neutral-950';
+
 export default function Modal({
   open,
   onClose,
@@ -54,7 +56,7 @@ export default function Modal({
       />
       <div
         id={id}
-        className="absolute duration-500 m-auto inset-0 justify-center overflow-y-auto items-center bg-neutral-900 rounded-md w-1/2 h-2/3 shadow-black shadow-lg hidden opacity-0 scale-0"
+        className={`absolute duration-500 m-auto inset-0 justify-center overflow-y-auto items-center bg-neutral-100 rounded-md w-1/2 h-2/3 shadow-md hidden opacity-0 scale-0 ${darkProps}`}
       >
         {showCloseIcon && (
           <div className="absolute top-0 right-0">

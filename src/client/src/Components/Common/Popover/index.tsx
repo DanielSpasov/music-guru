@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import { PopoverProps } from './helpers';
 
+const darkProps = 'dark:bg-neutral-900 dark:shadow-black';
+
 export default function Popover({
   open,
   label,
@@ -42,7 +44,7 @@ export default function Popover({
       {label && <div className="p-2">{label}</div>}
       <div
         id={id}
-        className={`absolute right-0 bg-neutral-900 shadow-md shadow-black p-2 rounded-md opacity-0 hidden scale-0 ${className}`}
+        className={`absolute right-0 shadow-md p-2 rounded-md opacity-0 hidden scale-0 ${darkProps} ${className}`}
       >
         {children}
       </div>

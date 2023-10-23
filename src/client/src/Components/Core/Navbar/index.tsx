@@ -4,6 +4,8 @@ import { useCallback, useContext, useState } from 'react';
 import { ThemeContext, AuthContext, Theme } from '../../../Contexts';
 import { Link, Search, Popover, Icon } from '../../';
 
+const darkProps = 'dark:bg-neutral-950 dark:shadow-sm dark:shadow-neutral-950';
+
 export default function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
   const { theme, setTheme } = useContext(ThemeContext);
@@ -24,14 +26,18 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="h-16 flex justify-between shadow-md shadow-black z-50 dark:bg-neutral-900 bg-blue-600">
-      <div className="w-16 h-16">
+    <nav className={`relative h-16 flex ${darkProps}`}>
+      <div className="flex-1">
         <Link to="/">
-          <img src="/images/logo/blue-logo192.png" alt="Music Nerd" />
+          <img
+            src="/images/logo/blue-logo192.png"
+            className="w-16 h-16"
+            alt="Music Nerd"
+          />
         </Link>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center justify-center flex-1">
         <Link
           to="/artists"
           type="navlink"
@@ -51,7 +57,7 @@ export default function Navbar() {
         </Link>
       </div>
 
-      <div className="flex items-center h-16">
+      <div className="flex items-center justify-end h-16 flex-1">
         <Search models={['artists', 'songs', 'albums']} />
         <div
           className={`p-2 ${animateTheme ? 'scale-0 rotate-180' : 'scale-100'}`}

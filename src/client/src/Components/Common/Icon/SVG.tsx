@@ -13,9 +13,7 @@ export default function SVG({
       viewBox={viewBox}
       onClick={!disabled && onClick ? onClick : () => null}
       className={`${
-        disabled
-          ? '[&>path]:text-neutral-500'
-          : onClick && 'cursor-pointer [&>path]:hover:text-primary'
+        disabled ? '[&>path]:text-neutral-500' : onClick && 'cursor-pointer'
       } ${className}`}
     >
       {children}

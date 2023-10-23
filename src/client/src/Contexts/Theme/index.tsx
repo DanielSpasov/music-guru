@@ -30,7 +30,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!body.current) return;
     body.current.className = `${theme} ${
-      theme === 'dark' ? 'bg-neutral-900' : 'bg-neutral-50'
+      theme === 'dark' ? 'bg-neutral-950' : 'bg-neutral-50'
     }`;
   }, [theme]);
 
