@@ -9,7 +9,7 @@ export type SelectProps = {
 export const styles = (theme: Theme): StylesConfig => {
   const colors = {
     dark: {
-      bgNeutral: {
+      bg: {
         60: '#737373',
         70: '#525252',
         80: '#262626',
@@ -21,7 +21,7 @@ export const styles = (theme: Theme): StylesConfig => {
       selected: '#171717'
     },
     light: {
-      bgNeutral: {
+      bg: {
         60: '#D4D4D4',
         70: '#E5E5E5',
         80: '#F5F5F5',
@@ -42,35 +42,35 @@ export const styles = (theme: Theme): StylesConfig => {
       borderWidth: '2px',
       borderRadius: '5px',
       boxShadow: 'none',
-      backgroundColor: colors[theme].bgNeutral[80],
+      backgroundColor: colors[theme].bg[80],
       borderColor: state.isFocused
         ? colors[theme].primary
-        : colors[theme].bgNeutral[70],
+        : colors[theme].bg[70],
       '&:hover': {
         borderColor: state.isFocused
           ? colors[theme].primary
-          : colors[theme].bgNeutral[60]
+          : colors[theme].bg[60]
       }
     }),
     option: (base, state) => ({
       ...base,
       borderRadius: '4px',
       backgroundColor: state.isSelected
-        ? colors[theme].bgNeutral[80]
-        : colors[theme].bgNeutral[90],
+        ? colors[theme].bg[80]
+        : colors[theme].bg[90],
       color: colors[theme].text,
-      '&:hover': { backgroundColor: colors[theme].bgNeutral[80] }
+      '&:hover': { backgroundColor: colors[theme].bg[80] }
     }),
     indicatorSeparator: base => ({
       ...base,
-      backgroundColor: colors[theme].bgNeutral[70]
+      backgroundColor: colors[theme].bg[70]
     }),
     clearIndicator: base => ({ ...base, cursor: 'pointer' }),
     dropdownIndicator: base => ({ ...base, cursor: 'pointer' }),
     valueContainer: base => ({ ...base, padding: '4px' }),
     multiValue: base => ({
       ...base,
-      backgroundColor: colors[theme].bgNeutral[70]
+      backgroundColor: colors[theme].bg[70]
     }),
     multiValueLabel: base => ({
       ...base,
@@ -84,7 +84,7 @@ export const styles = (theme: Theme): StylesConfig => {
     }),
     menu: base => ({
       ...base,
-      backgroundColor: colors[theme].bgNeutral[90],
+      backgroundColor: colors[theme].bg[90],
       boxShadow: colors[theme].shadow
     }),
     multiValueRemove: (base, state) => ({
