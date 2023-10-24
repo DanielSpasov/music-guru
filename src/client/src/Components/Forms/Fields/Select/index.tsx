@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import makeAnimated from 'react-select/animated';
 import ReactSelect from 'react-select';
 
-import { SelectProps } from './helpers';
+import { SelectProps, styles } from './helpers';
 import { FieldProps } from '../helpers';
+import { ThemeContext } from '../../../../Contexts';
 
 export default function Select({
   value = [],
@@ -12,6 +13,8 @@ export default function Select({
   onChange,
   props
 }: FieldProps<any[], SelectProps>) {
+  const { theme } = useContext(ThemeContext);
+
   const [selected, setSelected] = useState<any[]>(value);
   const [options, setOptions] = useState<any[]>([]);
 
@@ -46,89 +49,10 @@ export default function Select({
         defaultValue={value}
         formatOptionLabel={option => option?.name}
         getOptionValue={option => option?.uid}
+        styles={styles(theme)}
         isSearchable
         placeholder=""
         isClearable
-        styles={{
-          control: (base, state) => ({
-            ...base,
-            transition: '200ms',
-            marginTop: '0.5em',
-            borderWidth: '2px',
-            borderRadius: '5px',
-            boxShadow: 'none',
-            backgroundColor: state.theme.colors.neutral80,
-            borderColor: state.isFocused
-              ? state.theme.colors.primary
-              : state.theme.colors.neutral70,
-            '&:hover': {
-              borderColor: state.isFocused
-                ? state.theme.colors.primary
-                : state.theme.colors.neutral60
-            }
-          }),
-          option: (base, state) => ({
-            ...base,
-            borderRadius: '4px',
-            backgroundColor: state.isSelected
-              ? state.theme.colors.neutral80
-              : state.theme.colors.neutral90,
-            '&:hover': {
-              backgroundColor: state.theme.colors.neutral80
-            }
-          }),
-          indicatorSeparator: (base, state) => ({
-            ...base,
-            backgroundColor: state.theme.colors.neutral70
-          }),
-          clearIndicator: (base, state) => ({
-            ...base,
-            cursor: 'pointer',
-            '&:hover': {
-              svg: {
-                fill: state.theme.colors.primary
-              }
-            }
-          }),
-          dropdownIndicator: (base, state) => ({
-            ...base,
-            cursor: 'pointer',
-            '&:hover': {
-              svg: {
-                fill: state.theme.colors.primary
-              }
-            }
-          }),
-          valueContainer: base => ({
-            ...base,
-            padding: '4px'
-          }),
-          multiValue: (base, state) => ({
-            ...base,
-            backgroundColor: state.theme.colors.neutral70
-          }),
-          multiValueLabel: base => ({
-            ...base,
-            color: 'white',
-            padding: '.2em'
-          }),
-          singleValue: base => ({
-            ...base,
-            color: 'white',
-            paddingLeft: '.25em'
-          }),
-          menu: (base, state) => ({
-            ...base,
-            backgroundColor: state.theme.colors.neutral90,
-            boxShadow: 'rgba(0, 0, 0, 0.45) 0px 0px 5px 3px'
-          }),
-          multiValueRemove: (base, state) => ({
-            ...base,
-            '&:hover': {
-              backgroundColor: state.theme.colors.danger
-            }
-          })
-        }}
       />
 
       <label
