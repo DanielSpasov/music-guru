@@ -17,33 +17,27 @@ export default function List({
     [model, navigate]
   );
 
-  if (loading) {
-    return (
-      <section className="flex flex-wrap mx-10">
-        {Array(skeletonLength)
+  return (
+    <section className="flex flex-wrap mx-10">
+      {loading ? (
+        Array(skeletonLength)
           .fill(null)
           .map((_, i) => (
             <Card key={i} data={data} model={model} loading={true} />
-          ))}
-      </section>
-    );
-  }
-
-  if (!data.length) {
-    return <h4 className="text-center">No {model} available.</h4>;
-  }
-
-  return (
-    <section className="flex flex-wrap mx-10">
-      {data.map(x => (
-        <Card
-          data={x}
-          key={x?.uid}
-          model={model}
-          onClick={() => onClick(x)}
-          loading={loading}
-        />
-      ))}
+          ))
+      ) : !data.length ? (
+        <h4 className="text-center">No {model} available.</h4>
+      ) : (
+        data.map(x => (
+          <Card
+            data={x}
+            key={x?.uid}
+            model={model}
+            onClick={() => onClick(x)}
+            loading={loading}
+          />
+        ))
+      )}
     </section>
   );
 }
