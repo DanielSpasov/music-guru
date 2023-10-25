@@ -4,14 +4,14 @@ import ArtistCard from './Artist';
 import AlbumCard from './Album';
 import SongCard from './Song';
 
-export default function Card({ data, model, onClick }: CardProps<any>) {
+export default function Card({ model, ...cardProps }: CardProps<any>) {
   switch (model) {
     case 'songs':
-      return <SongCard data={data} onClick={onClick} />;
+      return <SongCard {...cardProps} />;
     case 'albums':
-      return <AlbumCard data={data} onClick={onClick} />;
+      return <AlbumCard {...cardProps} />;
     case 'artists':
-      return <ArtistCard data={data} onClick={onClick} />;
+      return <ArtistCard {...cardProps} />;
     default:
       return <></>;
   }

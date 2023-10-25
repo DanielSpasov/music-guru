@@ -5,7 +5,12 @@ const hoverProps = 'hover:shadow-neutral-400 [&>span]:hover:text-primary';
 const darkProps =
   'dark:[&>span]:hover:text-primary-dark dark:bg-neutral-900 dark:hover:shadow-neutral-900';
 
-export default function ArtistCard({ data, onClick }: CardProps<Artist>) {
+export default function ArtistCard({
+  data,
+  onClick,
+  loading = false
+}: CardProps<Artist>) {
+  if (loading) return <Skeleton />;
   return (
     <div
       className={`relative flex flex-col items-center bg-neutral-100 rounded-md m-3 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
@@ -16,6 +21,15 @@ export default function ArtistCard({ data, onClick }: CardProps<Artist>) {
       </div>
 
       <span className="text-lg pb-2">{data?.name}</span>
+    </div>
+  );
+}
+
+function Skeleton() {
+  return (
+    <div className="flex flex-col items-center bg-neutral-300 dark:bg-neutral-900 rounded-md m-3 shadow-md animate-pulse">
+      <div className="bg-neutral-200 dark:bg-neutral-700 w-40 h-40 m-2 rounded-md" />
+      <div className="bg-neutral-300 dark:bg-neutral-900 w-44 h-9 p-2 rounded-b-md" />
     </div>
   );
 }

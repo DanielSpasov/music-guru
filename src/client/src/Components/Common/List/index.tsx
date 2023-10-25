@@ -2,14 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 
 import { ListProps, Model } from './helpers';
-import Skeleton from './skeleton';
 import Card from '../Card';
 
 export default function List({
   data,
   model,
   loading = false,
-  skeletonLength = 15
+  skeletonLength = 18
 }: ListProps) {
   const navigate = useNavigate();
 
@@ -18,10 +17,14 @@ export default function List({
     [model, navigate]
   );
 
-  if (loading) {
+  if (!loading) {
     return (
       <section className="flex flex-wrap mx-10">
-        <Skeleton model={model} length={skeletonLength} />
+        {Array(skeletonLength)
+          .fill(null)
+          .map((_, i) => (
+            <Card key={i} data={data} model={model} loading={true} />
+          ))}
       </section>
     );
   }
@@ -33,7 +36,13 @@ export default function List({
   return (
     <section className="flex flex-wrap mx-10">
       {data.map(x => (
-        <Card data={x} key={x?.uid} model={model} onClick={() => onClick(x)} />
+        <Card
+          data={x}
+          key={x?.uid}
+          model={model}
+          onClick={() => onClick(x)}
+          loading={loading}
+        />
       ))}
     </section>
   );

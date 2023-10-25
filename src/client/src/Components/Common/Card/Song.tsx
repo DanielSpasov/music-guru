@@ -1,7 +1,12 @@
 import { Song } from '../../../Pages/songs/helpers';
 import { CardProps } from './helpers';
 
-export default function SongCard({ data, onClick }: CardProps<Song>) {
+export default function SongCard({
+  data,
+  onClick,
+  loading = false
+}: CardProps<Song>) {
+  if (loading) return <Skeleton />;
   return (
     <div
       className="flex items-center w-52 h-20 p-2 m-2 rounded-md hover:bg-neutral-700 cursor-pointer"
@@ -17,5 +22,11 @@ export default function SongCard({ data, onClick }: CardProps<Song>) {
         <span>{data.name}</span>
       </div>
     </div>
+  );
+}
+
+function Skeleton() {
+  return (
+    <div className="w-52 h-20 m-2 bg-neutral-900 rounded-md animate-pulse" />
   );
 }
