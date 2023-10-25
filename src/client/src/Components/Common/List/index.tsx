@@ -17,7 +17,7 @@ export default function List({
     [model, navigate]
   );
 
-  if (!loading) {
+  if (loading) {
     return (
       <section className="flex flex-wrap mx-10">
         {Array(skeletonLength)
