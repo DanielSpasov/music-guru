@@ -13,7 +13,7 @@ export default function ArtistCard({
   if (loading) return <Skeleton />;
   return (
     <div
-      className={`relative flex flex-col items-center bg-neutral-100 rounded-md m-3 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
+      className={`relative flex flex-col items-center bg-neutral-200 rounded-md m-3 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
       onClick={onClick}
     >
       <div className="h-44 w-44 p-2">
@@ -27,9 +27,9 @@ export default function ArtistCard({
 
 function Skeleton() {
   return (
-    <div className="flex flex-col items-center bg-neutral-300 dark:bg-neutral-900 rounded-md m-3 shadow-md animate-pulse">
-      <div className="bg-neutral-200 dark:bg-neutral-700 w-40 h-40 m-2 rounded-md" />
-      <div className="bg-neutral-300 dark:bg-neutral-900 w-44 h-9 p-2 rounded-b-md" />
+    <div className="flex flex-col items-center bg-neutral-200 dark:bg-neutral-900 rounded-md m-3 shadow-md animate-pulse">
+      <div className="bg-neutral-300 dark:bg-neutral-700 w-40 h-40 m-2 rounded-md" />
+      <div className="bg-neutral-200 dark:bg-neutral-900 w-44 h-9 p-2 rounded-b-md" />
     </div>
   );
 }
