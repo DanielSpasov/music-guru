@@ -64,7 +64,7 @@ export default function Form({
     <form
       onSubmit={handleSubmit(submitFn)}
       encType="multipart/form-data"
-      className="flex flex-col justify-between h-full"
+      className="relative flex flex-col justify-between h-full"
     >
       {loading && (
         <div className="absolute w-full h-full z-50">
