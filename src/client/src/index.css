@@ -16,11 +16,8 @@
     @apply bg-neutral-50 dark:bg-neutral-800;
   }
 
-  svg:hover > path {
-    @apply text-secondary dark:text-primary-dark;
-  }
-  svg > path {
-    @apply text-primary;
+  svg {
+    @apply h-9 w-9;
   }
 
   button {
