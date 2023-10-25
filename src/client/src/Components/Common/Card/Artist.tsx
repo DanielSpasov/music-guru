@@ -1,14 +1,18 @@
 import { Artist } from '../../../Pages/artists/helpers';
 import { CardProps } from './helpers';
 
+const hoverProps = 'hover:shadow-neutral-400 [&>span]:hover:text-primary';
+const darkProps =
+  'dark:[&>span]:hover:text-primary-dark dark:bg-neutral-900 dark:hover:shadow-neutral-900';
+
 export default function ArtistCard({ data, onClick }: CardProps<Artist>) {
   return (
     <div
-      className="flex flex-col items-center w-48 m-4 relative cursor-pointer [&>span]:hover:text-primary dark:[&>span]:hover:text-primary-dark"
+      className={`relative flex flex-col items-center bg-neutral-100 rounded-md m-3 r w-44 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
       onClick={onClick}
     >
-      <img src={data?.image || ''} className="h-48 w-48 rounded-full" />
-      <span className="p-2 text-lg">{data?.name}</span>
+      <img src={data?.image || ''} className="h-44 w-44 rounded-md" />
+      <span className="text-lg p-2">{data?.name}</span>
     </div>
   );
 }
