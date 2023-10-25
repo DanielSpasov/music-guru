@@ -8,11 +8,14 @@ const darkProps =
 export default function ArtistCard({ data, onClick }: CardProps<Artist>) {
   return (
     <div
-      className={`relative flex flex-col items-center bg-neutral-100 rounded-md m-3 r w-44 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
+      className={`relative flex flex-col items-center bg-neutral-100 rounded-md m-3 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
       onClick={onClick}
     >
-      <img src={data?.image || ''} className="h-44 w-44 rounded-md" />
-      <span className="text-lg p-2">{data?.name}</span>
+      <div className="h-44 w-44 p-2">
+        <img src={data?.image || ''} className="w-full h-full rounded-md" />
+      </div>
+
+      <span className="text-lg pb-2">{data?.name}</span>
     </div>
   );
 }
