@@ -20,7 +20,7 @@ export default function ArtistCard({
         <img src={data?.image || ''} className="w-full h-full rounded-md" />
       </div>
 
-      <span className="text-lg pb-2">{data?.name}</span>
+      <span className="text-md pb-2">{data?.name}</span>
     </div>
   );
 }
