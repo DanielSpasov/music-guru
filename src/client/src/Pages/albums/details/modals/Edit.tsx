@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { Form, Input, Loader, Select } from '../../../../Components';
+import { Calendar, Form, Input, Loader, Select } from '../../../../Components';
 import { errorHandler } from '../../../../Handlers';
 import { EditAlbumSchema } from '../../helpers';
 import { Song } from '../../../songs/helpers';
@@ -101,6 +101,11 @@ export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
                   message: 'Name is required.'
                 }
               }
+            },
+            {
+              key: 'release_date',
+              label: 'Release Date',
+              Component: Calendar
             },
             {
               key: 'artist',

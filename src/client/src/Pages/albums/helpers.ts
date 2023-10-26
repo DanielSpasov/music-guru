@@ -6,12 +6,14 @@ export const Schema = z.object({
   name: z
     .string()
     .min(1, { message: 'Name is required.' })
-    .max(128, { message: 'Name is too long.' })
+    .max(128, { message: 'Name is too long.' }),
+  release_date: z.coerce.date().optional()
 });
 
 export const EditAlbumSchema = Schema.extend({
   artist: z.array(z.object({ uid: z.string().uuid() })).length(1),
-  songs: z.array(z.object({ uid: z.string().uuid() })).optional()
+  songs: z.array(z.object({ uid: z.string().uuid() })).optional(),
+  release_date: z.coerce.date().optional()
 });
 
 export const AlbumSchema = Schema.extend({
@@ -25,6 +27,7 @@ export interface Album extends AlbumModel {
   uid: string;
   image: string;
   created_at: Date;
+  release_date: Date;
   created_by: string;
   artist: string;
   songs: string[];
