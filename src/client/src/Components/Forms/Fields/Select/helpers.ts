@@ -65,8 +65,20 @@ export const styles = (theme: Theme): StylesConfig => {
       ...base,
       backgroundColor: colors[theme].bg[70]
     }),
-    clearIndicator: base => ({ ...base, cursor: 'pointer' }),
-    dropdownIndicator: base => ({ ...base, cursor: 'pointer' }),
+    clearIndicator: base => ({
+      ...base,
+      cursor: 'pointer',
+      paddingTop: 0,
+      paddingBottom: 0,
+      '&>svg': { width: 20 }
+    }),
+    dropdownIndicator: base => ({
+      ...base,
+      cursor: 'pointer',
+      paddingTop: 0,
+      paddingBottom: 0,
+      '&>svg': { width: 20 }
+    }),
     valueContainer: base => ({ ...base, padding: '4px' }),
     multiValue: base => ({
       ...base,

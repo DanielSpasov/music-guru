@@ -17,7 +17,10 @@
   }
 
   svg {
-    @apply h-9 w-9;
+    @apply h-9 w-9 duration-0;
+  }
+  svg:hover {
+    @apply fill-secondary dark:fill-primary-dark;
   }
 
   button {
