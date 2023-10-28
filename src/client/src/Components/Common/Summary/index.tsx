@@ -3,6 +3,9 @@ import { useCallback, useState } from 'react';
 import { SummaryProps } from './helpers';
 import { Icon } from '../../';
 
+const hoverProps = 'hover:bg-neutral-300';
+const darkProps = 'dark:bg-neutral-700 dark:hover:bg-neutral-600';
+
 export default function Summary({
   children,
   label,
@@ -13,7 +16,9 @@ export default function Summary({
   const toggleSummary = useCallback(() => setIsOpen(prev => !prev), []);
 
   return (
-    <div className="w-full bg-neutral-700 rounded-md p-2 hover:bg-neutral-600">
+    <div
+      className={`w-full bg-neutral-200 rounded-md p-2 ${hoverProps} ${darkProps}`}
+    >
       <div
         className="flex items-center py-2 hover:cursor-pointer"
         onClick={toggleSummary}
