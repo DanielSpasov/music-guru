@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import makeAnimated from 'react-select/animated';
+import ReactSelect from 'react-select';
 
-import { SelectProps, handleMenuClose } from './helpers';
-import { Select as StyledSelect } from './Styled';
+import { ThemeContext } from '../../../../Contexts';
+import { SelectProps, styles } from './helpers';
 import { FieldProps } from '../helpers';
-import { Label, Box } from '../../..';
 
 export default function Select({
   value = [],
@@ -13,6 +13,8 @@ export default function Select({
   onChange,
   props
 }: FieldProps<any[], SelectProps>) {
+  const { theme } = useContext(ThemeContext);
+
   const [selected, setSelected] = useState<any[]>(value);
   const [options, setOptions] = useState<any[]>([]);
 
@@ -37,41 +39,29 @@ export default function Select({
   );
 
   return (
-    <Box>
-      <StyledSelect
+    <div className="relative my-2">
+      <ReactSelect
         id={id}
         components={{ ...makeAnimated() }}
-        onMenuClose={() => handleMenuClose(id)}
         options={options}
         onChange={_onChange}
         isMulti={props?.multiple}
         defaultValue={value}
         formatOptionLabel={option => option?.name}
         getOptionValue={option => option?.uid}
+        styles={styles(theme)}
         isSearchable
         placeholder=""
         isClearable
-        classNames={{
-          control: state => (state.isFocused ? 'control--focused' : 'control'),
-          option: state => (state.isSelected ? 'option--selected' : 'option'),
-          valueContainer: state => (state.isMulti ? 'valueContainer' : ''),
-          indicatorSeparator: () => 'indicatorSeparator',
-          dropdownIndicator: () => 'dropdownIndicator',
-          clearIndicator: () => 'clearIndicator',
-          multiValue: () => 'multiValue',
-          multiValueLabel: () => 'label',
-          singleValue: () => 'label',
-          menu: () => 'menu'
-        }}
       />
 
-      <Label
-        position="absolute"
-        top={!selected.length ? '.65em' : '-1.5em'}
-        left={!selected.length ? '.75em' : '0'}
+      <label
+        className={`absolute ${
+          !selected.length ? 'top-2.5 left-3' : '-top-7 left-1'
+        }`}
       >
         {label}
-      </Label>
-    </Box>
+      </label>
+    </div>
   );
 }

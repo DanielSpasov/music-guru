@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { infoConfig, getMFAConfig } from './helpers';
-import { Box, PageLayout } from '../../../Components';
+import { Icon, PageLayout, Summary } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import OptionMenu from './OptionMenu';
+import { getMFAConfig, infoConfig } from './helpers';
 import { User } from '../helpers';
 import Api from '../../../Api';
+import Option from './Option';
 
 export default function Me() {
   const { uid } = useContext(AuthContext);
@@ -27,22 +27,31 @@ export default function Me() {
   return (
     <PageLayout title={user?.username || ''} loading={loading}>
       {user && (
-        <Box padding="1em">
-          <OptionMenu
-            icon="user"
-            label="Information"
-            config={infoConfig}
-            setUser={setUser}
-            user={user}
-          />
-          <OptionMenu
-            icon="lock"
-            label="MFA"
-            config={getMFAConfig(user)}
-            setUser={setUser}
-            user={user}
-          />
-        </Box>
+        <>
+          <div className="flex items-start m-3">
+            <Icon
+              model="user"
+              className="h-16 w-16 [&>path]:text-primary dark:[&>path]:text-primary-dark"
+            />
+            <Summary label="Information" open>
+              {infoConfig.map((data, i) => (
+                <Option data={data} key={i} setUser={setUser} user={user} />
+              ))}
+            </Summary>
+          </div>
+
+          <div className="flex items-start m-3">
+            <Icon
+              model="lock"
+              className="h-16 w-16 [&>path]:text-primary dark:[&>path]:text-primary-dark"
+            />
+            <Summary label="MFA" open>
+              {getMFAConfig(user).map((data, i) => (
+                <Option data={data} key={i} setUser={setUser} user={user} />
+              ))}
+            </Summary>
+          </div>
+        </>
       )}
     </PageLayout>
   );

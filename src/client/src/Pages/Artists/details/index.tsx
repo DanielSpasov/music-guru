@@ -1,58 +1,25 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { ThemeContext } from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
-import {
-  Box,
-  Header,
-  Image,
-  List,
-  PageLayout,
-  Text
-} from '../../../Components';
+import { Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { View, views } from './views';
 import { Artist } from '../helpers';
+import Edit from './modals/Edit';
 import Api from '../../../Api';
-import Modals from './modals';
+import View from './View';
+import { viewConfig } from './helpers';
 
 export default function ArtistDetails() {
   const { uid: userUID } = useContext(AuthContext);
-  const { colors } = useContext(ThemeContext);
 
+  const [query] = useSearchParams();
   const { id = '0' } = useParams();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [artist, setArtist] = useState<Artist>();
 
   const [openEdit, setOpenEdit] = useState<boolean>(false);
-
-  const [loadingView, setLoadingView] = useState<boolean>();
-  const [viewData, setViewData] = useState<any[]>([]);
-  const [view, setView] = useState<View>();
-
-  // Views
-  useEffect(() => {
-    (async () => {
-      try {
-        if (!view) return;
-        setLoadingView(true);
-
-        const params = view?.params
-          ? { [view?.params.name]: artist?.[view?.params.key] }
-          : {};
-        const { data } = await Api[view.model].fetch({
-          config: { params }
-        });
-        setViewData(data);
-      } catch (error) {
-        errorHandler(error);
-      } finally {
-        setLoadingView(false);
-      }
-    })();
-  }, [view, artist]);
 
   const fetchArtist = useCallback(async () => {
     try {
@@ -70,12 +37,11 @@ export default function ArtistDetails() {
 
   useEffect(() => {
     (async () => await fetchArtist())();
-  }, [fetchArtist]);
+  }, [fetchArtist, id]);
 
   return (
     <PageLayout
       title={artist?.name || ''}
-      showHeader={false}
       loading={loading}
       actions={[
         {
@@ -84,68 +50,63 @@ export default function ArtistDetails() {
           disabled: userUID !== artist?.created_by
         }
       ]}
+      tabs={[
+        {
+          key: 'details',
+          label: 'Details',
+          to: `/artists/${artist?.uid}`
+        },
+        {
+          key: 'songs',
+          label: 'Songs',
+          to: `/artists/${artist?.uid}?view=songs`
+        },
+        {
+          key: 'albums',
+          label: 'Albums',
+          to: `/artists/${artist?.uid}?view=albums`
+        },
+        {
+          key: 'features',
+          label: 'Features',
+          to: `/artists/${artist?.uid}?view=features`
+        }
+      ]}
     >
-      <Box
-        backgroundColor="black"
-        position="absolute"
-        width="100%"
-        height="calc(150px + 3em)"
-        boxSizing="content-box"
-      />
+      <section className="flex justify-evenly">
+        <div className="flex-1 flex justify-center">
+          <img
+            src={artist?.image || ''}
+            alt={artist?.name}
+            className="h-72 w-72 shadow-lg shadow-neutral-400 dark:shadow-neutral-900 rounded-full"
+          />
+        </div>
 
-      <Box
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        margin="1.5em 0"
-        height="300px"
-      >
-        <Image
-          src={artist?.image || ''}
-          alt={artist?.name}
-          height="100%"
-          width="300px"
-          borderRadius="50%"
-          border={`8px solid ${colors.baseLight}`}
-        />
-
-        <Box position="absolute" top="1.25em" left="52.5vw">
-          <Header title={artist?.name || ''} />
-        </Box>
-
-        <Box display="flex" padding="0 1em">
-          {views.map((view, i) => (
-            <Text
-              key={i}
-              padding="0 .25em"
-              fontSize="1.25em"
-              onClick={() => setView(view)}
-            >
-              {view.label}
-            </Text>
-          ))}
-        </Box>
-      </Box>
-
-      <Box display="flex" justifyContent="center">
-        {view && (
-          <Box display="flex" flexWrap="wrap">
-            <List
-              data={viewData}
-              model={view.model}
-              loading={loadingView}
-              skeletonLength={2}
+        <div className="flex-1">
+          {viewConfig[query.get('view') as string] ? (
+            <View
+              {...(viewConfig[query.get('view') as string] ?? {})}
+              id={id}
             />
-          </Box>
-        )}
-      </Box>
+          ) : (
+            <>
+              <h2>Biography</h2>
+              <span className="">{artist?.bio}</span>
+            </>
+          )}
+        </div>
+      </section>
 
-      <Modals
-        openEdit={openEdit}
-        setOpenEdit={setOpenEdit}
-        fetchArtist={fetchArtist}
-      />
+      <section>
+        {openEdit && (
+          <Modal onClose={() => setOpenEdit(false)}>
+            <Edit
+              onClose={() => setOpenEdit(false)}
+              fetchArtist={fetchArtist}
+            />
+          </Modal>
+        )}
+      </section>
     </PageLayout>
   );
 }

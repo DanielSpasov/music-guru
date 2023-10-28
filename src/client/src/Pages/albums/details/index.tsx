@@ -2,14 +2,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { toast } from 'react-toastify';
 
-import { Box, Heading, Image, List, PageLayout } from '../../../Components';
+import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Artist } from '../../artists/helpers';
 import { Song } from '../../songs/helpers';
+import Delete from './modals/Delete';
 import { Album } from '../helpers';
+import Edit from './modals/Edit';
 import Api from '../../../Api';
-import Modals from './modals';
 
 export default function AlbumDetails() {
   const { uid: userUID } = useContext(AuthContext);
@@ -122,48 +123,48 @@ export default function AlbumDetails() {
         }
       ]}
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        margin="0 5%"
-      >
-        <Image src={album?.image || ''} alt={album?.name} width="350px" />
+      <section className="flex flex-col items-center text-white">
+        <img
+          src={album?.image || ''}
+          alt={album?.name}
+          className="w-64 h-64 rounded-lg"
+        />
 
-        {album && (
-          <Box width="100%" margin="0.5em">
-            <Box display="flex" justifyContent="space-between">
-              <Box>
-                <Heading title="Artist" />
-                <List
-                  data={[artist]}
-                  model="artists"
-                  skeletonLength={1}
-                  loading={loadingArtist}
-                />
-              </Box>
-              <Box>
-                <Heading title="Songs" />
-                <List
-                  data={songs}
-                  model="songs"
-                  skeletonLength={3}
-                  loading={loadingSongs}
-                />
-              </Box>
-            </Box>
-          </Box>
+        <div className="flex justify-between w-full">
+          <div>
+            <h3 className="text-center">Artist</h3>
+            <List
+              data={[artist]}
+              model="artists"
+              skeletonLength={1}
+              loading={loadingArtist}
+            />
+          </div>
+          <div>
+            <h3 className="text-center">Songs</h3>
+            <List
+              data={songs}
+              model="songs"
+              skeletonLength={3}
+              loading={loadingSongs}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section>
+        {openEdit && (
+          <Modal onClose={() => setOpenEdit(false)}>
+            <Edit onClose={() => setOpenEdit(false)} fetchAlbum={fetchAlbum} />
+          </Modal>
         )}
-      </Box>
 
-      <Modals
-        openDel={openDel}
-        setOpenDel={setOpenDel}
-        openEdit={openEdit}
-        setOpenEdit={setOpenEdit}
-        fetchAlbum={fetchAlbum}
-        deleteAlbum={deleteAlbum}
-      />
+        {openDel && (
+          <Modal onClose={() => setOpenDel(false)}>
+            <Delete deleteAlbum={deleteAlbum} setOpenDel={setOpenDel} />
+          </Modal>
+        )}
+      </section>
     </PageLayout>
   );
 }

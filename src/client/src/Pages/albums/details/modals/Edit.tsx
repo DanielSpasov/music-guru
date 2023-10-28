@@ -2,14 +2,21 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { Form, Input, Loader, Select } from '../../../../Components';
+import {
+  DatePicker,
+  Form,
+  Input,
+  Loader,
+  Select
+} from '../../../../Components';
 import { errorHandler } from '../../../../Handlers';
 import { EditAlbumSchema } from '../../helpers';
 import { Song } from '../../../songs/helpers';
 import { EditAlbumProps } from './helpers';
 import Api from '../../../../Api';
+import moment from 'moment';
 
-export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
+export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
   const [defaultValues, setDefaultValues] = useState({});
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -40,6 +47,9 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
 
         setDefaultValues({
           ...album,
+          release_date: album?.release_date
+            ? moment(album?.release_date).toDate()
+            : null,
           artist: [artist],
           songs
         });
@@ -76,7 +86,7 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
     [onClose, fetchAlbum, id]
   );
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader size="sm" />;
   return (
     <Form
       validationSchema={EditAlbumSchema}
@@ -101,6 +111,11 @@ export default function EditAlbum({ fetchAlbum, onClose }: EditAlbumProps) {
                   message: 'Name is required.'
                 }
               }
+            },
+            {
+              key: 'release_date',
+              label: 'Release Date',
+              Component: DatePicker
             },
             {
               key: 'artist',

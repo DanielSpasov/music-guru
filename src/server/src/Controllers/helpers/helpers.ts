@@ -31,16 +31,20 @@ export async function getUploadLinks(
   }, {});
 }
 
-export function getList(
+export async function getList(
   snapshot: QuerySnapshot,
   collectionName: Collection,
   serializer: Serializer
 ) {
-  return snapshot.docs.map(doc => {
-    const data = doc.data();
-    const serialized = serializers?.[collectionName]?.[serializer]?.(data);
-    return serialized || data;
-  });
+  return await Promise.all(
+    snapshot.docs.map(async doc => {
+      const data = doc.data();
+      const serialized = await serializers?.[collectionName]?.[serializer]?.(
+        data
+      );
+      return serialized || data;
+    })
+  );
 }
 
 export function getOp(op: string): WhereFilterOp {

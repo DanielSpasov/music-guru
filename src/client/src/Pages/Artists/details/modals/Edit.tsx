@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { Form, Input, Loader } from '../../../../Components';
+import { Form, Input, Loader, Textarea } from '../../../../Components';
 import { Artist, EditArtistSchema } from '../../helpers';
 import { errorHandler } from '../../../../Handlers';
 import { EditArtistProps } from './helpers';
@@ -46,7 +46,7 @@ export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
     [onClose, fetchArtist, id]
   );
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader size="sm" />;
   return (
     <Form
       validationSchema={EditArtistSchema}
@@ -71,6 +71,11 @@ export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
                   message: 'Name is required.'
                 }
               }
+            },
+            {
+              key: 'bio',
+              label: 'Biography',
+              Component: Textarea
             }
           ]
         }

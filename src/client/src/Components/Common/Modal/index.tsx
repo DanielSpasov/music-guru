@@ -1,10 +1,9 @@
-import styled from 'styled-components';
-
-import { Box, Button, Icon } from '../..';
 import { ModalProps } from './helpers';
+import { Icon } from '../..';
+
+const darkProps = 'dark:bg-neutral-900 dark:shadow-neutral-950';
 
 export default function Modal({
-  open,
   onClose,
   children,
   closeOnOutsideClick = false,
@@ -12,62 +11,28 @@ export default function Modal({
   showCloseIcon = false
 }: ModalProps) {
   return (
-    <Box
-      position="fixed"
-      top="0"
-      width="100%"
-      height="100%"
-      zIndex="9999"
-      pointerEvents={open ? 'auto' : 'none'}
-    >
-      <Box
-        backgroundColor="black"
-        width="100%"
-        height="100%"
-        opacity={open ? '.75' : '0'}
-        cursor="auto"
+    <div className="fixed top-0 w-full h-full">
+      <div
+        className="bg-black h-full w-full opacity-75"
         {...(closeOnOutsideClick ? { onClick: onClose } : {})}
       />
-      <Box
-        justifyContent="center"
-        alignItems="center"
-        display="flex"
-        position="absolute"
-        bottom="0"
-        right="0"
-        left="0"
-        top="0"
-        transform={`${open ? 'translateY(0em)' : 'translateY(1.25em)'}`}
-        visibility={`${open ? '' : 'hidden'}`}
-        opacity={`${open ? '1' : '0'}`}
+      <div
+        className={`absolute duration-500 m-auto inset-0 justify-center overflow-y-auto items-center bg-neutral-100 rounded-md w-1/2 h-2/3 shadow-md ${darkProps}`}
       >
-        <ModalContent>
-          {showCloseIcon && (
-            <Box position="absolute" top="0" right="0">
-              <Icon model="close" onClick={onClose} />
-            </Box>
-          )}
-          {children}
-          {showCloseButton && (
-            <Box display="flex" justifyContent="flex-end">
-              <Button variant="danger" onClick={onClose}>
-                Close
-              </Button>
-            </Box>
-          )}
-        </ModalContent>
-      </Box>
-    </Box>
+        {showCloseIcon && (
+          <div className="absolute top-0 right-0">
+            <Icon model="close" onClick={onClose} />
+          </div>
+        )}
+        <div className="relative h-full">{children}</div>
+        {showCloseButton && (
+          <div className="flex justify-end">
+            <button className="bg-red-500" onClick={onClose}>
+              Close
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
-
-const ModalContent = styled(Box)`
-  box-sizing: content-box;
-  background-color: ${({ theme: { colors } }) => colors.base};
-  box-shadow: rgba(0, 0, 0, 0.65) 0px 0px 5px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  min-width: 400px;
-  padding: 0.75em;
-  width: 35%;
-`;

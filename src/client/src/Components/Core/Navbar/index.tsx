@@ -1,87 +1,97 @@
-import { ThemeContext } from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 
-import { Box, Image, Link, Search, Popover, Icon } from '../../';
-import { AuthContext } from '../../../Contexts/Auth';
-import ThemeSwitcher from '../ThemeSwitcher';
+import { ThemeContext, AuthContext, Theme } from '../../../Contexts';
+import { Link, Search, Popover, Icon } from '../../';
+
+const darkProps = 'dark:bg-neutral-950 dark:shadow-sm dark:shadow-neutral-950';
 
 export default function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
-  const { colors } = useContext(ThemeContext);
+  const { theme, setTheme } = useContext(ThemeContext);
   const { pathname } = useLocation();
 
-  const [openTheme, setOpenTheme] = useState(false);
+  const [animateTheme, setAnimateTheme] = useState(false);
   const [openUser, setOpenUser] = useState(false);
 
+  const toggleTheme = useCallback(() => {
+    const currentTheme = localStorage.getItem('theme');
+    setAnimateTheme(true);
+
+    if (currentTheme === 'dark') {
+      localStorage.setItem('theme', 'light');
+      return;
+    }
+    localStorage.setItem('theme', 'dark');
+  }, []);
+
   return (
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      flexWrap="no-wrap"
-      alignItems="center"
-      height="60px"
-      width="100%"
-      backgroundColor={colors.base}
-      borderRadius="0"
-      boxShadow="rgba(0, 0, 0, 0.45) 0px 3px 4px"
-      zIndex="9999"
-    >
-      <Box height="60px">
-        <Link to="/" height="60px" padding="0">
-          <Image
+    <nav className={`relative h-16 flex ${darkProps}`}>
+      <div className="flex-1">
+        <Link to="/">
+          <img
             src="/images/logo/blue-logo192.png"
+            className="w-16 h-16"
             alt="Music Nerd"
-            width="60px"
-            height="60px"
           />
         </Link>
-      </Box>
-      <Box height="60px" display="flex" alignContent="center">
+      </div>
+
+      <div className="flex items-center justify-center flex-1">
         <Link
           to="/artists"
           type="navlink"
-          isActive={pathname.includes('/artists')}
+          isActive={pathname.split('/')[1] === 'artists'}
         >
           Artists
         </Link>
         <Link
           to="/albums"
           type="navlink"
-          isActive={pathname.includes('/albums')}
+          isActive={pathname.split('/')[1] === 'albums'}
         >
           Albums
         </Link>
-        <Link to="/songs" type="navlink" isActive={pathname.includes('/songs')}>
+        <Link
+          to="/songs"
+          type="navlink"
+          isActive={pathname.split('/')[1] === 'songs'}
+        >
           Songs
         </Link>
-      </Box>
-      <Box display="flex" alignItems="center" height="60px">
-        <Search models={['artists', 'songs', 'albums']} width="250px" />
+      </div>
 
-        <Popover
-          open={openTheme}
-          label={
-            <Icon model="theme" onClick={() => setOpenTheme(prev => !prev)} />
-          }
+      <div className="flex items-center justify-end h-16 flex-1">
+        <Search models={['artists', 'songs', 'albums']} />
+        <div
+          className={`p-2 ${animateTheme ? 'scale-0 rotate-180' : 'scale-100'}`}
+          onTransitionEnd={e => {
+            if (e.propertyName !== 'transform') return;
+            setTheme(localStorage.getItem('theme') as Theme);
+            setAnimateTheme(false);
+          }}
         >
-          <ThemeSwitcher />
-        </Popover>
+          <Icon
+            model={theme === 'dark' ? 'dark' : 'light'}
+            onClick={toggleTheme}
+          />
+        </div>
 
         <Popover
           open={openUser}
           label={
             <Icon model="user" onClick={() => setOpenUser(prev => !prev)} />
           }
-          minWidth="7rem"
-          padding=".5em"
+          className="w-24"
         >
-          {isAuthenticated && <Link to="/me">User</Link>}
-          {!isAuthenticated && <Link to="/sign-in">Sign In</Link>}
-          {!isAuthenticated && <Link to="/sign-up">Sign Up</Link>}
-          {isAuthenticated && <Link to="/sign-out">Sign Out</Link>}
+          <div className="flex flex-col">
+            {isAuthenticated && <Link to="/me">User</Link>}
+            {!isAuthenticated && <Link to="/sign-in">Sign In</Link>}
+            {!isAuthenticated && <Link to="/sign-up">Sign Up</Link>}
+            {isAuthenticated && <Link to="/sign-out">Sign Out</Link>}
+          </div>
         </Popover>
-      </Box>
-    </Box>
+      </div>
+    </nav>
   );
 }

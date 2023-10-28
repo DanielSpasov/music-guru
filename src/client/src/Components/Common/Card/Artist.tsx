@@ -1,53 +1,37 @@
-import { ThemeContext } from 'styled-components';
-import { useContext, useState } from 'react';
-
 import { Artist } from '../../../Pages/artists/helpers';
-import { Box, Image, Text } from '../../HTML';
 import { CardProps } from './helpers';
 
-export default function ArtistCard({ data, onClick }: CardProps<Artist>) {
-  const [hover, setHover] = useState(false);
+const hoverProps = 'hover:shadow-neutral-400 [&>span]:hover:text-primary';
+const darkProps =
+  'dark:[&>span]:hover:text-primary-dark dark:bg-neutral-900 dark:hover:shadow-neutral-900';
 
-  const { colors } = useContext(ThemeContext);
-
+export default function ArtistCard({
+  data,
+  onClick,
+  loading = false
+}: CardProps<Artist>) {
+  if (loading) return <Skeleton />;
   return (
-    <Box
-      margin="1em"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      width="200px"
+    <div
+      className={`relative flex flex-col items-center bg-neutral-200 rounded-md m-3 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
       onClick={onClick}
-      onMouseOver={() => setHover(true)}
-      onMouseOut={() => setHover(false)}
     >
-      <Box>
-        <Box
-          boxShadow={hover ? `${colors.primary} 0px 0px 35px 0px` : ''}
-          borderRadius="50%"
-          height="200px"
-          width="200px"
-        />
-        <Image
-          src={data?.image || ''}
-          onClick={onClick}
-          position="absolute"
-          left="0"
-          top="0"
-          width="200px"
-          height="200px"
-          borderRadius="50%"
-        />
-      </Box>
+      <div className="h-44 w-44 p-2">
+        <img src={data?.image || ''} className="w-full h-full rounded-md" />
+      </div>
 
-      <Text
-        padding="10px"
-        fontSize="18px"
-        textAlign="center"
-        color={hover ? colors.primary : colors.text}
-      >
-        {data?.name}
-      </Text>
-    </Box>
+      <span className="text-md pb-2">{data?.name}</span>
+    </div>
+  );
+}
+
+function Skeleton() {
+  return (
+    <div className="flex flex-col items-center bg-neutral-200 dark:bg-neutral-900 rounded-md m-3 shadow-md animate-pulse">
+      <div className="bg-neutral-300 dark:bg-neutral-700 w-40 h-40 m-2 rounded-md" />
+      <div className="bg-neutral-200 dark:bg-neutral-900 w-44 h-8 p-0.5 rounded-b-md flex justify-center">
+        <div className="bg-neutral-300 dark:bg-neutral-700 w-24 h-5 rounded-md" />
+      </div>
+    </div>
   );
 }

@@ -1,50 +1,53 @@
-import styled from 'styled-components';
+import { useEffect, useMemo, useRef } from 'react';
 
-import { Box, Icon, Text } from '../../HTML';
 import { PopoverProps } from './helpers';
+
+const darkProps = 'dark:bg-neutral-900 dark:shadow-black';
 
 export default function Popover({
   open,
-  setOpen,
   label,
-  title,
   children,
-  ...css
+  className
 }: PopoverProps) {
+  const id = useMemo(() => `popover-${Math.random()}`, []); // TODO: This is tricky, please change
+
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    const box = document.getElementById(id);
+    if (!box) return;
+
+    if (open) {
+      box.classList.remove('hidden');
+      setTimeout(() => {
+        box.classList.remove('scale-0');
+        box.classList.remove('opacity-0');
+      }, 20);
+    } else {
+      box.classList.add('opacity-0');
+      box.classList.add('scale-0');
+      box.addEventListener('transitionend', () => box.classList.add('hidden'), {
+        capture: false,
+        once: true,
+        passive: false
+      });
+    }
+  }, [id, open]);
+
   return (
-    <Box>
-      {label && <Box padding=".5em">{label}</Box>}
-      <AnimatedBox open={open} className="popover" {...css}>
-        <Box
-          display="flex"
-          justifyContent={title ? 'space-between' : 'flex-end'}
-        >
-          {title && <Text fontWeight="bold">{title}</Text>}
-          {setOpen && (
-            <Icon
-              model="close"
-              variant="danger"
-              onClick={() => setOpen(false)}
-            />
-          )}
-        </Box>
+    <div className="relative">
+      {label && <div className="p-2">{label}</div>}
+      <div
+        id={id}
+        className={`absolute bg-neutral-100 right-0 shadow-md p-2 rounded-md opacity-0 hidden scale-0 ${darkProps} ${className}`}
+      >
         {children}
-      </AnimatedBox>
-    </Box>
+      </div>
+    </div>
   );
 }
-
-const AnimatedBox = styled(Box)`
-  background-color: ${({ theme: { colors } }) => colors.base};
-  box-shadow: rgba(0, 0, 0, 0.45) 0px 0px 5px 3px;
-  position: absolute;
-  max-height: 600px;
-  overflow-y: auto;
-  z-index: 9999;
-  top: 1.75em;
-  right: 0;
-
-  transform: ${({ open }) => (open ? 'translateY(1.75em)' : 'translateY(3em)')};
-  visibility: ${({ open }) => (open ? '' : 'hidden')}; // NOT A SOLUTION
-  opacity: ${({ open }) => (open ? '1' : '0')};
-`;

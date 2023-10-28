@@ -1,23 +1,17 @@
-import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
-import {
-  Box,
-  Heading,
-  Image,
-  List,
-  PageLayout,
-  Text
-} from '../../../Components';
+import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Artist } from '../../artists/helpers';
 import { Album } from '../../albums/helpers';
+import Delete from './modals/Delete';
 import { Song } from '../helpers';
+import Edit from './modals/Edit';
 import Api from '../../../Api';
-import Modals from './modals';
 
 export default function SongDetails() {
   const [loading, setLoading] = useState(true);
@@ -157,84 +151,75 @@ export default function SongDetails() {
         }
       ]}
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        margin="0 5%"
-      >
-        <Box margin="2em" display="flex">
+      <section className="flex flex-col items-center text-white">
+        <div className="flex mb-10">
           {song?.image && (
-            <Image src={song?.image || ''} alt={song?.name} width="350px" />
+            <img
+              src={song?.image || ''}
+              alt={song?.name}
+              className="w-64 h-64 rounded-lg"
+            />
           )}
-          <Box padding="0 1em">
+          <div className="px-4">
             {song?.release_date && (
-              <Box>
-                <Text fontWeight="bold">Release Date: </Text>
-                <Text>{moment(song.release_date).format('MMMM Do YYYY')}</Text>
-              </Box>
+              <div>
+                <span className="font-bold">Release Date: </span>
+                <span>{moment(song.release_date).format('MMMM Do YYYY')}</span>
+              </div>
             )}
-          </Box>
-        </Box>
+          </div>
+        </div>
 
-        {!loading && (
-          <Box width="100%" margin="0.5em">
-            <Box display="flex" justifyContent="center">
-              <Box
-                width="50%"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-              >
-                <Heading title="Artist" />
-                <List
-                  data={[artist]}
-                  model="artists"
-                  skeletonLength={1}
-                  loading={loadingArtist}
-                />
-              </Box>
+        <div className="flex flex-wrap">
+          <div>
+            <h3 className="text-center">Artist</h3>
+            <List
+              data={[artist]}
+              model="artists"
+              skeletonLength={1}
+              loading={loadingArtist}
+            />
+          </div>
 
-              {features.length > 0 && (
-                <Box width="50%">
-                  <Heading title="Featured Artists" />
-                  <Box display="flex" flexWrap="wrap" justifyContent="center">
-                    <List
-                      data={features}
-                      model="artists"
-                      skeletonLength={2}
-                      loading={loadingFeatures}
-                    />
-                  </Box>
-                </Box>
-              )}
+          {features.length > 0 && (
+            <div>
+              <h3 className="text-center">Featured Artists</h3>
+              <List
+                data={features}
+                model="artists"
+                skeletonLength={2}
+                loading={loadingFeatures}
+              />
+            </div>
+          )}
 
-              {albums.length > 0 && (
-                <Box width="50%">
-                  <Heading title="In Albums" />
-                  <Box display="flex" flexWrap="wrap" justifyContent="center">
-                    <List
-                      data={albums}
-                      model="albums"
-                      skeletonLength={1}
-                      loading={loadingAlbums}
-                    />
-                  </Box>
-                </Box>
-              )}
-            </Box>
-          </Box>
+          {albums.length > 0 && (
+            <div>
+              <h3 className="text-center">In Albums</h3>
+              <List
+                data={albums}
+                model="albums"
+                skeletonLength={1}
+                loading={loadingAlbums}
+              />
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section>
+        {openEdit && (
+          <Modal onClose={() => setOpenEdit(false)}>
+            <Edit onClose={() => setOpenEdit(false)} fetchSong={fetchSong} />
+          </Modal>
         )}
-      </Box>
 
-      <Modals
-        openEdit={openEdit}
-        setOpenEdit={setOpenEdit}
-        openDel={openDel}
-        setOpenDel={setOpenDel}
-        deleteSong={deleteSong}
-        fetchSong={fetchSong}
-      />
+        {openDel && (
+          <Modal onClose={() => setOpenDel(false)}>
+            <Delete deleteSong={deleteSong} setOpenDel={setOpenDel} />
+          </Modal>
+        )}
+      </section>
     </PageLayout>
   );
 }

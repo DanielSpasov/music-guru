@@ -1,8 +1,13 @@
 import { z } from 'zod';
 
+const DateSchema = z.union([z.string(), z.null()]).transform(x => {
+  if (x === null) return null;
+  return new Date(x);
+});
+
 export const BaseSongSchema = z.object({
   name: z.string(),
-  release_date: z.coerce.date().optional()
+  release_date: DateSchema.optional()
 });
 
 export const SongSchema = BaseSongSchema.extend({

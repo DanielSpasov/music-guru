@@ -1,11 +1,11 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 
-import { Box, List, PageLayout } from '../../../Components';
+import { List, Modal, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
+import Create from './modals/Create';
 import { Song } from '../helpers';
 import Api from '../../../Api';
-import { AuthContext } from '../../../Contexts/Auth';
-import Modals from './modals';
 
 export default function Songs() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -43,11 +43,15 @@ export default function Songs() {
         }
       ]}
     >
-      <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={songs} model="songs" loading={loading} />
-      </Box>
+      <List data={songs} model="songs" loading={loading} skeletonLength={54} />
 
-      <Modals openCreate={openCreate} setOpenCreate={setOpenCreate} />
+      <section>
+        {openCreate && (
+          <Modal onClose={() => setOpenCreate(false)}>
+            <Create onClose={() => setOpenCreate(false)} />
+          </Modal>
+        )}
+      </section>
     </PageLayout>
   );
 }

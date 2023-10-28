@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
 
-import { Heading, Button, Box, Loader } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
+import { Loader } from '../../../Components';
 import { FormProps } from './helpers';
 import Section from './Section';
 
@@ -62,9 +61,22 @@ export default function Form({
   );
 
   return (
-    <StyledForm onSubmit={handleSubmit(submitFn)} encType="multipart/form-data">
-      <Box>
-        <Heading title={header || 'Form'} size="medium" />
+    <form
+      onSubmit={handleSubmit(submitFn)}
+      encType="multipart/form-data"
+      className="relative flex flex-col justify-between h-full"
+    >
+      {loading && (
+        <div className="absolute w-full h-full z-50">
+          <div className="absolute w-full h-full bg-black opacity-75" />
+          <div className="flex justify-center items-center h-full">
+            <Loader size="sm" />
+          </div>
+        </div>
+      )}
+
+      <article className="p-4">
+        <h3 className="text-center">{header || 'Form'}</h3>
         {schema.map(section => (
           <Section
             control={control}
@@ -75,23 +87,26 @@ export default function Form({
             fields={section.fields}
           />
         ))}
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        <Button variant="secondary" type="button" onClick={closeFn}>
+      </article>
+
+      <div className="flex justify-between p-4">
+        <button
+          className="bg-secondary dark:bg-secondary-dark"
+          type="button"
+          onClick={closeFn}
+        >
           Close
-        </Button>
-        <Button variant="primary" type="submit" disabled={loading}>
-          {!loading ? 'Submit' : <Loader size="s" />}
-        </Button>
-      </Box>
+        </button>
+        <button
+          className="bg-primary dark:bg-primary-dark"
+          type="submit"
+          disabled={loading}
+        >
+          Submit
+        </button>
+      </div>
+
       {additionalInfo}
-    </StyledForm>
+    </form>
   );
 }
-
-const StyledForm = styled('form')`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;

@@ -1,20 +1,29 @@
 import { UseFormSetValue } from 'react-hook-form';
 
-import { IconModel } from '../../../HTML/Icon/Icons';
+import { IconModel } from '../../../';
 
 type AcceptTypes = 'image/png' | 'image/jpeg';
 
 type InputType = 'password' | 'text' | 'email' | 'file';
 
-type TextProps = {
+type TextInputProps = {
   type?: Exclude<InputType, 'file'>;
 };
-type FileProps = {
+type FileInputProps = {
   type?: Extract<InputType, 'file'>;
   accept: AcceptTypes[];
 };
 
-export type InputProps = TextProps | FileProps;
+export type InputProps = TextInputProps | FileInputProps;
+
+export type FileProps = {
+  id: string;
+  name: string;
+  label: string;
+  value: File;
+  accept: AcceptTypes[];
+  _onChange: (...event: any[]) => void;
+};
 
 export type UseInputProps = {
   type?: InputType;

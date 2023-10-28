@@ -1,12 +1,14 @@
 import { z } from 'zod';
 import { FileSchema } from '../../Utils/FileSchema';
 
+const DateSchema = z.union([z.date(), z.null()]);
+
 export const Schema = z.object({
   name: z
     .string()
     .min(1, { message: 'Name is required.' })
     .max(128, { message: 'Name is too long.' }),
-  release_date: z.coerce.date().optional()
+  release_date: DateSchema.optional()
 });
 
 export const EditSongSchema = Schema.extend({
@@ -29,9 +31,3 @@ export interface Song extends SongModel {
   artist: string;
   features: string[];
 }
-
-export type UseActionsProps = {
-  model: string;
-  data?: Song;
-  deleteSong?: (props: any) => any;
-};

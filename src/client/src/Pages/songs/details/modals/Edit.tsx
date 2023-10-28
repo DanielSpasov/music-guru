@@ -2,14 +2,20 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { Calendar, Form, Input, Loader, Select } from '../../../../Components';
+import {
+  DatePicker,
+  Form,
+  Input,
+  Loader,
+  Select
+} from '../../../../Components';
 import { errorHandler } from '../../../../Handlers';
 import { Artist } from '../../../artists/helpers';
 import { EditSongSchema } from '../../helpers';
 import { EditSongProps } from './helpers';
 import Api from '../../../../Api';
 
-export default function EditSong({ onClose, fetchSong }: EditSongProps) {
+export default function Edit({ onClose, fetchSong }: EditSongProps) {
   const [defaultValues, setDefaultValues] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -75,7 +81,7 @@ export default function EditSong({ onClose, fetchSong }: EditSongProps) {
     [id, onClose, fetchSong]
   );
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader size="sm" />;
   return (
     <Form
       validationSchema={EditSongSchema}
@@ -104,7 +110,7 @@ export default function EditSong({ onClose, fetchSong }: EditSongProps) {
             {
               key: 'release_date',
               label: 'Release Date',
-              Component: Calendar
+              Component: DatePicker
             },
             {
               key: 'artist',

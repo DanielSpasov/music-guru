@@ -8,6 +8,7 @@ const artistConverter: FirestoreDataConverter<Partial<Artist>, DBArtist> = {
     return {
       uid: snapshot.id,
       name: artist.name,
+      bio: artist?.bio || '',
       image: artist.image,
       created_by: artist.created_by,
       created_at: artist.created_at.toDate()
@@ -17,6 +18,7 @@ const artistConverter: FirestoreDataConverter<Partial<Artist>, DBArtist> = {
     const created_at = snapshot.created_at as Timestamp;
     return {
       name: String(snapshot.name),
+      bio: String(snapshot.bio),
       image: String(snapshot.image),
       created_at: created_at || Timestamp.fromDate(new Date()),
       created_by: String(snapshot.created_by)

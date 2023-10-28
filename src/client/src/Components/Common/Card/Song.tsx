@@ -1,49 +1,44 @@
-import { ThemeContext } from 'styled-components';
-import { useState, useContext } from 'react';
-
 import { Song } from '../../../Pages/songs/helpers';
-import { Box, Image, Text } from '../../HTML';
 import { CardProps } from './helpers';
 
-export default function SongCard({ data, onClick }: CardProps<Song>) {
-  const { colors } = useContext(ThemeContext);
+const hoverProps =
+  'hover:shadow-neutral-400 [&>div>span:nth-child(1)]:hover:text-primary';
+const darkProps =
+  'dark:bg-neutral-900 dark:hover:shadow-neutral-900 dark:[&>div>span:nth-child(1)]:hover:text-primary-dark';
 
-  const [hover, setHover] = useState(false);
-
+export default function SongCard({
+  data,
+  onClick,
+  loading = false
+}: CardProps<Song>) {
+  if (loading) return <Skeleton />;
   return (
-    <Box
-      margin=".5em"
-      boxSizing="content-box"
-      display="flex"
-      alignItems="center"
-      width="200px"
-      height="50px"
-      padding=".5em"
-      backgroundColor={hover ? colors.baseLightest : ''}
+    <div
+      className={`flex items-center w-48 h-16 p-2 m-1 rounded-md cursor-pointer bg-neutral-200 shadow-md ${hoverProps} ${darkProps}`}
       onClick={onClick}
-      onMouseOver={() => setHover(true)}
-      onMouseOut={() => setHover(false)}
     >
-      <Image
-        src={data?.image || '/images/logo/blue-logo-square512.png'}
-        height="50px"
-        width="50px"
+      <img
         onClick={onClick}
-        borderRadius="5px"
+        src={data?.image || '/images/logo/blue-logo-square512.png'}
+        className="w-12 h-12 rounded-sm"
       />
 
-      <Box
-        padding="0 .5em"
-        height="50px"
-        pointerEvents="none"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-      >
-        <Text fontSize="18px" color={colors.text}>
-          {data.name}
-        </Text>
-      </Box>
-    </Box>
+      <div className="relative flex flex-col p-2">
+        <span className="line-clamp-1">{data.name}</span>
+        <span className="text-neutral-500 truncate">{data.artist}</span>
+      </div>
+    </div>
+  );
+}
+
+function Skeleton() {
+  return (
+    <div className="w-48 h-16 m-1 flex items-center bg-neutral-200 dark:bg-neutral-900 rounded-md animate-pulse">
+      <div className="w-12 h-12 bg-neutral-300 dark:bg-neutral-700 rounded-md m-2" />
+      <div>
+        <div className="w-24 h-5 bg-neutral-300 dark:bg-neutral-700 my-2 rounded-md" />
+        <div className="w-16 h-5 bg-neutral-300 dark:bg-neutral-700 my-2 rounded-md" />
+      </div>
+    </div>
   );
 }
