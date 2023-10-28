@@ -2,6 +2,7 @@ import { useRef } from 'react';
 
 import { FieldProps } from '../helpers';
 import Controls from '../Controls';
+import { TextareaProps } from './helpers';
 
 const hoverProps = 'hover:border-neutral-300';
 const focusProps =
@@ -12,13 +13,15 @@ const darkProps =
 export default function Textarea({
   label,
   value,
+  props,
   onChange
-}: FieldProps<string, never>) {
+}: FieldProps<string, TextareaProps>) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   return (
     <div className="relative my-2">
       <textarea
+        {...props}
         value={value}
         ref={textareaRef}
         onChange={onChange}
