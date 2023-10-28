@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import { Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
@@ -7,10 +7,13 @@ import { errorHandler } from '../../../Handlers';
 import { Artist } from '../helpers';
 import Edit from './modals/Edit';
 import Api from '../../../Api';
+import View from './View';
+import { viewConfig } from './helpers';
 
 export default function ArtistDetails() {
   const { uid: userUID } = useContext(AuthContext);
 
+  const [query] = useSearchParams();
   const { id = '0' } = useParams();
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -34,7 +37,7 @@ export default function ArtistDetails() {
 
   useEffect(() => {
     (async () => await fetchArtist())();
-  }, [fetchArtist]);
+  }, [fetchArtist, id]);
 
   return (
     <PageLayout
@@ -49,29 +52,38 @@ export default function ArtistDetails() {
       ]}
       tabs={[
         {
+          key: 'details',
+          label: 'Details',
+          to: `/artists/${artist?.uid}`
+        },
+        {
           key: 'songs',
           label: 'Songs',
-          to: `/artists/${artist?.uid}/songs`
+          to: `/artists/${artist?.uid}?view=songs`
         },
         {
           key: 'albums',
           label: 'Albums',
-          to: `/artists/${artist?.uid}/albums`
+          to: `/artists/${artist?.uid}?view=albums`
         },
         {
           key: 'features',
           label: 'Features',
-          to: `/artists/${artist?.uid}/features`
+          to: `/artists/${artist?.uid}?view=features`
         }
       ]}
     >
-      <section className="text-white">
-        <div className="w-full flex justify-center items-center">
+      <section className="flex justify-evenly">
+        <div className="flex-1 flex justify-center">
           <img
             src={artist?.image || ''}
             alt={artist?.name}
             className="h-72 w-72 shadow-lg shadow-neutral-400 dark:shadow-neutral-900 rounded-full"
           />
+        </div>
+
+        <div className="flex-1">
+          <View {...(viewConfig[query.get('view') as string] ?? {})} id={id} />
         </div>
       </section>
 
