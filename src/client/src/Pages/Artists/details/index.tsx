@@ -1,10 +1,9 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { List, Modal, PageLayout } from '../../../Components';
+import { Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { View, views } from './views';
 import { Artist } from '../helpers';
 import Edit from './modals/Edit';
 import Api from '../../../Api';
@@ -18,32 +17,6 @@ export default function ArtistDetails() {
   const [artist, setArtist] = useState<Artist>();
 
   const [openEdit, setOpenEdit] = useState<boolean>(false);
-
-  const [loadingView, setLoadingView] = useState<boolean>();
-  const [viewData, setViewData] = useState<any[]>([]);
-  const [view, setView] = useState<View>();
-
-  // Views
-  useEffect(() => {
-    (async () => {
-      try {
-        if (!view) return;
-        setLoadingView(true);
-
-        const params = view?.params
-          ? { [view?.params.name]: artist?.[view?.params.key] }
-          : {};
-        const { data } = await Api[view.model].fetch({
-          config: { params }
-        });
-        setViewData(data);
-      } catch (error) {
-        errorHandler(error);
-      } finally {
-        setLoadingView(false);
-      }
-    })();
-  }, [view, artist]);
 
   const fetchArtist = useCallback(async () => {
     try {
@@ -99,28 +72,7 @@ export default function ArtistDetails() {
             alt={artist?.name}
             className="h-72 w-72 shadow-lg shadow-neutral-400 dark:shadow-neutral-900 rounded-full"
           />
-
-          <div className="flex px-4">
-            {views.map((view, i) => (
-              <span
-                key={i}
-                onClick={() => setView(view)}
-                className="px-1 text-lg hover:text dark:hover:text-primary-dark cursor-pointer"
-              >
-                {view.label}
-              </span>
-            ))}
-          </div>
         </div>
-
-        {view && (
-          <List
-            data={viewData}
-            model={view.model}
-            loading={loadingView}
-            skeletonLength={2}
-          />
-        )}
       </section>
 
       <section>
