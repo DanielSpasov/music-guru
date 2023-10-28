@@ -43,7 +43,7 @@ export default function Songs() {
         }
       ]}
     >
-      <List data={songs} model="songs" loading={loading} />
+      <List data={songs} model="songs" loading={loading} skeletonLength={54} />
 
       <section>
         {openCreate && (
