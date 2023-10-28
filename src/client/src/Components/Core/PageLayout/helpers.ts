@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { Action } from '../../Core/BreadCrumb/helpers';
+import { Action, Tab } from '../../Core/BreadCrumb/helpers';
 
 export type PageLayoutProps = {
   title: string;
@@ -9,5 +9,6 @@ export type PageLayoutProps = {
   showHeader?: boolean;
   children?: ReactNode;
   actions?: Action[];
+  tabs?: Tab[];
   loading?: boolean;
 };

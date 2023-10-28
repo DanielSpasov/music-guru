@@ -10,6 +10,7 @@ export default function PageLayout({
   showHeader = true,
   children,
   actions = [],
+  tabs = [],
   loading = false
 }: PageLayoutProps) {
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function PageLayout({
   return (
     <main className="min-h-screen">
       {showNavbar && <Navbar />}
-      {showBreadCrumb && <BreadCrumb actions={actions} />}
+      {showBreadCrumb && <BreadCrumb actions={actions} tabs={tabs} />}
       {loading ? (
         <div className="mt-12">
           <Loader size="sm" />

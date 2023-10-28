@@ -6,6 +6,13 @@ export type Action = {
   disabled?: boolean;
 };
 
+export type Tab = {
+  label: string;
+  key: string;
+  to: string;
+};
+
 export type BreadCrumbProps = {
   actions: Action[];
+  tabs: Tab[];
 };

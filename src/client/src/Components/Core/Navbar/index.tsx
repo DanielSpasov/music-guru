@@ -41,18 +41,22 @@ export default function Navbar() {
         <Link
           to="/artists"
           type="navlink"
-          isActive={pathname.includes('/artists')}
+          isActive={pathname.split('/')[1] === 'artists'}
         >
           Artists
         </Link>
         <Link
           to="/albums"
           type="navlink"
-          isActive={pathname.includes('/albums')}
+          isActive={pathname.split('/')[1] === 'albums'}
         >
           Albums
         </Link>
-        <Link to="/songs" type="navlink" isActive={pathname.includes('/songs')}>
+        <Link
+          to="/songs"
+          type="navlink"
+          isActive={pathname.split('/')[1] === 'songs'}
+        >
           Songs
         </Link>
       </div>

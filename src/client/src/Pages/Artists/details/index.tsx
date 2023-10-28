@@ -74,13 +74,30 @@ export default function ArtistDetails() {
           disabled: userUID !== artist?.created_by
         }
       ]}
+      tabs={[
+        {
+          key: 'songs',
+          label: 'Songs',
+          to: `/artists/${artist?.uid}/songs`
+        },
+        {
+          key: 'albums',
+          label: 'Albums',
+          to: `/artists/${artist?.uid}/albums`
+        },
+        {
+          key: 'features',
+          label: 'Features',
+          to: `/artists/${artist?.uid}/features`
+        }
+      ]}
     >
       <section className="text-white">
         <div className="w-full flex justify-center items-center">
           <img
             src={artist?.image || ''}
             alt={artist?.name}
-            className="h-72 w-72 border-neutral-800 border-8 rounded-full"
+            className="h-72 w-72 shadow-lg shadow-neutral-400 dark:shadow-neutral-900 rounded-full"
           />
 
           <div className="flex px-4">
