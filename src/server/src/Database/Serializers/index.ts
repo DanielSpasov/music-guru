@@ -14,7 +14,11 @@ export const serializers: CollectionSerializer = {
     detailed: (data: Album) => new DetailedAlbum(data)
   },
   songs: {
-    list: (data: Song) => new ListSong(data),
+    list: async (data: Song) => {
+      const song = new ListSong(data);
+      await song.fetchArtist();
+      return song;
+    },
     detailed: (data: Song) => new DetailedSong(data)
   }
 };

@@ -42,7 +42,7 @@ export function fetch(collectionName: Collection) {
         return where(key === 'uid' ? documentId() : key, operator, value);
       });
 
-      const list = getList(
+      const list = await getList(
         await getDocs(
           filters.length ? query(reference, ...filters) : reference
         ),
