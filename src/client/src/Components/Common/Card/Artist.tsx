@@ -29,8 +29,8 @@ function Skeleton() {
   return (
     <div className="flex flex-col items-center bg-neutral-200 dark:bg-neutral-900 rounded-md m-3 shadow-md animate-pulse">
       <div className="bg-neutral-300 dark:bg-neutral-700 w-40 h-40 m-2 rounded-md" />
-      <div className="bg-neutral-200 dark:bg-neutral-900 w-44 h-9 p-0.5 rounded-b-md flex justify-center">
-        <div className="bg-neutral-300 dark:bg-neutral-700 w-24 h-6 rounded-md" />
+      <div className="bg-neutral-200 dark:bg-neutral-900 w-44 h-8 p-0.5 rounded-b-md flex justify-center">
+        <div className="bg-neutral-300 dark:bg-neutral-700 w-24 h-5 rounded-md" />
       </div>
     </div>
   );
