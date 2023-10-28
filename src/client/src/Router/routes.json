@@ -21,21 +21,6 @@
             "path": "index",
             "filePath": "/artists/details",
             "private": false
-          },
-          {
-            "path": "/artists/:id/songs",
-            "filePath": "/artists/details",
-            "private": false
-          },
-          {
-            "path": "/artists/:id/albums",
-            "filePath": "/artists/details",
-            "private": false
-          },
-          {
-            "path": "/artists/:id/features",
-            "filePath": "/artists/details",
-            "private": false
           }
         ]
       }
