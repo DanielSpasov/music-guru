@@ -14,6 +14,7 @@ import { EditAlbumSchema } from '../../helpers';
 import { Song } from '../../../songs/helpers';
 import { EditAlbumProps } from './helpers';
 import Api from '../../../../Api';
+import moment from 'moment';
 
 export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
   const [defaultValues, setDefaultValues] = useState({});
@@ -46,6 +47,9 @@ export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
 
         setDefaultValues({
           ...album,
+          release_date: album?.release_date
+            ? moment(album?.release_date).toDate()
+            : null,
           artist: [artist],
           songs
         });

@@ -208,13 +208,17 @@ export default function SongDetails() {
       </section>
 
       <section>
-        <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
-          <Edit onClose={() => setOpenEdit(false)} fetchSong={fetchSong} />
-        </Modal>
+        {openEdit && (
+          <Modal onClose={() => setOpenEdit(false)}>
+            <Edit onClose={() => setOpenEdit(false)} fetchSong={fetchSong} />
+          </Modal>
+        )}
 
-        <Modal open={openDel} onClose={() => setOpenDel(false)}>
-          <Delete deleteSong={deleteSong} setOpenDel={setOpenDel} />
-        </Modal>
+        {openDel && (
+          <Modal onClose={() => setOpenDel(false)}>
+            <Delete deleteSong={deleteSong} setOpenDel={setOpenDel} />
+          </Modal>
+        )}
       </section>
     </PageLayout>
   );

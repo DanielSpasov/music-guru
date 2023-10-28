@@ -1,11 +1,11 @@
 import { useEffect, useState, useContext, useCallback } from 'react';
 
-import { List, PageLayout } from '../../../Components';
+import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
+import Create from './modals/Create';
 import { Artist } from '../helpers';
 import Api from '../../../Api';
-import Modals from './modals';
 
 export default function Artists() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,7 +45,13 @@ export default function Artists() {
     >
       <List data={artists} model="artists" loading={loading} />
 
-      <Modals openCreate={openCreate} setOpenCreate={setOpenCreate} />
+      <section>
+        {openCreate && (
+          <Modal onClose={() => setOpenCreate(false)}>
+            <Create onClose={() => setOpenCreate(false)} />
+          </Modal>
+        )}
+      </section>
     </PageLayout>
   );
 }

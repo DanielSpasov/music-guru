@@ -18,7 +18,7 @@ export class DetailedSong {
   image: string;
   created_at: Date;
   created_by: string;
-  release_date: Date;
+  release_date: Date | null;
   artist: string;
   features: string[];
 

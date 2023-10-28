@@ -153,13 +153,17 @@ export default function AlbumDetails() {
       </section>
 
       <section>
-        <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
-          <Edit onClose={() => setOpenEdit(false)} fetchAlbum={fetchAlbum} />
-        </Modal>
+        {openEdit && (
+          <Modal onClose={() => setOpenEdit(false)}>
+            <Edit onClose={() => setOpenEdit(false)} fetchAlbum={fetchAlbum} />
+          </Modal>
+        )}
 
-        <Modal open={openDel} onClose={() => setOpenDel(false)}>
-          <Delete deleteAlbum={deleteAlbum} setOpenDel={setOpenDel} />
-        </Modal>
+        {openDel && (
+          <Modal onClose={() => setOpenDel(false)}>
+            <Delete deleteAlbum={deleteAlbum} setOpenDel={setOpenDel} />
+          </Modal>
+        )}
       </section>
     </PageLayout>
   );

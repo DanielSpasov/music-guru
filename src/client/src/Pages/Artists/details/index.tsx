@@ -1,13 +1,13 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { List, PageLayout } from '../../../Components';
+import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { View, views } from './views';
 import { Artist } from '../helpers';
+import Edit from './modals/Edit';
 import Api from '../../../Api';
-import Modals from './modals';
 
 export default function ArtistDetails() {
   const { uid: userUID } = useContext(AuthContext);
@@ -106,11 +106,16 @@ export default function ArtistDetails() {
         )}
       </section>
 
-      <Modals
-        openEdit={openEdit}
-        setOpenEdit={setOpenEdit}
-        fetchArtist={fetchArtist}
-      />
+      <section>
+        {openEdit && (
+          <Modal onClose={() => setOpenEdit(false)}>
+            <Edit
+              onClose={() => setOpenEdit(false)}
+              fetchArtist={fetchArtist}
+            />
+          </Modal>
+        )}
+      </section>
     </PageLayout>
   );
 }

@@ -1,11 +1,11 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 
-import { List, PageLayout } from '../../../Components';
+import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
+import Create from './modals/Create';
 import { Album } from '../helpers';
 import Api from '../../../Api';
-import Modals from './modals';
 
 export default function Albums() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -44,7 +44,13 @@ export default function Albums() {
     >
       <List data={albums} model="albums" loading={loading} />
 
-      <Modals openCreate={openCreate} setOpenCreate={setOpenCreate} />
+      <section>
+        {openCreate && (
+          <Modal onClose={() => setOpenCreate(false)}>
+            <Create onClose={() => setOpenCreate(false)} />
+          </Modal>
+        )}
+      </section>
     </PageLayout>
   );
 }

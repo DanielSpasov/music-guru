@@ -99,8 +99,13 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
               label: 'Songs',
               Component: Select,
               props: {
-                fetchFn: ({ params }: any) =>
-                  Api.songs.fetch({ config: { params } }),
+                fetchFn: ({ params }: any) => {
+                  let res;
+                  setTimeout(() => {
+                    res = Api.songs.fetch({ config: { params } });
+                  }, 1000);
+                  return res;
+                },
                 multiple: true
               }
             }
