@@ -75,16 +75,7 @@ export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
             {
               key: 'bio',
               label: 'Biography',
-              Component: Textarea,
-              props: {
-                type: 'text'
-              },
-              validations: {
-                required: {
-                  value: true,
-                  message: 'Name is required.'
-                }
-              }
+              Component: Textarea
             }
           ]
         }

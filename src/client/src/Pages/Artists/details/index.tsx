@@ -83,7 +83,17 @@ export default function ArtistDetails() {
         </div>
 
         <div className="flex-1">
-          <View {...(viewConfig[query.get('view') as string] ?? {})} id={id} />
+          {viewConfig[query.get('view') as string] ? (
+            <View
+              {...(viewConfig[query.get('view') as string] ?? {})}
+              id={id}
+            />
+          ) : (
+            <>
+              <h2>Biography</h2>
+              <span className="">{artist?.bio}</span>
+            </>
+          )}
         </div>
       </section>
 

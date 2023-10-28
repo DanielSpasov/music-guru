@@ -15,6 +15,7 @@ export class ListArtist {
 export class DetailedArtist {
   uid: string;
   name: string;
+  bio: string;
   image: string;
   created_at: Date;
   created_by: string;
@@ -22,6 +23,7 @@ export class DetailedArtist {
   constructor(artist: Artist) {
     this.uid = artist.uid;
     this.name = artist.name;
+    this.bio = artist.bio;
     this.image = artist.image;
     this.created_at = artist.created_at;
     this.created_by = artist.created_by;

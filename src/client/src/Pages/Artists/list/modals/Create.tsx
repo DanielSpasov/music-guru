@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useCallback } from 'react';
 
-import { Form, Input } from '../../../../Components';
+import { Form, Input, Textarea } from '../../../../Components';
 import { Artist, ArtistSchema } from '../../helpers';
 import { errorHandler } from '../../../../Handlers';
 import { CreateArtistProps } from './helpers';
@@ -52,6 +52,11 @@ export default function CreateArtist({ onClose }: CreateArtistProps) {
                   message: 'Name is required.'
                 }
               }
+            },
+            {
+              key: 'bio',
+              label: 'Biography',
+              Component: Textarea
             },
             {
               key: 'image',
