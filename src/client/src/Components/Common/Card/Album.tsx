@@ -13,6 +13,7 @@ export default function AlbumCard({
   loading = false
 }: CardProps<Album>) {
   if (loading) return <Skeleton />;
+
   return (
     <div
       className={`relative flex flex-col items-center bg-neutral-200 rounded-md m-3 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
@@ -29,7 +30,8 @@ export default function AlbumCard({
       <div className="flex flex-col pb-2">
         <span className="text-md truncate w-44 px-2">{data.name}</span>
         <span className="text-md text-neutral-500 truncate w-44 px-2">
-          {moment(data.release_date).year()} • Album
+          {data?.release_date ? moment(data?.release_date).year() : 'TBA'} •
+          Album
         </span>
       </div>
     </div>

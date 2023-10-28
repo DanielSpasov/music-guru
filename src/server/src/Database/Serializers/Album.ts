@@ -4,7 +4,7 @@ export class ListAlbum {
   uid: string;
   name: string;
   image: string;
-  release_date: Date;
+  release_date: Date | null;
 
   constructor(album: Album) {
     this.uid = album.uid;
@@ -19,7 +19,7 @@ export class DetailedAlbum {
   name: string;
   image: string;
   created_at: Date;
-  release_date: Date;
+  release_date: Date | null;
   created_by: string;
   artist: string;
   songs: string[];

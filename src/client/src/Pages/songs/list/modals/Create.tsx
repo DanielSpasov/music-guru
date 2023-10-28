@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useCallback } from 'react';
 
-import { Calendar, Form, Input, Select } from '../../../../Components';
+import { DatePicker, Form, Input, Select } from '../../../../Components';
 import { errorHandler } from '../../../../Handlers';
 import { Artist } from '../../../artists/helpers';
 import { CreateSongProps } from './helpers';
@@ -71,7 +71,7 @@ export default function CreateSong({ onClose }: CreateSongProps) {
             {
               key: 'release_date',
               label: 'Release Date',
-              Component: Calendar
+              Component: DatePicker
             },
             {
               key: 'artist',

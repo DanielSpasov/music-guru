@@ -2,7 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { Calendar, Form, Input, Loader, Select } from '../../../../Components';
+import {
+  DatePicker,
+  Form,
+  Input,
+  Loader,
+  Select
+} from '../../../../Components';
 import { errorHandler } from '../../../../Handlers';
 import { Artist } from '../../../artists/helpers';
 import { EditSongSchema } from '../../helpers';
@@ -104,7 +110,7 @@ export default function Edit({ onClose, fetchSong }: EditSongProps) {
             {
               key: 'release_date',
               label: 'Release Date',
-              Component: Calendar
+              Component: DatePicker
             },
             {
               key: 'artist',

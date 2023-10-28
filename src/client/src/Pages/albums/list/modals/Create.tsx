@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useCallback } from 'react';
 
-import { Calendar, Form, Input, Select } from '../../../../Components';
+import { DatePicker, Form, Input, Select } from '../../../../Components';
 import { errorHandler } from '../../../../Handlers';
 import { Song } from '../../../songs/helpers';
 import { CreateAlbumProps } from './helpers';
@@ -77,7 +77,7 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
             {
               key: 'release_date',
               label: 'Release Date',
-              Component: Calendar
+              Component: DatePicker
             },
             {
               key: 'artist',
