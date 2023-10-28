@@ -11,10 +11,13 @@ import {
 export async function post({
   url = '',
   body,
-  config = {}
+  config: { headers, ...config } = {}
 }: PostProps): Promise<any> {
   const response = await axios.post(url, body, {
-    headers: { Authorization: localStorage.getItem('AUTH') },
+    headers: {
+      Authorization: localStorage.getItem('AUTH'),
+      ...headers
+    },
     ...config
   });
   return response.data;

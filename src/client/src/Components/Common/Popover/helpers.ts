@@ -1,8 +1,8 @@
-import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { ReactNode } from 'react';
 
 export type PopoverProps = {
-  children?: ReactNode;
   open: boolean;
-  setOpen?: Dispatch<SetStateAction<boolean>>;
-  [css: string]: any;
+  label?: JSX.Element;
+  children?: ReactNode;
+  className?: string;
 };

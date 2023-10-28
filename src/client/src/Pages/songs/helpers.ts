@@ -1,39 +1,33 @@
 import { z } from 'zod';
-import { Artist } from '../artists/helpers';
-import { User } from '../auth/helpers';
-import { Album } from '../albums/helpers';
+import { FileSchema } from '../../Utils/FileSchema';
+
+const DateSchema = z.union([z.date(), z.null()]);
 
 export const Schema = z.object({
   name: z
     .string()
     .min(1, { message: 'Name is required.' })
     .max(128, { message: 'Name is too long.' }),
-  image: z.string().url({ message: 'Invalid url.' }),
-  release_date: z.coerce.date().optional()
+  release_date: DateSchema.optional()
 });
 
-const UidSchema = z
-  .string({ required_error: 'Artist is required.' })
-  .min(8, { message: 'Invalid Artist.' })
-  .max(8, { message: 'Invalid Artist.' });
+export const EditSongSchema = Schema.extend({
+  artist: z.array(z.object({ uid: z.string().uuid() })).length(1),
+  features: z.array(z.object({ uid: z.string().uuid() })).optional()
+});
 
 export const SongSchema = Schema.extend({
-  artist: UidSchema,
-  features: z.array(UidSchema).optional()
+  artist: z.array(z.object({ uid: z.string().uuid() })).length(1),
+  image: FileSchema.optional(),
+  features: z.array(z.object({ uid: z.string().uuid() })).optional()
 });
 
 type SongModel = z.infer<typeof Schema>;
 export interface Song extends SongModel {
   uid: string;
+  image: string;
   created_at: Date;
-  created_by: User;
-  artist: Artist;
-  features: Artist[];
-  albums: Album[];
+  created_by: string;
+  artist: string;
+  features: string[];
 }
-
-export type UseActionsProps = {
-  model: string;
-  data?: Song;
-  deleteSong?: (props: any) => any;
-};

@@ -1,79 +1,112 @@
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
 
-import { Heading, Button, Box, Section } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
+import { Loader } from '../../../Components';
 import { FormProps } from './helpers';
+import Section from './Section';
 
 export default function Form({
   header,
   schema,
   onSubmit = () => null,
   defaultValues = {},
-  errors = [],
-  additionalInfo
+  additionalInfo,
+  validationSchema,
+  onClose
 }: FormProps) {
-  const { register, handleSubmit, setValue, getValues } = useForm({
+  const { handleSubmit, control, setError, setValue, clearErrors } = useForm({
     defaultValues
   });
-  const [disableSubmit, setDisableSubmit] = useState(false);
+
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const submitFn = useCallback(
-    async (e: any) => {
+  const validateField = useCallback(
+    (name: string, value: any) => {
       try {
-        setDisableSubmit(true);
-        await onSubmit(e);
-      } catch (error) {
-        errorHandler(error);
-      } finally {
-        setDisableSubmit(false);
+        validationSchema?.shape?.[name]?.parse?.(value);
+        clearErrors(name);
+      } catch (err) {
+        const [error] = errorHandler(err);
+        setError(name, error);
       }
     },
-    [onSubmit]
+    [validationSchema, clearErrors, setError]
+  );
+
+  const submitFn = useCallback(
+    async (data: any) => {
+      try {
+        setLoading(true);
+        const validData = validationSchema?.parse(data);
+        await onSubmit(validData);
+      } catch (error) {
+        const errors = errorHandler(error);
+        errors.forEach((error: any) => setError(error.path[0], error));
+      } finally {
+        setLoading(false);
+      }
+    },
+    [onSubmit, setError, validationSchema]
+  );
+
+  const closeFn = useCallback(
+    (props: any) => {
+      if (onClose) onClose(props);
+      else navigate(-1);
+    },
+    [onClose, navigate]
   );
 
   return (
-    <StyledForm onSubmit={handleSubmit(submitFn)}>
-      <Heading title={header || 'Form'} />
-      {schema.map(section => (
-        <Section
-          key={section.key}
-          title={section.title}
-          fields={section.fields}
-          register={register}
-          setFormValue={setValue}
-          getValues={getValues}
-          errors={errors}
-        />
-      ))}
-      <Box display="flex" justifyContent="space-between">
-        <Button variant="secondary" type="button" onClick={() => navigate(-1)}>
-          Go Back
-        </Button>
-        <Button variant="primary" type="submit" disabled={disableSubmit}>
+    <form
+      onSubmit={handleSubmit(submitFn)}
+      encType="multipart/form-data"
+      className="relative flex flex-col justify-between h-full"
+    >
+      {loading && (
+        <div className="absolute w-full h-full z-50">
+          <div className="absolute w-full h-full bg-black opacity-75" />
+          <div className="flex justify-center items-center h-full">
+            <Loader size="sm" />
+          </div>
+        </div>
+      )}
+
+      <article className="p-4">
+        <h3 className="text-center">{header || 'Form'}</h3>
+        {schema.map(section => (
+          <Section
+            control={control}
+            setValue={setValue}
+            validateField={validateField}
+            key={section.key}
+            title={section.title}
+            fields={section.fields}
+          />
+        ))}
+      </article>
+
+      <div className="flex justify-between p-4">
+        <button
+          className="bg-secondary dark:bg-secondary-dark"
+          type="button"
+          onClick={closeFn}
+        >
+          Close
+        </button>
+        <button
+          className="bg-primary dark:bg-primary-dark"
+          type="submit"
+          disabled={loading}
+        >
           Submit
-        </Button>
-      </Box>
+        </button>
+      </div>
+
       {additionalInfo}
-    </StyledForm>
+    </form>
   );
 }
-
-const StyledForm = styled('form')`
-  background-color: ${({ theme: { colors } }) => colors.base};
-  box-shadow: rgba(0, 0, 0, 0.65) 0px 0px 5px;
-  flex-direction: column;
-  border-radius: 10px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 600px;
-  min-width: 400px;
-  padding: 0.75em;
-  display: flex;
-  margin: auto;
-  width: 35%;
-  top: 50%;
-`;

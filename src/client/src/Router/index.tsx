@@ -10,10 +10,25 @@ export default function Router() {
   const { isAuthenticated } = useContext(AuthContext);
   const routes = useMemo(() => attachComponents(routesConfig), []);
 
-  if (isAuthenticated === null) return <Loader fullscreen rainbow />;
+  if (isAuthenticated === null) {
+    return (
+      <div className="h-screen">
+        <Loader type="vinyl" />
+      </div>
+    );
+  }
+
   return (
-    <Suspense fallback={<Loader fullscreen rainbow />}>
-      <Routes>{routes.map(x => setupRoute(x, isAuthenticated))}</Routes>
+    <Suspense
+      fallback={
+        <div className="h-screen">
+          <Loader type="vinyl" />
+        </div>
+      }
+    >
+      <Routes>
+        {routes.map(x => setupRoute(x, Boolean(isAuthenticated)))}
+      </Routes>
     </Suspense>
   );
 }

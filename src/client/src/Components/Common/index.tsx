@@ -1,7 +1,9 @@
-export { default as Dropdown } from './Dropdown';
 export { default as Summary } from './Summary';
-export { default as Actions } from './Actions';
 export { default as Popover } from './Popover';
+export { default as Search } from './Search';
+export { default as Modal } from './Modal';
 export { default as Card } from './Card';
 export { default as List } from './List';
-export { default as Tag } from './Tag';
+export { default as Icon } from './Icon';
+export { default as Link } from './Link';
+export * from './Icon';

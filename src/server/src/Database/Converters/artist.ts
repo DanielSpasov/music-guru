@@ -1,8 +1,4 @@
-import {
-  DocumentReference,
-  FirestoreDataConverter,
-  Timestamp
-} from 'firebase/firestore/lite';
+import { FirestoreDataConverter, Timestamp } from 'firebase/firestore/lite';
 
 import { Artist, DBArtist } from '../Types';
 
@@ -12,28 +8,20 @@ const artistConverter: FirestoreDataConverter<Partial<Artist>, DBArtist> = {
     return {
       uid: snapshot.id,
       name: artist.name,
+      bio: artist?.bio || '',
       image: artist.image,
-      albums: snapshot.get('albums').map((x: DocumentReference) => x.id),
-      created_at: artist.created_at.toDate(),
-      created_by: snapshot.get('created_by').id,
-      features: snapshot.get('features').map((x: DocumentReference) => x.id),
-      songs: snapshot.get('songs').map((x: DocumentReference) => x.id)
+      created_by: artist.created_by,
+      created_at: artist.created_at.toDate()
     };
   },
   toFirestore: snapshot => {
     const created_at = snapshot.created_at as Timestamp;
-    const albums = snapshot?.albums || [];
-    const features = snapshot?.features || [];
-    const songs = snapshot?.songs || [];
-
     return {
       name: String(snapshot.name),
+      bio: String(snapshot.bio),
       image: String(snapshot.image),
       created_at: created_at || Timestamp.fromDate(new Date()),
-      created_by: snapshot.created_by as DocumentReference,
-      albums: albums as DocumentReference[],
-      features: features as DocumentReference[],
-      songs: songs as DocumentReference[]
+      created_by: String(snapshot.created_by)
     };
   }
 };

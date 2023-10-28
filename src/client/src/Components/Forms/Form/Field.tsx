@@ -1,35 +1,45 @@
-import { Box, Text } from '../../HTML';
+import { useController } from 'react-hook-form';
+
 import { FieldProps } from './helpers';
 
 export default function Field({
   field,
-  register,
-  error,
-  getValues,
-  setValue
+  control,
+  setValue,
+  validateField
 }: FieldProps) {
+  const {
+    field: { onChange, value },
+    fieldState: { error }
+  } = useController({
+    name: field.key,
+    control,
+    rules: { ...field?.validations }
+  });
+
   return (
-    <Box position="relative" margin=".5em 0" key={field.key}>
-      <Box display="flex" justifyContent="flex-end">
-        <Text
-          variant={field?.validations?.required ? 'danger' : undefined}
-          color={!field?.validations?.required ? 'gray' : undefined}
+    <div className="my-2">
+      <div className="text-end">
+        <span
+          className={
+            field?.validations?.required ? 'text-red-400' : 'text-neutral-500'
+          }
         >
           {field?.validations?.required ? '*' : 'Optional'}
-        </Text>
-      </Box>
+        </span>
+      </div>
 
-      <Box>
-        <field.Component
-          register={register}
-          getValues={getValues}
-          setFormValue={setValue}
-          name={field.key}
-          {...field}
-        />
-      </Box>
+      <field.Component
+        value={value}
+        setValue={setValue}
+        validateField={validateField}
+        onChange={onChange}
+        name={field.key}
+        label={field.label}
+        props={field?.props}
+      />
 
-      {error && <Text variant="danger">{error?.message}</Text>}
-    </Box>
+      {error && <span className="text-red-400">{error?.message}</span>}
+    </div>
   );
 }

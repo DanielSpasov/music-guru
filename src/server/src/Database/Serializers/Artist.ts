@@ -1,40 +1,31 @@
-import { Album, Song, UnpopulatedArtist } from '../Types';
-import { Serializer } from './helpers';
+import { Artist } from '../Types';
 
-export class ListArtist extends Serializer {
+export class ListArtist {
   uid: string;
   name: string;
   image: string;
 
-  constructor(artist: UnpopulatedArtist) {
-    super();
-
+  constructor(artist: Artist) {
     this.uid = artist.uid;
     this.name = artist.name;
     this.image = artist.image;
   }
 }
 
-export class DetailedArtist extends Serializer {
+export class DetailedArtist {
   uid: string;
   name: string;
+  bio: string;
   image: string;
   created_at: Date;
-  created_by: { uid: string };
-  albums: Partial<Album>[] | string[];
-  songs: Partial<Song>[] | string[];
-  features: Partial<Song>[] | string[];
+  created_by: string;
 
-  constructor(artist: UnpopulatedArtist) {
-    super();
-
+  constructor(artist: Artist) {
     this.uid = artist.uid;
     this.name = artist.name;
+    this.bio = artist.bio;
     this.image = artist.image;
     this.created_at = artist.created_at;
-    this.created_by = { uid: artist.created_by };
-    this.albums = artist.albums;
-    this.songs = artist.songs;
-    this.features = artist.features;
+    this.created_by = artist.created_by;
   }
 }

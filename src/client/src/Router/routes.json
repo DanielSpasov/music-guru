@@ -14,11 +14,6 @@
         "private": false
       },
       {
-        "path": "add",
-        "filePath": "/artists/create",
-        "private": true
-      },
-      {
         "path": ":id",
         "filePath": "/artists/details",
         "routes": [
@@ -26,11 +21,6 @@
             "path": "index",
             "filePath": "/artists/details",
             "private": false
-          },
-          {
-            "path": "edit",
-            "filePath": "/artists/edit",
-            "private": true
           }
         ]
       }
@@ -46,11 +36,6 @@
         "private": false
       },
       {
-        "path": "add",
-        "filePath": "/albums/create",
-        "private": true
-      },
-      {
         "path": ":id",
         "filePath": "/albums/details",
         "routes": [
@@ -58,11 +43,6 @@
             "path": "index",
             "filePath": "/albums/details",
             "private": false
-          },
-          {
-            "path": "edit",
-            "filePath": "/albums/edit",
-            "private": true
           }
         ]
       }
@@ -78,11 +58,6 @@
         "private": false
       },
       {
-        "path": "add",
-        "filePath": "/songs/create",
-        "private": true
-      },
-      {
         "path": ":id",
         "filePath": "/songs/details",
         "private": false,
@@ -91,11 +66,6 @@
             "path": "index",
             "filePath": "/songs/details",
             "private": false
-          },
-          {
-            "path": "edit",
-            "filePath": "/songs/edit",
-            "private": true
           }
         ]
       }

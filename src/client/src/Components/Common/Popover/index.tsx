@@ -1,42 +1,53 @@
+import { useEffect, useMemo, useRef } from 'react';
+
 import { PopoverProps } from './helpers';
-import { Box, Icon } from '../../HTML';
-import { useContext } from 'react';
-import { ThemeContext } from 'styled-components';
+
+const darkProps = 'dark:bg-neutral-900 dark:shadow-black';
 
 export default function Popover({
-  children,
   open,
-  setOpen,
-  ...css
+  label,
+  children,
+  className
 }: PopoverProps) {
-  const { colors } = useContext(ThemeContext);
+  const id = useMemo(() => `popover-${Math.random()}`, []); // TODO: This is tricky, please change
+
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    const box = document.getElementById(id);
+    if (!box) return;
+
+    if (open) {
+      box.classList.remove('hidden');
+      setTimeout(() => {
+        box.classList.remove('scale-0');
+        box.classList.remove('opacity-0');
+      }, 20);
+    } else {
+      box.classList.add('opacity-0');
+      box.classList.add('scale-0');
+      box.addEventListener('transitionend', () => box.classList.add('hidden'), {
+        capture: false,
+        once: true,
+        passive: false
+      });
+    }
+  }, [id, open]);
 
   return (
-    <Box
-      boxShadow="rgba(0, 0, 0, 0.45) 0px 0px 5px 3px"
-      transform={open ? 'scale(1)' : 'scale(0)'}
-      backgroundColor={colors.base}
-      opacity={open ? '1' : '0'}
-      position="absolute"
-      overflowY="auto"
-      maxHeight="600px"
-      padding="0.5em"
-      zIndex="9999"
-      top="60px"
-      right="0"
-      {...css}
-    >
-      <Box display="flex" justifyContent="flex-end">
-        {setOpen && (
-          <Icon
-            model="x"
-            type="solid"
-            variant="danger"
-            onClick={() => setOpen(false)}
-          />
-        )}
-      </Box>
-      {children}
-    </Box>
+    <div className="relative">
+      {label && <div className="p-2">{label}</div>}
+      <div
+        id={id}
+        className={`absolute bg-neutral-100 right-0 shadow-md p-2 rounded-md opacity-0 hidden scale-0 ${darkProps} ${className}`}
+      >
+        {children}
+      </div>
+    </div>
   );
 }

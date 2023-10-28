@@ -2,5 +2,5 @@ import { z } from 'zod';
 
 export const ArtistSchema = z.object({
   name: z.string(),
-  image: z.string().url({ message: 'Invalid url.' })
+  bio: z.string().max(5000).optional()
 });

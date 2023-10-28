@@ -1,39 +1,56 @@
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
-import { Box, List, PageLayout } from '../../../Components';
+import { List, Modal, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import useActions from '../useActions';
+import Create from './modals/Create';
 import { Album } from '../helpers';
 import Api from '../../../Api';
 
 export default function Albums() {
-  const actions = useActions({ model: 'albums-list' });
+  const { isAuthenticated } = useContext(AuthContext);
+
+  const [openCreate, setOpenCreate] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [albums, setAlbums] = useState<Album[]>([]);
 
-  const navigate = useNavigate();
+  const fetchAlbums = useCallback(async () => {
+    try {
+      const { data } = await Api.albums.fetch({
+        config: { params: { serializer: 'list' } }
+      });
+      setAlbums(data);
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await Api.albums.fetch({
-          config: { params: { serializer: 'list' } }
-        });
-        setAlbums(data);
-      } catch (error) {
-        errorHandler(error, navigate);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [navigate]);
+    (async () => await fetchAlbums())();
+  }, [fetchAlbums]);
 
   return (
-    <PageLayout title="Albums" actions={actions}>
-      <Box display="flex" margin="0 5%" flexWrap="wrap">
-        <List data={albums} model="albums" loading={loading} />
-      </Box>
+    <PageLayout
+      title="Albums"
+      actions={[
+        {
+          icon: 'add',
+          perform: () => setOpenCreate(true),
+          disabled: !isAuthenticated
+        }
+      ]}
+    >
+      <List data={albums} model="albums" loading={loading} />
+
+      <section>
+        {openCreate && (
+          <Modal onClose={() => setOpenCreate(false)}>
+            <Create onClose={() => setOpenCreate(false)} />
+          </Modal>
+        )}
+      </section>
     </PageLayout>
   );
 }

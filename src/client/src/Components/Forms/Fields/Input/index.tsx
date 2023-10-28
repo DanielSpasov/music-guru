@@ -1,44 +1,71 @@
-import { ThemeContext } from 'styled-components';
-import { useContext, useState } from 'react';
-
-import { Box, Icon, Label } from '../../../HTML';
+import { FieldProps } from '../helpers';
 import { InputProps } from './helpers';
-import { StyledInput } from './Styled';
+import { useInput } from './useInput';
+import Controls from '../Controls';
+import File from './File';
+
+const hoverProps = 'hover:border-neutral-300';
+const focusProps =
+  'focus:border-primary dark:focus:border-primary-dark [&~label]:focus:-top-7 [&~label]:focus:left-1';
+const darkProps =
+  'dark:bg-neutral-800 dark:border-neutral-600 dark:hover:border-neutral-500';
 
 export default function Input({
-  register,
-  validations,
   props,
+  name,
   label,
-  name
-}: InputProps) {
-  const [passVisibility, setPassVisibility] = useState(false);
-  const { colors } = useContext(ThemeContext);
+  onChange,
+  setValue,
+  value = '',
+  validateField
+}: FieldProps<string | File, InputProps>) {
+  const { iconModel, id, inputType, _onIconClick, _onChange, _onClear } =
+    useInput({
+      name,
+      type: props?.type,
+      onChange,
+      setValue,
+      validateField
+    });
 
   return (
-    <Box>
-      <StyledInput
-        {...register(name, { required: validations?.required })}
-        name={name}
-        type={passVisibility ? 'text' : props?.type}
-        placeholder=" "
-      />
-      <Label position="absolute" top=".65em" left=".75em">
-        {label}
-      </Label>
-
-      {props?.type === 'password' && (
-        <Icon
-          color={passVisibility ? colors.primary : 'lightgray'}
-          onClick={() => setPassVisibility(!passVisibility)}
-          model={passVisibility ? 'eye' : 'eye-slash'}
-          type="solid"
-          position="absolute"
-          fontSize="1.3em"
-          right="10px"
-          top="33px"
+    <div className="relative my-2">
+      {props?.type === 'file' ? (
+        <File
+          id={id}
+          name={name}
+          label={label}
+          value={value as File}
+          _onChange={_onChange}
+          accept={props.accept}
         />
+      ) : (
+        <>
+          <input
+            id={id}
+            name={name}
+            value={value as string}
+            type={inputType}
+            onChange={_onChange}
+            placeholder=" "
+            className={`w-full h-11 rounded-md bg-neutral-100 border-2 border-neutral-200 p-2 outline-none ${darkProps} ${focusProps} ${hoverProps}`}
+          />
+          <label
+            className={`absolute ${
+              !value ? 'top-2.5 left-3' : '-top-7 left-1'
+            }`}
+          >
+            {label}
+          </label>
+        </>
       )}
-    </Box>
+
+      <Controls
+        value={value}
+        onClear={_onClear}
+        onClick={_onIconClick}
+        iconModel={iconModel}
+      />
+    </div>
   );
 }

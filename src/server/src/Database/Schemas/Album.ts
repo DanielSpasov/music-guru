@@ -1,13 +1,16 @@
 import { z } from 'zod';
 
-export const BaseAlbumSchema = z.object({
-  name: z.string(),
-  image: z.string().url({ message: 'Invalid url.' })
+const DateSchema = z.union([z.string(), z.null()]).transform(x => {
+  if (x === null) return null;
+  return new Date(x);
 });
 
-const UidSchema = z.string().min(8).max(8);
+export const BaseAlbumSchema = z.object({
+  name: z.string(),
+  release_date: DateSchema.optional()
+});
 
 export const AlbumSchema = BaseAlbumSchema.extend({
-  artist: UidSchema,
-  songs: z.array(UidSchema)
+  artist: z.string().uuid(),
+  songs: z.array(z.string().uuid()).optional()
 });

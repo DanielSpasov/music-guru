@@ -1,125 +1,67 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import makeAnimated from 'react-select/animated';
+import ReactSelect from 'react-select';
 
-import { Label, Icon, Box, Popover } from '../../..';
-import useDebounce from '../../../../Hooks/useDebounce';
-import { StyledInput } from '../Input/Styled';
-import { Result } from '../../../Core/Search';
-import { SelectProps } from './helpers';
-import FakeInput from './FakeInput';
+import { ThemeContext } from '../../../../Contexts';
+import { SelectProps, styles } from './helpers';
+import { FieldProps } from '../helpers';
 
 export default function Select({
-  setFormValue,
-  getValues,
-  props,
+  value = [],
   label,
-  name
-}: SelectProps) {
-  const [values, setValues] = useState<any[]>(getValues()?.[name] || []);
-  const [searchTerm, setSearch] = useState<string>('');
+  name,
+  onChange,
+  props
+}: FieldProps<any[], SelectProps>) {
+  const { theme } = useContext(ThemeContext);
+
+  const [selected, setSelected] = useState<any[]>(value);
   const [options, setOptions] = useState<any[]>([]);
-  const [open, setOpen] = useState<boolean>(false);
 
-  const search = useDebounce({ value: searchTerm, delay: 500 });
-
-  useEffect(() => {
-    setFormValue(
-      name,
-      getValues()[name]?.map((x: any) => x?.uid)
-    );
-  }, [setFormValue, name, getValues]);
+  const id = useMemo(() => `${name}-select-menu`, [name]);
 
   useEffect(() => {
     (async () => {
       if (!props?.fetchFn) return;
-      const { data } = await props.fetchFn({ params: { search } });
+      const { data } = await props.fetchFn({});
       setOptions(data);
     })();
-  }, [props, search]);
+  }, [props]);
 
-  const onClear = useCallback(() => {
-    setValues([]);
-    setFormValue(name, []);
-  }, [setFormValue, name]);
-
-  const onRemove = useCallback(
-    (option: any) => {
-      setValues(prev => prev.filter(x => x.name !== option.name));
-      setFormValue(
-        name,
-        getValues()[name]?.filter((x: any) => x !== option.uid)
-      );
+  const _onChange = useCallback(
+    (option: any, settings: any) => {
+      if (settings?.action === 'clear') return setSelected([]);
+      const value = props?.multiple ? option : [option];
+      onChange({ target: { value } });
+      setSelected(value);
     },
-    [setFormValue, getValues, name]
-  );
-
-  const onClick = useCallback(
-    (option: any) => {
-      if (values.find(x => x.uid === option.uid)) {
-        onRemove(option);
-        return;
-      }
-
-      if (props?.multiple) {
-        setValues(prev => [...prev, option]);
-        setFormValue(name, [...(getValues()[name] || []), option.uid]);
-      } else {
-        setValues([option]);
-        setFormValue(name, [option.uid]);
-      }
-    },
-    [getValues, setFormValue, name, props, onRemove, values]
+    [onChange, props?.multiple]
   );
 
   return (
-    <Box>
-      {/* THIS INPUT IS HERE FOR DISPLAY PURPOSES */}
-      <FakeInput values={values} onRemove={onRemove} setOpen={setOpen}>
-        {/* OPTIONS DROPDOWN */}
-        <Popover
-          open={open}
-          setOpen={setOpen}
-          position="fixed"
-          right="auto"
-          margin="auto"
-          width="35%"
-          top="50%"
-        >
-          <StyledInput
-            onChange={(e: any) => setSearch(e?.target?.value)}
-            value={searchTerm}
-            placeholder="Search..."
-            name={name}
-            type="text"
-          />
-          {!options.length && <Box textAlign="center">No Results.</Box>}
-          {options.map(option => (
-            <Result
-              key={option.uid}
-              data={option}
-              selected={values.find(x => x.uid === option.uid)}
-              onClick={() => onClick(option)}
-            />
-          ))}
-        </Popover>
-      </FakeInput>
-      <Label
-        position="absolute"
-        top={!values.length ? '.65em' : '-1.5em'}
-        left={!values.length ? '.75em' : '0'}
+    <div className="relative my-2">
+      <ReactSelect
+        id={id}
+        components={{ ...makeAnimated() }}
+        options={options}
+        onChange={_onChange}
+        isMulti={props?.multiple}
+        defaultValue={value}
+        formatOptionLabel={option => option?.name}
+        getOptionValue={option => option?.uid}
+        styles={styles(theme)}
+        isSearchable
+        placeholder=""
+        isClearable
+      />
+
+      <label
+        className={`absolute ${
+          !selected.length ? 'top-2.5 left-3' : '-top-7 left-1'
+        }`}
       >
         {label}
-      </Label>
-
-      {/* CLEAR ALL */}
-      <Icon
-        model="trash"
-        type="solid"
-        onClick={onClear}
-        position="absolute"
-        size=".75em"
-        right=".5em"
-        top=".2em"
-      />
-    </Box>
+      </label>
+    </div>
   );
 }

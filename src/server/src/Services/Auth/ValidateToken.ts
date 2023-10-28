@@ -13,6 +13,7 @@ export function ValidateToken(req: Request, res: Response) {
     const token = req.query?.token as string;
     if (!token) {
       res.status(400).json({ message: 'No Token was found.' });
+      return;
     }
 
     const payload = jwt.verify(token, env.JWT_SECRET) as JwtPayload;

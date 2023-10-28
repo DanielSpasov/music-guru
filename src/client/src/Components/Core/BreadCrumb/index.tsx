@@ -1,46 +1,50 @@
-import { ThemeContext } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { Action } from '../../Common/Actions/helpers';
-import { Box, Icon } from '../../HTML';
-import { Actions } from '../../Common';
+import { BreadCrumbProps } from './helpers';
+import { Icon, Link } from '../../';
 
-export default function BreadCrumb({ actions }: { actions: Action[] }) {
-  const { colors } = useContext(ThemeContext);
+const darkProps = 'dark:bg-neutral-900 dark:shadow-sm dark:shadow-neutral-900';
+
+export default function BreadCrumb({ actions, tabs }: BreadCrumbProps) {
+  const { pathname, search } = useLocation();
   const navigate = useNavigate();
 
   return (
-    <Box
-      width="100%"
-      height="60px"
-      position="relative"
-      backgroundColor={colors.base}
-      boxShadow="rgba(0, 0, 0, 0.45) 0px 3px 4px"
-      zIndex="9998"
-    >
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        height="100%"
-      >
-        <Box display="flex">
-          <Icon
-            onClick={() => navigate(-1)}
-            model="arrow-left"
-            type="solid"
-            padding=".3em"
-          />
-          <Icon
-            onClick={() => navigate('/')}
-            model="home"
-            type="solid"
-            padding=".3em"
-          />
-        </Box>
-        <Actions actions={actions} />
-      </Box>
-    </Box>
+    <div className={` h-16 w-full flex items-center ${darkProps}`}>
+      <div className="flex flex-1">
+        <div className="p-2">
+          <Icon onClick={() => navigate(-1)} model="back" />
+        </div>
+        <div className="p-2">
+          <Icon onClick={() => navigate('/')} model="home" />
+        </div>
+      </div>
+
+      <div className="flex flex-1 justify-center">
+        {tabs.map(tab => (
+          <Link
+            key={tab.key}
+            to={tab.to}
+            type="navlink"
+            className="p-2"
+            isActive={pathname + search === tab.to}
+          >
+            {tab.label}
+          </Link>
+        ))}
+      </div>
+
+      <div className="flex flex-1 justify-end">
+        {actions.map((action, i) => (
+          <div key={i} className="p-2">
+            <Icon
+              onClick={!action.disabled ? action.perform : null}
+              disabled={action.disabled}
+              model={action.icon}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

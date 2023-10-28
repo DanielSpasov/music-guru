@@ -1,2 +1,73 @@
-@import url('https://use.fontawesome.com/releases/v6.0.0/css/all.css');
 @import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;600;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Maven Pro', sans-serif;
+  }
+
+  * {
+    @apply dark:text-white text-black duration-200;
+  }
+
+  main {
+    @apply bg-neutral-50 dark:bg-neutral-800;
+  }
+
+  svg {
+    @apply h-9 w-9 duration-0;
+  }
+  svg:hover {
+    @apply fill-secondary dark:fill-primary-dark;
+  }
+
+  button {
+    @apply bg-primary dark:bg-primary-dark text-white rounded-md py-3 px-4 font-bold hover:opacity-70 disabled:opacity-50;
+  }
+
+  h1 {
+    @apply font-bold text-3xl;
+  }
+  h2 {
+    @apply font-bold text-2xl;
+  }
+  h3 {
+    @apply font-bold text-xl;
+  }
+  h4 {
+    @apply font-bold text-lg;
+  }
+  h5 {
+    @apply font-bold text-sm;
+  }
+  h6 {
+    @apply font-bold text-xs;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-md;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-700;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-neutral-500;
+  }
+  ::-webkit-scrollbar-corner {
+    @apply bg-transparent;
+  }
+}

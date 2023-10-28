@@ -1,3 +1,5 @@
+import Api from '.';
+
 export function applyPrefix(api: any, props: any): void {
   if (props?.prefix) {
     api.model = `${props.prefix}/${api.model}`;
@@ -31,3 +33,5 @@ export type DeleteProps = {
   url: string;
   config?: any;
 };
+
+export type ModelKeys = Exclude<keyof typeof Api, 'prototype'>;
