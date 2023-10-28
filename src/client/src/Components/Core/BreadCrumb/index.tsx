@@ -6,7 +6,7 @@ import { Icon, Link } from '../../';
 const darkProps = 'dark:bg-neutral-900 dark:shadow-sm dark:shadow-neutral-900';
 
 export default function BreadCrumb({ actions, tabs }: BreadCrumbProps) {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const navigate = useNavigate();
 
   return (
@@ -27,7 +27,7 @@ export default function BreadCrumb({ actions, tabs }: BreadCrumbProps) {
             to={tab.to}
             type="navlink"
             className="p-2"
-            isActive={pathname.split('/')[3] === tab.key}
+            isActive={pathname + search === tab.to}
           >
             {tab.label}
           </Link>
