@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { Form, Input, Loader } from '../../../../Components';
+import { Form, Input, Loader, Textarea } from '../../../../Components';
 import { Artist, EditArtistSchema } from '../../helpers';
 import { errorHandler } from '../../../../Handlers';
 import { EditArtistProps } from './helpers';
@@ -62,6 +62,20 @@ export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
               key: 'name',
               label: 'Name',
               Component: Input,
+              props: {
+                type: 'text'
+              },
+              validations: {
+                required: {
+                  value: true,
+                  message: 'Name is required.'
+                }
+              }
+            },
+            {
+              key: 'bio',
+              label: 'Biography',
+              Component: Textarea,
               props: {
                 type: 'text'
               },
