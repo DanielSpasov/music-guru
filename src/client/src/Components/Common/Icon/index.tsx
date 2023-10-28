@@ -6,7 +6,6 @@ export { default as SVG } from './SVG';
 
 export type IconProps = {
   model: IconModels;
-  variant?: string;
   viewBox?: string;
   className?: string;
   children?: ReactNode;

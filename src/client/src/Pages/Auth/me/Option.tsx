@@ -89,7 +89,11 @@ export default function Option({ data, user, setUser }: OptionProps) {
             {data.type === 'boolean' && (
               <Icon
                 model={user[data.field] ? 'check' : 'close'}
-                variant={user[data.field] ? 'success' : 'danger'}
+                className={
+                  user[data.field]
+                    ? '[&>path]:text-green-400'
+                    : '[&>path]:text-red-400'
+                }
               />
             )}
             {data.type === 'date' && (
