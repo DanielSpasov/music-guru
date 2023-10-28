@@ -2,9 +2,9 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import makeAnimated from 'react-select/animated';
 import ReactSelect from 'react-select';
 
+import { ThemeContext } from '../../../../Contexts';
 import { SelectProps, styles } from './helpers';
 import { FieldProps } from '../helpers';
-import { ThemeContext } from '../../../../Contexts';
 
 export default function Select({
   value = [],

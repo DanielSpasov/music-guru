@@ -82,12 +82,21 @@ export const styles = (theme: Theme): StylesConfig => {
     valueContainer: base => ({ ...base, padding: '4px' }),
     multiValue: base => ({
       ...base,
+      height: 28,
+      maxWidth: 160,
+      justifyContent: 'space-between',
       backgroundColor: colors[theme].bg[70]
     }),
     multiValueLabel: base => ({
       ...base,
       color: colors[theme].text,
       padding: '.2em'
+    }),
+    multiValueRemove: (base, state) => ({
+      ...base,
+      '&>svg': { fill: colors[theme].text, width: 16, right: 0 },
+      '&:hover': { backgroundColor: state.theme.colors.danger },
+      '&:hover>svg': { fill: colors[theme].text }
     }),
     singleValue: base => ({
       ...base,
@@ -98,11 +107,6 @@ export const styles = (theme: Theme): StylesConfig => {
       ...base,
       backgroundColor: colors[theme].bg[90],
       boxShadow: colors[theme].shadow
-    }),
-    multiValueRemove: (base, state) => ({
-      ...base,
-      '&>svg': { fill: 'white' },
-      '&:hover': { backgroundColor: state.theme.colors.danger }
     })
   };
 };
