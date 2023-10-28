@@ -3,9 +3,9 @@ import { Album } from '../../../Pages/albums/helpers';
 import { CardProps } from './helpers';
 
 const hoverProps =
-  '[&>img]:hover:-top-7 [&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary';
+  '[&>img]:hover:-top-7 [&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary hover:shadow-neutral-400';
 const darkProps =
-  'dark:bg-neutral-900 dark:[&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary-dark';
+  'dark:bg-neutral-900 dark:[&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary-dark dark:hover:shadow-neutral-900';
 
 export default function AlbumCard({
   data,
