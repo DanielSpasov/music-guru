@@ -1,7 +1,6 @@
 import {
   Dispatch,
   SetStateAction,
-  useState,
   createContext,
   ReactNode,
   useEffect,
@@ -15,16 +14,22 @@ interface ThemeContextType {
   theme: Theme;
 }
 
+type ThemeProviderProps = {
+  children: ReactNode;
+  theme: Theme;
+  setTheme: Dispatch<SetStateAction<Theme>>;
+};
+
 export const ThemeContext = createContext<ThemeContextType>({
   theme: localStorage.getItem('theme') as Theme,
   setTheme: () => null
 });
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(
-    localStorage.getItem('theme') as Theme
-  );
-
+export function ThemeProvider({
+  children,
+  theme,
+  setTheme
+}: ThemeProviderProps) {
   const body = useRef<HTMLBodyElement>(document.querySelector('body'));
 
   useEffect(() => {
