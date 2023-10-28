@@ -50,7 +50,7 @@ export default function Option({ data, user, setUser }: OptionProps) {
   }, [uid, data, value, setUser]);
 
   return (
-    <div className="flex items-center bg-neutral-800 rounded-md p-3 m-1">
+    <div className="flex items-center bg-neutral-100 dark:bg-neutral-800 rounded-md p-3 m-1">
       <div className="w-10">
         {data?.editable &&
           (isEditing ? (
@@ -91,7 +91,7 @@ export default function Option({ data, user, setUser }: OptionProps) {
                 model={user[data.field] ? 'check' : 'close'}
                 className={
                   user[data.field]
-                    ? '[&>path]:text-green-400'
+                    ? '[&>path]:text-green-500'
                     : '[&>path]:text-red-400'
                 }
               />
