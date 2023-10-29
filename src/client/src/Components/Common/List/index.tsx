@@ -18,7 +18,9 @@ export default function List({
   );
 
   return (
-    <section className="flex flex-wrap mx-10">
+    <section
+      className={`flex flex-wrap mx-10 ${!data.length && 'justify-center'}`}
+    >
       {loading ? (
         Array(skeletonLength)
           .fill(null)
@@ -26,7 +28,7 @@ export default function List({
             <Card key={i} data={data} model={model} loading={true} />
           ))
       ) : !data.length ? (
-        <h4 className="text-center">No {model} available.</h4>
+        <h4>No {model} available.</h4>
       ) : (
         data.map(x => (
           <Card
