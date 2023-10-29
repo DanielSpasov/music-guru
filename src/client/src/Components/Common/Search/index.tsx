@@ -23,10 +23,15 @@ export default function SearchBox({ models }: SearchBoxProps) {
 
   const onChange = useCallback((e: any) => setValue(e?.target?.value), []);
 
-  const hasResults = useMemo(
-    () => Boolean(results?.[0]?.[1].length),
-    [results]
-  );
+  const hasResults = useMemo(() => {
+    for (const category of results) {
+      const categoryResults = category[1];
+      if (categoryResults.length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }, [results]);
 
   const firstLoad = useRef(true);
   useEffect(() => {
@@ -100,7 +105,12 @@ export default function SearchBox({ models }: SearchBoxProps) {
                         setOpen(false);
                       }}
                     >
-                      <img src={obj.image} className="h-10 rounded-md" />
+                      <img
+                        src={
+                          obj.image || '/images/logo/blue-logo-square512.png'
+                        }
+                        className="h-10 rounded-md"
+                      />
                       <span className="p-2">{obj.name}</span>
                     </div>
                   ))}
