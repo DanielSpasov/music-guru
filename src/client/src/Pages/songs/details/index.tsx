@@ -6,8 +6,7 @@ import moment from 'moment';
 import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { Artist } from '../../artists/helpers';
-import { Album } from '../../albums/helpers';
+import { Config } from '../../../Api/helpers';
 import Delete from './modals/Delete';
 import { Song } from '../helpers';
 import Edit from './modals/Edit';
@@ -16,15 +15,6 @@ import Api from '../../../Api';
 export default function SongDetails() {
   const [loading, setLoading] = useState(true);
   const [song, setSong] = useState<Song>();
-
-  const [loadingFeatures, setLoadingFeatures] = useState(true);
-  const [features, setFeatures] = useState<Artist[]>([]);
-
-  const [loadingAlbums, setLoadingAlbums] = useState(true);
-  const [albums, setAlbums] = useState<Album[]>([]);
-
-  const [loadingArtist, setLoadingArtist] = useState(true);
-  const [artist, setArtist] = useState<Artist>();
 
   const [openEdit, setOpenEdit] = useState(false);
   const [openDel, setOpenDel] = useState(false);
@@ -66,73 +56,39 @@ export default function SongDetails() {
     (async () => await fetchSong())();
   }, [fetchSong]);
 
-  // Features
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingFeatures(true);
-        if (!song) return;
+  const fetchFeatures = useCallback(
+    (config?: Config) => {
+      if (!song) return Promise.resolve({ data: [] });
+      return Api.artists.fetch({
+        config: {
+          params: { uid__in: [...song.features, ' '], ...config?.params }
+        }
+      });
+    },
+    [song]
+  );
 
-        const features = await Promise.all(
-          song.features.map(async artistUID => {
-            const { data } = await Api.artists.get({
-              id: artistUID,
-              config: { params: { serializer: 'list' } }
-            });
-            return data;
-          })
-        );
-        setFeatures(features);
-      } catch (error) {
-        errorHandler(error);
-      } finally {
-        setLoadingFeatures(false);
-      }
-    })();
-  }, [song]);
+  const fetchAlbums = useCallback(
+    (config?: Config) => {
+      if (!song) return Promise.resolve({ data: [] });
+      return Api.albums.fetch({
+        config: { params: { songs__contains: song.uid, ...config?.params } }
+      });
+    },
+    [song]
+  );
 
-  // Albums
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingAlbums(true);
-        if (!song) return;
-
-        const { data: albums } = await Api.albums.fetch({
-          config: {
-            params: {
-              serializer: 'list',
-              songs__contains: song?.uid
-            }
-          }
-        });
-        setAlbums(albums);
-      } catch (error) {
-        errorHandler(error);
-      } finally {
-        setLoadingAlbums(false);
-      }
-    })();
-  }, [song]);
-
-  // Artist
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingArtist(true);
-        if (!song) return;
-
-        const { data } = await Api.artists.get({
-          id: song.artist,
-          config: { params: { serializer: 'list' } }
-        });
-        setArtist(data);
-        setLoadingArtist(false);
-      } catch (error) {
-        errorHandler(error);
-      }
-    })();
-  }, [song]);
+  const fetchArtist = useCallback(
+    async (config?: Config) => {
+      if (!song) return Promise.resolve({ data: [] });
+      const { data } = await Api.artists.get({
+        id: song.artist,
+        config: { params: { serializer: 'list', ...config?.params } }
+      });
+      return { data: [data] };
+    },
+    [song]
+  );
 
   return (
     <PageLayout
@@ -173,37 +129,18 @@ export default function SongDetails() {
         <div className="flex flex-wrap">
           <div>
             <h3 className="text-center">Artist</h3>
-            <List
-              data={[artist]}
-              model="artists"
-              skeletonLength={1}
-              loading={loadingArtist}
-            />
+            <List fetchFn={fetchArtist} skeletonLength={1} model="artists" />
           </div>
 
-          {features.length > 0 && (
-            <div>
-              <h3 className="text-center">Featured Artists</h3>
-              <List
-                data={features}
-                model="artists"
-                skeletonLength={2}
-                loading={loadingFeatures}
-              />
-            </div>
-          )}
+          <div>
+            <h3 className="text-center">Featured Artists</h3>
+            <List fetchFn={fetchFeatures} skeletonLength={2} model="artists" />
+          </div>
 
-          {albums.length > 0 && (
-            <div>
-              <h3 className="text-center">In Albums</h3>
-              <List
-                data={albums}
-                model="albums"
-                skeletonLength={1}
-                loading={loadingAlbums}
-              />
-            </div>
-          )}
+          <div>
+            <h3 className="text-center">In Albums</h3>
+            <List fetchFn={fetchAlbums} skeletonLength={1} model="albums" />
+          </div>
         </div>
       </section>
 

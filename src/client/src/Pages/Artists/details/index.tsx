@@ -1,14 +1,13 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
-import { Modal, PageLayout } from '../../../Components';
+import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
+import { viewConfig } from './helpers';
 import { Artist } from '../helpers';
 import Edit from './modals/Edit';
 import Api from '../../../Api';
-import View from './View';
-import { viewConfig } from './helpers';
 
 export default function ArtistDetails() {
   const { uid: userUID } = useContext(AuthContext);
@@ -16,10 +15,15 @@ export default function ArtistDetails() {
   const [query] = useSearchParams();
   const { id = '0' } = useParams();
 
-  const [loading, setLoading] = useState<boolean>(true);
   const [artist, setArtist] = useState<Artist>();
+  const [loading, setLoading] = useState(true);
 
-  const [openEdit, setOpenEdit] = useState<boolean>(false);
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const view = useMemo(
+    () => viewConfig[query.get('view') as string] ?? {},
+    [query]
+  );
 
   const fetchArtist = useCallback(async () => {
     try {
@@ -83,11 +87,11 @@ export default function ArtistDetails() {
         </div>
 
         <div className="w-2/3">
-          {viewConfig[query.get('view') as string] ? (
-            <View
-              {...(viewConfig[query.get('view') as string] ?? {})}
-              id={id}
-            />
+          {viewConfig[query.get('view') as string] && artist ? (
+            <>
+              <h2 className="text-center">{view.label}</h2>
+              <List fetchFn={view.fetchFn(artist.uid)} model={view.model} />
+            </>
           ) : (
             <>
               <h2>Biography</h2>

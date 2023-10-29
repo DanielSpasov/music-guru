@@ -5,8 +5,7 @@ import { toast } from 'react-toastify';
 import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { Artist } from '../../artists/helpers';
-import { Song } from '../../songs/helpers';
+import { Config } from '../../../Api/helpers';
 import Delete from './modals/Delete';
 import { Album } from '../helpers';
 import Edit from './modals/Edit';
@@ -18,17 +17,10 @@ export default function AlbumDetails() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const [album, setAlbum] = useState<Album>();
-
-  const [loadingArtist, setLoadingArtist] = useState<boolean>(true);
-  const [artist, setArtist] = useState<Artist>();
-
-  const [loadingSongs, setLoadingSongs] = useState<boolean>(true);
-  const [songs, setSongs] = useState<Song[]>([]);
-
   const [openEdit, setOpenEdit] = useState<boolean>(false);
   const [openDel, setOpenDel] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [album, setAlbum] = useState<Album>();
 
   const deleteAlbum = useCallback(async () => {
     try {
@@ -62,49 +54,29 @@ export default function AlbumDetails() {
     (async () => await fetchAlbum())();
   }, [fetchAlbum]);
 
-  // Artist
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingArtist(true);
-        if (!album) return;
+  const fetchArtist = useCallback(
+    async (config?: Config) => {
+      if (!album) return Promise.resolve({ data: [] });
+      const { data } = await Api.artists.get({
+        id: album.artist,
+        config: { params: { serializer: 'list', ...config?.params } }
+      });
+      return { data: [data] };
+    },
+    [album]
+  );
 
-        const { data } = await Api.artists.get({
-          id: album.artist,
-          config: { params: { serializer: 'list' } }
-        });
-        setArtist(data);
-        setLoadingArtist(false);
-      } catch (error) {
-        errorHandler(error);
-      }
-    })();
-  }, [album]);
-
-  // Songs
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingSongs(true);
-        if (!album) return;
-
-        const songs = await Promise.all(
-          album.songs.map(async songUID => {
-            const { data } = await Api.songs.get({
-              id: songUID,
-              config: { params: { serializer: 'list' } }
-            });
-            return data;
-          })
-        );
-        setSongs(songs);
-      } catch (error) {
-        errorHandler(error);
-      } finally {
-        setLoadingSongs(false);
-      }
-    })();
-  }, [album]);
+  const fetchSongs = useCallback(
+    (config?: Config) => {
+      if (!album) return Promise.resolve({ data: [] });
+      return Api.songs.fetch({
+        config: {
+          params: { uid__in: [...album.songs, ' '], ...config?.params }
+        }
+      });
+    },
+    [album]
+  );
 
   return (
     <PageLayout
@@ -133,21 +105,11 @@ export default function AlbumDetails() {
         <div className="flex justify-between w-full">
           <div>
             <h3 className="text-center">Artist</h3>
-            <List
-              data={[artist]}
-              model="artists"
-              skeletonLength={1}
-              loading={loadingArtist}
-            />
+            <List fetchFn={fetchArtist} model="artists" skeletonLength={1} />
           </div>
           <div>
             <h3 className="text-center">Songs</h3>
-            <List
-              data={songs}
-              model="songs"
-              skeletonLength={3}
-              loading={loadingSongs}
-            />
+            <List fetchFn={fetchSongs} model="songs" skeletonLength={3} />
           </div>
         </div>
       </section>

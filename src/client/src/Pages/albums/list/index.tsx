@@ -1,35 +1,20 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 
 import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { errorHandler } from '../../../Handlers';
+import { Config } from '../../../Api/helpers';
 import Create from './modals/Create';
-import { Album } from '../helpers';
 import Api from '../../../Api';
 
 export default function Albums() {
   const { isAuthenticated } = useContext(AuthContext);
 
-  const [openCreate, setOpenCreate] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [albums, setAlbums] = useState<Album[]>([]);
+  const [openCreate, setOpenCreate] = useState(false);
 
-  const fetchAlbums = useCallback(async () => {
-    try {
-      const { data } = await Api.albums.fetch({
-        config: { params: { serializer: 'list' } }
-      });
-      setAlbums(data);
-    } catch (error) {
-      errorHandler(error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    (async () => await fetchAlbums())();
-  }, [fetchAlbums]);
+  const fetchFn = useCallback(
+    (config?: Config) => Api.albums.fetch({ config }),
+    []
+  );
 
   return (
     <PageLayout
@@ -42,7 +27,7 @@ export default function Albums() {
         }
       ]}
     >
-      <List data={albums} model="albums" loading={loading} />
+      <List fetchFn={fetchFn} model="albums" />
 
       <section>
         {openCreate && (

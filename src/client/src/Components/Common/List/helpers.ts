@@ -1,15 +1,14 @@
-import { ModelKeys } from '../../../Api/helpers';
-import { Album } from '../../../Pages/albums/helpers';
+import { Config, ModelKeys } from '../../../Api/helpers';
 import { Artist } from '../../../Pages/artists/helpers';
+import { Album } from '../../../Pages/albums/helpers';
 import { Song } from '../../../Pages/songs/helpers';
 
-export type Model = Song | Artist | Album | undefined;
+export type Model = Song | Artist | Album;
 
 export type ListProps = {
-  data: Model[];
+  fetchFn: (config?: Config) => Promise<{ data: Model[] }>;
   model: ModelKeys;
   filters?: any[];
-  loading?: boolean;
   skeletonLength?: number;
 };
 
