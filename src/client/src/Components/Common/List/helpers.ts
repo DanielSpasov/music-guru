@@ -8,6 +8,8 @@ export type Model = Song | Artist | Album | undefined;
 export type ListProps = {
   data: Model[];
   model: ModelKeys;
+  title?: string;
+  filters?: any[];
   loading?: boolean;
   skeletonLength?: number;
 };
