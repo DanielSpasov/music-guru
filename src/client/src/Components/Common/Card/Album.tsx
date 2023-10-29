@@ -30,8 +30,8 @@ export default function AlbumCard({
       <div className="flex flex-col pb-2">
         <span className="text-md truncate w-44 px-2">{data.name}</span>
         <span className="text-md text-neutral-500 truncate w-44 px-2">
-          {data?.release_date ? moment(data?.release_date).year() : 'TBA'} •
-          Album
+          {data?.release_date ? moment(data?.release_date).year() : 'TBA'} •{' '}
+          {data?.type?.name}
         </span>
       </div>
     </div>

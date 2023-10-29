@@ -21,7 +21,7 @@ import env from '../../env';
 
 // Database imports
 import { FileUploadSchema, validationSchemas } from '../../Database/Schemas';
-import { Collection, Serializer } from '../../Database/Types';
+import { Collection, ModelCollection, Serializer } from '../../Database/Types';
 import { serializers } from '../../Database/Serializers';
 import { converters } from '../../Database/Converters';
 import { checks } from '../../Database/checks';
@@ -32,8 +32,9 @@ export function fetch(collectionName: Collection) {
     try {
       const { serializer = 'list', ...restQuery }: QueryProps = req.query;
 
+      const colName = collectionName as ModelCollection;
       const reference = collection(db, collectionName).withConverter(
-        converters[collectionName]
+        converters[colName]
       );
 
       const filters = Object.entries(restQuery).map(([name, value]) => {
@@ -46,7 +47,7 @@ export function fetch(collectionName: Collection) {
         await getDocs(
           filters.length ? query(reference, ...filters) : reference
         ),
-        collectionName,
+        colName,
         serializer
       );
 
@@ -60,15 +61,14 @@ export function fetch(collectionName: Collection) {
 export function get(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
+      const colName = collectionName as ModelCollection;
       const serializer = req.query?.serializer as Serializer;
       const reference = doc(db, collectionName, req.params.id).withConverter(
-        converters[collectionName]
+        converters[colName]
       );
       const snapshot = await getDoc(reference);
       const data = snapshot.data();
-      const serialized = await serializers?.[collectionName]?.[serializer]?.(
-        data
-      );
+      const serialized = await serializers?.[colName]?.[serializer]?.(data);
       res.status(200).json({ data: serialized || data });
     } catch (error) {
       errorHandler(req, res, error);
@@ -130,7 +130,8 @@ export function post(collectionName: Collection) {
       const { uid: userUID } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
       const uid = crypto.randomUUID();
 
-      const validationSchema = validationSchemas[collectionName];
+      const colName = collectionName as ModelCollection;
+      const validationSchema = validationSchemas[colName];
       const validatedData = validationSchema.parse(req.body);
 
       if (req?.files?.length) {
@@ -146,7 +147,7 @@ export function post(collectionName: Collection) {
 
       const uploadedFiles = await getUploadLinks(
         req?.files as [],
-        collectionName,
+        colName,
         uid
       );
 
@@ -157,7 +158,7 @@ export function post(collectionName: Collection) {
       };
 
       const document = doc(db, collectionName, uid);
-      await setDoc(document.withConverter(converters[collectionName]), data);
+      await setDoc(document.withConverter(converters[colName]), data);
 
       res.status(200).json({ message: 'Success', uid, name: data.name });
     } catch (error) {
@@ -176,8 +177,9 @@ export function patch(collectionName: Collection) {
       }
       const { uid: userUID } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
 
+      const colName = collectionName as ModelCollection;
       const reference = doc(db, collectionName, req.params.id).withConverter(
-        converters[collectionName]
+        converters[colName]
       );
       const snapshot = await getDoc(reference);
       if (snapshot.get('created_by') !== userUID) {
@@ -185,7 +187,7 @@ export function patch(collectionName: Collection) {
         return;
       }
 
-      const validationSchema = validationSchemas[collectionName];
+      const validationSchema = validationSchemas[colName];
       const validatedData = validationSchema.parse(req.body);
 
       await updateDoc(reference, validatedData);

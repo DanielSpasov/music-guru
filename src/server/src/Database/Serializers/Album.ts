@@ -5,10 +5,15 @@ export class ListAlbum {
   name: string;
   image: string;
   release_date: Date | null;
+  type: {
+    code: string;
+    name: string;
+  };
 
   constructor(album: Album) {
     this.uid = album.uid;
     this.name = album.name;
+    this.type = album.type;
     this.image = album.image;
     this.release_date = album.release_date;
   }
@@ -23,6 +28,10 @@ export class DetailedAlbum {
   created_by: string;
   artist: string;
   songs: string[];
+  type: {
+    code: string;
+    name: string;
+  };
 
   constructor(album: Album) {
     this.uid = album.uid;
@@ -33,5 +42,6 @@ export class DetailedAlbum {
     this.created_by = album.created_by;
     this.artist = album.artist;
     this.songs = album.songs;
+    this.type = album.type;
   }
 }

@@ -7,17 +7,15 @@ import { User } from './User';
 
 export { SignInData, SignUpData } from './User';
 
-export type Collection = 'users' | 'artists' | 'songs' | 'albums';
+export type ModelCollection = 'users' | 'artists' | 'songs' | 'albums';
+export type TypeCollection = 'album-types';
+export type Collection = ModelCollection | TypeCollection;
 
 export type Serializer = 'reference' | 'detailed' | 'list';
 export type ObjSerialzier = Partial<Record<Serializer, (data: any) => any>>;
-export type CollectionSerializer = Partial<Record<Collection, ObjSerialzier>>;
-
-export type Reference<T> = {
-  key: keyof T;
-  collection: Collection;
-  relationKey: string;
-};
+export type CollectionSerializer = Partial<
+  Record<ModelCollection, ObjSerialzier>
+>;
 
 export type AnyObj = Song | Artist | Album | User;
 export type AnyDBObj = DBSong | DBArtist | DBAlbum;

@@ -47,6 +47,7 @@ export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
 
         setDefaultValues({
           ...album,
+          type: [album.type],
           release_date: album?.release_date
             ? moment(album?.release_date).toDate()
             : null,
@@ -66,6 +67,7 @@ export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
       try {
         const payload = {
           ...data,
+          type: data.type[0],
           artist: data.artist[0].uid,
           songs: data.songs?.map((x: Partial<Song>) => x.uid)
         };
@@ -79,6 +81,7 @@ export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
         await fetchAlbum();
         onClose();
       } catch (error) {
+        console.log(error);
         const errors = errorHandler(error);
         toast.error(errors?.[0]?.message);
       }
@@ -113,9 +116,19 @@ export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
               }
             },
             {
-              key: 'release_date',
-              label: 'Release Date',
-              Component: DatePicker
+              key: 'type',
+              label: 'Type',
+              Component: Select,
+              props: {
+                fetchFn: () => Api.albums.fetchTypes({}),
+                getOptionValue: (opt: { code: string }) => opt.code
+              },
+              validations: {
+                required: {
+                  value: true,
+                  message: 'Type is required.'
+                }
+              }
             },
             {
               key: 'artist',
@@ -131,6 +144,11 @@ export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
                   message: 'Artist is required.'
                 }
               }
+            },
+            {
+              key: 'release_date',
+              label: 'Release Date',
+              Component: DatePicker
             },
             {
               key: 'songs',

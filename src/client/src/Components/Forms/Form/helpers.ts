@@ -6,15 +6,16 @@ import {
 import { ZodObject } from 'zod';
 import { FC } from 'react';
 
-import { SelectComponentProps } from '../Fields/Select/helpers';
-import { InputComponentProps } from '../Fields/Input/helpers';
+import { TextareaProps } from '../Fields/Textarea/helpers';
+import { SelectProps } from '../Fields/Select/helpers';
+import { InputProps } from '../Fields/Input/helpers';
 
 export type FormField = {
   key: string;
   label: string;
   Component: FC<any>;
   validations?: any;
-  props?: InputComponentProps | SelectComponentProps;
+  props?: InputProps | SelectProps | TextareaProps;
 };
 
 export type FormSection = {

@@ -8,6 +8,7 @@ const albumConverter: FirestoreDataConverter<Partial<Album>, DBAlbum> = {
     return {
       uid: snapshot.id,
       name: album.name,
+      type: album.type,
       image: album.image,
       artist: album.artist,
       created_at: album.created_at.toDate(),
@@ -22,6 +23,7 @@ const albumConverter: FirestoreDataConverter<Partial<Album>, DBAlbum> = {
 
     return {
       name: String(snapshot.name),
+      type: Object(snapshot.type),
       image: String(snapshot.image),
       created_at: created_at || Timestamp.fromDate(new Date()),
       release_date: release_date || null,

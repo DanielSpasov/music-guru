@@ -2,6 +2,7 @@ import { StylesConfig } from 'react-select';
 import { Theme } from '../../../../Contexts';
 
 export type SelectProps = {
+  getOptionValue?: (opt: any) => string;
   fetchFn: (props: any) => any;
   multiple?: boolean;
 };

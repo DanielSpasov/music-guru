@@ -8,6 +8,7 @@ const upload = <any>multer({ storage: multer.memoryStorage() });
 const router = Router();
 
 router.get('/', fetch('albums'));
+router.get('/types', fetch('album-types'));
 router.get('/:id', get('albums'));
 
 router.delete('/:id', authorization, del('albums'));

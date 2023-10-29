@@ -1,5 +1,6 @@
 import { Album } from '../../Pages/albums/helpers';
-import { applyPrefix } from '../helpers';
+import { Config, applyPrefix } from '../helpers';
+import { get } from '../requests';
 import Crud from '../crud';
 
 export default class AlbumsAPI extends Crud<Album> {
@@ -8,5 +9,12 @@ export default class AlbumsAPI extends Crud<Album> {
   constructor(props: any) {
     super();
     applyPrefix(this, props);
+  }
+
+  async fetchTypes({ config }: { config?: Config }) {
+    return get({
+      url: `${this.baseUrl}/${this.model}/types/`,
+      config
+    });
   }
 }

@@ -38,6 +38,14 @@ export default function Select({
     [onChange, props?.multiple]
   );
 
+  const getOptValue = useCallback(
+    (opt: any) => {
+      if (!props?.getOptionValue) return opt?.uid;
+      return props?.getOptionValue(opt);
+    },
+    [props]
+  );
+
   return (
     <div className="relative my-2">
       <ReactSelect
@@ -48,7 +56,7 @@ export default function Select({
         isMulti={props?.multiple}
         defaultValue={value}
         formatOptionLabel={option => option?.name}
-        getOptionValue={option => option?.uid}
+        getOptionValue={getOptValue}
         styles={styles(theme)}
         isSearchable
         placeholder=""

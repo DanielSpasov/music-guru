@@ -5,7 +5,7 @@ import {
 } from 'firebase/storage';
 import { QuerySnapshot, WhereFilterOp } from 'firebase/firestore/lite';
 
-import { Collection, Serializer } from '../../Database/Types';
+import { ModelCollection, Serializer } from '../../Database/Types';
 import { serializers } from '../../Database/Serializers';
 import { File } from '../../Database/Types/File';
 
@@ -16,7 +16,7 @@ export type QueryProps = {
 
 export async function getUploadLinks(
   files: File[],
-  collectionName: Collection,
+  collectionName: ModelCollection,
   uid: string
 ) {
   return await files?.reduce(async (uploads, file: File) => {
@@ -33,7 +33,7 @@ export async function getUploadLinks(
 
 export async function getList(
   snapshot: QuerySnapshot,
-  collectionName: Collection,
+  collectionName: ModelCollection,
   serializer: Serializer
 ) {
   return await Promise.all(

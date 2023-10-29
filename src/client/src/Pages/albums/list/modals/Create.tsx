@@ -1,22 +1,46 @@
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useCallback } from 'react';
 
-import { DatePicker, Form, Input, Select } from '../../../../Components';
+import {
+  DatePicker,
+  Form,
+  Input,
+  Loader,
+  Select
+} from '../../../../Components';
 import { errorHandler } from '../../../../Handlers';
+import { Config } from '../../../../Api/helpers';
 import { Song } from '../../../songs/helpers';
 import { CreateAlbumProps } from './helpers';
 import { AlbumSchema } from '../../helpers';
 import Api from '../../../../Api';
 
 export default function CreateAlbum({ onClose }: CreateAlbumProps) {
+  const [defaultValues, setDefaultValues] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: type } = await Api.albums.fetchTypes({
+          config: { params: { code: 'A' } }
+        });
+        setDefaultValues({ type });
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   const onSubmit = useCallback(
     async (body: any) => {
       try {
         const payload = {
           ...body,
+          type: body?.type?.[0],
           artist: body?.artist?.[0]?.uid,
           songs: body?.songs?.map((x: Partial<Song>) => x?.uid)
         };
@@ -35,9 +59,11 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
     [onClose, navigate]
   );
 
+  if (loading) return <Loader size="sm" />;
   return (
     <Form
       validationSchema={AlbumSchema}
+      defaultValues={defaultValues}
       header="Create Album"
       onSubmit={onSubmit}
       onClose={onClose}
@@ -60,6 +86,21 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
               }
             },
             {
+              key: 'type',
+              label: 'Type',
+              Component: Select,
+              props: {
+                fetchFn: () => Api.albums.fetchTypes({}),
+                getOptionValue: (opt: { code: string }) => opt.code
+              },
+              validations: {
+                required: {
+                  value: true,
+                  message: 'Type is required.'
+                }
+              }
+            },
+            {
               key: 'image',
               label: 'Image URL',
               Component: Input,
@@ -75,16 +116,11 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
               }
             },
             {
-              key: 'release_date',
-              label: 'Release Date',
-              Component: DatePicker
-            },
-            {
               key: 'artist',
               label: 'Artist',
               Component: Select,
               props: {
-                fetchFn: ({ params }: any) =>
+                fetchFn: ({ params }: Config) =>
                   Api.artists.fetch({ config: { params } })
               },
               validations: {
@@ -95,17 +131,17 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
               }
             },
             {
+              key: 'release_date',
+              label: 'Release Date',
+              Component: DatePicker
+            },
+            {
               key: 'songs',
               label: 'Songs',
               Component: Select,
               props: {
-                fetchFn: ({ params }: any) => {
-                  let res;
-                  setTimeout(() => {
-                    res = Api.songs.fetch({ config: { params } });
-                  }, 1000);
-                  return res;
-                },
+                fetchFn: ({ params }: Config) =>
+                  Api.songs.fetch({ config: { params } }),
                 multiple: true
               }
             }
