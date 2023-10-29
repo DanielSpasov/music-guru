@@ -29,7 +29,7 @@ export default function List({
         </div>
       )}
 
-      <div className={`flex flex-wrap ${!data.length && 'justify-center'}`}>
+      <div className={`flex flex-wrap ${!data.length && 'justify-start'}`}>
         {loading ? (
           Array(skeletonLength)
             .fill(null)
