@@ -74,7 +74,7 @@ export default function ArtistDetails() {
       ]}
     >
       <section className="flex justify-evenly">
-        <div className="flex-1 flex justify-center">
+        <div className="w-1/3 flex justify-center">
           <img
             src={artist?.image || ''}
             alt={artist?.name}
@@ -82,7 +82,7 @@ export default function ArtistDetails() {
           />
         </div>
 
-        <div className="flex-1">
+        <div className="w-2/3">
           {viewConfig[query.get('view') as string] ? (
             <View
               {...(viewConfig[query.get('view') as string] ?? {})}
