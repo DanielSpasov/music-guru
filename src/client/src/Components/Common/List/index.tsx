@@ -7,7 +7,6 @@ import { Icon, Card } from '../../';
 export default function List({
   data,
   model,
-  title,
   filters = [],
   loading = false,
   skeletonLength = 18
@@ -21,8 +20,6 @@ export default function List({
 
   return (
     <section className="mx-10">
-      {title && <h1 className="text-center p-2 my-4">{title}</h1>}
-
       {!!filters.length && (
         <div className="p-2 my-4 flex">
           <Icon model="filter" />
