@@ -152,8 +152,12 @@ export default function SongDetails() {
         )}
 
         {openDel && (
-          <Modal onClose={() => setOpenDel(false)}>
-            <Delete deleteSong={deleteSong} setOpenDel={setOpenDel} />
+          <Modal onClose={() => setOpenDel(false)} className="h-min p-3">
+            <Delete
+              deleteSong={deleteSong}
+              setOpenDel={setOpenDel}
+              fetchSong={fetchSong}
+            />
           </Modal>
         )}
       </section>

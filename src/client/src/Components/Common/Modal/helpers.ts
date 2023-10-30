@@ -6,4 +6,5 @@ export type ModalProps = {
   showCloseIcon?: boolean;
   showCloseButton?: boolean;
   closeOnOutsideClick?: boolean;
+  className?: string;
 };

@@ -8,16 +8,17 @@ export default function Modal({
   children,
   closeOnOutsideClick = false,
   showCloseButton = false,
-  showCloseIcon = false
+  showCloseIcon = false,
+  className
 }: ModalProps) {
   return (
     <div className="fixed top-0 w-full h-full">
       <div
-        className="bg-black h-full w-full opacity-75"
+        className="bg-black w-full h-full opacity-75"
         {...(closeOnOutsideClick ? { onClick: onClose } : {})}
       />
       <div
-        className={`absolute duration-500 m-auto inset-0 justify-center overflow-y-auto items-center bg-neutral-100 rounded-md w-1/2 h-2/3 shadow-md ${darkProps}`}
+        className={`absolute duration-500 m-auto inset-0 justify-center overflow-y-auto items-center bg-neutral-100 rounded-md w-1/2 h-2/3 shadow-md ${className} ${darkProps}`}
       >
         {showCloseIcon && (
           <div className="absolute top-0 right-0">

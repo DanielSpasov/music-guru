@@ -8,4 +8,5 @@ export type EditSongProps = {
 export type DeleteSongProps = {
   setOpenDel: Dispatch<SetStateAction<boolean>>;
   deleteSong: () => Promise<void>;
+  fetchSong: () => Promise<void>;
 };

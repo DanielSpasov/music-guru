@@ -7,7 +7,11 @@ import { Album } from '../../../albums/helpers';
 import { DeleteSongProps } from './helpers';
 import Api from '../../../../Api';
 
-export default function Delete({ deleteSong, setOpenDel }: DeleteSongProps) {
+export default function Delete({
+  deleteSong,
+  setOpenDel,
+  fetchSong
+}: DeleteSongProps) {
   const [loading, setLoading] = useState<string[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
 
@@ -64,33 +68,49 @@ export default function Delete({ deleteSong, setOpenDel }: DeleteSongProps) {
 
       {albums.length ? (
         <article>
-          <span>Remove song from the following albums:</span>
-          {albums.map((album, i) => {
-            const disabled = loading.includes(album.uid);
-            return (
-              <div key={album.uid} className="flex items-center px-4">
-                <span className="w-1/12">#{i + 1}</span>
+          <span>Song is included in the following albums:</span>
 
-                <div className="w-10/12">
-                  <Link to={`/albums/${album.uid}`}>{album.name}</Link>
-                </div>
-
-                <div className="w-1/12 flex justify-end">
-                  <Icon
-                    model="trash"
-                    className="w-6 h-6"
-                    disabled={disabled}
-                    onClick={!disabled ? () => editFn(album) : () => null}
-                  />
-                </div>
-              </div>
-            );
-          })}
+          <table className="w-full text-md">
+            <thead>
+              <tr>
+                <th className="text-start">#</th>
+                <th className="text-start">Album Name</th>
+                <th className="text-start">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              {albums.map((album, i) => {
+                const disabled = loading.includes(album.uid);
+                return (
+                  <tr key={album.uid}>
+                    <td>#{i + 1}</td>
+                    <td>
+                      <Link to={`/albums/${album.uid}`}>{album.name}</Link>
+                    </td>
+                    <td>
+                      <Icon
+                        model="trash"
+                        className="w-6 h-6"
+                        disabled={disabled}
+                        onClick={!disabled ? () => editFn(album) : () => null}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </article>
       ) : null}
 
       <div className="flex justify-between mt-4">
-        <button className="bg-secondary" onClick={() => setOpenDel(false)}>
+        <button
+          className="bg-secondary"
+          onClick={() => {
+            setOpenDel(false);
+            fetchSong();
+          }}
+        >
           Cancel
         </button>
         <button onClick={deleteSong} disabled={Boolean(albums.length)}>
