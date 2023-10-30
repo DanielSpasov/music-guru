@@ -37,7 +37,8 @@ export default function CreateArtist({ onClose }: CreateArtistProps) {
       onClose={onClose}
       schema={[
         {
-          key: 'fields',
+          key: 'details',
+          title: 'Details',
           fields: [
             {
               key: 'name',

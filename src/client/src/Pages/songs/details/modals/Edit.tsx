@@ -91,7 +91,8 @@ export default function Edit({ onClose, fetchSong }: EditSongProps) {
       onClose={onClose}
       schema={[
         {
-          key: 'fields',
+          key: 'details',
+          title: 'Details',
           fields: [
             {
               key: 'name',

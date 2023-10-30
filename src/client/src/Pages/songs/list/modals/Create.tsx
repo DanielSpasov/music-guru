@@ -43,7 +43,8 @@ export default function CreateSong({ onClose }: CreateSongProps) {
       onClose={onClose}
       schema={[
         {
-          key: 'fields',
+          key: 'details',
+          title: 'Details',
           fields: [
             {
               key: 'name',
@@ -97,6 +98,17 @@ export default function CreateSong({ onClose }: CreateSongProps) {
                   Api.artists.fetch({ config: { params } }),
                 multiple: true
               }
+            }
+          ]
+        },
+        {
+          key: 'references',
+          title: 'Referneces',
+          fields: [
+            {
+              key: 'spotify',
+              label: 'Spotify',
+              Component: Input
             }
           ]
         }

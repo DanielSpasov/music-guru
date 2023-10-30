@@ -56,7 +56,8 @@ export default function EditArtist({ onClose, fetchArtist }: EditArtistProps) {
       onClose={onClose}
       schema={[
         {
-          key: 'filter',
+          key: 'details',
+          title: 'Details',
           fields: [
             {
               key: 'name',

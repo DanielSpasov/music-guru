@@ -100,6 +100,7 @@ export default function Edit({ fetchAlbum, onClose }: EditAlbumProps) {
       schema={[
         {
           key: 'details',
+          title: 'Details',
           fields: [
             {
               key: 'name',

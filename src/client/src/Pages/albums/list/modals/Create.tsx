@@ -70,6 +70,7 @@ export default function CreateAlbum({ onClose }: CreateAlbumProps) {
       schema={[
         {
           key: 'details',
+          title: 'Details',
           fields: [
             {
               key: 'name',
