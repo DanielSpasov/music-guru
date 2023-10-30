@@ -47,7 +47,7 @@ export default function Select({
   );
 
   return (
-    <div className="relative my-2">
+    <div className="relative my-2 w-full">
       <ReactSelect
         id={id}
         components={{ ...makeAnimated() }}

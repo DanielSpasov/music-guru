@@ -31,7 +31,7 @@ export default function DatePicker({
   );
 
   return (
-    <div className="relative my-2">
+    <div className="relative my-2 w-full">
       <ReactDatePicker
         open={open}
         selected={value ? moment(value).toDate() : null}

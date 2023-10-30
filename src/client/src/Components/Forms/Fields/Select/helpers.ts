@@ -39,7 +39,6 @@ export const styles = (theme: Theme): StylesConfig => {
     control: (base, state) => ({
       ...base,
       transition: '200ms',
-      marginTop: '0.5em',
       borderWidth: '2px',
       borderRadius: '5px',
       boxShadow: 'none',
