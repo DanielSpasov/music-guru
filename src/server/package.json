@@ -1,6 +1,6 @@
 {
-  "name": "music-nerd-server",
-  "description": "Music Nerd Server",
+  "name": "music-guru-server",
+  "description": "Music Guru Server",
   "version": "1.0.0",
   "main": "index.ts",
   "author": "ShadyGotRabies|Daniel Spasov",

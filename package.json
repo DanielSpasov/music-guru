@@ -1,13 +1,13 @@
 {
-  "name": "music-nerd",
+  "name": "music-guru",
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DanielSpasov/Music-Nerd.git"
+    "url": "git+https://github.com/DanielSpasov/music-guru.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DanielSpasov/Music-Nerd/issues"
+    "url": "https://github.com/DanielSpasov/music-guru/issues"
   },
   "scripts": {
     "dev": "yarn client",
@@ -15,5 +15,5 @@
     "client": "cd src/client && yarn start",
     "server": "cd src/server && yarn start"
   },
-  "homepage": "https://github.com/DanielSpasov/Music-Nerd#readme"
+  "homepage": "https://github.com/DanielSpasov/music-guru#readme"
 }

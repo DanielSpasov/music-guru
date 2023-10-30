@@ -32,7 +32,7 @@ export default function Navbar() {
           <img
             src="/images/logo/blue-logo192.png"
             className="w-16 h-16"
-            alt="Music Nerd"
+            alt="Music Guru"
           />
         </Link>
       </div>

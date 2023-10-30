@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "description": "Music Nerd Client",
+  "description": "Music Guru Client",
   "version": "0.1.0",
   "private": true,
   "scripts": {

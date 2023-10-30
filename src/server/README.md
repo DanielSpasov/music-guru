@@ -1,2 +1,1 @@
-# Music-Nerd-Server
-Music Nerd Server
+# Music-Guru-Server

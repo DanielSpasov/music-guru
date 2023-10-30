@@ -23,7 +23,7 @@ export default async function SendEmail({
 
   await transporter.sendMail({
     to,
-    from: `"Music Nerd" <${env.EMAIL_SERVICE_USER}>`,
+    from: `"Music Guru" <${env.EMAIL_SERVICE_USER}>`,
     ...templates[template](data)
   });
 }
