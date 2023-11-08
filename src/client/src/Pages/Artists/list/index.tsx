@@ -22,7 +22,7 @@ export default function Artists() {
       actions={[
         {
           icon: 'add',
-          perform: () => setOpenCreate(true),
+          onClick: () => setOpenCreate(true),
           disabled: !isAuthenticated
         }
       ]}

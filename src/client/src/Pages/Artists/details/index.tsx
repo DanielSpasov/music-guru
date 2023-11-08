@@ -50,30 +50,8 @@ export default function ArtistDetails() {
       actions={[
         {
           icon: 'edit',
-          perform: () => setOpenEdit(true),
+          onClick: () => setOpenEdit(true),
           disabled: userUID !== artist?.created_by
-        }
-      ]}
-      tabs={[
-        {
-          key: 'details',
-          label: 'Details',
-          to: `/artists/${artist?.uid}`
-        },
-        {
-          key: 'songs',
-          label: 'Songs',
-          to: `/artists/${artist?.uid}?view=songs`
-        },
-        {
-          key: 'albums',
-          label: 'Albums',
-          to: `/artists/${artist?.uid}?view=albums`
-        },
-        {
-          key: 'features',
-          label: 'Features',
-          to: `/artists/${artist?.uid}?view=features`
         }
       ]}
     >

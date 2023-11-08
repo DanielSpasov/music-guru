@@ -12,7 +12,7 @@ export default function Modal({
   className
 }: ModalProps) {
   return (
-    <div className="fixed top-0 w-full h-full">
+    <div className="fixed top-0 w-full h-full z-50">
       <div
         className="bg-black w-full h-full opacity-75"
         {...(closeOnOutsideClick ? { onClick: onClose } : {})}

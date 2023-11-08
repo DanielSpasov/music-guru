@@ -97,12 +97,12 @@ export default function SongDetails() {
       actions={[
         {
           icon: 'edit',
-          perform: () => setOpenEdit(true),
+          onClick: () => setOpenEdit(true),
           disabled: uid !== song?.created_by
         },
         {
           icon: 'trash',
-          perform: () => setOpenDel(true),
+          onClick: () => setOpenDel(true),
           disabled: uid !== song?.created_by
         }
       ]}

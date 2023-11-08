@@ -85,12 +85,12 @@ export default function AlbumDetails() {
       actions={[
         {
           icon: 'edit',
-          perform: () => setOpenEdit(true),
+          onClick: () => setOpenEdit(true),
           disabled: userUID !== album?.created_by
         },
         {
           icon: 'trash',
-          perform: () => setOpenDel(true),
+          onClick: () => setOpenDel(true),
           disabled: userUID !== album?.created_by
         }
       ]}
