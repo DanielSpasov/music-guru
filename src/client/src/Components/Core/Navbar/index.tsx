@@ -4,7 +4,7 @@ import { useCallback, useContext, useState } from 'react';
 import { ThemeContext, AuthContext, Theme } from '../../../Contexts';
 import { Link, Search, Popover, Icon } from '../../';
 
-const darkProps = 'dark:bg-neutral-950 dark:shadow-sm dark:shadow-neutral-950';
+const darkProps = 'dark:bg-neutral-950 dark:shadow-neutral-950';
 
 export default function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -26,12 +26,14 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`relative h-16 flex ${darkProps}`}>
-      <div className="flex-1">
+    <nav
+      className={`fixed w-[calc(100%-1.5em)] h-16 m-3 z-50 flex rounded-3xl bg-neutral-200 shadow-sm ${darkProps}`}
+    >
+      <div className="flex-1 p-2">
         <Link to="/">
           <img
             src="/images/logo/blue-logo192.png"
-            className="w-16 h-16"
+            className="w-12 h-12"
             alt="Music Guru"
           />
         </Link>
