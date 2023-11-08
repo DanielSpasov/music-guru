@@ -100,17 +100,6 @@ export default function CreateSong({ onClose }: CreateSongProps) {
               }
             }
           ]
-        },
-        {
-          key: 'references',
-          title: 'Referneces',
-          fields: [
-            {
-              key: 'spotify',
-              label: 'Spotify',
-              Component: Input
-            }
-          ]
         }
       ]}
     />
