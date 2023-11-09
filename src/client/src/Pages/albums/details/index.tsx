@@ -86,7 +86,8 @@ export default function AlbumDetails() {
         {
           icon: 'edit',
           onClick: () => setOpenEdit(true),
-          disabled: userUID !== album?.created_by
+          disabled: userUID !== album?.created_by,
+          tooltip: 'Edit Album'
         },
         {
           icon: 'trash',

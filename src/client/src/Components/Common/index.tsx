@@ -1,5 +1,6 @@
 export { default as Summary } from './Summary';
 export { default as Popover } from './Popover';
+export { default as Tooltip } from './Tooltip';
 export { default as Search } from './Search';
 export { default as Modal } from './Modal';
 export { default as Card } from './Card';
