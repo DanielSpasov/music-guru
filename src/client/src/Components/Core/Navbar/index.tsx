@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed w-[calc(100%-1.5em)] h-16 m-3 z-50 flex rounded-3xl bg-neutral-200 shadow-sm ${darkProps}`}
+      className={`fixed w-[calc(100%-1.5em)] h-16 m-3 z-50 flex rounded-[2em] bg-neutral-200 shadow-sm ${darkProps}`}
     >
       <div className="flex-1 p-2">
         <Link to="/">
