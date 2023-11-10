@@ -54,6 +54,28 @@ export default function ArtistDetails() {
           disabled: userUID !== artist?.created_by
         }
       ]}
+      tabs={[
+        {
+          key: 'details',
+          label: 'Details',
+          to: `/artists/${id}`
+        },
+        {
+          key: 'albums',
+          label: 'Albums',
+          to: `/artists/${id}?view=albums`
+        },
+        {
+          key: 'songs',
+          label: 'Songs',
+          to: `/artists/${id}?view=songs`
+        },
+        {
+          key: 'features',
+          label: 'Features',
+          to: `/artists/${id}?view=features`
+        }
+      ]}
     >
       <section className="flex justify-evenly">
         <div className="w-1/3 flex justify-center">
