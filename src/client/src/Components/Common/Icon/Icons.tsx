@@ -5,14 +5,10 @@ import SVG from './SVG';
 
 const icons = {
   add: (props: SVGProps) => (
-    <SVG viewBox="0 0 512 512" {...props}>
+    <SVG viewBox="0 0 24 24" {...props}>
       <path
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="46"
-        d="M256 112v288m144-144H112"
+        fill="currentColor"
+        d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
       />
     </SVG>
   ),
