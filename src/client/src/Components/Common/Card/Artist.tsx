@@ -17,7 +17,11 @@ export default function ArtistCard({
       onClick={onClick}
     >
       <div className="h-44 w-44 p-2">
-        <img src={data?.image || ''} className="w-full h-full rounded-md" />
+        <img
+          src={data?.image || ''}
+          className="w-full h-full rounded-md"
+          loading="lazy"
+        />
       </div>
 
       <span className="text-md pb-2">{data?.name}</span>

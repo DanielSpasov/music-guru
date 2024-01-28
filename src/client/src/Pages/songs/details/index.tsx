@@ -114,6 +114,7 @@ export default function SongDetails() {
               src={song?.image || ''}
               alt={song?.name}
               className="w-64 h-64 rounded-lg"
+              loading="lazy"
             />
           )}
           <div className="px-4">

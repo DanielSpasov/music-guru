@@ -110,6 +110,7 @@ export default function SearchBox({ models }: SearchBoxProps) {
                           obj.image || '/images/logo/blue-logo-square512.png'
                         }
                         className="h-10 rounded-md"
+                        loading="lazy"
                       />
                       <span className="p-2">{obj.name}</span>
                     </div>

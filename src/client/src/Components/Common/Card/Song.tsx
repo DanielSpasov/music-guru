@@ -21,6 +21,7 @@ export default function SongCard({
         onClick={onClick}
         src={data?.image || '/images/logo/blue-logo-square512.png'}
         className="w-12 h-12 rounded-sm"
+        loading="lazy"
       />
 
       <div className="relative flex flex-col p-2">

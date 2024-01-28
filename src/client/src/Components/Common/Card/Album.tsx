@@ -23,6 +23,7 @@ export default function AlbumCard({
         <img
           alt={data.name}
           src={data.image}
+          loading="lazy"
           className="w-full h-full rounded-md"
         />
       </div>

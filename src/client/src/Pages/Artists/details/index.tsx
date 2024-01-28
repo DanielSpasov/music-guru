@@ -83,6 +83,7 @@ export default function ArtistDetails() {
             src={artist?.image || ''}
             alt={artist?.name}
             className="h-72 w-72 shadow-lg shadow-neutral-400 dark:shadow-neutral-900 rounded-full"
+            loading="lazy"
           />
         </div>
 

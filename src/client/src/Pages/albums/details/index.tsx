@@ -101,6 +101,7 @@ export default function AlbumDetails() {
           src={album?.image || ''}
           alt={album?.name}
           className="w-64 h-64 rounded-lg"
+          loading="lazy"
         />
 
         <div className="flex justify-between w-full">
