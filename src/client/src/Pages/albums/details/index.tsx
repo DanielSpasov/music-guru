@@ -17,9 +17,9 @@ export default function AlbumDetails() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const [openEdit, setOpenEdit] = useState<boolean>(false);
-  const [openDel, setOpenDel] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDel, setOpenDel] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [album, setAlbum] = useState<Album>();
 
   const deleteAlbum = useCallback(async () => {
