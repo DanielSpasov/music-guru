@@ -2,10 +2,22 @@ import moment from 'moment';
 import { Album } from '../../../Pages/albums/helpers';
 import { CardProps } from './helpers';
 
-const hoverProps =
-  '[&>img]:hover:-top-7 [&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary hover:shadow-neutral-400';
-const darkProps =
-  'dark:bg-neutral-900 dark:[&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary-dark dark:hover:shadow-neutral-900';
+export const lightProps = 'bg-neutral-200';
+export const darkProps = 'dark:bg-neutral-900';
+
+export const lightHoverProps = 'hover:shadow-neutral-400';
+export const darkHoverProps = 'dark:hover:shadow-neutral-900';
+const hoverProps = `${lightHoverProps} ${darkHoverProps}`;
+
+export const lightHoverTextProps =
+  '[&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary';
+export const darkHoverTextProps =
+  'dark:[&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary-dark';
+const hoverTextProps = `${lightHoverTextProps} ${darkHoverTextProps}`;
+
+const defaultHoverProps = `${hoverProps} ${hoverTextProps}`;
+
+const defaultProps = `${lightProps} ${darkProps} ${defaultHoverProps}`;
 
 export default function AlbumCard({
   data,
@@ -17,7 +29,7 @@ export default function AlbumCard({
   return (
     <div
       data-testid="album-card"
-      className={`relative flex flex-col items-center bg-neutral-200 rounded-md m-3 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
+      className={`relative flex flex-col items-center rounded-md m-3 cursor-pointer shadow-md ${defaultProps}`}
       onClick={onClick}
     >
       <div className="w-44 h-44 p-2">

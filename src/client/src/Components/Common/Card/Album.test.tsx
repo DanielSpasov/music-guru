@@ -1,7 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
-import AlbumCard from './Album';
+import AlbumCard, {
+  darkProps,
+  lightProps,
+  darkHoverProps,
+  lightHoverProps,
+  darkHoverTextProps,
+  lightHoverTextProps
+} from './Album';
 
 describe('Album Card', () => {
   const mockData = {
@@ -75,41 +82,37 @@ describe('Album Card', () => {
     it('renders dark mode', () => {
       render(<AlbumCard data={mockData} />);
       const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass('dark:bg-neutral-900');
+      expect(card).toHaveClass(darkProps);
     });
 
     it('renders light mode', () => {
       render(<AlbumCard data={mockData} />);
       const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass('bg-neutral-200');
+      expect(card).toHaveClass(lightProps);
     });
 
     it('renders dark mode hover', () => {
       render(<AlbumCard data={mockData} />);
       const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass('dark:hover:shadow-neutral-900');
+      expect(card).toHaveClass(darkHoverProps);
     });
 
     it('renders light mode hover', () => {
       render(<AlbumCard data={mockData} />);
       const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass('hover:shadow-neutral-400');
+      expect(card).toHaveClass(lightHoverProps);
     });
 
-    it('renders dark mode text', () => {
+    it('renders dark mode hover text', () => {
       render(<AlbumCard data={mockData} />);
       const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass(
-        'dark:[&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary-dark'
-      );
+      expect(card).toHaveClass(darkHoverTextProps);
     });
 
-    it('renders light mode text', () => {
+    it('renders light mode hover text', () => {
       render(<AlbumCard data={mockData} />);
       const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass(
-        '[&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary'
-      );
+      expect(card).toHaveClass(lightHoverTextProps);
     });
   });
 
