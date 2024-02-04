@@ -1,7 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import SongCard from './Song';
+import SongCard, {
+  darkHoverProps,
+  darkHoverTextProps,
+  darkProps,
+  lightHoverProps,
+  lightHoverTextProps,
+  lightProps
+} from './Song';
 
 describe('Song Card', () => {
   const mockData = {
@@ -62,39 +69,37 @@ describe('Song Card', () => {
     it('renders dark mode', () => {
       render(<SongCard data={mockData} />);
       const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass('dark:bg-neutral-900');
+      expect(card).toHaveClass(darkProps);
     });
 
     it('renders light mode', () => {
       render(<SongCard data={mockData} />);
       const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass('bg-neutral-200');
+      expect(card).toHaveClass(lightProps);
     });
 
     it('renders dark mode hover', () => {
       render(<SongCard data={mockData} />);
       const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass('dark:hover:shadow-neutral-900');
+      expect(card).toHaveClass(darkHoverProps);
     });
 
     it('renders light mode hover', () => {
       render(<SongCard data={mockData} />);
       const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass('hover:shadow-neutral-400');
+      expect(card).toHaveClass(lightHoverProps);
     });
 
     it('renders dark mode text', () => {
       render(<SongCard data={mockData} />);
       const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass(
-        'dark:[&>div>span:nth-child(1)]:hover:text-primary-dark'
-      );
+      expect(card).toHaveClass(darkHoverTextProps);
     });
 
     it('renders light mode text', () => {
       render(<SongCard data={mockData} />);
       const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass('[&>div>span:nth-child(1)]:hover:text-primary');
+      expect(card).toHaveClass(lightHoverTextProps);
     });
   });
 
