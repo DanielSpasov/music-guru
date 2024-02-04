@@ -28,7 +28,7 @@ export default function SignUp() {
 
   return (
     <PageLayout title="Sign Up" showHeader={false}>
-      <div className="w-1/2 m-auto mt-5">
+      <div className="bg-neutral-900 rounded-lg max-w-2xl min-w-fit w-1/2 m-auto mt-5">
         <Form
           validationSchema={SignUpSchema as any}
           onSubmit={onSubmit}
@@ -45,6 +45,7 @@ export default function SignUp() {
           schema={[
             {
               key: 'fields',
+              title: 'Account Information',
               fields: [
                 {
                   key: 'username',
