@@ -37,8 +37,8 @@ export interface Album extends AlbumModel {
   };
   image: string;
   created_at: Date;
-  release_date: Date;
+  release_date?: Date;
   created_by: string;
   artist: string;
-  songs: string[];
+  songs?: string[];
 }
