@@ -25,7 +25,7 @@ export const SongSchema = Schema.extend({
 type SongModel = z.infer<typeof Schema>;
 export interface Song extends SongModel {
   uid: string;
-  image: string;
+  image?: string;
   created_at: Date;
   created_by: string;
   artist: string;

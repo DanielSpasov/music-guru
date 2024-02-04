@@ -14,11 +14,13 @@ export default function SongCard({
   if (loading) return <Skeleton />;
   return (
     <div
+      data-testid="song-card"
       className={`flex items-center w-48 h-16 p-2 m-1 rounded-md cursor-pointer bg-neutral-200 shadow-md ${hoverProps} ${darkProps}`}
       onClick={onClick}
     >
       <img
         onClick={onClick}
+        alt={data.name}
         src={data?.image || '/images/logo/blue-logo-square512.png'}
         className="w-12 h-12 rounded-sm"
         loading="lazy"
@@ -34,7 +36,10 @@ export default function SongCard({
 
 function Skeleton() {
   return (
-    <div className="w-48 h-16 m-1 flex items-center bg-neutral-200 dark:bg-neutral-900 rounded-md animate-pulse">
+    <div
+      data-testid="song-card-skeleton"
+      className="w-48 h-16 m-1 flex items-center bg-neutral-200 dark:bg-neutral-900 rounded-md animate-pulse"
+    >
       <div className="w-12 h-12 bg-neutral-300 dark:bg-neutral-700 rounded-md m-2" />
       <div>
         <div className="w-24 h-5 bg-neutral-300 dark:bg-neutral-700 my-2 rounded-md" />
