@@ -16,6 +16,7 @@ export default function AlbumCard({
 
   return (
     <div
+      data-testid="album-card"
       className={`relative flex flex-col items-center bg-neutral-200 rounded-md m-3 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
       onClick={onClick}
     >
@@ -30,10 +31,13 @@ export default function AlbumCard({
 
       <div className="flex flex-col pb-2">
         <span className="text-md truncate w-44 px-2">{data.name}</span>
-        <span className="text-md text-neutral-500 truncate w-44 px-2">
-          {data?.release_date ? moment(data?.release_date).year() : 'TBA'} •{' '}
-          {data?.type?.name}
-        </span>
+        <div className="text-md truncate w-44">
+          <span className="text-neutral-500 pl-2">
+            {data?.release_date ? moment(data?.release_date).year() : 'TBA'}
+          </span>
+          <span className="text-neutral-500 px-1">•</span>
+          <span className="text-neutral-500 pr-1">{data.type.name}</span>
+        </div>
       </div>
     </div>
   );
@@ -41,7 +45,10 @@ export default function AlbumCard({
 
 function Skeleton() {
   return (
-    <div className="flex flex-col items-center m-3 animate-pulse bg-neutral-200 dark:bg-neutral-900 rounded-md">
+    <div
+      data-testid="album-card-skeleton"
+      className="flex flex-col items-center m-3 animate-pulse bg-neutral-200 dark:bg-neutral-900 rounded-md"
+    >
       <div className="bg-neutral-300 dark:bg-neutral-700 w-40 h-40 m-2 rounded-md" />
       <div className="bg-neutral-200 dark:bg-neutral-900 w-full h-14 pb-1 rounded-md">
         <div className="bg-neutral-300 dark:bg-neutral-700 rounded-md w-24 h-5 mx-2 mb-2" />
