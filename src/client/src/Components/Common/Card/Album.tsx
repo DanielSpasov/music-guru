@@ -4,6 +4,7 @@ import { CardProps } from './helpers';
 
 export const lightProps = 'bg-neutral-200';
 export const darkProps = 'dark:bg-neutral-900';
+const themeProps = `${lightProps} ${darkProps}`;
 
 export const lightHoverProps = 'hover:shadow-neutral-400';
 export const darkHoverProps = 'dark:hover:shadow-neutral-900';
@@ -15,9 +16,7 @@ export const darkHoverTextProps =
   'dark:[&>div:nth-child(2)>span:nth-child(1)]:hover:text-primary-dark';
 const hoverTextProps = `${lightHoverTextProps} ${darkHoverTextProps}`;
 
-const defaultHoverProps = `${hoverProps} ${hoverTextProps}`;
-
-const defaultProps = `${lightProps} ${darkProps} ${defaultHoverProps}`;
+const defaultProps = `${themeProps} ${hoverProps} ${hoverTextProps}`;
 
 export default function AlbumCard({
   data,
