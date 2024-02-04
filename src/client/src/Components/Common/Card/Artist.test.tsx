@@ -1,7 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
-import ArtistCard from './Artist';
+import ArtistCard, {
+  darkHoverProps,
+  darkHoverTextProps,
+  darkProps,
+  lightHoverProps,
+  lightHoverTextProps,
+  lightProps
+} from './Artist';
 
 describe('Artist Card', () => {
   const mockData = {
@@ -58,37 +65,37 @@ describe('Artist Card', () => {
     it('renders dark mode', () => {
       render(<ArtistCard data={mockData} />);
       const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass('dark:bg-neutral-900');
+      expect(card).toHaveClass(darkProps);
     });
 
     it('renders light mode', () => {
       render(<ArtistCard data={mockData} />);
       const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass('bg-neutral-200');
+      expect(card).toHaveClass(lightProps);
     });
 
     it('renders dark mode hover', () => {
       render(<ArtistCard data={mockData} />);
       const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass('dark:hover:shadow-neutral-900');
+      expect(card).toHaveClass(darkHoverProps);
     });
 
     it('renders light mode hover', () => {
       render(<ArtistCard data={mockData} />);
       const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass('hover:shadow-neutral-400');
+      expect(card).toHaveClass(lightHoverProps);
     });
 
     it('renders dark mode text', () => {
       render(<ArtistCard data={mockData} />);
       const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass('dark:[&>span]:hover:text-primary-dark');
+      expect(card).toHaveClass(darkHoverTextProps);
     });
 
     it('renders light mode text', () => {
       render(<ArtistCard data={mockData} />);
       const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass('[&>span]:hover:text-primary');
+      expect(card).toHaveClass(lightHoverTextProps);
     });
   });
 });

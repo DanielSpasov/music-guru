@@ -1,9 +1,19 @@
 import { Artist } from '../../../Pages/artists/helpers';
 import { CardProps } from './helpers';
 
-const hoverProps = 'hover:shadow-neutral-400 [&>span]:hover:text-primary';
-const darkProps =
-  'dark:[&>span]:hover:text-primary-dark dark:bg-neutral-900 dark:hover:shadow-neutral-900';
+export const lightProps = 'bg-neutral-200';
+export const darkProps = 'dark:bg-neutral-900';
+const themeProps = `${lightProps} ${darkProps}`;
+
+export const lightHoverProps = 'hover:shadow-neutral-400';
+export const darkHoverProps = 'dark:hover:shadow-neutral-900';
+const hoverProps = `${lightHoverProps} ${darkHoverProps}`;
+
+export const lightHoverTextProps = '[&>span]:hover:text-primary';
+export const darkHoverTextProps = 'dark:[&>span]:hover:text-primary-dark';
+const hoverTextProps = `${lightHoverTextProps} ${darkHoverTextProps}`;
+
+const defaultProps = `${themeProps} ${hoverProps} ${hoverTextProps}`;
 
 export default function ArtistCard({
   data,
@@ -11,10 +21,11 @@ export default function ArtistCard({
   loading = false
 }: CardProps<Artist>) {
   if (loading) return <Skeleton />;
+
   return (
     <div
       data-testid="artist-card"
-      className={`relative flex flex-col items-center bg-neutral-200 rounded-md m-3 cursor-pointer shadow-md ${hoverProps} ${darkProps}`}
+      className={`relative flex flex-col items-center rounded-md m-3 cursor-pointer shadow-md ${defaultProps}`}
       onClick={onClick}
     >
       <div className="h-44 w-44 p-2">
