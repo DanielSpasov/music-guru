@@ -9,7 +9,7 @@ import { defineConfig as defineVitestConfig } from 'vitest/config';
 
 const viteConfig = defineViteConfig({
   plugins: [
-    react({ fastRefresh: false }),
+    react(),
     { ...eslint({ include: 'src/**/*.+(js|jsx|ts|tsx)' }), enforce: 'pre' }
   ],
   server: {
