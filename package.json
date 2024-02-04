@@ -13,6 +13,7 @@
     "dev": "yarn client",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "test-fe": "cd src/client && yarn test",
+    "test": "yarn test-fe",
     "client": "cd src/client && yarn start",
     "server": "cd src/server && yarn start"
   },
