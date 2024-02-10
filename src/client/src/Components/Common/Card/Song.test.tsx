@@ -35,21 +35,20 @@ describe('Song Card', () => {
 
     it('renders correct name', () => {
       render(<SongCard data={mockData} />);
-      const name = screen.getByText(mockData.name);
-      expect(name).toBeInTheDocument();
+      const name = screen.getByTestId('song-card-name');
+      expect(name.textContent).toEqual(mockData.name);
     });
 
     it('renders correct image', () => {
       render(<SongCard data={mockData} />);
-      const image = screen.getByAltText(mockData.name);
-      expect(image).toBeInTheDocument();
+      const image = screen.getByTestId('song-card-image');
       expect(image).toHaveAttribute('src', mockData.image);
     });
 
     it('renders correct artist', () => {
       render(<SongCard data={mockData} />);
-      const artist = screen.getByText(mockData.artist);
-      expect(artist).toBeInTheDocument();
+      const artist = screen.getByTestId('song-card-artist');
+      expect(artist.textContent).toEqual(mockData.artist);
     });
 
     it('calls onClick when clicked', () => {
@@ -105,8 +104,7 @@ describe('Song Card', () => {
   describe('Edge Cases', () => {
     it('renders default image', () => {
       render(<SongCard data={{ ...mockData, image: undefined }} />);
-      const image = screen.getByAltText(mockData.name);
-      expect(image).toBeInTheDocument();
+      const image = screen.getByTestId('song-card-image');
       expect(image).toHaveAttribute(
         'src',
         '/images/logo/blue-logo-square512.png'

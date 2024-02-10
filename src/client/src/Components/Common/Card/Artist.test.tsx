@@ -37,14 +37,13 @@ describe('Artist Card', () => {
 
     it('renders correct name', () => {
       render(<ArtistCard data={mockData} />);
-      const name = screen.getByText(mockData.name);
-      expect(name).toBeInTheDocument();
+      const name = screen.getByTestId('artist-card-name');
+      expect(name.textContent).toEqual(mockData.name);
     });
 
     it('renders correct image', () => {
       render(<ArtistCard data={mockData} />);
-      const image = screen.getByAltText(mockData.name);
-      expect(image).toBeInTheDocument();
+      const image = screen.getByTestId('artist-card-image');
       expect(image).toHaveAttribute('src', mockData.image);
     });
 

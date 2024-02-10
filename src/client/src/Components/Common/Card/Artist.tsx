@@ -32,12 +32,15 @@ export default function ArtistCard({
         <img
           alt={data.name}
           src={data.image}
+          data-testid="artist-card-image"
           className="w-full h-full rounded-md"
           loading="lazy"
         />
       </div>
 
-      <span className="text-md pb-2">{data.name}</span>
+      <span className="text-md pb-2" data-testid="artist-card-name">
+        {data.name}
+      </span>
     </div>
   );
 }

@@ -35,19 +35,30 @@ export default function AlbumCard({
         <img
           alt={data.name}
           src={data.image}
+          data-testid="album-card-image"
           loading="lazy"
           className="w-full h-full rounded-md"
         />
       </div>
 
       <div className="flex flex-col pb-2">
-        <span className="text-md truncate w-44 px-2">{data.name}</span>
+        <span
+          className="text-md truncate w-44 px-2"
+          data-testid="album-card-name"
+        >
+          {data.name}
+        </span>
         <div className="text-md truncate w-44">
-          <span className="text-neutral-500 pl-2">
+          <span
+            className="text-neutral-500 pl-2"
+            data-testid="album-card-release-date"
+          >
             {data?.release_date ? moment(data?.release_date).year() : 'TBA'}
           </span>
           <span className="text-neutral-500 px-1">•</span>
-          <span className="text-neutral-500 pr-1">{data.type.name}</span>
+          <span className="text-neutral-500 pr-1" data-testid="album-card-type">
+            {data.type.name}
+          </span>
         </div>
       </div>
     </div>

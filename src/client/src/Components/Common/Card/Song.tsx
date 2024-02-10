@@ -34,12 +34,20 @@ export default function SongCard({
         alt={data.name}
         src={data?.image || '/images/logo/blue-logo-square512.png'}
         className="w-12 h-12 rounded-sm"
+        data-testid="song-card-image"
         loading="lazy"
       />
 
       <div className="relative flex flex-col p-2">
-        <span className="line-clamp-1">{data.name}</span>
-        <span className="text-neutral-500 truncate">{data.artist}</span>
+        <span className="line-clamp-1" data-testid="song-card-name">
+          {data.name}
+        </span>
+        <span
+          className="text-neutral-500 truncate"
+          data-testid="song-card-artist"
+        >
+          {data.artist}
+        </span>
       </div>
     </div>
   );

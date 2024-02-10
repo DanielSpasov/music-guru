@@ -40,29 +40,28 @@ describe('Album Card', () => {
 
     it('renders correct name', () => {
       render(<AlbumCard data={mockData} />);
-      const name = screen.getByText(mockData.name);
-      expect(name).toBeInTheDocument();
+      const name = screen.getByTestId('album-card-name');
+      expect(name.textContent).toEqual(mockData.name);
     });
 
     it('renders correct image', () => {
       render(<AlbumCard data={mockData} />);
-      const image = screen.getByAltText(mockData.name);
-      expect(image).toBeInTheDocument();
+      const image = screen.getByTestId('album-card-image');
       expect(image).toHaveAttribute('src', mockData.image);
     });
 
     it('renders correct release date', () => {
       render(<AlbumCard data={mockData} />);
-      const releaseDate = screen.getByText(
+      const releaseDate = screen.getByTestId('album-card-release-date');
+      expect(releaseDate.textContent).toEqual(
         mockData.release_date.getFullYear().toString()
       );
-      expect(releaseDate).toBeInTheDocument();
     });
 
     it('renders correct type', () => {
       render(<AlbumCard data={mockData} />);
-      const type = screen.getByText(mockData.type.name);
-      expect(type).toBeInTheDocument();
+      const type = screen.getByTestId('album-card-type');
+      expect(type.textContent).toEqual(mockData.type.name);
     });
 
     it('calls onClick when clicked', () => {
@@ -119,8 +118,8 @@ describe('Album Card', () => {
     it('renders TBA if release date is not available', () => {
       const data = { ...mockData, release_date: undefined };
       render(<AlbumCard data={data} />);
-      const releaseDate = screen.getByText('TBA');
-      expect(releaseDate).toBeInTheDocument();
+      const releaseDate = screen.getByTestId('album-card-release-date');
+      expect(releaseDate.textContent).toEqual('TBA');
     });
   });
 });
