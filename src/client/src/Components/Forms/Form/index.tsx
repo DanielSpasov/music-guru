@@ -14,7 +14,8 @@ export default function Form({
   defaultValues = {},
   additionalInfo,
   validationSchema,
-  onClose
+  onClose,
+  showClose = true
 }: FormProps) {
   const { handleSubmit, control, setError, setValue, clearErrors } = useForm({
     defaultValues
@@ -77,7 +78,7 @@ export default function Form({
       )}
 
       <article className="p-4">
-        <h3 className="text-center">{header || 'Form'}</h3>
+        <h3 className="text-center">{header}</h3>
         {schema.map(section => (
           <Section
             control={control}
@@ -90,14 +91,16 @@ export default function Form({
         ))}
       </article>
 
-      <div className="flex justify-between p-4">
-        <button
-          className="bg-secondary dark:bg-secondary-dark"
-          type="button"
-          onClick={closeFn}
-        >
-          Close
-        </button>
+      <div className="flex justify-end gap-4 p-4">
+        {showClose && (
+          <button
+            className="bg-secondary dark:bg-secondary-dark"
+            type="button"
+            onClick={closeFn}
+          >
+            Close
+          </button>
+        )}
         <button
           className="bg-primary dark:bg-primary-dark"
           type="submit"

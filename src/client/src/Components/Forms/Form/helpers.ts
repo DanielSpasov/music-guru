@@ -44,6 +44,7 @@ export type FormProps = {
   validationSchema?: ZodObject<any>;
   additionalInfo?: JSX.Element;
   onClose?: (props?: any) => void;
+  showClose?: boolean;
 };
 
 export type SectionProps = {

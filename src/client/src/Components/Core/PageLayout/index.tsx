@@ -19,20 +19,16 @@ export default function PageLayout({
   }, [title, loading]);
 
   return (
-    <main className="min-h-screen">
-      {showNavbar && <Navbar />}
-      {tabs.length ? <Tabs tabs={tabs} /> : null}
+    <>
+      <header>{showNavbar && <Navbar />}</header>
+      <main className={`min-h-screen ${tabs.length ? 'pt-36' : 'pt-20'}`}>
+        {showHeader && <h1 className="text-center p-4">{title}</h1>}
+        {tabs.length ? <Tabs tabs={tabs} /> : null}
 
-      <div className={`${tabs.length ? 'pt-36' : 'pt-20'}`}>
         {loading ? (
           <Loader size="sm" />
         ) : (
           <>
-            {showHeader && (
-              <header>
-                <h1 className="text-center p-2 my-4">{title}</h1>
-              </header>
-            )}
             <article>
               {children}
               <div className="fixed z-0 bottom-0 right-0">
@@ -45,7 +41,7 @@ export default function PageLayout({
             </article>
           </>
         )}
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

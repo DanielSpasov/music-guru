@@ -3,7 +3,7 @@ import { useCallback, useContext, useState } from 'react';
 import { List, Modal, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { Config } from '../../../Api/helpers';
-import Create from './modals/Create';
+import CreateAlbum from '../create';
 import Api from '../../../Api';
 
 export default function Albums() {
@@ -29,13 +29,14 @@ export default function Albums() {
     >
       <List fetchFn={fetchFn} model="albums" />
 
-      <section>
-        {openCreate && (
-          <Modal onClose={() => setOpenCreate(false)}>
-            <Create onClose={() => setOpenCreate(false)} />
-          </Modal>
-        )}
-      </section>
+      <Modal
+        key="create-album"
+        title="Create Album"
+        isOpen={openCreate}
+        onClose={() => setOpenCreate(false)}
+      >
+        <CreateAlbum />
+      </Modal>
     </PageLayout>
   );
 }

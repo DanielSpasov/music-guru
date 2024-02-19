@@ -21,7 +21,14 @@ export default function Section({
           className="mr-2"
           onClick={() => setOpen(prev => !prev)}
         />
-        <h4>{title}</h4>
+        <h4>
+          {title}{' '}
+          {!open && (
+            <span className="text-neutral-500 font-semibold">
+              [{fields.length} fields]
+            </span>
+          )}
+        </h4>
       </div>
       <div className={`${open ? 'visible' : 'hidden'}`}>
         {fields.map(field => (
