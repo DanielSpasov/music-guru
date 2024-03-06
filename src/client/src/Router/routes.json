@@ -78,6 +78,11 @@
         "private": false
       },
       {
+        "path": "create",
+        "filePath": "/songs/create",
+        "private": true
+      },
+      {
         "path": ":id",
         "filePath": "/songs/details",
         "private": false,

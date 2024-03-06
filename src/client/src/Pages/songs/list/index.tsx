@@ -1,20 +1,14 @@
-import { useCallback, useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 
 import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { Config } from '../../../Api/helpers';
-import Create from './modals/Create';
 import Api from '../../../Api';
 
 export default function Songs() {
   const { isAuthenticated } = useContext(AuthContext);
 
-  const [openCreate, setOpenCreate] = useState(false);
-
-  const fetchFn = useCallback(
-    (config?: Config) => Api.songs.fetch({ config }),
-    []
-  );
+  const navigate = useNavigate();
 
   return (
     <PageLayout
@@ -22,16 +16,16 @@ export default function Songs() {
       actions={[
         {
           icon: 'add',
-          onClick: () => setOpenCreate(true),
+          onClick: () => navigate('create'),
           disabled: !isAuthenticated
         }
       ]}
     >
-      <List fetchFn={fetchFn} model="songs" skeletonLength={54} />
-
-      <section>
-        {openCreate && <Create onClose={() => setOpenCreate(false)} />}
-      </section>
+      <List
+        fetchFn={config => Api.songs.fetch({ config })}
+        model="songs"
+        skeletonLength={54}
+      />
     </PageLayout>
   );
 }
