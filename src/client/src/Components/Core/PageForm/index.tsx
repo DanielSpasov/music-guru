@@ -34,7 +34,7 @@ export default function PageForm({ schema }: PageFormProps) {
   const _onSubmit = useCallback(
     async (formData: Record<string, any>) => {
       try {
-        schema.onSubmit({ formData, toast, navigate, params });
+        await schema.onSubmit({ formData, toast, navigate, params });
       } catch (error) {
         const errors = errorHandler(error);
         toast.error(errors?.[0]?.message);

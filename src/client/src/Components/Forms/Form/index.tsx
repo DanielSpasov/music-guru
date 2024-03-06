@@ -69,7 +69,8 @@ export default function Form({
       className="relative flex flex-col justify-between h-full"
     >
       {loading && (
-        <div className="absolute w-full h-full z-50 bg-black opacity-75">
+        <div className="absolute w-full h-full z-50">
+          <div className="absolute w-full h-full bg-black opacity-75" />
           <Loader size="sm" />
         </div>
       )}
