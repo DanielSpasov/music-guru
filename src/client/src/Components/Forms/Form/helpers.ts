@@ -3,6 +3,8 @@ import {
   SubmitHandler,
   UseFormSetValue
 } from 'react-hook-form/dist/types';
+import { NavigateFunction } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { ZodObject } from 'zod';
 import { FC } from 'react';
 
@@ -24,7 +26,31 @@ export type FormSection = {
   fields: FormField[];
 };
 
-export type FormSchema = FormSection[];
+export type OnSubmitProps = {
+  formData: Record<string, any>;
+  toast: typeof toast;
+  navigate: NavigateFunction;
+};
+
+export type FormSchema = {
+  sections: FormSection[];
+  onSubmit: (props: OnSubmitProps) => Promise<void>;
+  title: string;
+  header?: string;
+  validationSchema?: ZodObject<any>;
+  fetchDefaultData?: () => Promise<Record<string, any>>;
+};
+
+export type FormProps = {
+  onSubmit: SubmitHandler<any>;
+  schema: FormSection[];
+  header?: string;
+  defaultValues?: any;
+  validationSchema?: ZodObject<any>;
+  additionalInfo?: JSX.Element;
+  onClose?: (props?: any) => void;
+  showClose?: boolean;
+};
 
 export type FormError = {
   code: string;
@@ -34,17 +60,6 @@ export type FormError = {
   inclusive?: boolean;
   minimum?: number;
   type?: string;
-};
-
-export type FormProps = {
-  onSubmit: SubmitHandler<any>;
-  schema: FormSchema;
-  header?: string;
-  defaultValues?: any;
-  validationSchema?: ZodObject<any>;
-  additionalInfo?: JSX.Element;
-  onClose?: (props?: any) => void;
-  showClose?: boolean;
 };
 
 export type SectionProps = {
