@@ -14,6 +14,11 @@
         "private": false
       },
       {
+        "path": "create",
+        "filePath": "/artists/create",
+        "private": true
+      },
+      {
         "path": ":id",
         "filePath": "/artists/details",
         "routes": [
@@ -38,7 +43,7 @@
       {
         "path": "create",
         "filePath": "/albums/create",
-        "private": false
+        "private": true
       },
       {
         "path": ":id",

@@ -46,20 +46,24 @@ export const schema: FormSchema = {
     }
   },
   onSubmit: async ({ formData, toast, navigate, params: { id = '' } }) => {
-    const payload = {
-      ...formData,
-      type: formData.type[0],
-      artist: formData.artist[0].uid,
-      songs: formData.songs?.map((x: Song) => x.uid)
-    };
-    const { data: updated } = await Api.albums.patch({
-      id,
-      body: payload
-    });
-    toast.success(
-      `Successfully updated information about album: ${updated.name}`
-    );
-    navigate(`/albums/${id}`);
+    try {
+      const payload = {
+        ...formData,
+        type: formData.type[0],
+        artist: formData.artist[0].uid,
+        songs: formData.songs?.map((x: Song) => x.uid)
+      };
+      const { data: updated } = await Api.albums.patch({
+        id,
+        body: payload
+      });
+      toast.success(
+        `Successfully updated information about album: ${updated.name}`
+      );
+      navigate(`/albums/${id}`);
+    } catch (err) {
+      toast.error('Failed to Edit Album.');
+    }
   },
   sections: [
     {

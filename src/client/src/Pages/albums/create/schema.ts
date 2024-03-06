@@ -34,7 +34,7 @@ export const schema: FormSchema = {
       toast.success(`Successfully created album: ${res.name}`);
       navigate(`/albums/${res.uid}`);
     } catch (err) {
-      toast.error('failed');
+      toast.error('Failed to Create Album.');
     }
   },
   sections: [
