@@ -40,7 +40,7 @@ export const schema: FormSchema = {
         features
       };
     } catch (err) {
-      toast.error('Failed to fetch default data.');
+      toast.error('Failed to fetch default data');
       return {};
     }
   },
@@ -55,10 +55,10 @@ export const schema: FormSchema = {
         id,
         body: payload
       });
-      toast.success(`Successfully updated song: ${data.name}`);
+      toast.success('Successfully Edited Song');
       navigate(`/songs/${data.uid}`);
     } catch (err) {
-      toast.error('Failed to Update Song.');
+      toast.error('Failed to Edit Song');
     }
   },
   sections: [

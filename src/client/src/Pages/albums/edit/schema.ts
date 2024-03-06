@@ -41,7 +41,7 @@ export const schema: FormSchema = {
         songs
       };
     } catch (err) {
-      toast.error('Failed to fetch default data.');
+      toast.error('Failed to fetch default data');
       return {};
     }
   },
@@ -53,16 +53,14 @@ export const schema: FormSchema = {
         artist: formData.artist[0].uid,
         songs: formData.songs?.map((x: Song) => x.uid)
       };
-      const { data: updated } = await Api.albums.patch({
+      await Api.albums.patch({
         id,
         body: payload
       });
-      toast.success(
-        `Successfully updated information about album: ${updated.name}`
-      );
+      toast.success('Successfully Edited Album');
       navigate(`/albums/${id}`);
     } catch (err) {
-      toast.error('Failed to Edit Album.');
+      toast.error('Failed to Edit Album');
     }
   },
   sections: [

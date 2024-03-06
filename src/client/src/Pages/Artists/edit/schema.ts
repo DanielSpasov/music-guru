@@ -15,19 +15,17 @@ export const schema: FormSchema = {
       });
       return data;
     } catch (err) {
-      toast.error('Failed to fetch default data.');
+      toast.error('Failed to fetch default data');
       return {};
     }
   },
   onSubmit: async ({ formData, toast, navigate, params: { id = '' } }) => {
     try {
       const { data } = await Api.artists.patch({ id, body: formData });
-      toast.success(
-        `Successfully updated information about artist: ${data.name}`
-      );
+      toast.success('Successfully Edited Artist');
       navigate(`/artists/${data.uid}`);
     } catch (err) {
-      toast.error('Failed to Create Artist.');
+      toast.error('Failed to Edit Artist');
     }
   },
   sections: [

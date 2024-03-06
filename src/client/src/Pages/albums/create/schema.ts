@@ -15,7 +15,7 @@ export const schema: FormSchema = {
       });
       return { type: data };
     } catch (err) {
-      toast.error('Failed to fetch default data.');
+      toast.error('Failed to fetch default data');
       return {};
     }
   },
@@ -31,10 +31,10 @@ export const schema: FormSchema = {
         body: payload,
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
       });
-      toast.success(`Successfully created album: ${res.name}`);
+      toast.success('Successfully Created Album');
       navigate(`/albums/${res.uid}`);
     } catch (err) {
-      toast.error('Failed to Create Album.');
+      toast.error('Failed to Create Album');
     }
   },
   sections: [

@@ -19,10 +19,10 @@ export const schema: FormSchema = {
         body: payload,
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
       });
-      toast.success(`Successfully created song: ${res.name}`);
+      toast.success('Successfully Created Song');
       navigate(`/songs/${res.uid}`);
     } catch (err) {
-      toast.error('Failed to Create Song.');
+      toast.error('Failed to Create Song');
     }
   },
   sections: [

@@ -13,10 +13,10 @@ export const schema: FormSchema = {
         body: formData,
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
       });
-      toast.success(`Successfully created artist: ${res.name}`);
+      toast.success('Successfully Created Artist');
       navigate(`/artists/${res.uid}`);
     } catch (err) {
-      toast.error('Failed to create artist.');
+      toast.error('Failed to Create Artist');
     }
   },
   sections: [
