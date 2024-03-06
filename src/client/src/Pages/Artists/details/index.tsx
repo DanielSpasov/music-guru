@@ -1,12 +1,11 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { viewConfig } from './helpers';
 import { Artist } from '../helpers';
-import Edit from './modals/Edit';
 import Api from '../../../Api';
 
 export default function ArtistDetails() {
@@ -14,11 +13,10 @@ export default function ArtistDetails() {
 
   const [query] = useSearchParams();
   const { id = '0' } = useParams();
+  const navigate = useNavigate();
 
   const [artist, setArtist] = useState<Artist>();
   const [loading, setLoading] = useState(true);
-
-  const [openEdit, setOpenEdit] = useState(false);
 
   const view = useMemo(
     () => viewConfig[query.get('view') as string] ?? {},
@@ -50,7 +48,7 @@ export default function ArtistDetails() {
       actions={[
         {
           icon: 'edit',
-          onClick: () => setOpenEdit(true),
+          onClick: () => navigate('edit'),
           disabled: userUID !== artist?.created_by
         }
       ]}
@@ -100,12 +98,6 @@ export default function ArtistDetails() {
             </>
           )}
         </div>
-      </section>
-
-      <section>
-        {openEdit && (
-          <Edit onClose={() => setOpenEdit(false)} fetchArtist={fetchArtist} />
-        )}
       </section>
     </PageLayout>
   );

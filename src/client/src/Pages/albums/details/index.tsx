@@ -69,7 +69,7 @@ export default function AlbumDetails() {
       if (!album) return Promise.resolve({ data: [] });
       return Api.songs.fetch({
         config: {
-          params: { uid__in: [...album.songs, ' '], ...config?.params }
+          params: { uid__in: [...(album.songs || []), ' '], ...config?.params }
         }
       });
     },
