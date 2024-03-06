@@ -1,20 +1,13 @@
-import { useCallback, useContext, useState } from 'react';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { List, Modal, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { Config } from '../../../Api/helpers';
-import CreateAlbum from '../create';
 import Api from '../../../Api';
 
 export default function Albums() {
   const { isAuthenticated } = useContext(AuthContext);
-
-  const [openCreate, setOpenCreate] = useState(false);
-
-  const fetchFn = useCallback(
-    (config?: Config) => Api.albums.fetch({ config }),
-    []
-  );
+  const navigate = useNavigate();
 
   return (
     <PageLayout
@@ -22,21 +15,12 @@ export default function Albums() {
       actions={[
         {
           icon: 'add',
-          onClick: () => setOpenCreate(true),
+          onClick: () => navigate('create'),
           disabled: !isAuthenticated
         }
       ]}
     >
-      <List fetchFn={fetchFn} model="albums" />
-
-      <Modal
-        key="create-album"
-        title="Create Album"
-        isOpen={openCreate}
-        onClose={() => setOpenCreate(false)}
-      >
-        <CreateAlbum />
-      </Modal>
+      <List fetchFn={config => Api.albums.fetch({ config })} model="albums" />
     </PageLayout>
   );
 }

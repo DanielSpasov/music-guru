@@ -36,6 +36,11 @@
         "private": false
       },
       {
+        "path": "create",
+        "filePath": "/albums/create",
+        "private": false
+      },
+      {
         "path": ":id",
         "filePath": "/albums/details",
         "routes": [

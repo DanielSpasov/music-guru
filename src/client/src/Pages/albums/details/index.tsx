@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { toast } from 'react-toastify';
 
-import { List, Modal, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Config } from '../../../Api/helpers';
@@ -118,15 +118,11 @@ export default function AlbumDetails() {
 
       <section>
         {openEdit && (
-          <Modal onClose={() => setOpenEdit(false)}>
-            <Edit onClose={() => setOpenEdit(false)} fetchAlbum={fetchAlbum} />
-          </Modal>
+          <Edit onClose={() => setOpenEdit(false)} fetchAlbum={fetchAlbum} />
         )}
 
         {openDel && (
-          <Modal onClose={() => setOpenDel(false)}>
-            <Delete deleteAlbum={deleteAlbum} setOpenDel={setOpenDel} />
-          </Modal>
+          <Delete deleteAlbum={deleteAlbum} setOpenDel={setOpenDel} />
         )}
       </section>
     </PageLayout>

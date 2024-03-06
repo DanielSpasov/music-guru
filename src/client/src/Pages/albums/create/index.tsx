@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { Form, Loader } from '../../../Components';
+import { Form, PageLayout } from '../../../Components';
 import { errorHandler } from '../../../Handlers';
 import { Song } from '../../songs/helpers';
 import { AlbumSchema } from '../helpers';
-import { toast } from 'react-toastify';
 import { schema } from './schema';
 import Api from '../../../Api';
 
@@ -51,14 +51,15 @@ export default function CreateAlbum() {
     [navigate]
   );
 
-  if (loading) return <Loader size="sm" />;
   return (
-    <Form
-      validationSchema={AlbumSchema}
-      defaultValues={defaultValues}
-      onSubmit={onSubmit}
-      showClose={false}
-      schema={schema}
-    />
+    <PageLayout title="Create Album" showHeader={false} loading={loading}>
+      <Form
+        validationSchema={AlbumSchema}
+        defaultValues={defaultValues}
+        onSubmit={onSubmit}
+        showClose={false}
+        schema={schema}
+      />
+    </PageLayout>
   );
 }

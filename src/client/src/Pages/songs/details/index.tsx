@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
-import { List, Modal, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Config } from '../../../Api/helpers';
@@ -147,19 +147,15 @@ export default function SongDetails() {
 
       <section>
         {openEdit && (
-          <Modal onClose={() => setOpenEdit(false)}>
-            <Edit onClose={() => setOpenEdit(false)} fetchSong={fetchSong} />
-          </Modal>
+          <Edit onClose={() => setOpenEdit(false)} fetchSong={fetchSong} />
         )}
 
         {openDel && (
-          <Modal onClose={() => setOpenDel(false)} className="h-min p-3">
-            <Delete
-              deleteSong={deleteSong}
-              setOpenDel={setOpenDel}
-              fetchSong={fetchSong}
-            />
-          </Modal>
+          <Delete
+            deleteSong={deleteSong}
+            setOpenDel={setOpenDel}
+            fetchSong={fetchSong}
+          />
         )}
       </section>
     </PageLayout>

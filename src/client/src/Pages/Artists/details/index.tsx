@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
-import { List, Modal, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { viewConfig } from './helpers';
@@ -104,12 +104,7 @@ export default function ArtistDetails() {
 
       <section>
         {openEdit && (
-          <Modal onClose={() => setOpenEdit(false)}>
-            <Edit
-              onClose={() => setOpenEdit(false)}
-              fetchArtist={fetchArtist}
-            />
-          </Modal>
+          <Edit onClose={() => setOpenEdit(false)} fetchArtist={fetchArtist} />
         )}
       </section>
     </PageLayout>

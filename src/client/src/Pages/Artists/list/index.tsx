@@ -1,6 +1,6 @@
 import { useState, useContext, useCallback } from 'react';
 
-import { List, Modal, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { Config } from '../../../Api/helpers';
 import Create from './modals/Create';
@@ -30,11 +30,7 @@ export default function Artists() {
       <List fetchFn={fetchFn} model="artists" />
 
       <section>
-        {openCreate && (
-          <Modal onClose={() => setOpenCreate(false)}>
-            <Create onClose={() => setOpenCreate(false)} />
-          </Modal>
-        )}
+        {openCreate && <Create onClose={() => setOpenCreate(false)} />}
       </section>
     </PageLayout>
   );
