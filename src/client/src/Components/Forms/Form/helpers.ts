@@ -3,7 +3,7 @@ import {
   SubmitHandler,
   UseFormSetValue
 } from 'react-hook-form/dist/types';
-import { NavigateFunction } from 'react-router-dom';
+import { NavigateFunction, Params } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { ZodObject } from 'zod';
 import { FC } from 'react';
@@ -30,6 +30,11 @@ export type OnSubmitProps = {
   formData: Record<string, any>;
   toast: typeof toast;
   navigate: NavigateFunction;
+  params: Params;
+};
+export type FetchDefaultDataProps = {
+  toast: typeof toast;
+  params: Params;
 };
 
 export type FormSchema = {
@@ -38,7 +43,9 @@ export type FormSchema = {
   title: string;
   header?: string;
   validationSchema?: ZodObject<any>;
-  fetchDefaultData?: () => Promise<Record<string, any>>;
+  fetchDefaultData?: (
+    props: FetchDefaultDataProps
+  ) => Promise<Record<string, any>>;
 };
 
 export type FormProps = {

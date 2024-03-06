@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { errorHandler } from '../../../Handlers';
@@ -16,30 +16,31 @@ export default function PageForm({ schema }: PageFormProps) {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
+  const params = useParams();
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
         if (!schema?.fetchDefaultData) return;
-        const defaultData = await schema.fetchDefaultData();
+        const defaultData = await schema.fetchDefaultData({ toast, params });
         setDefaultValues(defaultData);
       } finally {
         setLoading(false);
       }
     })();
-  }, [schema]);
+  }, [schema, params]);
 
   const _onSubmit = useCallback(
     async (formData: Record<string, any>) => {
       try {
-        schema.onSubmit({ formData, toast, navigate });
+        schema.onSubmit({ formData, toast, navigate, params });
       } catch (error) {
         const errors = errorHandler(error);
         toast.error(errors?.[0]?.message);
       }
     },
-    [navigate, schema]
+    [navigate, schema, params]
   );
 
   return (

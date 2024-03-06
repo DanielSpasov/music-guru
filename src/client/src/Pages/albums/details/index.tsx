@@ -8,7 +8,6 @@ import { errorHandler } from '../../../Handlers';
 import { Config } from '../../../Api/helpers';
 import Delete from './modals/Delete';
 import { Album } from '../helpers';
-import Edit from './modals/Edit';
 import Api from '../../../Api';
 
 export default function AlbumDetails() {
@@ -17,7 +16,6 @@ export default function AlbumDetails() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const [openEdit, setOpenEdit] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [loading, setLoading] = useState(true);
   const [album, setAlbum] = useState<Album>();
@@ -85,7 +83,7 @@ export default function AlbumDetails() {
       actions={[
         {
           icon: 'edit',
-          onClick: () => setOpenEdit(true),
+          onClick: () => navigate('edit'),
           disabled: userUID !== album?.created_by,
           tooltip: 'Edit Album'
         },
@@ -117,10 +115,6 @@ export default function AlbumDetails() {
       </section>
 
       <section>
-        {openEdit && (
-          <Edit onClose={() => setOpenEdit(false)} fetchAlbum={fetchAlbum} />
-        )}
-
         {openDel && (
           <Delete deleteAlbum={deleteAlbum} setOpenDel={setOpenDel} />
         )}

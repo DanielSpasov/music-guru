@@ -8,11 +8,16 @@ export const schema: FormSchema = {
   title: 'Create Album',
   header: 'Create Album',
   validationSchema: AlbumSchema,
-  fetchDefaultData: async () => {
-    const { data } = await Api.albums.fetchTypes({
-      config: { params: { code: 'A' } }
-    });
-    return { type: data };
+  fetchDefaultData: async ({ toast }) => {
+    try {
+      const { data } = await Api.albums.fetchTypes({
+        config: { params: { code: 'A' } }
+      });
+      return { type: data };
+    } catch (err) {
+      toast.error('Failed to fetch default data.');
+      return {};
+    }
   },
   onSubmit: async ({ formData, toast, navigate }) => {
     try {
