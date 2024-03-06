@@ -6,7 +6,6 @@ import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Config } from '../../../Api/helpers';
-import Delete from './modals/Delete';
 import { Album } from '../helpers';
 import Api from '../../../Api';
 
@@ -16,7 +15,6 @@ export default function AlbumDetails() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const [openDel, setOpenDel] = useState(false);
   const [loading, setLoading] = useState(true);
   const [album, setAlbum] = useState<Album>();
 
@@ -89,7 +87,7 @@ export default function AlbumDetails() {
         },
         {
           icon: 'trash',
-          onClick: () => setOpenDel(true),
+          onClick: deleteAlbum,
           disabled: userUID !== album?.created_by
         }
       ]}
@@ -112,12 +110,6 @@ export default function AlbumDetails() {
             <List fetchFn={fetchSongs} model="songs" skeletonLength={3} />
           </div>
         </div>
-      </section>
-
-      <section>
-        {openDel && (
-          <Delete deleteAlbum={deleteAlbum} setOpenDel={setOpenDel} />
-        )}
       </section>
     </PageLayout>
   );
