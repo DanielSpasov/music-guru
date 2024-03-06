@@ -47,7 +47,6 @@ export default function PageForm({ schema }: PageFormProps) {
       <div className={`rounded-md w-1/2 shadow-md mt-3 m-auto ${themeProps}`}>
         <Form
           defaultValues={defaultValues}
-          showClose={false}
           schema={schema.sections}
           {...schema}
           onSubmit={_onSubmit}
