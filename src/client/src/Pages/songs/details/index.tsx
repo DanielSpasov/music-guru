@@ -7,17 +7,12 @@ import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Config } from '../../../Api/helpers';
-import Delete from './modals/Delete';
 import { Song } from '../helpers';
-import Edit from './modals/Edit';
 import Api from '../../../Api';
 
 export default function SongDetails() {
   const [loading, setLoading] = useState(true);
   const [song, setSong] = useState<Song>();
-
-  const [openEdit, setOpenEdit] = useState(false);
-  const [openDel, setOpenDel] = useState(false);
 
   const { uid } = useContext(AuthContext);
   const { id = '0' } = useParams();
@@ -97,13 +92,13 @@ export default function SongDetails() {
       actions={[
         {
           icon: 'edit',
-          onClick: () => setOpenEdit(true),
+          onClick: () => navigate('edit'),
           disabled: uid !== song?.created_by
         },
         {
           icon: 'trash',
-          onClick: () => setOpenDel(true),
-          disabled: uid !== song?.created_by
+          onClick: deleteSong,
+          disabled: uid !== song?.created_by || true // Remove later
         }
       ]}
     >
@@ -143,20 +138,6 @@ export default function SongDetails() {
             <List fetchFn={fetchAlbums} skeletonLength={1} model="albums" />
           </div>
         </div>
-      </section>
-
-      <section>
-        {openEdit && (
-          <Edit onClose={() => setOpenEdit(false)} fetchSong={fetchSong} />
-        )}
-
-        {openDel && (
-          <Delete
-            deleteSong={deleteSong}
-            setOpenDel={setOpenDel}
-            fetchSong={fetchSong}
-          />
-        )}
       </section>
     </PageLayout>
   );
