@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { PageLayoutProps } from './helpers';
 import { Loader, Navbar } from '../../';
 import Action from './Action';
-import Tabs from './Tabs';
 
 export default function PageLayout({
   title,
@@ -11,7 +10,6 @@ export default function PageLayout({
   showHeader = true,
   children,
   actions = [],
-  tabs = [],
   loading = false
 }: PageLayoutProps) {
   useEffect(() => {
@@ -21,9 +19,8 @@ export default function PageLayout({
   return (
     <>
       <header>{showNavbar && <Navbar />}</header>
-      <main className={`min-h-screen ${tabs.length ? 'pt-36' : 'pt-20'}`}>
+      <main className="min-h-screen pt-20">
         {showHeader && <h1 className="text-center p-4">{title}</h1>}
-        {tabs.length ? <Tabs tabs={tabs} /> : null}
 
         {loading ? (
           <Loader size="sm" />

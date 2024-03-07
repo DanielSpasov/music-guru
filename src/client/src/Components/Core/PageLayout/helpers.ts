@@ -21,6 +21,5 @@ export type PageLayoutProps = {
   showHeader?: boolean;
   children?: ReactNode;
   actions?: Action[];
-  tabs?: Tab[];
   loading?: boolean;
 };
