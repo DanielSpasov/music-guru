@@ -18,7 +18,7 @@ export default function PageLayout({
 
   return (
     <>
-      <header>{showNavbar && <Navbar />}</header>
+      {showNavbar && <Navbar />}
       <main className="min-h-screen pt-20">
         {showHeader && <h1 className="text-center p-4">{title}</h1>}
 

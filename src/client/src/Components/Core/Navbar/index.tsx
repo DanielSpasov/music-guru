@@ -4,8 +4,9 @@ import { useCallback, useContext, useState } from 'react';
 import { ThemeContext, AuthContext, Theme } from '../../../Contexts';
 import { Link, Popover, Icon } from '../../';
 
+const lightProps = 'bg-neutral-50';
 const darkProps = 'dark:bg-neutral-950';
-const themeProps = `${darkProps}`;
+const themeProps = `${lightProps} ${darkProps}`;
 
 const userMenuDarkProps = 'dark:border-neutral-900 dark:border-0';
 const userMenuDarkHoverProps =
@@ -36,7 +37,9 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`fixed w-full h-20 z-50 flex px-10 ${themeProps}`}>
+    <nav
+      className={`fixed w-full h-20 z-50 flex px-10 border-b-[1px] ${themeProps}`}
+    >
       <div className="flex items-center flex-1 p-4">
         <Link to="/">
           <img
