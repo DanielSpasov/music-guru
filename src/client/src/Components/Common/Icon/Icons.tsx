@@ -219,6 +219,17 @@ const icons = {
         d="M472 168H40a24 24 0 0 1 0-48h432a24 24 0 0 1 0 48Zm-80 112H120a24 24 0 0 1 0-48h272a24 24 0 0 1 0 48Zm-96 112h-80a24 24 0 0 1 0-48h80a24 24 0 0 1 0 48Z"
       />
     </SVG>
+  ),
+  hamburger: (props: SVGProps) => (
+    <SVG viewBox="0 0 24 24" {...props}>
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+        d="M20 7H4m16 5H4m16 5H4"
+      />
+    </SVG>
   )
 };
 
