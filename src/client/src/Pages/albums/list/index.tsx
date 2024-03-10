@@ -12,6 +12,7 @@ export default function Albums() {
   return (
     <PageLayout
       title="Albums"
+      showHeader={false}
       actions={[
         {
           icon: 'add',

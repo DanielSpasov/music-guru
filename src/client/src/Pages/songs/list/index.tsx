@@ -13,6 +13,7 @@ export default function Songs() {
   return (
     <PageLayout
       title="Songs"
+      showHeader={false}
       actions={[
         {
           icon: 'add',
