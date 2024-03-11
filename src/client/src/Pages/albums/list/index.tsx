@@ -21,7 +21,20 @@ export default function Albums() {
         }
       ]}
     >
-      <List fetchFn={config => Api.albums.fetch({ config })} model="albums" />
+      <List
+        filtersConfig={[
+          {
+            key: 'name',
+            label: 'Name'
+          },
+          {
+            key: 'artist',
+            label: 'Artist'
+          }
+        ]}
+        fetchFn={config => Api.albums.fetch({ config })}
+        model="albums"
+      />
     </PageLayout>
   );
 }

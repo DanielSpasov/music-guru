@@ -3,45 +3,51 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { ListProps, Model } from './helpers';
-import { Icon, Card } from '../../';
+import Filters from './Filters';
+import { Card } from '../../';
 
 export default function List({
   model,
   fetchFn,
-  filters = [],
+  filtersConfig = [],
   skeletonLength = 18
 }: ListProps) {
+  const [filters, setFilters] = useState({});
   const [data, setData] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
+  const fetchList = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data } = await fetchFn({ params: filters });
+      setData(data);
+    } catch (err) {
+      toast.error(`Failed to fetch ${model}.`);
+    } finally {
+      setLoading(false);
+    }
+  }, [fetchFn, model, filters]);
+
   useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { data } = await fetchFn({});
-        setData(data);
-      } catch (err) {
-        toast.error(`Failed to fetch ${model}.`);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [fetchFn, model]);
+    (async () => await fetchList())();
+    // This is supposed to be run only once
+    // eslint-disable-next-line
+  }, []);
 
   const onClick = useCallback(
-    (option: Model) => navigate(`/${model}/${option?.uid}`),
+    (option: Model) => navigate(`/${model}/${option?.uid}/`),
     [model, navigate]
   );
 
   return (
-    <section className="mx-10">
-      {!!filters.length && (
-        <div className="p-2 my-4 flex">
-          <Icon model="filter" />
-        </div>
-      )}
+    <section className="flex flex-col items-center mx-10">
+      <Filters
+        config={filtersConfig}
+        setFilters={setFilters}
+        onSubmit={fetchList}
+      />
 
       <div
         className={`flex flex-wrap ${
