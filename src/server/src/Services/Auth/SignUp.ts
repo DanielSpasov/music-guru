@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 import { SignUpSchema } from '../../Database/Schemas';
 import { sendVerificationEmail } from './helpers';
 import { errorHandler } from '../../Error';
-import { generateUID } from '../../Utils';
 import { connect } from '../../Database';
 import env from '../../env';
 
@@ -35,7 +35,7 @@ export async function SignUp(req: Request, res: Response) {
     const passwordHash = await bcrypt.hash(password, salt);
 
     // CREATE DATABASE ENTRY FOR THE USER
-    const uid = await generateUID('users');
+    const uid = crypto.randomUUID();
     const data = {
       uid,
       username,
@@ -44,7 +44,6 @@ export async function SignUp(req: Request, res: Response) {
       verified: false,
       created_at: new Date()
     };
-
     await collection.insertOne(data);
 
     // SIGN THE JSON WEB TOKEN
