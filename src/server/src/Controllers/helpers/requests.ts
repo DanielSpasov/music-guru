@@ -25,7 +25,7 @@ import { Collection, ModelCollection, Serializer } from '../../Database/Types';
 import { serializers } from '../../Database/Serializers';
 import { converters } from '../../Database/Converters';
 import { checks } from '../../Database/checks';
-import db from '../../Database';
+import db, { connect } from '../../Database';
 
 export function fetch(collectionName: Collection) {
   return async function (req: Request, res: Response) {
@@ -61,15 +61,10 @@ export function fetch(collectionName: Collection) {
 export function get(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
-      const colName = collectionName as ModelCollection;
-      const serializer = req.query?.serializer as Serializer;
-      const reference = doc(db, collectionName, req.params.id).withConverter(
-        converters[colName]
-      );
-      const snapshot = await getDoc(reference);
-      const data = snapshot.data();
-      const serialized = await serializers?.[colName]?.[serializer]?.(data);
-      res.status(200).json({ data: serialized || data });
+      const db = await connect();
+      const collection = db.collection(collectionName);
+      const data = await collection.findOne({ uid: req.params.id });
+      res.status(200).json({ data });
     } catch (error) {
       errorHandler(req, res, error);
     }
@@ -84,7 +79,10 @@ export function del(collectionName: Collection) {
         res.status(401).json({ message: 'Unauthorized.' });
         return;
       }
-      const { uid: userUID } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+      const { uid: userUID } = jwt.verify(
+        token,
+        env.SECURITY.JWT_SECRET
+      ) as JwtPayload;
 
       const reference = doc(db, collectionName, req.params.id);
       const snapshot = await getDoc(reference);
@@ -127,7 +125,10 @@ export function post(collectionName: Collection) {
         res.status(401).json({ message: 'Unauthorized.' });
         return;
       }
-      const { uid: userUID } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+      const { uid: userUID } = jwt.verify(
+        token,
+        env.SECURITY.JWT_SECRET
+      ) as JwtPayload;
       const uid = crypto.randomUUID();
 
       const colName = collectionName as ModelCollection;
@@ -175,7 +176,10 @@ export function patch(collectionName: Collection) {
         res.status(401).json({ message: 'Unauthorized.' });
         return;
       }
-      const { uid: userUID } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+      const { uid: userUID } = jwt.verify(
+        token,
+        env.SECURITY.JWT_SECRET
+      ) as JwtPayload;
 
       const colName = collectionName as ModelCollection;
       const reference = doc(db, collectionName, req.params.id).withConverter(

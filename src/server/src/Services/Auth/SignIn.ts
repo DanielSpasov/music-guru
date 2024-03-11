@@ -1,11 +1,10 @@
-import { query, collection, where, getDocs } from 'firebase/firestore/lite';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { SignInSchema } from '../../Database/Schemas';
 import { errorHandler } from '../../Error';
-import db from '../../Database';
+import { connect } from '../../Database';
 import env from '../../env';
 
 export async function SignIn(req: Request, res: Response) {
@@ -17,27 +16,25 @@ export async function SignIn(req: Request, res: Response) {
     });
 
     // CHECK IF THE EMAIL IS REGISTERED
-    const q = query(collection(db, 'users'), where('email', '==', email));
-    const qSnap = await getDocs(q);
-    if (qSnap.empty) {
+    const db = await connect();
+    const collection = db.collection('users');
+    const user = await collection.findOne({ email });
+    if (!user) {
       res.status(400).json({ message: 'Wrong Email address or Password.' });
       return;
     }
 
     // CHECK IF THE PASSWORD IS VALID
-    const passMatch = await bcrypt.compare(
-      password,
-      qSnap.docs[0].data().password
-    );
+    const passMatch = await bcrypt.compare(password, user.password);
     if (!passMatch) {
       res.status(400).json({ message: 'Wrong Email address or Password.' });
       return;
     }
 
     // SIGN THE JSON WEB TOKEN
-    const token = jwt.sign({ uid: qSnap.docs[0].id }, env.JWT_SECRET);
+    const token = jwt.sign({ uid: user.uid }, env.SECURITY.JWT_SECRET);
 
-    res.status(200).json({ token, uid: qSnap.docs[0].id });
+    res.status(200).json({ token, uid: user.uid });
   } catch (error) {
     errorHandler(req, res, error);
   }

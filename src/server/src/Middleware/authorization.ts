@@ -14,7 +14,7 @@ export default async function authorization(
       return;
     }
 
-    const secret = env.JWT_SECRET || '';
+    const secret = env.SECURITY.JWT_SECRET || '';
     jwt.verify(token, secret) as JwtPayload;
 
     next();

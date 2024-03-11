@@ -16,7 +16,7 @@ export function ValidateToken(req: Request, res: Response) {
       return;
     }
 
-    const payload = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+    const payload = jwt.verify(token, env.SECURITY.JWT_SECRET) as JwtPayload;
 
     res.status(200).json(payload);
   } catch (error) {

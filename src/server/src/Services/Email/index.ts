@@ -16,14 +16,14 @@ export default async function SendEmail({
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: env.EMAIL_SERVICE_USER,
-      pass: env.EMAIL_SERVICE_PASS
+      user: env.EMAIL.SERVICE_USER,
+      pass: env.EMAIL.SERVICE_PASS
     }
   });
 
   await transporter.sendMail({
     to,
-    from: `"Music Guru" <${env.EMAIL_SERVICE_USER}>`,
+    from: `"Music Guru" <${env.EMAIL.SERVICE_USER}>`,
     ...templates[template](data)
   });
 }

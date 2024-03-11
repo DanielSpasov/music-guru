@@ -5,10 +5,10 @@ import {
   SignIn,
   ValidateToken,
   ValidateEmail,
-  ResendValidationEmail
+  ResendValidationEmail,
+  UpdateUser
 } from '../../Services/Auth';
 import { authorization } from '../../Middleware';
-import { UpdateUser } from '../../Services/User';
 import { get } from '../helpers/requests';
 
 const router = Router();

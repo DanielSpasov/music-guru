@@ -2,16 +2,10 @@ import { JsonWebTokenError } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
 import { jwtErrorHandler } from './jwtErrorHandler';
-import { CustomError } from './CustomError';
 import { ZodError } from 'zod';
 
 export function errorHandler(req: Request, res: Response, error: unknown) {
   try {
-    if (error instanceof CustomError) {
-      res.status(error.code).json({ message: error.message });
-      return;
-    }
-
     if (error instanceof ZodError) {
       res
         .status(400)

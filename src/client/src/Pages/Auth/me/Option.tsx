@@ -42,7 +42,10 @@ export default function Option({ data, user, setUser }: OptionProps) {
         field: data.field,
         body: { [data.field]: value }
       });
-      setUser(updated);
+      setUser(prev => {
+        console.log({ ...prev, ...updated }, updated);
+        return { ...prev, ...updated };
+      });
       toast.success(`${data.label} updated successfully.`);
     } catch (error) {
       errorHandler(error);

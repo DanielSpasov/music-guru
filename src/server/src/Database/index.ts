@@ -1,14 +1,23 @@
 import { getFirestore } from 'firebase/firestore/lite';
 import { initializeApp } from 'firebase/app';
+import { MongoClient } from 'mongodb';
+
 import env from '../env';
 
 const firebase = initializeApp({
-  apiKey: env.FIREBASE_API_KEY,
-  authDomain: env.FIREBASE_AUTH_DOMAIN,
-  projectId: env.FIREBASE_PROJECT_ID,
-  storageBucket: env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: env.FIREBASE_APP_ID
+  apiKey: env.FIREBASE.API_KEY,
+  authDomain: env.FIREBASE.AUTH_DOMAIN,
+  projectId: env.FIREBASE.PROJECT_ID,
+  storageBucket: env.FIREBASE.STORAGE_BUCKET,
+  messagingSenderId: env.FIREBASE.MESSAGING_SENDER_ID,
+  appId: env.FIREBASE.APP_ID
 });
+
+export const connect = async () => {
+  const connectionString = env.MONGO.DB_URI || '';
+  const client = new MongoClient(connectionString);
+  const connection = await client.connect();
+  return connection.db('music-guru');
+};
 
 export default getFirestore(firebase);

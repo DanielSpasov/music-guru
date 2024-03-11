@@ -17,4 +17,11 @@ export default class AlbumsAPI extends Crud<Album> {
       config
     });
   }
+
+  test(config?: Config) {
+    return get({
+      url: `${this.baseUrl}/test123/`,
+      config
+    });
+  }
 }
