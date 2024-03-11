@@ -33,11 +33,7 @@ export default function CustomLink({
       {children}
     </NavLink>
   ) : (
-    <Link
-      to={to}
-      data-testid="link"
-      className={`text-lg ${hoverProps} ${className}`}
-    >
+    <Link to={to} data-testid="link" className={`text-lg ${className}`}>
       {children}
     </Link>
   );

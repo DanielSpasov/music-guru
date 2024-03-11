@@ -53,28 +53,6 @@ describe('Link', () => {
       expect(linkElement).toHaveClass('custom-class');
     });
   });
-
-  describe('CSS', () => {
-    it('renders dark mode hover', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route">Test Label</CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('link');
-      expect(linkElement).toHaveClass(darkHoverProps);
-    });
-
-    it('renders light mode hover', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route">Test Label</CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('link');
-      expect(linkElement).toHaveClass(lightHoverProps);
-    });
-  });
 });
 
 describe('NavLink', () => {
