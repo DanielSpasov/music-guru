@@ -40,6 +40,7 @@ export type Params = {
   [key: string]: any;
 };
 export type Config = {
+  headers?: Record<string, string>;
   params?: Params;
 };
 
