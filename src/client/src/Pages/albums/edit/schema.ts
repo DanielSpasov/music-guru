@@ -16,29 +16,14 @@ export const schema: FormSchema = {
         config: { params: { serializer: 'detailed' } }
       });
 
-      const [{ data: artist }, { data: songs }] = await Promise.all([
-        Api.artists.get({
-          id: album.artist,
-          config: { params: { serializer: 'list' } }
-        }),
-        Api.songs.fetch({
-          config: {
-            params: {
-              serializer: 'list',
-              uid__in: [...(album.songs || []), ' ']
-            }
-          }
-        })
-      ]);
-
       return {
         ...album,
         type: [album.type],
         release_date: album?.release_date
           ? moment(album?.release_date).toDate()
           : null,
-        artist: [artist],
-        songs
+        artist: [album.artist],
+        songs: album.songs
       };
     } catch (err) {
       toast.error('Failed to fetch default data');

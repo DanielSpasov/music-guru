@@ -4,3 +4,4 @@ export * from './ValidateToken';
 export * from './Update';
 export * from './SignUp';
 export * from './SignIn';
+export * from './Get';

@@ -3,7 +3,6 @@ import {
   getStorage,
   getDownloadURL
 } from 'firebase/storage';
-import { QuerySnapshot, WhereFilterOp } from 'firebase/firestore/lite';
 
 import { ModelCollection, Serializer } from '../../Database/Types';
 import { serializers } from '../../Database/Serializers';
@@ -31,29 +30,15 @@ export async function getUploadLinks(
   }, {});
 }
 
-export async function getList(
-  snapshot: QuerySnapshot,
-  collectionName: ModelCollection,
-  serializer: Serializer
+export function serializeObj<T>(
+  data: T,
+  collecitonName: string,
+  serializerName: string
 ) {
-  return await Promise.all(
-    snapshot.docs.map(async doc => {
-      const data = doc.data();
-      const serialized = await serializers?.[collectionName]?.[serializer]?.(
-        data
-      );
-      return serialized || data;
-    })
-  );
-}
+  const collection = collecitonName as ModelCollection;
+  const serializer = serializerName as Serializer;
 
-export function getOp(op: string): WhereFilterOp {
-  switch (op) {
-    case 'contains':
-      return 'array-contains';
-    case 'in':
-      return op;
-    default:
-      return '==';
-  }
+  const serializerFn = serializers[collection][serializer];
+  if (!serializerFn) return data;
+  return serializerFn(data);
 }

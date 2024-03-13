@@ -1,7 +1,5 @@
-import { doc, getDoc } from 'firebase/firestore/lite';
-import { Song } from '../Types';
-
-import db from '../';
+import { serializers } from '.';
+import { Artist, Song } from '../Types';
 
 export class ListSong {
   uid: string;
@@ -13,12 +11,7 @@ export class ListSong {
     this.uid = song.uid;
     this.name = song.name;
     this.image = song.image || '';
-    this.artist = song.artist;
-  }
-
-  async fetchArtist() {
-    const snapshot = await getDoc(doc(db, 'artists', this.artist));
-    this.artist = snapshot.get('name');
+    this.artist = song.artist.name;
   }
 }
 
@@ -29,17 +22,17 @@ export class DetailedSong {
   created_at: Date;
   created_by: string;
   release_date: Date | null;
-  artist: string;
-  features: string[];
+  artist: Artist;
+  features: Artist[];
 
   constructor(song: Song) {
     this.uid = song.uid;
     this.name = song.name;
     this.image = song.image || '';
     this.created_at = song.created_at;
-    this.created_by = song.created_by;
+    this.created_by = song.created_by.uid;
     this.release_date = song.release_date;
-    this.artist = song.artist;
-    this.features = song.features;
+    this.artist = serializers.artists.list(song.artist);
+    this.features = song.features.map(serializers.artists.list);
   }
 }

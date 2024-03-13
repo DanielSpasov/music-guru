@@ -1,10 +1,10 @@
-import { getFirestore } from 'firebase/firestore/lite';
 import { initializeApp } from 'firebase/app';
 import { MongoClient } from 'mongodb';
 
 import env from '../env';
 
-const firebase = initializeApp({
+// FIREABSE IS USED FOR IMAGE STORAGE ONLY
+initializeApp({
   apiKey: env.FIREBASE.API_KEY,
   authDomain: env.FIREBASE.AUTH_DOMAIN,
   projectId: env.FIREBASE.PROJECT_ID,
@@ -19,5 +19,3 @@ export const connect = async () => {
   const connection = await client.connect();
   return connection.db('music-guru');
 };
-
-export default getFirestore(firebase);

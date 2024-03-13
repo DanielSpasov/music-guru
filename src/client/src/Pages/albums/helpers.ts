@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
 import { FileSchema } from '../../Utils/FileSchema';
+import { Artist } from '../artists/helpers';
+import { Song } from '../songs/helpers';
 
 const DateSchema = z.union([z.date(), z.null()]);
 const AlbumTypeSchema = z
@@ -39,6 +41,6 @@ export interface Album extends AlbumModel {
   created_at: Date;
   release_date?: Date;
   created_by: string;
-  artist: string;
-  songs?: string[];
+  artist: Artist;
+  songs?: Song[];
 }

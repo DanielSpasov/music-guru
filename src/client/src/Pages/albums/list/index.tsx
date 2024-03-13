@@ -28,7 +28,7 @@ export default function Albums() {
             label: 'Name'
           },
           {
-            key: 'artist',
+            key: 'artist.name',
             label: 'Artist'
           }
         ]}

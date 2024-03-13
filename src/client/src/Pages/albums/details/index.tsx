@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { Config } from '../../../Api/helpers';
 import { Album } from '../helpers';
 import Api from '../../../Api';
 
@@ -32,47 +31,31 @@ export default function AlbumDetails() {
     }
   }, [album, navigate]);
 
-  const fetchAlbum = useCallback(async () => {
-    try {
-      const { data } = await Api.albums.get({
-        id,
-        config: { params: { serializer: 'detailed' } }
-      });
-      setAlbum(data);
-    } catch (error) {
-      errorHandler(error);
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await Api.albums.get({
+          id,
+          config: { params: { serializer: 'detailed' } }
+        });
+        setAlbum(data);
+      } catch (error) {
+        errorHandler(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [id]);
 
-  useEffect(() => {
-    (async () => await fetchAlbum())();
-  }, [fetchAlbum]);
+  const fetchArtist = useCallback(() => {
+    if (!album) return Promise.resolve({ data: [] });
+    return Promise.resolve({ data: [album.artist] });
+  }, [album]);
 
-  const fetchArtist = useCallback(
-    async (config?: Config) => {
-      if (!album) return Promise.resolve({ data: [] });
-      const { data } = await Api.artists.get({
-        id: album.artist,
-        config: { params: { serializer: 'list', ...config?.params } }
-      });
-      return { data: [data] };
-    },
-    [album]
-  );
-
-  const fetchSongs = useCallback(
-    (config?: Config) => {
-      if (!album) return Promise.resolve({ data: [] });
-      return Api.songs.fetch({
-        config: {
-          params: { uid__in: [...(album.songs || []), ' '], ...config?.params }
-        }
-      });
-    },
-    [album]
-  );
+  const fetchSongs = useCallback(() => {
+    if (!album) return Promise.resolve({ data: [] });
+    return Promise.resolve({ data: album?.songs || [] });
+  }, [album]);
 
   return (
     <PageLayout

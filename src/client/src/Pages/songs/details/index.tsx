@@ -18,21 +18,6 @@ export default function SongDetails() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const fetchSong = useCallback(async () => {
-    try {
-      setLoading(true);
-      const { data } = await Api.songs.get({
-        id,
-        config: { params: { serializer: 'detailed' } }
-      });
-      setSong(data);
-    } catch (error) {
-      errorHandler(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
-
   const deleteSong = useCallback(async () => {
     try {
       setLoading(true);
@@ -48,42 +33,41 @@ export default function SongDetails() {
   }, [song, navigate]);
 
   useEffect(() => {
-    (async () => await fetchSong())();
-  }, [fetchSong]);
+    (async () => {
+      try {
+        setLoading(true);
+        const { data } = await Api.songs.get({
+          id,
+          config: { params: { serializer: 'detailed' } }
+        });
+        setSong(data);
+      } catch (error) {
+        errorHandler(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [id]);
 
-  const fetchFeatures = useCallback(
-    (config?: Config) => {
-      if (!song) return Promise.resolve({ data: [] });
-      return Api.artists.fetch({
-        config: {
-          params: { uid__in: [...song.features, ' '], ...config?.params }
-        }
-      });
-    },
-    [song]
-  );
+  const fetchFeatures = useCallback(() => {
+    if (!song) return Promise.resolve({ data: [] });
+    return Promise.resolve({ data: song.features });
+  }, [song]);
 
   const fetchAlbums = useCallback(
     (config?: Config) => {
       if (!song) return Promise.resolve({ data: [] });
       return Api.albums.fetch({
-        config: { params: { songs__contains: song.uid, ...config?.params } }
+        config: { params: { 'songs.uid': song.uid, ...config?.params } }
       });
     },
     [song]
   );
 
-  const fetchArtist = useCallback(
-    async (config?: Config) => {
-      if (!song) return Promise.resolve({ data: [] });
-      const { data } = await Api.artists.get({
-        id: song.artist,
-        config: { params: { serializer: 'list', ...config?.params } }
-      });
-      return { data: [data] };
-    },
-    [song]
-  );
+  const fetchArtist = useCallback(async () => {
+    if (!song) return Promise.resolve({ data: [] });
+    return Promise.resolve({ data: [song.artist] });
+  }, [song]);
 
   return (
     <PageLayout

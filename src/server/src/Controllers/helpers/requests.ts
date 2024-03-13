@@ -1,57 +1,42 @@
-import {
-  collection,
-  getDocs,
-  getDoc,
-  setDoc,
-  doc,
-  deleteDoc,
-  updateDoc,
-  query,
-  where,
-  documentId
-} from 'firebase/firestore/lite';
 import { deleteObject, getStorage, ref, uploadBytes } from 'firebase/storage';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import crypto from 'crypto';
 
-import { getList, getOp, getUploadLinks, QueryProps } from './helpers';
+import { getUploadLinks, QueryProps, serializeObj } from './helpers';
 import { errorHandler } from '../../Error';
 import env from '../../env';
 
 // Database imports
 import { FileUploadSchema, validationSchemas } from '../../Database/Schemas';
-import { Collection, ModelCollection, Serializer } from '../../Database/Types';
-import { serializers } from '../../Database/Serializers';
-import { converters } from '../../Database/Converters';
-import { checks } from '../../Database/checks';
-import db, { connect } from '../../Database';
+import { Collection, ModelCollection } from '../../Database/Types';
+import { aggregators } from '../../Database/Aggregators';
+import { connect } from '../../Database';
 
 export function fetch(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
-      const { serializer = 'list', ...restQuery }: QueryProps = req.query;
+      const { serializer = 'list', ...params }: QueryProps = req.query;
 
-      const colName = collectionName as ModelCollection;
-      const reference = collection(db, collectionName).withConverter(
-        converters[colName]
-      );
-
-      const filters = Object.entries(restQuery).map(([name, value]) => {
-        const [key, op] = name.split('__');
-        const operator = getOp(op);
-        return where(key === 'uid' ? documentId() : key, operator, value);
+      const filters = Object.entries(params).map(([name, value]) => {
+        return {
+          $match: { [name]: { $regex: value, $options: 'i' } }
+        };
       });
 
-      const list = await getList(
-        await getDocs(
-          filters.length ? query(reference, ...filters) : reference
-        ),
-        colName,
-        serializer
+      const db = await connect();
+      const collection = db.collection(collectionName);
+      const items = collection.aggregate([
+        ...aggregators[collectionName as ModelCollection],
+        ...filters
+      ]);
+      const docs = await items.toArray();
+
+      const data = docs.map(doc =>
+        serializeObj(doc, collectionName, serializer)
       );
 
-      res.status(200).json({ data: list });
+      res.status(200).json({ data });
     } catch (error) {
       errorHandler(req, res, error);
     }
@@ -61,11 +46,28 @@ export function fetch(collectionName: Collection) {
 export function get(collectionName: Collection) {
   return async function (req: Request, res: Response) {
     try {
+      const { serializer = 'list' }: QueryProps = req.query;
+
       const db = await connect();
       const collection = db.collection(collectionName);
-      const data = await collection.findOne({ uid: req.params.id });
+
+      const items = collection.aggregate([
+        {
+          $match: { uid: req.params.id }
+        },
+        ...aggregators[collectionName as ModelCollection]
+      ]);
+      const [item] = await items.toArray();
+      if (!item) {
+        res.status(404).json({ message: 'Document not found.' });
+        return;
+      }
+
+      const data = serializeObj(item, collectionName, serializer);
+
       res.status(200).json({ data });
     } catch (error) {
+      console.log(error);
       errorHandler(req, res, error);
     }
   };
@@ -84,31 +86,26 @@ export function del(collectionName: Collection) {
         env.SECURITY.JWT_SECRET
       ) as JwtPayload;
 
-      const reference = doc(db, collectionName, req.params.id);
-      const snapshot = await getDoc(reference);
+      const test = await connect();
+      const collection = test.collection(collectionName);
+      const docs = collection.aggregate([{ $match: { uid: req.params.id } }]);
+      const [item] = await docs.toArray();
 
-      if (snapshot.get('created_by') !== userUID) {
+      if (item?.created_by !== userUID) {
         res.status(401).json({ message: 'Permission denied.' });
         return;
       }
 
-      const error = await checks?.[collectionName]?.del(snapshot);
-      if (error) {
-        res.status(400).json({ message: error });
-        return;
-      }
-
-      const image = snapshot.get('image');
-      if (image) {
-        const fileExt = image.split(snapshot.id)[1].split('?')[0];
+      if (item?.image) {
+        const fileExt = item?.image?.split(item.uid)[1].split('?')[0];
         const imageRef = ref(
           getStorage(),
-          `images/${collectionName}/${snapshot.id}${fileExt}`
+          `images/${collectionName}/${item.uid}${fileExt}`
         );
         await deleteObject(imageRef);
       }
 
-      await deleteDoc(reference);
+      await collection.deleteOne({ uid: req.params.id });
 
       res.status(200).json({ message: 'Success' });
     } catch (error) {
@@ -152,14 +149,24 @@ export function post(collectionName: Collection) {
         uid
       );
 
+      const db = await connect();
+      const users = db.collection('users');
+      const user = await users.findOne({ uid: userUID });
+      if (!user) {
+        res.status(400).json({ message: 'Invalid User UID.' });
+        return;
+      }
+
       const data = {
         ...validatedData,
         ...uploadedFiles,
-        created_by: userUID
+        uid,
+        created_by: userUID,
+        created_at: new Date()
       };
 
-      const document = doc(db, collectionName, uid);
-      await setDoc(document.withConverter(converters[colName]), data);
+      const collection = db.collection(collectionName);
+      await collection.insertOne(data);
 
       res.status(200).json({ message: 'Success', uid, name: data.name });
     } catch (error) {
@@ -181,26 +188,31 @@ export function patch(collectionName: Collection) {
         env.SECURITY.JWT_SECRET
       ) as JwtPayload;
 
-      const colName = collectionName as ModelCollection;
-      const reference = doc(db, collectionName, req.params.id).withConverter(
-        converters[colName]
-      );
-      const snapshot = await getDoc(reference);
-      if (snapshot.get('created_by') !== userUID) {
+      const db = await connect();
+      const collection = db.collection(collectionName);
+      const doc = collection.aggregate([{ $match: { uid: req.params.id } }]);
+      const [item] = await doc.toArray();
+      if (item.created_by !== userUID) {
         res.status(401).json({ message: 'Permission denied.' });
         return;
       }
 
-      const validationSchema = validationSchemas[colName];
+      const validationSchema =
+        validationSchemas[collectionName as ModelCollection];
       const validatedData = validationSchema.parse(req.body);
 
-      await updateDoc(reference, validatedData);
+      await collection.findOneAndUpdate(
+        { uid: req.params.id },
+        { $set: validatedData },
+        { upsert: true }
+      );
 
       res.status(200).json({
         message: 'Success',
         data: { uid: req.params.id, name: validatedData.name }
       });
     } catch (error) {
+      console.log(error);
       errorHandler(req, res, error);
     }
   };
