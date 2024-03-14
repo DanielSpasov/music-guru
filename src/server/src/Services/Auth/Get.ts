@@ -15,7 +15,7 @@ export async function GetUser(req: Request, res: Response) {
 
     const { uid } = jwt.verify(token, env.SECURITY.JWT_SECRET) as JwtPayload;
 
-    const db = await connect();
+    const db = await connect('models');
     const collection = db.collection('users');
     const data = await collection.findOne({ uid });
 

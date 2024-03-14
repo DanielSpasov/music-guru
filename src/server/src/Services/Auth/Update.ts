@@ -27,7 +27,7 @@ export async function UpdateUser(req: Request, res: Response) {
 
     const { uid } = jwt.verify(token, env.SECURITY.JWT_SECRET) as JwtPayload;
 
-    const db = await connect();
+    const db = await connect('models');
     const collection = db.collection('users');
     await collection.updateOne({ uid }, { $set: { [field]: validData } });
     const data = await collection.findOne({ uid });

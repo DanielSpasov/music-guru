@@ -16,7 +16,7 @@ export async function ResendValidationEmail(req: Request, res: Response) {
     }
     const { uid } = jwt.verify(token, env.SECURITY.JWT_SECRET) as JwtPayload;
 
-    const db = await connect();
+    const db = await connect('models');
     const collection = db.collection('users');
     const user = await collection.findOne<User>({ uid });
 

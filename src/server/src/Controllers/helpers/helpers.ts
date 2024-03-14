@@ -4,18 +4,13 @@ import {
   getDownloadURL
 } from 'firebase/storage';
 
-import { ModelCollection, Serializer } from '../../Database/Types';
+import { Models, Serializer } from '../../Database/Types';
 import { serializers } from '../../Database/Serializers';
 import { File } from '../../Database/Types/File';
 
-export type QueryProps = {
-  serializer?: Serializer;
-  [key: string]: any;
-};
-
 export async function getUploadLinks(
   files: File[],
-  collectionName: ModelCollection,
+  collectionName: Models,
   uid: string
 ) {
   return await files?.reduce(async (uploads, file: File) => {
@@ -32,12 +27,9 @@ export async function getUploadLinks(
 
 export function serializeObj<T>(
   data: T,
-  collecitonName: string,
-  serializerName: string
+  collection: Models,
+  serializer: Serializer
 ) {
-  const collection = collecitonName as ModelCollection;
-  const serializer = serializerName as Serializer;
-
   const serializerFn = serializers[collection][serializer];
   if (!serializerFn) return data;
   return serializerFn(data);

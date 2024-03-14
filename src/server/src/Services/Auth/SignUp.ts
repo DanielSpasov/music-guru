@@ -21,7 +21,7 @@ export async function SignUp(req: Request, res: Response) {
     });
 
     // CHECK IF THE EMAIL IS ALREADY SIGNED UP
-    const db = await connect();
+    const db = await connect('models');
     const collection = db.collection('users');
     const isUsed = await collection.findOne({ email });
     if (isUsed) {

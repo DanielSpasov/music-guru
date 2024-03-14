@@ -1,17 +1,10 @@
-import {
-  ModelCollection,
-  ObjSerialzier,
-  Album,
-  Artist,
-  Song,
-  User
-} from '../Types';
+import { Models, ObjSerialzier, Album, Artist, Song, User } from '../Types';
 
 import { ListArtist, DetailedArtist } from './Artist';
 import { ListAlbum, DetailedAlbum } from './Album';
 import { DetailedSong, ListSong } from './Song';
 
-export const serializers: Record<ModelCollection, ObjSerialzier> = {
+export const serializers: Record<Models, ObjSerialzier> = {
   artists: {
     list: (data: Artist) => new ListArtist(data),
     detailed: (data: Artist) => new DetailedArtist(data)

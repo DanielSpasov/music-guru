@@ -7,7 +7,7 @@ export async function ValidateEmail(req: Request, res: Response) {
   try {
     const { id } = req.body;
 
-    const db = await connect();
+    const db = await connect('models');
     const collection = db.collection('users');
     const user = await collection.findOne({ uid: id });
     if (!user) {

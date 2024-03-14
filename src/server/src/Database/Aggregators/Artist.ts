@@ -1,4 +1,6 @@
-const created_by = [
+import { AggregationStage } from './types';
+
+const created_by: AggregationStage[] = [
   {
     $lookup: {
       from: 'users',
@@ -12,4 +14,4 @@ const created_by = [
   }
 ];
 
-export const artistAggregators = [...created_by];
+export const artistAggregators: AggregationStage[] = [...created_by];

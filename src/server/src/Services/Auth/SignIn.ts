@@ -16,7 +16,7 @@ export async function SignIn(req: Request, res: Response) {
     });
 
     // CHECK IF THE EMAIL IS REGISTERED
-    const db = await connect();
+    const db = await connect('models');
     const collection = db.collection('users');
     const user = await collection.findOne({ email });
     if (!user) {

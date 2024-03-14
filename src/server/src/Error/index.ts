@@ -1,7 +1,6 @@
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-import { jwtErrorHandler } from './jwtErrorHandler';
 import { ZodError } from 'zod';
 
 export function errorHandler(req: Request, res: Response, error: unknown) {
@@ -14,11 +13,22 @@ export function errorHandler(req: Request, res: Response, error: unknown) {
     }
 
     if (error instanceof JsonWebTokenError) {
-      jwtErrorHandler(req, res, error);
+      try {
+        if (error.name === 'TokenExpiredError') {
+          res.status(400).json({ message: 'Token expired.' });
+          return;
+        }
+        if (error.name === 'JsonWebTokenError') {
+          res.status(400).json({ message: 'Invalid token.' });
+          return;
+        }
+      } catch (error) {
+        res.status(400).json({ message: 'Failed to validate JWT.' });
+      }
       return;
     }
 
-    res.status(400).json({ message: 'Bad Input.' });
+    res.status(500).json({ message: error });
   } catch (err: unknown) {
     res.status(500).json({ message: 'Unexpected Server Error.' });
   }
