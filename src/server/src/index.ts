@@ -4,6 +4,9 @@ import env from './env';
 
 import router from './Router';
 
+import { initialize } from './Database/storage';
+initialize();
+
 const PORT = env.PORT || 8000;
 
 const app: Application = express();
