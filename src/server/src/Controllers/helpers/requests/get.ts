@@ -14,11 +14,11 @@ export function get({ collectionName, databaseName }: ReqProps) {
       const db = await connect(databaseName);
       const collection = db.collection(collectionName);
 
-      const items = collection.aggregate(
+      const stages =
         databaseName === 'models'
           ? [{ $match: { uid: req.params.id } }, ...aggregators[collectionName]]
-          : []
-      );
+          : [];
+      const items = collection.aggregate([...stages, { $project: { _id: 0 } }]);
       const [item] = await items.toArray();
       if (!item) {
         res.status(404).json({ message: 'Document not found.' });
