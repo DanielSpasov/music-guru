@@ -16,53 +16,67 @@ git clone https://github.com/DanielSpasov/music-guru.git
 cd music-guru
 ```
 
-#### Back-end
+### Back-end
 
 1. Install dependencies:
 
-```
+#### npm
 
-## npm
+```
 cd src/server
 npm install
+```
 
-## yarn
+#### yarn
+
+```
 cd src/server
 yarn
 ```
 
 2. Start the application:
 
-```
-## npm
-npm start
+#### npm
 
-## yarn
+```
+npm start
+```
+
+#### yarn
+
+```
 yarn dev
 ```
 
-#### Front-end
+### Front-end
 
 1. Install dependencies:
 
-```
+#### npm
 
-## npm
+```
 cd src/client
 npm install
+```
 
-## yarn
+#### yarn
+
+```
 cd src/client
 yarn
 ```
 
 2. Start the application:
 
-```
-## npm
-npm start
+#### npm
 
-## yarn
+```
+npm start
+```
+
+#### yarn
+
+```
 yarn dev
 ```
 
