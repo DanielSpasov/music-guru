@@ -122,10 +122,4 @@ describe('Album Card', () => {
       expect(releaseDate.textContent).toEqual('TBA');
     });
   });
-
-  describe('Intentionally failing test', () => {
-    it('renders TBA if release date is not available', () => {
-      expect(true).toEqual(false);
-    });
-  });
 });

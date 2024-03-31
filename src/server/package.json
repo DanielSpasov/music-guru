@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc -p .",
     "lint": "eslint \"**/*.{ts,tsx}\"",
+    "type-check": "tsc --project tsconfig.json --noEmit",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "start": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
