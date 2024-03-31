@@ -2,9 +2,21 @@ import { useLocation } from 'react-router-dom';
 import { useCallback, useContext, useState } from 'react';
 
 import { ThemeContext, AuthContext, Theme } from '../../../Contexts';
-import { Link, Search, Popover, Icon } from '../../';
+import { Link, Popover, Icon } from '../../';
 
-const darkProps = 'dark:bg-neutral-950 dark:shadow-sm dark:shadow-neutral-950';
+const lightProps = 'bg-neutral-50 border-b-[1px]';
+const darkProps =
+  'dark:bg-neutral-950 dark:border-none dark:shadow-sm dark:shadow-neutral-950';
+const themeProps = `${lightProps} ${darkProps}`;
+
+const userMenuDarkProps = 'dark:border-neutral-900 dark:border-0';
+const userMenuDarkHoverProps =
+  'dark:[&>svg>path]:hover:text-primary-dark dark:hover:bg-neutral-900 ';
+const userMenuLightHoverProps =
+  '[&>svg>path]:hover:text-secondary hover:shadow-sm';
+const userMenuHoverProps = `${userMenuDarkHoverProps} ${userMenuLightHoverProps}`;
+
+const userMenuProps = `${userMenuDarkProps} ${userMenuHoverProps}`;
 
 export default function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -26,13 +38,13 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`relative h-16 flex ${darkProps}`}>
-      <div className="flex-1">
+    <nav className={`fixed w-full h-20 z-50 flex px-10 ${themeProps}`}>
+      <div className="flex items-center flex-1 p-4">
         <Link to="/">
           <img
             src="/images/logo/blue-logo192.png"
             className="w-16 h-16"
-            alt="Music Nerd"
+            alt="Music Guru"
           />
         </Link>
       </div>
@@ -61,8 +73,7 @@ export default function Navbar() {
         </Link>
       </div>
 
-      <div className="flex items-center justify-end h-16 flex-1">
-        <Search models={['artists', 'songs', 'albums']} />
+      <div className="flex items-center justify-end flex-1">
         <div
           className={`p-2 ${animateTheme ? 'scale-0 rotate-180' : 'scale-100'}`}
           onTransitionEnd={e => {
@@ -80,7 +91,13 @@ export default function Navbar() {
         <Popover
           open={openUser}
           label={
-            <Icon model="user" onClick={() => setOpenUser(prev => !prev)} />
+            <div
+              onClick={() => setOpenUser(prev => !prev)}
+              className={`flex rounded-full px-3 py-2 cursor-pointer border-[1px] ${userMenuProps}`}
+            >
+              <Icon model="hamburger" />
+              <Icon model="user" />
+            </div>
           }
           className="w-24"
         >

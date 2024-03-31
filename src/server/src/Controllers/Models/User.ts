@@ -5,11 +5,11 @@ import {
   SignIn,
   ValidateToken,
   ValidateEmail,
-  ResendValidationEmail
+  ResendValidationEmail,
+  UpdateUser,
+  GetUser
 } from '../../Services/Auth';
 import { authorization } from '../../Middleware';
-import { UpdateUser } from '../../Services/User';
-import { get } from '../helpers/requests';
 
 const router = Router();
 
@@ -21,7 +21,7 @@ router.post('/validate-email', authorization, ValidateEmail);
 router.post('/sign-up', SignUp);
 router.post('/sign-in', SignIn);
 
-router.get('/:id', get('users'));
+router.get('/:id', GetUser);
 router.patch('/:id', authorization, UpdateUser);
 
 export default router;

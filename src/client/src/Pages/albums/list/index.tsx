@@ -1,56 +1,40 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { List, Modal, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { errorHandler } from '../../../Handlers';
-import Create from './modals/Create';
-import { Album } from '../helpers';
 import Api from '../../../Api';
 
 export default function Albums() {
   const { isAuthenticated } = useContext(AuthContext);
-
-  const [openCreate, setOpenCreate] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [albums, setAlbums] = useState<Album[]>([]);
-
-  const fetchAlbums = useCallback(async () => {
-    try {
-      const { data } = await Api.albums.fetch({
-        config: { params: { serializer: 'list' } }
-      });
-      setAlbums(data);
-    } catch (error) {
-      errorHandler(error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    (async () => await fetchAlbums())();
-  }, [fetchAlbums]);
+  const navigate = useNavigate();
 
   return (
     <PageLayout
       title="Albums"
+      showHeader={false}
       actions={[
         {
           icon: 'add',
-          perform: () => setOpenCreate(true),
+          onClick: () => navigate('create'),
           disabled: !isAuthenticated
         }
       ]}
     >
-      <List data={albums} model="albums" loading={loading} />
-
-      <section>
-        {openCreate && (
-          <Modal onClose={() => setOpenCreate(false)}>
-            <Create onClose={() => setOpenCreate(false)} />
-          </Modal>
-        )}
-      </section>
+      <List
+        filtersConfig={[
+          {
+            key: 'name',
+            label: 'Name'
+          },
+          {
+            key: 'artist.name',
+            label: 'Artist'
+          }
+        ]}
+        fetchFn={config => Api.albums.fetch({ config })}
+        model="albums"
+      />
     </PageLayout>
   );
 }

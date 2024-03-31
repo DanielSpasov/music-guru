@@ -1,5 +1,3 @@
-import { FirestoreDataConverter } from 'firebase/firestore/lite';
-
 import { Artist, DBArtist } from './Artist';
 import { Album, DBAlbum } from './Album';
 import { Song, DBSong } from './Song';
@@ -7,22 +5,13 @@ import { User } from './User';
 
 export { SignInData, SignUpData } from './User';
 
-export type Collection = 'users' | 'artists' | 'songs' | 'albums';
+export type Databases = 'models' | 'types';
 
-export type Serializer = 'reference' | 'detailed' | 'list';
-export type ObjSerialzier = Partial<Record<Serializer, (data: any) => any>>;
-export type CollectionSerializer = Partial<Record<Collection, ObjSerialzier>>;
+export type Models = 'users' | 'artists' | 'songs' | 'albums';
+export type Types = 'albums';
 
-export type Reference<T> = {
-  key: keyof T;
-  collection: Collection;
-  relationKey: string;
-};
-
-export type AnyObj = Song | Artist | Album | User;
-export type AnyDBObj = DBSong | DBArtist | DBAlbum;
-
-export type ObjConverter = FirestoreDataConverter<Partial<AnyObj>, AnyDBObj>;
+export type Serializer = 'detailed' | 'list';
+export type ObjSerialzier = Record<Serializer, (data: any) => any>;
 
 export { Song, Artist, Album, User };
 export { DBSong, DBArtist, DBAlbum };

@@ -26,6 +26,6 @@ export class DetailedArtist {
     this.bio = artist.bio;
     this.image = artist.image;
     this.created_at = artist.created_at;
-    this.created_by = artist.created_by;
+    this.created_by = artist.created_by.uid;
   }
 }

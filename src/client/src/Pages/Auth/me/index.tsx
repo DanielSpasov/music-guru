@@ -16,6 +16,7 @@ export default function Me() {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const { data } = await Api.user.get({ id: uid || '' });
         setUser(data);
       } finally {

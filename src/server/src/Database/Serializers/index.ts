@@ -1,10 +1,10 @@
-import { CollectionSerializer, Album, Artist, Song } from '../Types';
+import { Models, ObjSerialzier, Album, Artist, Song, User } from '../Types';
 
 import { ListArtist, DetailedArtist } from './Artist';
 import { ListAlbum, DetailedAlbum } from './Album';
 import { DetailedSong, ListSong } from './Song';
 
-export const serializers: CollectionSerializer = {
+export const serializers: Record<Models, ObjSerialzier> = {
   artists: {
     list: (data: Artist) => new ListArtist(data),
     detailed: (data: Artist) => new DetailedArtist(data)
@@ -14,11 +14,11 @@ export const serializers: CollectionSerializer = {
     detailed: (data: Album) => new DetailedAlbum(data)
   },
   songs: {
-    list: async (data: Song) => {
-      const song = new ListSong(data);
-      await song.fetchArtist();
-      return song;
-    },
+    list: (data: Song) => new ListSong(data),
     detailed: (data: Song) => new DetailedSong(data)
+  },
+  users: {
+    list: (data: User) => data,
+    detailed: (data: User) => data
   }
 };

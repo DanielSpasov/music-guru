@@ -1,14 +1,10 @@
-import { getFirestore } from 'firebase/firestore/lite';
-import { initializeApp } from 'firebase/app';
+import { MongoClient } from 'mongodb';
+
 import env from '../env';
 
-const app = initializeApp({
-  apiKey: env.DB_API_KEY,
-  authDomain: env.DB_AUTH_DOMAIN,
-  projectId: env.DB_PROJECT_ID,
-  storageBucket: env.DB_STORAGE_BUCKET,
-  messagingSenderId: env.DB_MESSAGING_SENDER_ID,
-  appId: env.DB_APP_ID
-});
-
-export default getFirestore(app);
+export const connect = async (databaseName: string) => {
+  const connectionString = env.MONGO.DB_URI || '';
+  const client = new MongoClient(connectionString);
+  const connection = await client.connect();
+  return connection.db(databaseName);
+};

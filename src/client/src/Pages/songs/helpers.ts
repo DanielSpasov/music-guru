@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { FileSchema } from '../../Utils/FileSchema';
+import { Artist } from '../artists/helpers';
 
 const DateSchema = z.union([z.date(), z.null()]);
 
@@ -25,9 +26,9 @@ export const SongSchema = Schema.extend({
 type SongModel = z.infer<typeof Schema>;
 export interface Song extends SongModel {
   uid: string;
-  image: string;
+  image?: string;
   created_at: Date;
   created_by: string;
-  artist: string;
-  features: string[];
+  artist: Artist;
+  features: Artist[];
 }

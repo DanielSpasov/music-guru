@@ -7,11 +7,15 @@ import { authorization } from '../../Middleware';
 const upload = <any>multer({ storage: multer.memoryStorage() });
 const router = Router();
 
-router.get('/', fetch('artists'));
-router.get('/:id', get('artists'));
+router.get('/', fetch({ databaseName: 'models', collectionName: 'artists' }));
+router.get('/:id', get({ databaseName: 'models', collectionName: 'artists' }));
 
-router.post('/', [authorization, upload.any('image')], post('artists'));
+router.post(
+  '/',
+  [authorization, upload.any('image')],
+  post({ collectionName: 'artists' })
+);
 
-router.patch('/:id', authorization, patch('artists'));
+router.patch('/:id', authorization, patch({ collectionName: 'artists' }));
 
 export default router;

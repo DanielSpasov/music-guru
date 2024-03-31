@@ -29,7 +29,7 @@ export default function Input({
     });
 
   return (
-    <div className="relative my-2">
+    <div className="relative my-2 w-full">
       {props?.type === 'file' ? (
         <File
           id={id}

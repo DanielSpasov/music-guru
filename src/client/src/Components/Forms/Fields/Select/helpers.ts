@@ -2,6 +2,7 @@ import { StylesConfig } from 'react-select';
 import { Theme } from '../../../../Contexts';
 
 export type SelectProps = {
+  getOptionValue?: (opt: any) => string;
   fetchFn: (props: any) => any;
   multiple?: boolean;
 };
@@ -38,7 +39,6 @@ export const styles = (theme: Theme): StylesConfig => {
     control: (base, state) => ({
       ...base,
       transition: '200ms',
-      marginTop: '0.5em',
       borderWidth: '2px',
       borderRadius: '5px',
       boxShadow: 'none',

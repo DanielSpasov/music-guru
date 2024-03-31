@@ -36,7 +36,6 @@ export default function SignUp() {
       title="Verifying Email..."
       showHeader={false}
       showNavbar={false}
-      showBreadCrumb={false}
     >
       <header className="h-screen flex flex-col items-center justify-center">
         <h2>{loading ? 'Verifying Email' : 'Redirecting'}...</h2>

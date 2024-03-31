@@ -29,15 +29,17 @@ export default function Field({
         </span>
       </div>
 
-      <field.Component
-        value={value}
-        setValue={setValue}
-        validateField={validateField}
-        onChange={onChange}
-        name={field.key}
-        label={field.label}
-        props={field?.props}
-      />
+      <div className="flex items-center">
+        <field.Component
+          value={value}
+          setValue={setValue}
+          validateField={validateField}
+          onChange={onChange}
+          name={field.key}
+          label={field.label}
+          props={field?.props}
+        />
+      </div>
 
       {error && <span className="text-red-400">{error?.message}</span>}
     </div>

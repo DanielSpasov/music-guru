@@ -2,14 +2,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { toast } from 'react-toastify';
 
-import { List, Modal, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { Artist } from '../../artists/helpers';
-import { Song } from '../../songs/helpers';
-import Delete from './modals/Delete';
 import { Album } from '../helpers';
-import Edit from './modals/Edit';
 import Api from '../../../Api';
 
 export default function AlbumDetails() {
@@ -18,17 +14,8 @@ export default function AlbumDetails() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [album, setAlbum] = useState<Album>();
-
-  const [loadingArtist, setLoadingArtist] = useState<boolean>(true);
-  const [artist, setArtist] = useState<Artist>();
-
-  const [loadingSongs, setLoadingSongs] = useState<boolean>(true);
-  const [songs, setSongs] = useState<Song[]>([]);
-
-  const [openEdit, setOpenEdit] = useState<boolean>(false);
-  const [openDel, setOpenDel] = useState<boolean>(false);
 
   const deleteAlbum = useCallback(async () => {
     try {
@@ -44,66 +31,30 @@ export default function AlbumDetails() {
     }
   }, [album, navigate]);
 
-  const fetchAlbum = useCallback(async () => {
-    try {
-      const { data } = await Api.albums.get({
-        id,
-        config: { params: { serializer: 'detailed' } }
-      });
-      setAlbum(data);
-    } catch (error) {
-      errorHandler(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    (async () => await fetchAlbum())();
-  }, [fetchAlbum]);
-
-  // Artist
   useEffect(() => {
     (async () => {
       try {
-        setLoadingArtist(true);
-        if (!album) return;
-
-        const { data } = await Api.artists.get({
-          id: album.artist,
-          config: { params: { serializer: 'list' } }
+        const { data } = await Api.albums.get({
+          id,
+          config: { params: { serializer: 'detailed' } }
         });
-        setArtist(data);
-        setLoadingArtist(false);
-      } catch (error) {
-        errorHandler(error);
-      }
-    })();
-  }, [album]);
-
-  // Songs
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingSongs(true);
-        if (!album) return;
-
-        const songs = await Promise.all(
-          album.songs.map(async songUID => {
-            const { data } = await Api.songs.get({
-              id: songUID,
-              config: { params: { serializer: 'list' } }
-            });
-            return data;
-          })
-        );
-        setSongs(songs);
+        setAlbum(data);
       } catch (error) {
         errorHandler(error);
       } finally {
-        setLoadingSongs(false);
+        setLoading(false);
       }
     })();
+  }, [id]);
+
+  const fetchArtist = useCallback(() => {
+    if (!album) return Promise.resolve({ data: [] });
+    return Promise.resolve({ data: [album.artist] });
+  }, [album]);
+
+  const fetchSongs = useCallback(() => {
+    if (!album) return Promise.resolve({ data: [] });
+    return Promise.resolve({ data: album?.songs || [] });
   }, [album]);
 
   return (
@@ -113,12 +64,13 @@ export default function AlbumDetails() {
       actions={[
         {
           icon: 'edit',
-          perform: () => setOpenEdit(true),
-          disabled: userUID !== album?.created_by
+          onClick: () => navigate('edit'),
+          disabled: userUID !== album?.created_by,
+          tooltip: 'Edit Album'
         },
         {
           icon: 'trash',
-          perform: () => setOpenDel(true),
+          onClick: deleteAlbum,
           disabled: userUID !== album?.created_by
         }
       ]}
@@ -128,42 +80,19 @@ export default function AlbumDetails() {
           src={album?.image || ''}
           alt={album?.name}
           className="w-64 h-64 rounded-lg"
+          loading="lazy"
         />
 
         <div className="flex justify-between w-full">
           <div>
             <h3 className="text-center">Artist</h3>
-            <List
-              data={[artist]}
-              model="artists"
-              skeletonLength={1}
-              loading={loadingArtist}
-            />
+            <List fetchFn={fetchArtist} model="artists" skeletonLength={1} />
           </div>
           <div>
             <h3 className="text-center">Songs</h3>
-            <List
-              data={songs}
-              model="songs"
-              skeletonLength={3}
-              loading={loadingSongs}
-            />
+            <List fetchFn={fetchSongs} model="songs" skeletonLength={3} />
           </div>
         </div>
-      </section>
-
-      <section>
-        {openEdit && (
-          <Modal onClose={() => setOpenEdit(false)}>
-            <Edit onClose={() => setOpenEdit(false)} fetchAlbum={fetchAlbum} />
-          </Modal>
-        )}
-
-        {openDel && (
-          <Modal onClose={() => setOpenDel(false)}>
-            <Delete deleteAlbum={deleteAlbum} setOpenDel={setOpenDel} />
-          </Modal>
-        )}
       </section>
     </PageLayout>
   );

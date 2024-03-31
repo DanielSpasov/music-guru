@@ -19,7 +19,7 @@ export default function Textarea({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   return (
-    <div className="relative my-2">
+    <div className="relative my-2 w-full">
       <textarea
         {...props}
         value={value}

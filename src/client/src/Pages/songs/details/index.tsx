@@ -3,50 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
-import { List, Modal, PageLayout } from '../../../Components';
+import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { Artist } from '../../artists/helpers';
-import { Album } from '../../albums/helpers';
-import Delete from './modals/Delete';
+import { Config } from '../../../Api/helpers';
 import { Song } from '../helpers';
-import Edit from './modals/Edit';
 import Api from '../../../Api';
 
 export default function SongDetails() {
   const [loading, setLoading] = useState(true);
   const [song, setSong] = useState<Song>();
 
-  const [loadingFeatures, setLoadingFeatures] = useState(true);
-  const [features, setFeatures] = useState<Artist[]>([]);
-
-  const [loadingAlbums, setLoadingAlbums] = useState(true);
-  const [albums, setAlbums] = useState<Album[]>([]);
-
-  const [loadingArtist, setLoadingArtist] = useState(true);
-  const [artist, setArtist] = useState<Artist>();
-
-  const [openEdit, setOpenEdit] = useState(false);
-  const [openDel, setOpenDel] = useState(false);
-
   const { uid } = useContext(AuthContext);
   const { id = '0' } = useParams();
   const navigate = useNavigate();
-
-  const fetchSong = useCallback(async () => {
-    try {
-      setLoading(true);
-      const { data } = await Api.songs.get({
-        id,
-        config: { params: { serializer: 'detailed' } }
-      });
-      setSong(data);
-    } catch (error) {
-      errorHandler(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
 
   const deleteSong = useCallback(async () => {
     try {
@@ -63,75 +33,40 @@ export default function SongDetails() {
   }, [song, navigate]);
 
   useEffect(() => {
-    (async () => await fetchSong())();
-  }, [fetchSong]);
-
-  // Features
-  useEffect(() => {
     (async () => {
       try {
-        setLoadingFeatures(true);
-        if (!song) return;
-
-        const features = await Promise.all(
-          song.features.map(async artistUID => {
-            const { data } = await Api.artists.get({
-              id: artistUID,
-              config: { params: { serializer: 'list' } }
-            });
-            return data;
-          })
-        );
-        setFeatures(features);
+        setLoading(true);
+        const { data } = await Api.songs.get({
+          id,
+          config: { params: { serializer: 'detailed' } }
+        });
+        setSong(data);
       } catch (error) {
         errorHandler(error);
       } finally {
-        setLoadingFeatures(false);
+        setLoading(false);
       }
     })();
+  }, [id]);
+
+  const fetchFeatures = useCallback(() => {
+    if (!song) return Promise.resolve({ data: [] });
+    return Promise.resolve({ data: song.features });
   }, [song]);
 
-  // Albums
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingAlbums(true);
-        if (!song) return;
+  const fetchAlbums = useCallback(
+    (config?: Config) => {
+      if (!song) return Promise.resolve({ data: [] });
+      return Api.albums.fetch({
+        config: { params: { 'songs.uid': song.uid, ...config?.params } }
+      });
+    },
+    [song]
+  );
 
-        const { data: albums } = await Api.albums.fetch({
-          config: {
-            params: {
-              serializer: 'list',
-              songs__contains: song?.uid
-            }
-          }
-        });
-        setAlbums(albums);
-      } catch (error) {
-        errorHandler(error);
-      } finally {
-        setLoadingAlbums(false);
-      }
-    })();
-  }, [song]);
-
-  // Artist
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingArtist(true);
-        if (!song) return;
-
-        const { data } = await Api.artists.get({
-          id: song.artist,
-          config: { params: { serializer: 'list' } }
-        });
-        setArtist(data);
-        setLoadingArtist(false);
-      } catch (error) {
-        errorHandler(error);
-      }
-    })();
+  const fetchArtist = useCallback(async () => {
+    if (!song) return Promise.resolve({ data: [] });
+    return Promise.resolve({ data: [song.artist] });
   }, [song]);
 
   return (
@@ -141,13 +76,13 @@ export default function SongDetails() {
       actions={[
         {
           icon: 'edit',
-          perform: () => setOpenEdit(true),
+          onClick: () => navigate('edit'),
           disabled: uid !== song?.created_by
         },
         {
           icon: 'trash',
-          perform: () => setOpenDel(true),
-          disabled: uid !== song?.created_by
+          onClick: deleteSong,
+          disabled: uid !== song?.created_by || true // Remove later
         }
       ]}
     >
@@ -158,6 +93,7 @@ export default function SongDetails() {
               src={song?.image || ''}
               alt={song?.name}
               className="w-64 h-64 rounded-lg"
+              loading="lazy"
             />
           )}
           <div className="px-4">
@@ -173,52 +109,19 @@ export default function SongDetails() {
         <div className="flex flex-wrap">
           <div>
             <h3 className="text-center">Artist</h3>
-            <List
-              data={[artist]}
-              model="artists"
-              skeletonLength={1}
-              loading={loadingArtist}
-            />
+            <List fetchFn={fetchArtist} skeletonLength={1} model="artists" />
           </div>
 
-          {features.length > 0 && (
-            <div>
-              <h3 className="text-center">Featured Artists</h3>
-              <List
-                data={features}
-                model="artists"
-                skeletonLength={2}
-                loading={loadingFeatures}
-              />
-            </div>
-          )}
+          <div>
+            <h3 className="text-center">Featured Artists</h3>
+            <List fetchFn={fetchFeatures} skeletonLength={2} model="artists" />
+          </div>
 
-          {albums.length > 0 && (
-            <div>
-              <h3 className="text-center">In Albums</h3>
-              <List
-                data={albums}
-                model="albums"
-                skeletonLength={1}
-                loading={loadingAlbums}
-              />
-            </div>
-          )}
+          <div>
+            <h3 className="text-center">In Albums</h3>
+            <List fetchFn={fetchAlbums} skeletonLength={1} model="albums" />
+          </div>
         </div>
-      </section>
-
-      <section>
-        {openEdit && (
-          <Modal onClose={() => setOpenEdit(false)}>
-            <Edit onClose={() => setOpenEdit(false)} fetchSong={fetchSong} />
-          </Modal>
-        )}
-
-        {openDel && (
-          <Modal onClose={() => setOpenDel(false)}>
-            <Delete deleteSong={deleteSong} setOpenDel={setOpenDel} />
-          </Modal>
-        )}
       </section>
     </PageLayout>
   );

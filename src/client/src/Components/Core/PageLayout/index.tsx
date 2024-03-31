@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
 
-import { BreadCrumb, Loader, Navbar } from '../../';
 import { PageLayoutProps } from './helpers';
+import { Loader, Navbar } from '../../';
+import Action from './Action';
 
 export default function PageLayout({
   title,
   showNavbar = true,
-  showBreadCrumb = true,
   showHeader = true,
   children,
   actions = [],
-  tabs = [],
   loading = false
 }: PageLayoutProps) {
   useEffect(() => {
@@ -18,23 +17,28 @@ export default function PageLayout({
   }, [title, loading]);
 
   return (
-    <main className="min-h-screen">
+    <>
       {showNavbar && <Navbar />}
-      {showBreadCrumb && <BreadCrumb actions={actions} tabs={tabs} />}
-      {loading ? (
-        <div className="mt-12">
+      <main className="min-h-screen pt-20">
+        {showHeader && <h1 className="text-center p-4">{title}</h1>}
+
+        {loading ? (
           <Loader size="sm" />
-        </div>
-      ) : (
-        <>
-          {showHeader && (
-            <header>
-              <h1 className="text-center p-2 my-4">{title}</h1>
-            </header>
-          )}
-          <article>{children}</article>
-        </>
-      )}
-    </main>
+        ) : (
+          <>
+            <article>
+              {children}
+              <div className="fixed z-0 bottom-0 right-0">
+                {actions
+                  .filter(x => !x?.disabled)
+                  .map((action, i) => (
+                    <Action action={action} key={i} />
+                  ))}
+              </div>
+            </article>
+          </>
+        )}
+      </main>
+    </>
   );
 }

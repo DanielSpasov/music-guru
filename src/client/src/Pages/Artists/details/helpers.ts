@@ -1,5 +1,5 @@
 import Api from '../../../Api';
-import { ModelKeys } from '../../../Api/helpers';
+import { Config as ParamsConfig, ModelKeys } from '../../../Api/helpers';
 
 export type ViewProps = Config & {
   id: string;
@@ -8,32 +8,50 @@ export type ViewProps = Config & {
 type Config = {
   label: string;
   model: ModelKeys;
-  fetchFn: (uid: string) => Promise<any>;
+  fetchFn: (uid: string) => (config?: ParamsConfig) => Promise<{ data: any[] }>;
 };
 
 export const viewConfig: Record<string, Config> = {
   albums: {
     label: 'Albums',
     model: 'albums',
-    fetchFn: (uid: string) =>
+    fetchFn: uid => config =>
       Api.albums.fetch({
-        config: { params: { serializer: 'list', artist: uid } }
+        config: {
+          params: {
+            serializer: 'list',
+            artist: uid,
+            ...config?.params
+          }
+        }
       })
   },
   features: {
     label: 'Features',
     model: 'songs',
-    fetchFn: (uid: string) =>
+    fetchFn: uid => config =>
       Api.songs.fetch({
-        config: { params: { serializer: 'list', features__contains: uid } }
+        config: {
+          params: {
+            serializer: 'list',
+            features__contains: uid,
+            ...config?.params
+          }
+        }
       })
   },
   songs: {
     label: 'Songs',
     model: 'songs',
-    fetchFn: (uid: string) =>
+    fetchFn: uid => config =>
       Api.songs.fetch({
-        config: { params: { serializer: 'list', artist: uid } }
+        config: {
+          params: {
+            serializer: 'list',
+            artist: uid,
+            ...config?.params
+          }
+        }
       })
   }
 };

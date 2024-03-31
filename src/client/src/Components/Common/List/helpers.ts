@@ -1,15 +1,28 @@
-import { ModelKeys } from '../../../Api/helpers';
-import { Album } from '../../../Pages/albums/helpers';
+import { Config, ModelKeys } from '../../../Api/helpers';
 import { Artist } from '../../../Pages/artists/helpers';
+import { Album } from '../../../Pages/albums/helpers';
 import { Song } from '../../../Pages/songs/helpers';
+import { Dispatch, SetStateAction } from 'react';
 
-export type Model = Song | Artist | Album | undefined;
+export type Model = Song | Artist | Album;
+
+export type Filter = {
+  key: string;
+  label: string;
+  placeholder?: string;
+};
 
 export type ListProps = {
-  data: Model[];
+  fetchFn: (config?: Config) => Promise<{ data: Model[] }>;
   model: ModelKeys;
-  loading?: boolean;
+  filtersConfig?: Filter[];
   skeletonLength?: number;
+};
+
+export type FiltersProps = {
+  config: Filter[];
+  setFilters: Dispatch<SetStateAction<Record<string, any>>>;
+  onSubmit: (...props: any) => void;
 };
 
 export type SkeletonProps = {

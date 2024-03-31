@@ -1,4 +1,4 @@
-import { Dispatch } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 import { User } from '../helpers';
 import Api from '../../../Api';
@@ -19,7 +19,7 @@ export type MenuOption = {
 export type OptionProps = {
   data: MenuOption;
   user: User;
-  setUser: Dispatch<User>;
+  setUser: Dispatch<SetStateAction<User | undefined>>;
 };
 
 export const infoConfig: MenuOption[] = [
