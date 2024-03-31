@@ -17,8 +17,15 @@
     "type-check": "yarn type-check-client && yarn type-check-server",
     "type-check-client": "cd src/client && tsc --project tsconfig.json --noEmit",
     "type-check-server": "cd src/server && tsc --project tsconfig.json --noEmit",
-    "test": "cd src/client && yarn test",
-    "prestart": "cp scripts/pre-commit .git/hooks/ && chmod +x .git/hooks/pre-commit && echo 'hook copied'"
+    "test": "cd src/client && yarn test"
   },
-  "homepage": "https://github.com/DanielSpasov/music-guru#readme"
+  "homepage": "https://github.com/DanielSpasov/music-guru#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn test"
+    }
+  },
+  "devDependencies": {
+    "husky": "^9.0.11"
+  }
 }
