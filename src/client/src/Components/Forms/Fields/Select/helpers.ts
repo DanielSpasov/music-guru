@@ -17,6 +17,8 @@ export const styles = (theme: Theme): StylesConfig => {
         90: '#171717'
       },
       primary: '#E53265',
+      icon: 'white',
+      iconHover: '#E53265',
       text: 'white',
       shadow: 'rgba(0, 0, 0, 0.45) 0px 0px 5px 3px',
       selected: '#171717'
@@ -29,6 +31,8 @@ export const styles = (theme: Theme): StylesConfig => {
         90: '#E5E5E5'
       },
       primary: '#3C82F6',
+      icon: '#3C82F6',
+      iconHover: '#26B170',
       text: 'black',
       shadow: 'rgba(149, 157, 165, 0.45) 0px 8px 24px',
       selected: 'black'
@@ -70,14 +74,26 @@ export const styles = (theme: Theme): StylesConfig => {
       cursor: 'pointer',
       paddingTop: 0,
       paddingBottom: 0,
-      '&>svg': { width: 20 }
+      '&>svg': {
+        width: 20,
+        fill: colors[theme].icon
+      },
+      '&>svg:hover': {
+        fill: colors[theme].iconHover
+      }
     }),
     dropdownIndicator: base => ({
       ...base,
       cursor: 'pointer',
       paddingTop: 0,
       paddingBottom: 0,
-      '&>svg': { width: 20 }
+      '&>svg': {
+        width: 20,
+        fill: colors[theme].icon
+      },
+      '&>svg:hover': {
+        fill: colors[theme].iconHover
+      }
     }),
     valueContainer: base => ({ ...base, padding: '4px' }),
     multiValue: base => ({
