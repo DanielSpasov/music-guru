@@ -5,12 +5,14 @@ import {
 } from 'react-hook-form/dist/types';
 import { NavigateFunction, Params } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { ZodObject } from 'zod';
+import { ZodEffects, ZodObject } from 'zod';
 import { FC } from 'react';
 
 import { TextareaProps } from '../Fields/Textarea/helpers';
 import { SelectProps } from '../Fields/Select/helpers';
 import { InputProps } from '../Fields/Input/helpers';
+
+export type ValidationSchema = ZodObject<any> | ZodEffects<ZodObject<any>>;
 
 export type FormField = {
   key: string;
@@ -31,10 +33,12 @@ export type OnSubmitProps = {
   toast: typeof toast;
   navigate: NavigateFunction;
   params: Params;
+  ctx: Record<string, any>;
 };
 export type FetchDefaultDataProps = {
   toast: typeof toast;
   params: Params;
+  ctx: Record<string, any>;
 };
 
 export type FormSchema = {
@@ -42,10 +46,11 @@ export type FormSchema = {
   onSubmit: (props: OnSubmitProps) => Promise<void>;
   title: string;
   header?: string;
-  validationSchema?: ZodObject<any>;
+  validationSchema?: ValidationSchema;
   fetchDefaultData?: (
     props: FetchDefaultDataProps
   ) => Promise<Record<string, any>>;
+  additionalInfo?: JSX.Element;
 };
 
 export type FormProps = {
@@ -53,7 +58,7 @@ export type FormProps = {
   schema: FormSection[];
   header?: string;
   defaultValues?: any;
-  validationSchema?: ZodObject<any>;
+  validationSchema?: ValidationSchema;
   additionalInfo?: JSX.Element;
   onClose?: (props?: any) => void;
   showClose?: boolean;
