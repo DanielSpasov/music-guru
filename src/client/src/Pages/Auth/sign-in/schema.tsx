@@ -13,6 +13,7 @@ export const schema: FormSchema = {
         password: formData?.password
       });
       ctx.dispatch({ type: 'SIGNIN', payload: { uid, token } });
+      toast.success('Successfully signed in');
       navigate('/');
     } catch (error) {
       toast.error('Failed to Sign In');

@@ -15,6 +15,7 @@ export const schema: FormSchema = {
         username: formData?.username
       });
       ctx.dispatch({ type: 'SIGNUP', payload: { uid, token } });
+      toast.success('Account created successfully');
       navigate('/');
     } catch (error) {
       toast.error('Failed to Sign Up');
