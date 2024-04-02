@@ -42,8 +42,8 @@ export default function Calendar({
         onBlur={() => setOpen(false)}
         onClickOutside={() => setOpen(false)}
         calendarStartDay={1}
-        nextMonthButtonLabel="Next >"
-        previousMonthButtonLabel="< Prev"
+        nextMonthButtonLabel=">"
+        previousMonthButtonLabel="<"
         className={`w-full h-11 outline-none bg-neutral-100 border-2 border-neutral-200 rounded-md p-2 cursor-pointer ${hoverProps} ${focusProps} ${darkProps}`}
       />
 
