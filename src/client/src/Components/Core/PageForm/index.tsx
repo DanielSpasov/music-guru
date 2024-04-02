@@ -23,17 +23,13 @@ export default function PageForm({ schema, ctx = {} }: PageFormProps) {
       try {
         setLoading(true);
         if (!schema?.fetchDefaultData) return;
-        const defaultData = await schema.fetchDefaultData({
-          toast,
-          params,
-          ctx
-        });
+        const defaultData = await schema.fetchDefaultData({ toast, params });
         setDefaultValues(defaultData);
       } finally {
         setLoading(false);
       }
     })();
-  }, [schema, params, ctx]);
+  }, [schema, params]);
 
   const _onSubmit = useCallback(
     async (formData: Record<string, any>) => {
