@@ -3,6 +3,7 @@ import { useEffect, useContext } from 'react';
 
 import { AuthContext } from '../../../Contexts/Auth';
 import { PageLayout } from '../../../Components';
+import { toast } from 'react-toastify';
 
 export default function SignOut() {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ export default function SignOut() {
 
   useEffect(() => {
     dispatch({ type: 'SIGNOUT' });
+    toast.info('Signed out');
     navigate('/');
   }, [navigate, dispatch]);
 

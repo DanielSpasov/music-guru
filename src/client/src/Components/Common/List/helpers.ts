@@ -17,6 +17,7 @@ export type ListProps = {
   model: ModelKeys;
   filtersConfig?: Filter[];
   skeletonLength?: number;
+  center?: boolean;
 };
 
 export type FiltersProps = {

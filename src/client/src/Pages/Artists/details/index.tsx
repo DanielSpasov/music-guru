@@ -1,27 +1,20 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { viewConfig } from './helpers';
 import { Artist } from '../helpers';
 import Api from '../../../Api';
 
 export default function ArtistDetails() {
   const { uid: userUID } = useContext(AuthContext);
 
-  const [query] = useSearchParams();
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
   const [artist, setArtist] = useState<Artist>();
   const [loading, setLoading] = useState(true);
-
-  const view = useMemo(
-    () => viewConfig[query.get('view') as string] ?? {},
-    [query]
-  );
 
   const fetchArtist = useCallback(async () => {
     try {
@@ -53,7 +46,7 @@ export default function ArtistDetails() {
         }
       ]}
     >
-      <section className="flex justify-evenly">
+      <section className="flex">
         <div className="w-1/3 flex justify-center">
           <img
             src={artist?.image || ''}
@@ -63,18 +56,37 @@ export default function ArtistDetails() {
           />
         </div>
 
-        <div className="w-2/3">
-          {viewConfig[query.get('view') as string] && artist ? (
-            <>
-              <h2 className="text-center">{view.label}</h2>
-              <List fetchFn={view.fetchFn(artist.uid)} model={view.model} />
-            </>
-          ) : (
-            <>
-              <h2>Biography</h2>
-              <span className="">{artist?.bio}</span>
-            </>
-          )}
+        <div className="flex flex-col w-2/3 gap-5">
+          <div>
+            <h2>Biography</h2>
+            <span className="">{artist?.bio}</span>
+          </div>
+
+          <div>
+            <h2>Albums</h2>
+            <List
+              center={false}
+              fetchFn={() =>
+                Api.albums.fetch({
+                  config: { params: { 'artist.uid': artist?.uid } }
+                })
+              }
+              model="albums"
+            />
+          </div>
+
+          <div>
+            <h2>Songs</h2>
+            <List
+              center={false}
+              fetchFn={() =>
+                Api.songs.fetch({
+                  config: { params: { 'artist.uid': artist?.uid } }
+                })
+              }
+              model="songs"
+            />
+          </div>
         </div>
       </section>
     </PageLayout>

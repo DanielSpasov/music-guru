@@ -57,16 +57,16 @@ function VinylRecord({ onPlayer, color = 'random', size = 'lg' }: VinylProps) {
     innerStripeSize
   } = getSize(size);
   const stripeProps = `
-  border-l-neutral-900
-  border-t-neutral-950
-  border-b-neutral-950
-  border-r-neutral-900
+  border-l-neutral-800 dark:border-l-neutral-900
+  border-t-neutral-700 dark:border-t-neutral-800
+  border-b-neutral-700 dark:border-b-neutral-800
+  border-r-neutral-800 dark:border-r-neutral-900
   rounded-full
   `;
 
   return (
     <div
-      className={`relative bg-neutral-900 rounded-full ${recordSize} ${playerProps}`}
+      className={`relative bg-neutral-700 dark:bg-neutral-900 rounded-full ${recordSize} ${playerProps}`}
     >
       <div
         className={`relative rounded-full ${centerColoredSize} ${colorProps}`}

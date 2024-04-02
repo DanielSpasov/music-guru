@@ -10,7 +10,8 @@ export default function List({
   model,
   fetchFn,
   filtersConfig = [],
-  skeletonLength = 18
+  skeletonLength = 18,
+  center = true
 }: ListProps) {
   const [filters, setFilters] = useState({});
   const [data, setData] = useState<Model[]>([]);
@@ -42,7 +43,11 @@ export default function List({
   );
 
   return (
-    <section className="flex flex-col items-center mx-10">
+    <section
+      className={`flex flex-col ${
+        center ? 'items-center mx-10' : 'items-start mx-0'
+      }`}
+    >
       <Filters
         config={filtersConfig}
         setFilters={setFilters}

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { ZodObject } from 'zod';
 
 import { errorHandler } from '../../../Handlers';
 import { Loader } from '../../../Components';
@@ -28,7 +29,8 @@ export default function Form({
   const validateField = useCallback(
     (name: string, value: any) => {
       try {
-        validationSchema?.shape?.[name]?.parse?.(value);
+        const schema = validationSchema as ZodObject<any>;
+        schema?.shape?.[name]?.parse?.(value);
         clearErrors(name);
       } catch (err) {
         const [error] = errorHandler(err);
@@ -70,7 +72,7 @@ export default function Form({
     >
       {loading && (
         <div className="absolute w-full h-full z-50">
-          <div className="absolute w-full h-full bg-black opacity-75" />
+          <div className="absolute w-full h-full bg-neutral-500 dark:bg-neutral-950 opacity-75 rounded-md" />
           <Loader size="sm" />
         </div>
       )}
