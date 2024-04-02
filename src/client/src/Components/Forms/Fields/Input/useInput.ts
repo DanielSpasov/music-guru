@@ -57,8 +57,7 @@ export function useInput({
     input.files = null;
     input.value = '';
     onChange('');
-    validateField(name, type === 'file' ? null : '');
-  }, [onChange, name, validateField, id, type]);
+  }, [onChange, id]);
 
   return {
     id,
