@@ -3,7 +3,7 @@ import { Song } from '../../songs/helpers';
 import Api from '../../../Api';
 import { EditAlbumSchema } from '../helpers';
 import moment from 'moment';
-import { DatePicker, Input, Select } from '../../../Components';
+import { Calendar, Input, Select } from '../../../Components';
 
 export const schema: FormSchema = {
   title: 'Edit Album',
@@ -100,7 +100,7 @@ export const schema: FormSchema = {
         {
           key: 'release_date',
           label: 'Release Date',
-          Component: DatePicker
+          Component: Calendar
         },
         {
           key: 'songs',
