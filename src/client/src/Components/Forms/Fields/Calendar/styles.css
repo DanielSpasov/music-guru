@@ -101,6 +101,9 @@
 .react-datepicker__day--weekend {
   color: #26b170 !important;
 }
+.dark .react-datepicker__day--weekend {
+  color: #28acf6 !important;
+}
 
 /* WEEK DAYS */
 .react-datepicker__day {
