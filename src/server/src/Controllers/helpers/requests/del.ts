@@ -21,8 +21,8 @@ export function del({ collectionName }: SimpleReqProps) {
         env.SECURITY.JWT_SECRET
       ) as JwtPayload;
 
-      const test = req.mongo.db('models');
-      const collection = test.collection(collectionName);
+      const db = req.mongo.db('models');
+      const collection = db.collection(collectionName);
       const docs = collection.aggregate([{ $match: { uid: req.params.id } }]);
       const [item] = await docs.toArray();
 
