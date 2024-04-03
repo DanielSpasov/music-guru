@@ -1,4 +1,4 @@
-import { Artist } from '../../../Pages/artists/helpers';
+import { ListArtist } from '../../../Pages/artists/helpers';
 import { CardProps } from './helpers';
 
 export const lightProps = 'bg-neutral-200';
@@ -19,7 +19,7 @@ export default function ArtistCard({
   data,
   onClick,
   loading = false
-}: CardProps<Artist>) {
+}: CardProps<ListArtist>) {
   if (loading) return <Skeleton />;
 
   return (

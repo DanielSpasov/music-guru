@@ -8,9 +8,10 @@ import AlbumCard, {
   darkHoverTextProps,
   lightHoverTextProps
 } from './Album';
+import { ListAlbum } from '../../../Pages/albums/helpers';
 
 describe('Album Card', () => {
-  const mockData = {
+  const mockData: ListAlbum = {
     name: 'Test Album Name',
     uid: 'test-album-uuid',
     type: {
@@ -18,11 +19,7 @@ describe('Album Card', () => {
       name: 'Mixtape'
     },
     image: 'http://test123',
-    created_at: new Date(),
-    release_date: new Date(),
-    created_by: 'test-user-uuid',
-    artist: 'test-artist-uuid',
-    songs: ['test-song-uuid', 'test-song-uuid-2']
+    release_date: new Date()
   };
 
   describe('Business Logic', () => {
@@ -54,7 +51,7 @@ describe('Album Card', () => {
       render(<AlbumCard data={mockData} />);
       const releaseDate = screen.getByTestId('album-card-release-date');
       expect(releaseDate.textContent).toEqual(
-        mockData.release_date.getFullYear().toString()
+        mockData?.release_date?.getFullYear().toString()
       );
     });
 

@@ -32,3 +32,10 @@ export interface Song extends SongModel {
   artist: Artist;
   features: Artist[];
 }
+
+export interface ListSong {
+  uid: string;
+  name: string;
+  image: string;
+  artist: string;
+}

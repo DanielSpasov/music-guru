@@ -8,18 +8,13 @@ import ArtistCard, {
   lightHoverTextProps,
   lightProps
 } from './Artist';
+import { ListArtist } from '../../../Pages/artists/helpers';
 
 describe('Artist Card', () => {
-  const mockData = {
+  const mockData: ListArtist = {
     name: 'Test Artist Name',
     uid: 'test-artist-uuid',
-    image: 'http://test123',
-    created_at: new Date(),
-    created_by: 'test-user-uuid',
-    features: [],
-    albums: [],
-    songs: [],
-    bio: 'Test Bio'
+    image: 'http://test123'
   };
 
   describe('Business Logic', () => {

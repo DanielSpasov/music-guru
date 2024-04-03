@@ -8,16 +8,14 @@ import SongCard, {
   lightHoverTextProps,
   lightProps
 } from './Song';
+import { ListSong } from '../../../Pages/songs/helpers';
 
 describe('Song Card', () => {
-  const mockData = {
+  const mockData: ListSong = {
     name: 'Test Song Name',
     uid: 'test-song-uuid',
     image: 'http://test123',
-    created_at: new Date(),
-    created_by: 'test-user-uuid',
-    artist: 'Test Artist Name',
-    features: []
+    artist: 'Test Artist Name'
   };
 
   describe('Business Logic', () => {
@@ -103,7 +101,7 @@ describe('Song Card', () => {
 
   describe('Edge Cases', () => {
     it('renders default image', () => {
-      render(<SongCard data={{ ...mockData, image: undefined }} />);
+      render(<SongCard data={{ ...mockData, image: '' }} />);
       const image = screen.getByTestId('song-card-image');
       expect(image).toHaveAttribute(
         'src',

@@ -1,23 +1,22 @@
 import { render, screen } from '@testing-library/react';
 
+import { ListArtist } from '../../../Pages/artists/helpers';
+import { ListAlbum } from '../../../Pages/albums/helpers';
+import { ListSong } from '../../../Pages/songs/helpers';
 import Card from './index';
 
 describe('Card', () => {
   describe('Business Logic', () => {
     it('renders Album Card without crashing', () => {
-      const mockData = {
+      const mockData: ListAlbum = {
         name: 'Test Album Name',
         uid: 'test-album-uuid',
         type: {
-          code: 'A',
-          name: 'Album'
+          code: 'M',
+          name: 'Mixtape'
         },
         image: 'http://test123',
-        created_at: new Date(),
-        release_date: new Date(),
-        created_by: 'test-user-uuid',
-        artist: 'test-artist-uuid',
-        songs: ['test-song-uuid', 'test-song-uuid-2']
+        release_date: new Date()
       };
       render(<Card model="albums" data={mockData} />);
       const card = screen.getByTestId('album-card');
@@ -25,14 +24,11 @@ describe('Card', () => {
     });
 
     it('renders Song Card without crashing', () => {
-      const mockData = {
+      const mockData: ListSong = {
         name: 'Test Song Name',
         uid: 'test-song-uuid',
         image: 'http://test123',
-        created_at: new Date(),
-        created_by: 'test-user-uuid',
-        artist: 'Test Artist Name',
-        features: []
+        artist: 'Test Artist Name'
       };
       render(<Card model="songs" data={mockData} />);
       const card = screen.getByTestId('song-card');
@@ -40,16 +36,10 @@ describe('Card', () => {
     });
 
     it('renders Artist Card without crashing', () => {
-      const mockData = {
+      const mockData: ListArtist = {
         name: 'Test Artist Name',
         uid: 'test-artist-uuid',
-        image: 'http://test123',
-        created_at: new Date(),
-        created_by: 'test-user-uuid',
-        features: [],
-        albums: [],
-        songs: [],
-        bio: 'Test Bio'
+        image: 'http://test123'
       };
       render(<Card model="artists" data={mockData} />);
       const card = screen.getByTestId('artist-card');

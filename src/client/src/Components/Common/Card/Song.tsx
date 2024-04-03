@@ -1,4 +1,4 @@
-import { Song } from '../../../Pages/songs/helpers';
+import { ListSong } from '../../../Pages/songs/helpers';
 import { CardProps } from './helpers';
 
 export const lightProps = 'bg-neutral-200';
@@ -21,8 +21,9 @@ export default function SongCard({
   data,
   onClick,
   loading = false
-}: CardProps<Song>) {
+}: CardProps<ListSong>) {
   if (loading) return <Skeleton />;
+
   return (
     <div
       data-testid="song-card"

@@ -44,3 +44,14 @@ export interface Album extends AlbumModel {
   artist: Artist;
   songs?: Song[];
 }
+
+export interface ListAlbum {
+  uid: string;
+  name: string;
+  type: {
+    code: string;
+    name: string;
+  };
+  image: string;
+  release_date?: Date;
+}

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { Album } from '../../../Pages/albums/helpers';
+import { ListAlbum } from '../../../Pages/albums/helpers';
 import { CardProps } from './helpers';
 
 export const lightProps = 'bg-neutral-200';
@@ -22,7 +22,7 @@ export default function AlbumCard({
   data,
   onClick,
   loading = false
-}: CardProps<Album>) {
+}: CardProps<ListAlbum>) {
   if (loading) return <Skeleton />;
 
   return (
