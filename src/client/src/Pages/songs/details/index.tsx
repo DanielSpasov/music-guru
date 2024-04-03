@@ -14,7 +14,7 @@ export default function SongDetails() {
   const [loading, setLoading] = useState(true);
   const [song, setSong] = useState<Song>();
 
-  const { uid } = useContext(AuthContext);
+  const { uid, isAuthenticated } = useContext(AuthContext);
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
@@ -77,12 +77,14 @@ export default function SongDetails() {
         {
           icon: 'edit',
           onClick: () => navigate('edit'),
+          hidden: !isAuthenticated,
           disabled: uid !== song?.created_by
         },
         {
           icon: 'trash',
           onClick: deleteSong,
-          disabled: uid !== song?.created_by || true // Remove later
+          hidden: !isAuthenticated,
+          disabled: uid !== song?.created_by
         }
       ]}
     >

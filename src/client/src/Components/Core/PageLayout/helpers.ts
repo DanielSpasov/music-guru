@@ -6,6 +6,7 @@ export type Action = {
   icon: IconModel;
   onClick: (props: any) => any;
   disabled?: boolean;
+  hidden?: boolean;
   tooltip?: string;
 };
 

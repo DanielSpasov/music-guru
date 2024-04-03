@@ -2,12 +2,13 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
 import { sendVerificationEmail } from './helpers';
+import { ExtendedRequest } from '../../Database';
 import { User } from '../../Database/Types';
 import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
 import env from '../../env';
 
-export async function ResendValidationEmail(req: Request, res: Response) {
+export async function ResendValidationEmail(request: Request, res: Response) {
+  const req = request as ExtendedRequest;
   try {
     const token = req.headers.authorization;
     if (!token) {
@@ -16,7 +17,7 @@ export async function ResendValidationEmail(req: Request, res: Response) {
     }
     const { uid } = jwt.verify(token, env.SECURITY.JWT_SECRET) as JwtPayload;
 
-    const db = await connect('models');
+    const db = req.mongo.db('models');
     const collection = db.collection('users');
     const user = await collection.findOne<User>({ uid });
 

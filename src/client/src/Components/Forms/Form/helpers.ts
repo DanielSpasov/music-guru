@@ -38,7 +38,6 @@ export type OnSubmitProps = {
 export type FetchDefaultDataProps = {
   toast: typeof toast;
   params: Params;
-  ctx: Record<string, any>;
 };
 
 export type FormSchema = {

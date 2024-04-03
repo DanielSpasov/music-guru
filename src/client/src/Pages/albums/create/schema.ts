@@ -1,5 +1,5 @@
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
-import { DatePicker, Input, Select } from '../../../Components';
+import { Calendar, Input, Select } from '../../../Components';
 import { Song } from '../../songs/helpers';
 import { AlbumSchema } from '../helpers';
 import Api from '../../../Api';
@@ -103,7 +103,7 @@ export const schema: FormSchema = {
         {
           key: 'release_date',
           label: 'Release Date',
-          Component: DatePicker
+          Component: Calendar
         },
         {
           key: 'songs',

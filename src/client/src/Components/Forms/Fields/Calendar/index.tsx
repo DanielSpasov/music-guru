@@ -1,9 +1,9 @@
-import ReactDatePicker from 'react-datepicker';
 import { useCallback, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 import { FieldProps } from '../helpers';
 import Controls from '../Controls';
-import moment from 'moment';
 
 import './styles.css';
 
@@ -13,7 +13,7 @@ const darkProps =
 const focusProps =
   'focus:border-primary dark:focus:border-primary-dark [&~label]:focus:-top-7 [&~label]:focus:left-1';
 
-export default function DatePicker({
+export default function Calendar({
   label,
   value = '',
   name,
@@ -32,7 +32,7 @@ export default function DatePicker({
 
   return (
     <div className="relative my-2 w-full">
-      <ReactDatePicker
+      <DatePicker
         open={open}
         selected={value ? moment(value).toDate() : null}
         value={value ? moment(value).format('MMMM Do YYYY') : ''}
@@ -42,8 +42,8 @@ export default function DatePicker({
         onBlur={() => setOpen(false)}
         onClickOutside={() => setOpen(false)}
         calendarStartDay={1}
-        nextMonthButtonLabel="Next >"
-        previousMonthButtonLabel="< Prev"
+        nextMonthButtonLabel=">"
+        previousMonthButtonLabel="<"
         className={`w-full h-11 outline-none bg-neutral-100 border-2 border-neutral-200 rounded-md p-2 cursor-pointer ${hoverProps} ${focusProps} ${darkProps}`}
       />
 

@@ -4,8 +4,8 @@ import env from './env';
 
 import router from './Router';
 
-import { initialize } from './Database/storage';
-initialize();
+import { mongo, initFirestoreBucket } from './Database';
+initFirestoreBucket();
 
 const PORT = env.PORT || 8000;
 
@@ -15,6 +15,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
+app.use(mongo);
 app.use(router);
 
 app.listen(PORT, () =>

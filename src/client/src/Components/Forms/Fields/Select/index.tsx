@@ -30,7 +30,11 @@ export default function Select({
 
   const _onChange = useCallback(
     (option: any, settings: any) => {
-      if (settings?.action === 'clear') return setSelected([]);
+      if (settings?.action === 'clear') {
+        onChange({ target: { value: null } });
+        setSelected([]);
+        return;
+      }
       const value = props?.multiple ? option : [option];
       onChange({ target: { value } });
       setSelected(value);

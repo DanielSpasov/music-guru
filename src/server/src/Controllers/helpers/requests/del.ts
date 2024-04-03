@@ -2,13 +2,14 @@ import { deleteObject, getStorage, ref } from 'firebase/storage';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
+import { ExtendedRequest } from '../../../Database';
 import { errorHandler } from '../../../Error';
-import { connect } from '../../../Database';
 import { SimpleReqProps } from '../types';
 import env from '../../../env';
 
 export function del({ collectionName }: SimpleReqProps) {
-  return async function (req: Request, res: Response) {
+  return async function (request: Request, res: Response) {
+    const req = request as ExtendedRequest;
     try {
       const token = req.headers?.authorization;
       if (!token) {
@@ -20,7 +21,7 @@ export function del({ collectionName }: SimpleReqProps) {
         env.SECURITY.JWT_SECRET
       ) as JwtPayload;
 
-      const test = await connect('models');
+      const test = req.mongo.db('models');
       const collection = test.collection(collectionName);
       const docs = collection.aggregate([{ $match: { uid: req.params.id } }]);
       const [item] = await docs.toArray();
