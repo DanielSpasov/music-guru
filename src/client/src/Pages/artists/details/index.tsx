@@ -8,7 +8,7 @@ import { Artist } from '../helpers';
 import Api from '../../../Api';
 
 export default function ArtistDetails() {
-  const { uid: userUID } = useContext(AuthContext);
+  const { uid, isAuthenticated } = useContext(AuthContext);
 
   const { id = '0' } = useParams();
   const navigate = useNavigate();
@@ -42,7 +42,8 @@ export default function ArtistDetails() {
         {
           icon: 'edit',
           onClick: () => navigate('edit'),
-          disabled: userUID !== artist?.created_by
+          hidden: !isAuthenticated,
+          disabled: uid !== artist?.created_by
         }
       ]}
     >
