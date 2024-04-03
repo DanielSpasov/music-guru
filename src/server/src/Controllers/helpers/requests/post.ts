@@ -4,14 +4,15 @@ import { Request, Response } from 'express';
 import crypto from 'crypto';
 
 import { FileUploadSchema, validationSchemas } from '../../../Database/Schemas';
+import { ExtendedRequest } from '../../../Database';
 import { errorHandler } from '../../../Error';
 import { getUploadLinks } from '../helpers';
-import { connect } from '../../../Database';
 import { SimpleReqProps } from '../types';
 import env from '../../../env';
 
 export function post({ collectionName }: SimpleReqProps) {
-  return async function (req: Request, res: Response) {
+  return async function (request: Request, res: Response) {
+    const req = request as ExtendedRequest;
     try {
       const token = req.headers?.authorization;
       if (!token) {
@@ -45,7 +46,7 @@ export function post({ collectionName }: SimpleReqProps) {
         uid
       );
 
-      const db = await connect('models');
+      const db = req.mongo.db('models');
       const users = db.collection('users');
       const user = await users.findOne({ uid: userUID });
       if (!user) {

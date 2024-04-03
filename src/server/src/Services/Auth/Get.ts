@@ -1,11 +1,12 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
+import { ExtendedRequest } from '../../Database';
 import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
 import env from '../../env';
 
-export async function GetUser(req: Request, res: Response) {
+export async function GetUser(request: Request, res: Response) {
+  const req = request as ExtendedRequest;
   try {
     const token = req.headers.authorization;
     if (!token) {
@@ -15,7 +16,7 @@ export async function GetUser(req: Request, res: Response) {
 
     const { uid } = jwt.verify(token, env.SECURITY.JWT_SECRET) as JwtPayload;
 
-    const db = await connect('models');
+    const db = req.mongo.db('models');
     const collection = db.collection('users');
     const data = await collection.findOne({ uid });
 

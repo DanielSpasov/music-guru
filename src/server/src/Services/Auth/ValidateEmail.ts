@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
 
+import { ExtendedRequest } from '../../Database';
 import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
 
-export async function ValidateEmail(req: Request, res: Response) {
+export async function ValidateEmail(request: Request, res: Response) {
+  const req = request as ExtendedRequest;
   try {
     const { id } = req.body;
 
-    const db = await connect('models');
+    const db = req.mongo.db('models');
     const collection = db.collection('users');
     const user = await collection.findOne({ uid: id });
     if (!user) {

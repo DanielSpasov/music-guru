@@ -3,11 +3,12 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { SignInSchema } from '../../Database/Schemas';
+import { ExtendedRequest } from '../../Database';
 import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
 import env from '../../env';
 
-export async function SignIn(req: Request, res: Response) {
+export async function SignIn(request: Request, res: Response) {
+  const req = request as ExtendedRequest;
   try {
     // VALIDATE WITH ZOD
     const { email, password } = SignInSchema.parse({
@@ -16,7 +17,7 @@ export async function SignIn(req: Request, res: Response) {
     });
 
     // CHECK IF THE EMAIL IS REGISTERED
-    const db = await connect('models');
+    const db = req.mongo.db('models');
     const collection = db.collection('users');
     const user = await collection.findOne({ email });
     if (!user) {
