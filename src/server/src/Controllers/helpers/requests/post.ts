@@ -3,10 +3,10 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import crypto from 'crypto';
 
-import { FileUploadSchema, validationSchemas } from '../../../Database/Schemas';
+import { FileSchema, validationSchemas } from '../../../Database/Schemas';
 import { ExtendedRequest } from '../../../Database';
 import { errorHandler } from '../../../Error';
-import { getUploadLinks } from '../helpers';
+import { getUploadLink } from '../helpers';
 import { SimpleReqProps } from '../types';
 import env from '../../../env';
 
@@ -29,22 +29,18 @@ export function post({ collectionName }: SimpleReqProps) {
       const validationSchema = validationSchemas[colName];
       const validatedData = validationSchema.parse(req.body);
 
-      if (req?.files?.length) {
-        const validatedFiles = FileUploadSchema.parse(req?.files);
-        const name = validatedFiles[0].originalname;
+      if (req?.file) {
+        const validatedFile = FileSchema.parse(req?.file);
+        const name = validatedFile.originalname;
         const fileExt = name.split('.')[name.split('.').length - 1];
         const imageRef = ref(
           getStorage(),
           `images/${collectionName}/${uid}.${fileExt}`
         );
-        await uploadBytes(imageRef, validatedFiles[0].buffer);
+        await uploadBytes(imageRef, validatedFile.buffer);
       }
 
-      const uploadedFiles = await getUploadLinks(
-        req?.files as [],
-        colName,
-        uid
-      );
+      const uploadedFile = await getUploadLink(req?.file, colName, uid);
 
       const db = req.mongo.db('models');
       const users = db.collection('users');
@@ -56,7 +52,7 @@ export function post({ collectionName }: SimpleReqProps) {
 
       const data = {
         ...validatedData,
-        ...uploadedFiles,
+        ...(req?.file ? { [req.file.fieldname]: uploadedFile } : {}),
         uid,
         created_by: userUID,
         created_at: new Date()
