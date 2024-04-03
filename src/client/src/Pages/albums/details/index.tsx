@@ -9,7 +9,7 @@ import { Album } from '../helpers';
 import Api from '../../../Api';
 
 export default function AlbumDetails() {
-  const { uid: userUID } = useContext(AuthContext);
+  const { uid, isAuthenticated } = useContext(AuthContext);
 
   const { id = '0' } = useParams();
   const navigate = useNavigate();
@@ -65,13 +65,14 @@ export default function AlbumDetails() {
         {
           icon: 'edit',
           onClick: () => navigate('edit'),
-          disabled: userUID !== album?.created_by,
-          tooltip: 'Edit Album'
+          hidden: !isAuthenticated,
+          disabled: uid !== album?.created_by
         },
         {
           icon: 'trash',
           onClick: deleteAlbum,
-          disabled: userUID !== album?.created_by
+          hidden: !isAuthenticated,
+          disabled: uid !== album?.created_by
         }
       ]}
     >

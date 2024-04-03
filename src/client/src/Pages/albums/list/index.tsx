@@ -17,7 +17,7 @@ export default function Albums() {
         {
           icon: 'add',
           onClick: () => navigate('create'),
-          disabled: !isAuthenticated
+          hidden: !isAuthenticated
         }
       ]}
     >

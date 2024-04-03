@@ -18,7 +18,7 @@ export default function Songs() {
         {
           icon: 'add',
           onClick: () => navigate('create'),
-          disabled: !isAuthenticated
+          hidden: !isAuthenticated
         }
       ]}
     >
