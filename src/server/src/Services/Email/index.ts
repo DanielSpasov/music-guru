@@ -7,11 +7,11 @@ import env from '../../env';
 export default async function SendEmail({
   to,
   template,
-  data
+  expToken
 }: {
   to: string;
   template: Template;
-  data?: Record<string, any>;
+  expToken?: string;
 }) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -24,6 +24,6 @@ export default async function SendEmail({
   await transporter.sendMail({
     to,
     from: `"Music Guru" <${env.EMAIL.SERVICE_USER}>`,
-    ...templates[template](data)
+    ...templates[template](expToken)
   });
 }
