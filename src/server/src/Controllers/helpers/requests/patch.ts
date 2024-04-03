@@ -35,7 +35,12 @@ export function patch({ collectionName }: SimpleReqProps) {
 
       await collection.findOneAndUpdate(
         { uid: req.params.id },
-        { $set: validatedData },
+        {
+          $set: {
+            ...validatedData,
+            image: item.image
+          }
+        },
         { upsert: true }
       );
 
