@@ -43,11 +43,7 @@ export default function List({
   );
 
   return (
-    <section
-      className={`flex flex-col ${
-        center ? 'items-center mx-10' : 'items-start mx-0'
-      }`}
-    >
+    <section className="flex flex-col items-center">
       <Filters
         config={filtersConfig}
         setFilters={setFilters}
@@ -55,8 +51,8 @@ export default function List({
       />
 
       <div
-        className={`flex flex-wrap ${
-          !data.length && !loading ? 'justify-center' : 'justify-start'
+        className={`flex flex-wrap w-full ${
+          center ? 'items-center justify-center' : 'items-start justify-start'
         }`}
       >
         {loading ? (
@@ -66,7 +62,7 @@ export default function List({
               <Card key={i} data={data} model={model} loading={true} />
             ))
         ) : !data.length ? (
-          <h4 className="text-center">No {model} available.</h4>
+          <h4 className="font-medium">No {model} available.</h4>
         ) : (
           data.map(x => (
             <Card

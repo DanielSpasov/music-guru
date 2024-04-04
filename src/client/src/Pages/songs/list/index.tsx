@@ -23,6 +23,7 @@ export default function Songs() {
       ]}
     >
       <List
+        // center={false}
         fetchFn={config => Api.songs.fetch({ config })}
         model="songs"
         skeletonLength={54}

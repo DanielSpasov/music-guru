@@ -25,18 +25,16 @@ export default function PageLayout({
         {loading ? (
           <Loader size="sm" />
         ) : (
-          <>
-            <article>
-              {children}
-              <div className="fixed z-0 bottom-0 right-0">
-                {actions
-                  .filter(x => !x?.hidden)
-                  .map((action, i) => (
-                    <Action action={action} key={i} />
-                  ))}
-              </div>
-            </article>
-          </>
+          <article className="mx-[10%]">
+            {children}
+            <div className="fixed z-0 bottom-0 right-0">
+              {actions
+                .filter(x => !x?.hidden)
+                .map((action, i) => (
+                  <Action action={action} key={i} />
+                ))}
+            </div>
+          </article>
         )}
       </main>
     </>

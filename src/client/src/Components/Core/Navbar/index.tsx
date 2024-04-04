@@ -38,7 +38,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`fixed w-full h-20 z-50 flex px-10 ${themeProps}`}>
+    <nav className={`fixed w-full h-20 z-50 flex px-[10%] ${themeProps}`}>
       <div className="flex items-center flex-1 p-4">
         <Link to="/">
           <img

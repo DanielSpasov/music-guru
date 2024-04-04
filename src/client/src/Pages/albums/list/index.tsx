@@ -34,6 +34,7 @@ export default function Albums() {
         ]}
         fetchFn={config => Api.albums.fetch({ config })}
         model="albums"
+        center={false}
       />
     </PageLayout>
   );

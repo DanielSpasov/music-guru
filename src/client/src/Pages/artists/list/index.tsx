@@ -22,7 +22,11 @@ export default function Artists() {
         }
       ]}
     >
-      <List fetchFn={config => Api.artists.fetch({ config })} model="artists" />
+      <List
+        fetchFn={config => Api.artists.fetch({ config })}
+        model="artists"
+        center={false}
+      />
     </PageLayout>
   );
 }
