@@ -11,16 +11,9 @@ export default class AlbumsAPI extends Crud<Album> {
     applyPrefix(this, props);
   }
 
-  async fetchTypes({ config }: { config?: Config }) {
+  fetchTypes({ config }: { config?: Config }) {
     return get({
       url: `${this.baseUrl}/${this.model}/types/`,
-      config
-    });
-  }
-
-  test(config?: Config) {
-    return get({
-      url: `${this.baseUrl}/test123/`,
       config
     });
   }
