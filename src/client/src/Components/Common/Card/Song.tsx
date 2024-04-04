@@ -27,7 +27,7 @@ export default function SongCard({
   return (
     <div
       data-testid="song-card"
-      className={`flex items-center w-48 h-16 p-2 m-1 rounded-md cursor-pointer shadow-md ${defaultProps}`}
+      className={`flex items-center w-48 h-16 p-2 m-3 rounded-md cursor-pointer shadow-md ${defaultProps}`}
       onClick={onClick}
     >
       <img
@@ -58,7 +58,7 @@ function Skeleton() {
   return (
     <div
       data-testid="song-card-skeleton"
-      className="w-48 h-16 m-1 flex items-center bg-neutral-200 dark:bg-neutral-900 rounded-md animate-pulse"
+      className="w-48 h-16 m-3 flex items-center bg-neutral-200 dark:bg-neutral-900 rounded-md animate-pulse"
     >
       <div className="w-12 h-12 bg-neutral-300 dark:bg-neutral-700 rounded-md m-2" />
       <div>
