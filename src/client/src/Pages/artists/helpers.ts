@@ -22,10 +22,12 @@ export interface Artist extends ArtistModel {
   albums: Album[];
   songs: Song[];
   features: Song[];
+  favorites: number;
 }
 
 export interface ListArtist {
   uid: string;
   name: string;
   image: string;
+  favorites: number;
 }

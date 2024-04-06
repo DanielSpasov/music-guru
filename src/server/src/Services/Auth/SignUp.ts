@@ -43,7 +43,8 @@ export async function SignUp(request: Request, res: Response) {
       email,
       password: passwordHash,
       verified: false,
-      created_at: new Date()
+      created_at: new Date(),
+      favorites: {}
     };
     await collection.insertOne(data);
 

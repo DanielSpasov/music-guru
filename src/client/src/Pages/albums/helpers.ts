@@ -43,6 +43,7 @@ export interface Album extends AlbumModel {
   created_by: string;
   artist: Artist;
   songs?: Song[];
+  favorites: number;
 }
 
 export interface ListAlbum {
@@ -54,4 +55,5 @@ export interface ListAlbum {
   };
   image: string;
   release_date?: Date;
+  favorites: number;
 }

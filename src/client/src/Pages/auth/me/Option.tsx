@@ -88,7 +88,9 @@ export default function Option({ data, user, setUser }: OptionProps) {
           />
         ) : (
           <>
-            {data.type === 'string' && <span>{user[data.field]}</span>}
+            {data.type === 'string' && (
+              <span>{user[data.field]?.toString()}</span>
+            )}
             {data.type === 'boolean' && (
               <Icon
                 model={user[data.field] ? 'check' : 'close'}

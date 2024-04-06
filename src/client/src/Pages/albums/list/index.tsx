@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { FavoritesProvider, AuthContext } from '../../../Contexts';
 import { List, PageLayout } from '../../../Components';
-import { AuthContext } from '../../../Contexts/Auth';
 import Api from '../../../Api';
 
 export default function Albums() {
@@ -21,21 +21,24 @@ export default function Albums() {
         }
       ]}
     >
-      <List
-        filtersConfig={[
-          {
-            key: 'name',
-            label: 'Name'
-          },
-          {
-            key: 'artist.name',
-            label: 'Artist'
-          }
-        ]}
-        fetchFn={config => Api.albums.fetch({ config })}
-        model="albums"
-        center={false}
-      />
+      <FavoritesProvider>
+        <List
+          filtersConfig={[
+            {
+              key: 'name',
+              label: 'Name'
+            },
+            {
+              key: 'artist.name',
+              label: 'Artist'
+            }
+          ]}
+          fetchFn={config => Api.albums.fetch({ config })}
+          favoriteFn={uid => Api.albums.favorite({ uid })}
+          model="albums"
+          center={false}
+        />
+      </FavoritesProvider>
     </PageLayout>
   );
 }

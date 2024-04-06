@@ -20,7 +20,7 @@ export async function GetUser(request: Request, res: Response) {
     const collection = db.collection('users');
     const data = await collection.findOne({ uid });
 
-    res.status(200).json({ message: `User updated.`, data });
+    res.status(200).json({ data });
   } catch (error) {
     errorHandler(req, res, error);
   }

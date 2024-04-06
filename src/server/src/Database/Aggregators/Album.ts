@@ -69,7 +69,8 @@ const songs: AggregationStage[] = [
       created_at: { $first: '$created_at' },
       created_by: { $first: '$created_by' },
       type: { $first: '$type' },
-      songs: { $push: '$songs' }
+      songs: { $push: '$songs' },
+      favorites: { $first: '$favorites' }
     }
   },
   {

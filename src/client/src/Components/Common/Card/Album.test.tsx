@@ -19,7 +19,8 @@ describe('Album Card', () => {
       name: 'Mixtape'
     },
     image: 'http://test123',
-    release_date: new Date()
+    release_date: new Date(),
+    favorites: 0
   };
 
   describe('Business Logic', () => {

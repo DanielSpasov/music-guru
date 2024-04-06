@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { Favorites } from '../../Contexts/Favorites';
+
 export const schema = z.object({
   username: z
     .union([
@@ -41,4 +43,5 @@ export interface User extends UserModel {
   uid: string;
   verified: boolean;
   created_at: string;
+  favorites: Favorites;
 }

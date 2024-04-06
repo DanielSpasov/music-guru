@@ -1,8 +1,10 @@
+import { Dispatch, SetStateAction } from 'react';
+
 import { Config, ModelKeys } from '../../../Api/helpers';
 import { Artist } from '../../../Pages/artists/helpers';
 import { Album } from '../../../Pages/albums/helpers';
 import { Song } from '../../../Pages/songs/helpers';
-import { Dispatch, SetStateAction } from 'react';
+import { Favorites } from '../../../Contexts';
 
 export type Model = Song | Artist | Album;
 
@@ -14,7 +16,8 @@ export type Filter = {
 
 export type ListProps = {
   fetchFn: (config?: Config) => Promise<{ data: Model[] }>;
-  model: ModelKeys;
+  favoriteFn?: (uid: string) => Promise<{ favorites: Favorites }>;
+  model: Exclude<ModelKeys, 'user'>;
   filtersConfig?: Filter[];
   skeletonLength?: number;
   center?: boolean;

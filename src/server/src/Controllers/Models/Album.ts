@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { fetch, post, get, del, patch } from '../helpers/requests';
 import { authorization, upload } from '../../Middleware';
+import favorite from '../../Services/Favorites';
 
 const router = Router();
 
@@ -20,6 +21,7 @@ router.post(
   [authorization, upload('image')],
   post({ collectionName: 'albums' })
 );
+router.post('/favorite', [authorization], favorite({ model: 'albums' }));
 
 router.patch('/:id', authorization, patch({ collectionName: 'albums' }));
 

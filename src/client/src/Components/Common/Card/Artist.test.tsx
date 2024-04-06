@@ -1,20 +1,14 @@
 import { render, screen } from '@testing-library/react';
 
-import ArtistCard, {
-  darkHoverProps,
-  darkHoverTextProps,
-  darkProps,
-  lightHoverProps,
-  lightHoverTextProps,
-  lightProps
-} from './Artist';
+import ArtistCard, { darkHoverProps, lightHoverProps } from './Artist';
 import { ListArtist } from '../../../Pages/artists/helpers';
 
 describe('Artist Card', () => {
   const mockData: ListArtist = {
     name: 'Test Artist Name',
     uid: 'test-artist-uuid',
-    image: 'http://test123'
+    image: 'http://test123',
+    favorites: 0
   };
 
   describe('Business Logic', () => {
@@ -42,6 +36,12 @@ describe('Artist Card', () => {
       expect(image).toHaveAttribute('src', mockData.image);
     });
 
+    it('renders correct favorites count', () => {
+      render(<ArtistCard data={mockData} />);
+      const card = screen.getByTestId('artist-card-favorites');
+      expect(Number(card.textContent)).toBe(mockData.favorites);
+    });
+
     it('calls onClick when clicked', () => {
       let clickCounter = 0;
       const onClick = () => {
@@ -55,18 +55,6 @@ describe('Artist Card', () => {
   });
 
   describe('CSS', () => {
-    it('renders dark mode', () => {
-      render(<ArtistCard data={mockData} />);
-      const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass(darkProps);
-    });
-
-    it('renders light mode', () => {
-      render(<ArtistCard data={mockData} />);
-      const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass(lightProps);
-    });
-
     it('renders dark mode hover', () => {
       render(<ArtistCard data={mockData} />);
       const card = screen.getByTestId('artist-card');
@@ -77,18 +65,6 @@ describe('Artist Card', () => {
       render(<ArtistCard data={mockData} />);
       const card = screen.getByTestId('artist-card');
       expect(card).toHaveClass(lightHoverProps);
-    });
-
-    it('renders dark mode text', () => {
-      render(<ArtistCard data={mockData} />);
-      const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass(darkHoverTextProps);
-    });
-
-    it('renders light mode text', () => {
-      render(<ArtistCard data={mockData} />);
-      const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass(lightHoverTextProps);
     });
   });
 });

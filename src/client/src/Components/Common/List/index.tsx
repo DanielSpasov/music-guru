@@ -9,6 +9,7 @@ import { Card } from '../../';
 export default function List({
   model,
   fetchFn,
+  favoriteFn,
   filtersConfig = [],
   skeletonLength = 18,
   center = true
@@ -71,6 +72,7 @@ export default function List({
               model={model}
               onClick={() => onClick(x)}
               loading={loading}
+              favoriteFn={favoriteFn}
             />
           ))
         )}

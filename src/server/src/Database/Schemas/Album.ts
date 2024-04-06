@@ -7,7 +7,8 @@ const DateSchema = z.union([z.string(), z.null()]).transform(x => {
 
 export const BaseAlbumSchema = z.object({
   name: z.string(),
-  release_date: DateSchema.optional().default(null)
+  release_date: DateSchema.optional().default(null),
+  favorites: z.number().optional().default(0)
 });
 
 export const AlbumSchema = BaseAlbumSchema.extend({
