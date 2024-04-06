@@ -51,12 +51,12 @@ function Skeleton() {
   return (
     <div
       data-testid="artist-card-skeleton"
-      className="relative dark:bg-neutral-700 flex flex-col m-3 cursor-pointer p-2 rounded-md"
+      className="relative bg-neutral-200 dark:bg-neutral-700 flex flex-col m-3 cursor-pointer p-2 rounded-md"
     >
       <div className="bg-neutral-300 dark:bg-neutral-800 w-52 h-52 rounded-md" />
       <div className="flex justify-between">
-        <div className="bg-neutral-200 dark:bg-neutral-800 w-28 h-6 mt-2 rounded-md" />
-        <div className="bg-neutral-200 dark:bg-neutral-800 w-10 h-6 mt-2 rounded-md" />
+        <div className="bg-neutral-300 dark:bg-neutral-800 w-28 h-6 mt-2 rounded-md" />
+        <div className="bg-neutral-300 dark:bg-neutral-800 w-10 h-6 mt-2 rounded-md" />
       </div>
     </div>
   );
