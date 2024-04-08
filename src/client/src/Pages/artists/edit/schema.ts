@@ -21,9 +21,10 @@ export const schema: FormSchema = {
   },
   onSubmit: async ({ formData, toast, navigate, params: { id = '' } }) => {
     try {
-      const { data } = await Api.artists.patch({ id, body: formData });
-      toast.success('Successfully Edited Artist');
-      navigate(`/artists/${data.uid}`);
+      console.log(formData);
+      // const { data } = await Api.artists.patch({ id, body: formData });
+      // toast.success('Successfully Edited Artist');
+      // navigate(`/artists/${data.uid}`);
     } catch (err) {
       toast.error('Failed to Edit Artist');
     }
@@ -51,6 +52,47 @@ export const schema: FormSchema = {
           key: 'bio',
           label: 'Biography',
           Component: Textarea
+        }
+      ]
+    },
+    {
+      key: 'socials',
+      title: 'Socials',
+      fields: [
+        {
+          key: 'instagram',
+          label: 'Instagram',
+          Component: Input
+        },
+        {
+          key: 'x',
+          label: 'X',
+          Component: Input
+        },
+        {
+          key: 'facebook',
+          label: 'Facebook',
+          Component: Input
+        },
+        {
+          key: 'spotify',
+          label: 'Spotify',
+          Component: Input
+        },
+        {
+          key: 'apple_music',
+          label: 'Apple Music',
+          Component: Input
+        },
+        {
+          key: 'youtube',
+          label: 'Youtube',
+          Component: Input
+        },
+        {
+          key: 'soundcloud',
+          label: 'Soundcloud',
+          Component: Input
         }
       ]
     }

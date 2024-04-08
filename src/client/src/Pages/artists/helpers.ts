@@ -10,11 +10,22 @@ export const ArtistSchema = z.object({
   image: FileSchema
 });
 
-export const EditArtistSchema = ArtistSchema.omit({ image: true });
+export const EditArtistSchema = ArtistSchema.omit({ image: true })
+  .and(
+    z.object({
+      instagram: z.string().url().optional()
+    })
+  )
+  .transform(data => {
+    console.log(data);
+    return {
+      ...data,
+      links: [{ name: 'instagram', url: data.instagram }]
+    };
+  });
 
 const ArtistModelSchema = ArtistSchema.omit({ image: true });
-type ArtistModel = z.infer<typeof ArtistModelSchema>;
-export interface Artist extends ArtistModel {
+export interface Artist extends z.infer<typeof ArtistModelSchema> {
   image: string;
   uid: string;
   created_at: Date;
