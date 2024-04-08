@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import ArtistCard, { darkHoverProps, lightHoverProps } from './Artist';
-import { ListArtist } from '../../../Pages/artists/helpers';
+import { ListArtist } from '../../../Types/Artist';
 
 describe('Artist Card', () => {
   const mockData: ListArtist = {

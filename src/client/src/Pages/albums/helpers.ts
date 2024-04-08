@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { FileSchema } from '../../Utils/FileSchema';
-import { Artist } from '../artists/helpers';
+import { Artist } from '../../Types/Artist';
 import { Song } from '../songs/helpers';
 
 const DateSchema = z.union([z.date(), z.null()]);

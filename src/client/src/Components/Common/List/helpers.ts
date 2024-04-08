@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from 'react';
 
 import { Config, ModelKeys } from '../../../Api/helpers';
-import { Artist } from '../../../Pages/artists/helpers';
 import { Album } from '../../../Pages/albums/helpers';
 import { Song } from '../../../Pages/songs/helpers';
+import { Artist } from '../../../Types/Artist';
 import { Favorites } from '../../../Contexts';
 
 export type Model = Song | Artist | Album;

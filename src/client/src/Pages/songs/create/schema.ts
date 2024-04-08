@@ -1,7 +1,7 @@
 import Api from '../../../Api';
 import { Calendar, Input, Select } from '../../../Components';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
-import { Artist } from '../../artists/helpers';
+import { Artist } from '../../../Types/Artist';
 import { SongSchema } from '../helpers';
 
 export const schema: FormSchema = {

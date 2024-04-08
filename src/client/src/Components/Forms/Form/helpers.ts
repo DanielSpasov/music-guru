@@ -5,14 +5,14 @@ import {
 } from 'react-hook-form/dist/types';
 import { NavigateFunction, Params } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { ZodEffects, ZodObject } from 'zod';
+import { ZodSchema } from 'zod';
 import { FC } from 'react';
 
 import { TextareaProps } from '../Fields/Textarea/helpers';
 import { SelectProps } from '../Fields/Select/helpers';
 import { InputProps } from '../Fields/Input/helpers';
 
-export type ValidationSchema = ZodObject<any> | ZodEffects<ZodObject<any>>;
+export type ValidationSchema = ZodSchema;
 
 export type FormField = {
   key: string;

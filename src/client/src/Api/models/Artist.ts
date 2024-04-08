@@ -1,5 +1,5 @@
-import { Artist } from '../../Pages/artists/helpers';
 import { Config, applyPrefix } from '../helpers';
+import { Artist } from '../../Types/Artist';
 import { post } from '../requests';
 import Crud from '../crud';
 

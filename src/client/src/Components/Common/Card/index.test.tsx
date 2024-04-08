@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { ListArtist } from '../../../Pages/artists/helpers';
 import { ListAlbum } from '../../../Pages/albums/helpers';
 import { ListSong } from '../../../Pages/songs/helpers';
 import { AuthContext } from '../../../Contexts';
+import { ListArtist } from '../../../Types/Artist';
 import Card from './index';
 
 describe('Card', () => {
