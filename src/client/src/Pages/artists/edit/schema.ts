@@ -1,4 +1,4 @@
-import { EditArtistSchema, SocialsSchema } from '../../../Validations';
+import { EditArtistSchema, ArtistSocialsSchema } from '../../../Validations';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
 import { Input, Textarea } from '../../../Components';
 import Api from '../../../Api';
@@ -28,7 +28,7 @@ export const schema: FormSchema = {
   },
   onSubmit: async ({ formData, toast, navigate, params: { id = '' } }) => {
     try {
-      const socialsKeys = Object.keys(SocialsSchema.shape);
+      const socialsKeys = Object.keys(ArtistSocialsSchema.shape);
 
       const payload = Object.entries(formData).reduce((data, [key, value]) => {
         if (!value) return data;

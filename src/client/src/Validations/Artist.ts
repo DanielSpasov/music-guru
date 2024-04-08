@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { FileSchema } from './File';
-import { SocialsSchema } from './Socials';
+import { ArtistSocialsSchema } from './Socials';
 
 export const BaseArtistSchema = z.object({
   name: z.string(),
@@ -9,7 +9,7 @@ export const BaseArtistSchema = z.object({
   image: FileSchema
 });
 
-export const CreateArtistSchema = BaseArtistSchema.and(SocialsSchema);
+export const CreateArtistSchema = BaseArtistSchema.and(ArtistSocialsSchema);
 export const EditArtistSchema = BaseArtistSchema.omit({ image: true }).and(
-  SocialsSchema
+  ArtistSocialsSchema
 );
