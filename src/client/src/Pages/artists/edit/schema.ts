@@ -1,7 +1,7 @@
-import Api from '../../../Api';
-import { Input, Textarea } from '../../../Components';
+import { EditArtistSchema, SocialsSchema } from '../../../Validations';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
-import { EditArtistSchema } from '../helpers';
+import { Input, Textarea } from '../../../Components';
+import Api from '../../../Api';
 
 export const schema: FormSchema = {
   title: 'Edit Artist',
@@ -13,7 +13,14 @@ export const schema: FormSchema = {
         id,
         config: { params: { serializer: 'detailed' } }
       });
-      return data;
+
+      return {
+        ...data,
+        ...data.links.reduce(
+          (acc, { name, url }) => ({ ...acc, [name]: url }),
+          {}
+        )
+      };
     } catch (err) {
       toast.error('Failed to fetch default data');
       return {};
@@ -21,10 +28,27 @@ export const schema: FormSchema = {
   },
   onSubmit: async ({ formData, toast, navigate, params: { id = '' } }) => {
     try {
-      console.log(formData);
-      // const { data } = await Api.artists.patch({ id, body: formData });
-      // toast.success('Successfully Edited Artist');
-      // navigate(`/artists/${data.uid}`);
+      const socialsKeys = Object.keys(SocialsSchema.shape);
+
+      const payload = Object.entries(formData).reduce((data, [key, value]) => {
+        if (!value) return data;
+
+        if (socialsKeys.includes(key)) {
+          return {
+            ...data,
+            links: [...(data?.links || []), { name: key, url: value }]
+          };
+        }
+        return { ...data, [key]: value };
+      }, formData);
+
+      Object.keys(payload).forEach(
+        key => payload[key] === undefined && delete payload[key]
+      );
+
+      const { data } = await Api.artists.patch({ id, body: payload });
+      toast.success('Successfully Edited Artist');
+      navigate(`/artists/${data.uid}`);
     } catch (err) {
       toast.error('Failed to Edit Artist');
     }
@@ -49,9 +73,14 @@ export const schema: FormSchema = {
           }
         },
         {
-          key: 'bio',
-          label: 'Biography',
-          Component: Textarea
+          key: 'about',
+          label: 'About',
+          Component: Textarea,
+          validations: {
+            required: {
+              value: true
+            }
+          }
         }
       ]
     },

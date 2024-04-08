@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
-import { Artist } from '../helpers';
+import { Artist } from '../../../Types/Artist';
 import Api from '../../../Api';
 
 // Deatiled view Components
@@ -22,7 +22,8 @@ const defaultArtist: Artist = {
   name: '',
   songs: [],
   uid: '',
-  bio: ''
+  about: '',
+  links: []
 };
 
 export default function ArtistDetails() {

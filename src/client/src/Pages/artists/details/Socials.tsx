@@ -1,45 +1,27 @@
-import { Icon } from '../../../Components';
-import { Artist } from '../helpers';
+import { Icon, IconModel } from '../../../Components';
+import { Artist } from '../../../Types/Artist';
+
+const socialsColors: Record<string, string> = {
+  instagram: '#E1306C',
+  x: '#000000',
+  facebook: '#4267B2',
+  spotify: '#1DB954',
+  apple_music: '#fc3c44',
+  youtube: '#FF0000',
+  soundcloud: '#ff7700'
+};
 
 export default function Socials({ artist }: { artist: Artist }) {
-  console.log(artist);
   return (
     <div className="flex w-full flex-wrap justify-center py-3 gap-3">
-      <Icon
-        className="[&>path]:hover:fill-[#E1306C]"
-        onClick={() => window.open('https://www.instagram.com', '_blank')}
-        model="instagram"
-      />
-      <Icon
-        className="[&>path]:hover:fill-[#000000]"
-        onClick={() => window.open('https://www.instagram.com', '_blank')}
-        model="x"
-      />
-      <Icon
-        className="[&>path]:hover:fill-[#4267B2]"
-        onClick={() => window.open('https://www.instagram.com', '_blank')}
-        model="facebook"
-      />
-      <Icon
-        className="[&>path]:hover:fill-[#1DB954]"
-        onClick={() => window.open('https://www.instagram.com', '_blank')}
-        model="spotify"
-      />
-      <Icon
-        className="[&>path]:hover:fill-[#fc3c44]"
-        onClick={() => window.open('https://www.instagram.com', '_blank')}
-        model="apple-music"
-      />
-      <Icon
-        className="[&>path]:hover:fill-[#FF0000]"
-        onClick={() => window.open('https://www.instagram.com', '_blank')}
-        model="youtube"
-      />
-      <Icon
-        className="[&>path]:hover:fill-[#ff7700]"
-        onClick={() => window.open('https://www.instagram.com', '_blank')}
-        model="soundcloud"
-      />
+      {artist.links.map(({ name, url }) => (
+        <Icon
+          className={`[&>path]:hover:fill-[${socialsColors[name]}]`}
+          onClick={() => window.open(url, '_blank')}
+          model={name as IconModel}
+          key={name}
+        />
+      ))}
     </div>
   );
 }

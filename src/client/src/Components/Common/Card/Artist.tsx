@@ -1,4 +1,4 @@
-import { ListArtist } from '../../../Pages/artists/helpers';
+import { ListArtist } from '../../../Types/Artist';
 import { CardProps } from './helpers';
 import Icon from '../Icon';
 

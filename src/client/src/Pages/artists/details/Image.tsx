@@ -1,4 +1,4 @@
-import { Artist } from '../helpers';
+import { Artist } from '../../../Types/Artist';
 
 const lightImgProps = 'shadow-neutral-400';
 const darkImgProps = 'dark:shadow-neutral-900';

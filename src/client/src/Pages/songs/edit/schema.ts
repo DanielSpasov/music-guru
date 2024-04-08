@@ -2,7 +2,7 @@ import moment from 'moment';
 import Api from '../../../Api';
 import { Calendar, Input, Select } from '../../../Components';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
-import { Artist } from '../../artists/helpers';
+import { Artist } from '../../../Types/Artist';
 import { EditSongSchema } from '../helpers';
 
 export const schema: FormSchema = {

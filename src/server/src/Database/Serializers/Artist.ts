@@ -17,19 +17,21 @@ export class ListArtist {
 export class DetailedArtist {
   uid: string;
   name: string;
-  bio: string;
+  about: string;
   image: string;
   created_at: Date;
   created_by: string;
   favorites: number;
+  links: { name: string; url: string }[];
 
   constructor(artist: Artist) {
     this.uid = artist.uid;
     this.name = artist.name;
-    this.bio = artist.bio;
+    this.about = artist.about;
     this.image = artist.image;
     this.created_at = artist.created_at;
     this.created_by = artist.created_by.uid;
     this.favorites = artist.favorites;
+    this.links = artist.links;
   }
 }
