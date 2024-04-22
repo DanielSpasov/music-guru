@@ -4,7 +4,8 @@ import {
   createContext,
   ReactNode,
   useEffect,
-  useRef
+  useRef,
+  useState
 } from 'react';
 
 export type Theme = 'light' | 'dark';
@@ -16,8 +17,6 @@ interface ThemeContextType {
 
 type ThemeProviderProps = {
   children: ReactNode;
-  theme: Theme;
-  setTheme: Dispatch<SetStateAction<Theme>>;
 };
 
 export const ThemeContext = createContext<ThemeContextType>({
@@ -25,11 +24,18 @@ export const ThemeContext = createContext<ThemeContextType>({
   setTheme: () => null
 });
 
-export function ThemeProvider({
-  children,
-  theme,
-  setTheme
-}: ThemeProviderProps) {
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  const [theme, setTheme] = useState<Theme>(() => {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const currentTheme = localStorage.getItem('theme') as Theme;
+    if (!currentTheme) {
+      const newTheme = prefersDark.matches ? 'dark' : 'light';
+      localStorage.setItem('theme', newTheme);
+      return newTheme;
+    }
+    return currentTheme;
+  });
+
   const body = useRef<HTMLBodyElement>(document.querySelector('body'));
 
   useEffect(() => {
