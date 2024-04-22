@@ -14,7 +14,7 @@ export default async function SendEmail({
   expToken?: string;
 }) {
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: 'outlook',
     auth: {
       user: env.EMAIL.SERVICE_USER,
       pass: env.EMAIL.SERVICE_PASS
