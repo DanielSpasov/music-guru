@@ -14,7 +14,8 @@ export const mongo = async (
   next: NextFunction
 ) => {
   const request = req as ExtendedRequest;
-  request.mongo = await MongoClient.connect(env.MONGO.DB_URI || '');
+  const connectionURI = `mongodb+srv://${env.MONGO.USER}:${env.MONGO.PASS}@main-cluster.i7ggact.mongodb.net/`;
+  request.mongo = await MongoClient.connect(connectionURI);
   next();
 };
 
