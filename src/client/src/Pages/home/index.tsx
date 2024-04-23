@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <PageLayout title="Home">
       <div className="flex justify-center">
-        <Loader size="sm" />
+        <Loader size="lg" />
       </div>
     </PageLayout>
   );
