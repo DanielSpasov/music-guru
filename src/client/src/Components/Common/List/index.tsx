@@ -12,7 +12,8 @@ export default function List({
   favoriteFn,
   filtersConfig = [],
   skeletonLength = 18,
-  center = true
+  center = true,
+  emptyMessage = 'No items available.'
 }: ListProps) {
   const [filters, setFilters] = useState({});
   const [data, setData] = useState<Model[]>([]);
@@ -63,7 +64,7 @@ export default function List({
               <Card key={i} data={data} model={model} loading={true} />
             ))
         ) : !data.length ? (
-          <h4 className="font-medium">No {model} available.</h4>
+          <h4 className="font-medium">{emptyMessage}</h4>
         ) : (
           data.map(x => (
             <Card

@@ -21,6 +21,7 @@ export type ListProps = {
   filtersConfig?: Filter[];
   skeletonLength?: number;
   center?: boolean;
+  emptyMessage?: string;
 };
 
 export type FiltersProps = {
