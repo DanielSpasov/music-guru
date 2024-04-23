@@ -3,16 +3,28 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
-import { List, PageLayout } from '../../../Components';
+import { Image, List, PageLayout } from '../../../Components';
+import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Config } from '../../../Api/helpers';
 import { Song } from '../helpers';
 import Api from '../../../Api';
 
+const defaultSong: Song = {
+  uid: '',
+  created_at: new Date(),
+  created_by: '',
+  features: [],
+  image: '',
+  name: '',
+  release_date: undefined,
+  artist: defaultArtist
+};
+
 export default function SongDetails() {
+  const [song, setSong] = useState<Song>(defaultSong);
   const [loading, setLoading] = useState(true);
-  const [song, setSong] = useState<Song>();
 
   const { uid, isAuthenticated } = useContext(AuthContext);
   const { id = '0' } = useParams();
@@ -21,10 +33,9 @@ export default function SongDetails() {
   const deleteSong = useCallback(async () => {
     try {
       setLoading(true);
-      if (!song?.uid) return;
       await Api.songs.del({ id: song.uid });
       navigate('/songs');
-      toast.success(`Successfully deleted song: ${song?.name}`);
+      toast.success(`Successfully deleted song: ${song.name}`);
     } catch (error) {
       errorHandler(error);
     } finally {
@@ -49,62 +60,68 @@ export default function SongDetails() {
     })();
   }, [id]);
 
-  const fetchFeatures = useCallback(() => {
-    if (!song) return Promise.resolve({ data: [] });
-    return Promise.resolve({ data: song.features });
-  }, [song]);
-
-  const fetchAlbums = useCallback(
-    (config?: Config) => {
-      if (!song) return Promise.resolve({ data: [] });
-      return Api.albums.fetch({
-        config: { params: { 'songs.uid': song.uid, ...config?.params } }
-      });
-    },
+  const fetchFeatures = useCallback(
+    () => Promise.resolve({ data: song.features }),
     [song]
   );
 
-  const fetchArtist = useCallback(async () => {
-    if (!song) return Promise.resolve({ data: [] });
-    return Promise.resolve({ data: [song.artist] });
-  }, [song]);
+  const fetchAlbums = useCallback(
+    (config?: Config) =>
+      Api.albums.fetch({
+        config: { params: { 'songs.uid': song.uid, ...config?.params } }
+      }),
+    [song]
+  );
+
+  const fetchArtist = useCallback(
+    async () => Promise.resolve({ data: [song.artist] }),
+    [song]
+  );
+
+  const updateImage = useCallback(
+    async (file: File) => {
+      const { image } = await Api.songs.updateImage({
+        uid: song.uid,
+        image: file,
+        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+      });
+      setSong(prev => ({ ...prev, image }));
+    },
+    [song.uid]
+  );
 
   return (
     <PageLayout
-      title={song?.name || 'Loading...'}
+      title={song.name}
       loading={loading}
       actions={[
         {
           icon: 'edit',
           onClick: () => navigate('edit'),
           hidden: !isAuthenticated,
-          disabled: uid !== song?.created_by
+          disabled: uid !== song.created_by
         },
         {
           icon: 'trash',
           onClick: deleteSong,
           hidden: !isAuthenticated,
-          disabled: uid !== song?.created_by
+          disabled: uid !== song.created_by
         }
       ]}
     >
       <section className="flex flex-col items-center text-white">
         <div className="flex mb-10">
-          {song?.image && (
-            <img
-              src={song?.image || ''}
-              alt={song?.name}
-              className="w-64 h-64 rounded-lg"
-              loading="lazy"
-            />
-          )}
+          <Image
+            src={song?.image || ''}
+            alt={song.name}
+            editable={song.created_by === uid}
+            size={64}
+            className="rounded-lg"
+            updateFn={updateImage}
+          />
           <div className="px-4">
-            {song?.release_date && (
-              <div>
-                <span className="font-bold">Release Date: </span>
-                <span>{moment(song.release_date).format('MMMM Do YYYY')}</span>
-              </div>
-            )}
+            <span className="font-bold">Release Date: </span>
+            <span>{moment(song.release_date).format('MMMM Do YYYY')}</span>
           </div>
         </div>
 

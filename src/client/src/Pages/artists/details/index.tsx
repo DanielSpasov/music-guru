@@ -1,18 +1,17 @@
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
 
-import { List, PageLayout } from '../../../Components';
+import { List, PageLayout, Image } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Artist } from '../../../Types/Artist';
 import Api from '../../../Api';
 
 // Deatiled view Components
-import Image from './Image';
 import About from './About';
 import Socials from './Socials';
 
-const defaultArtist: Artist = {
+export const defaultArtist: Artist = {
   albums: [],
   created_at: new Date(),
   created_by: '',
@@ -51,9 +50,21 @@ export default function ArtistDetails() {
     })();
   }, [id]);
 
+  const updateImage = useCallback(
+    async (file: File) => {
+      const { image } = await Api.artists.updateImage({
+        uid: artist.uid,
+        image: file,
+        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+      });
+      setArtist(prev => ({ ...prev, image }));
+    },
+    [artist.uid]
+  );
+
   return (
     <PageLayout
-      title={artist?.name || ''}
+      title={artist.name}
       loading={loading}
       showHeader={false}
       actions={[
@@ -61,13 +72,22 @@ export default function ArtistDetails() {
           icon: 'edit',
           onClick: () => navigate('edit'),
           hidden: !isAuthenticated,
-          disabled: uid !== artist?.created_by
+          disabled: uid !== artist.created_by
         }
       ]}
     >
       <section className="flex mt-5">
         <div className="flex flex-col items-center w-1/3 px-4">
-          <Image artist={artist} />
+          <div className="flex flex-col items-center">
+            <Image
+              src={artist.image}
+              alt={artist.name}
+              editable={artist.created_by === uid}
+              updateFn={updateImage}
+            />
+            <h2 className="py-2">{artist.name}</h2>
+          </div>
+
           <About artist={artist} />
           <Socials artist={artist} />
         </div>
@@ -79,7 +99,7 @@ export default function ArtistDetails() {
               center={false}
               fetchFn={() =>
                 Api.albums.fetch({
-                  config: { params: { 'artist.uid': artist?.uid } }
+                  config: { params: { 'artist.uid': artist.uid } }
                 })
               }
               model="albums"
@@ -92,7 +112,7 @@ export default function ArtistDetails() {
               center={false}
               fetchFn={() =>
                 Api.songs.fetch({
-                  config: { params: { 'artist.uid': artist?.uid } }
+                  config: { params: { 'artist.uid': artist.uid } }
                 })
               }
               model="songs"

@@ -25,4 +25,20 @@ export default class AlbumsAPI extends Crud<Album> {
       config
     });
   }
+
+  updateImage({
+    uid,
+    image,
+    config = {}
+  }: {
+    uid: string;
+    image: File;
+    config?: Config;
+  }) {
+    return post({
+      url: `${this.baseUrl}/${this.model}/${uid}/image/`,
+      body: { image },
+      config
+    });
+  }
 }
