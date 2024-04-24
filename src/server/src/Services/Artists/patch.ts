@@ -2,12 +2,12 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
 import { ArtistSchema } from '../../Database/Schemas';
-import { ExtendedRequest } from '../../Database';
 import { errorHandler } from '../../Error';
+import { connect } from '../../Database';
 import env from '../../env';
 
-export default async function patch(request: Request, res: Response) {
-  const req = request as ExtendedRequest;
+export default async function patch(req: Request, res: Response) {
+  const mongo = await connect();
   try {
     const token = req.headers?.authorization;
     if (!token) {
@@ -19,7 +19,7 @@ export default async function patch(request: Request, res: Response) {
       env.SECURITY.JWT_SECRET
     ) as JwtPayload;
 
-    const collection = req.mongo.db('models').collection('artists');
+    const collection = mongo.db('models').collection('artists');
     const doc = collection.aggregate([{ $match: { uid: req.params.id } }]);
     const [item] = await doc.toArray();
     if (item.created_by !== userUID) {
@@ -47,5 +47,7 @@ export default async function patch(request: Request, res: Response) {
     });
   } catch (error) {
     errorHandler(req, res, error);
+  } finally {
+    mongo.close();
   }
 }

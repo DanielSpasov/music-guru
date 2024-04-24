@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 
 import { aggregators } from '../../../Database/Aggregators';
-import { ExtendedRequest } from '../../../Database';
 import { QueryProps, ReqProps } from '../types';
 import { errorHandler } from '../../../Error';
+import { connect } from '../../../Database';
 import { serializeObj } from '../helpers';
 
 export function fetch({ collectionName, databaseName }: ReqProps) {
-  return async function (request: Request, res: Response) {
-    const req = request as ExtendedRequest;
+  return async function (req: Request, res: Response) {
+    const mongo = await connect();
     try {
       const { serializer = 'list', ...params }: QueryProps = req.query;
 
@@ -16,7 +16,7 @@ export function fetch({ collectionName, databaseName }: ReqProps) {
         $match: { [name]: { $regex: value, $options: 'i' } }
       }));
 
-      const db = req.mongo.db(databaseName);
+      const db = mongo.db(databaseName);
       const collection = db.collection(collectionName);
 
       const stages =
@@ -37,6 +37,8 @@ export function fetch({ collectionName, databaseName }: ReqProps) {
       res.status(200).json({ data });
     } catch (error) {
       errorHandler(req, res, error);
+    } finally {
+      mongo.close();
     }
   };
 }

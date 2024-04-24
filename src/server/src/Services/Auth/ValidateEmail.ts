@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 
-import { ExtendedRequest } from '../../Database';
 import { errorHandler } from '../../Error';
+import { connect } from '../../Database';
 
-export async function ValidateEmail(request: Request, res: Response) {
-  const req = request as ExtendedRequest;
+export async function ValidateEmail(req: Request, res: Response) {
+  const mongo = await connect();
   try {
     const { id } = req.body;
 
-    const db = req.mongo.db('models');
+    const db = mongo.db('models');
     const collection = db.collection('users');
     const user = await collection.findOne({ uid: id });
     if (!user) {
@@ -20,7 +20,8 @@ export async function ValidateEmail(request: Request, res: Response) {
 
     res.status(200).json({ message: 'Email Verified.' });
   } catch (error) {
-    console.log(error);
     errorHandler(req, res, error);
+  } finally {
+    mongo.close();
   }
 }

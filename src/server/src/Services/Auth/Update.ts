@@ -3,9 +3,9 @@ import { Request, Response } from 'express';
 import { ZodSchema } from 'zod';
 
 import { EmailSchema, UsernameSchema } from '../../Database/Schemas';
-import { ExtendedRequest } from '../../Database';
 import { User } from '../../Database/Types';
 import { errorHandler } from '../../Error';
+import { connect } from '../../Database';
 import env from '../../env';
 
 const editableFieldSchemas: Record<string, ZodSchema> = {
@@ -13,8 +13,8 @@ const editableFieldSchemas: Record<string, ZodSchema> = {
   email: EmailSchema
 };
 
-export async function UpdateUser(request: Request, res: Response) {
-  const req = request as ExtendedRequest;
+export async function UpdateUser(req: Request, res: Response) {
+  const mongo = await connect();
   try {
     const field = req.query['field']?.toString() as keyof User;
 
@@ -28,7 +28,7 @@ export async function UpdateUser(request: Request, res: Response) {
 
     const { uid } = jwt.verify(token, env.SECURITY.JWT_SECRET) as JwtPayload;
 
-    const db = req.mongo.db('models');
+    const db = mongo.db('models');
     const collection = db.collection('users');
     await collection.updateOne({ uid }, { $set: { [field]: validData } });
     const data = await collection.findOne({ uid });
@@ -36,5 +36,7 @@ export async function UpdateUser(request: Request, res: Response) {
     res.status(200).json({ message: `User updated.`, data });
   } catch (error) {
     errorHandler(req, res, error);
+  } finally {
+    mongo.close();
   }
 }

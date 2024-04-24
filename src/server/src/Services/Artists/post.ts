@@ -1,15 +1,15 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-import { ExtendedRequest } from '../../Database';
-import env from '../../env';
 import { ArtistSchema, FileSchema } from '../../Database/Schemas';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { getUploadLink } from '../../Controllers/helpers/helpers';
 import { errorHandler } from '../../Error';
+import { connect } from '../../Database';
+import env from '../../env';
 
-export default async function post(request: Request, res: Response) {
-  const req = request as ExtendedRequest;
+export default async function post(req: Request, res: Response) {
+  const mongo = await connect();
   try {
     const token = req.headers?.authorization;
     if (!token) {
@@ -32,7 +32,7 @@ export default async function post(request: Request, res: Response) {
 
     const uploadedFile = await getUploadLink(req?.file, 'artists', uid);
 
-    const db = req.mongo.db('models');
+    const db = mongo.db('models');
     const users = db.collection('users');
     const user = await users.findOne({ uid: userUID });
     if (!user) {
@@ -54,5 +54,7 @@ export default async function post(request: Request, res: Response) {
     res.status(200).json({ message: 'Success', uid, name: data.name });
   } catch (error) {
     errorHandler(req, res, error);
+  } finally {
+    mongo.close();
   }
 }

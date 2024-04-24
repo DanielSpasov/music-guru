@@ -1,14 +1,14 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-import { ExtendedRequest } from '../../Database';
 import { Models } from '../../Database/Types';
 import { errorHandler } from '../../Error';
+import { connect } from '../../Database';
 import env from '../../env';
 
 export default function favorite({ model }: { model: Models }) {
-  return async function (request: Request, res: Response) {
-    const req = request as ExtendedRequest;
+  return async function (req: Request, res: Response) {
+    const mongo = await connect();
     try {
       const token = req.headers.authorization;
       if (!token) {
@@ -26,7 +26,7 @@ export default function favorite({ model }: { model: Models }) {
         env.SECURITY.JWT_SECRET
       ) as JwtPayload;
 
-      const db = req.mongo.db('models');
+      const db = mongo.db('models');
 
       const usersCollection = db.collection('users');
       const modelCollection = db.collection(model);
@@ -55,6 +55,8 @@ export default function favorite({ model }: { model: Models }) {
       res.status(200).json({ favorites: updatedUser?.favorites });
     } catch (err) {
       errorHandler(req, res, err);
+    } finally {
+      mongo.close();
     }
   };
 }

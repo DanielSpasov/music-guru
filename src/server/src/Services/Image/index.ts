@@ -9,16 +9,16 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
 import { FileSchema } from '../../Database/Schemas';
-import { ExtendedRequest } from '../../Database';
 import { Models } from '../../Database/Types';
 import { errorHandler } from '../../Error';
+import { connect } from '../../Database';
 import env from '../../env';
 
 export default function update({ model }: { model: Exclude<Models, 'users'> }) {
-  return async function (request: Request, res: Response) {
-    const req = request as ExtendedRequest;
+  return async function (req: Request, res: Response) {
+    const mongo = await connect();
     try {
-      const db = req.mongo.db('models');
+      const db = mongo.db('models');
       const collection = db.collection(model);
       const item = await collection.findOne({ uid: req.params.id });
       if (!item) {
@@ -82,6 +82,8 @@ export default function update({ model }: { model: Exclude<Models, 'users'> }) {
       res.status(400).json({ message: 'No image provided.' });
     } catch (err) {
       errorHandler(req, res, err);
+    } finally {
+      mongo.close();
     }
   };
 }

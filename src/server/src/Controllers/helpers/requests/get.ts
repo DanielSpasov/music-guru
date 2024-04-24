@@ -1,18 +1,18 @@
 import { Request, Response } from 'express';
 
 import { aggregators } from '../../../Database/Aggregators';
-import { ExtendedRequest } from '../../../Database';
 import { ReqProps, QueryProps } from '../types';
 import { errorHandler } from '../../../Error';
+import { connect } from '../../../Database';
 import { serializeObj } from '../helpers';
 
 export function get({ collectionName, databaseName }: ReqProps) {
-  return async function (request: Request, res: Response) {
-    const req = request as ExtendedRequest;
+  return async function (req: Request, res: Response) {
+    const mongo = await connect();
     try {
       const { serializer = 'list' }: QueryProps = req.query;
 
-      const db = req.mongo.db(databaseName);
+      const db = mongo.db(databaseName);
       const collection = db.collection(collectionName);
 
       const stages =
@@ -31,6 +31,8 @@ export function get({ collectionName, databaseName }: ReqProps) {
       res.status(200).json({ data });
     } catch (error) {
       errorHandler(req, res, error);
+    } finally {
+      mongo.close();
     }
   };
 }
