@@ -12,9 +12,9 @@ import Icon, { IconModel } from '../Icon';
 
 const lightIconProps = '[&>path]:fill-primary';
 const darkIconProps = 'dark:[&>path]:fill-primary-dark';
-const iconProps = `[&>path]:opacity-70 ${lightIconProps} ${darkIconProps}`;
+const iconProps = `[&>path]:opacity-100 ${lightIconProps} ${darkIconProps}`;
 
-const iconHoverProps = `[&>path]:hover:opacity-100`;
+const iconHoverProps = `[&>path]:hover:opacity-70`;
 const themeProps = `${iconProps} ${iconHoverProps}`;
 
 const lightLoadingProps = '[&>path]:fill-primary';
