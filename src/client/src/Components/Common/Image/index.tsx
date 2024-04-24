@@ -13,12 +13,15 @@ export const imgProps = `shadow-lg rounded-full ${lightImgProps} ${darkImgProps}
 export const hoverProps =
   'cursor-pointer [&+svg]:hover:opacity-100 hover:opacity-60';
 
+export const getSize = (size: number) =>
+  `min-h-${size} min-w-${size} max-h-${size} max-w-${size} h-${size} w-${size}`;
+
 export default function Image({
   src,
   alt = 'image',
   editable = false,
   className = '',
-  size = 72,
+  size = 64,
   updateFn
 }: ImageProps) {
   const [loading, setLoading] = useState(false);
@@ -69,7 +72,9 @@ export default function Image({
         src={src}
         alt={alt}
         onClick={onImageClick}
-        className={`min-h-${size} min-w-${size} w-${size} h-${size} ${loadingImageProps} ${hoverImageProps} ${imgProps} ${className}`}
+        className={`${getSize(
+          size
+        )} ${loadingImageProps} ${hoverImageProps} ${imgProps} ${className}`}
         loading="lazy"
         data-testid="image"
       />
