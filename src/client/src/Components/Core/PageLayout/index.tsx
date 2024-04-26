@@ -23,7 +23,9 @@ export default function PageLayout({
         {showHeader && <h1 className="text-center p-4">{title}</h1>}
 
         {loading ? (
-          <Loader size="sm" />
+          <div className="pt-4">
+            <Loader size="sm" />
+          </div>
         ) : (
           <article className="mx-[10%]">
             {children}
