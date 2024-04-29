@@ -24,7 +24,8 @@ export type FormField = {
 
 export type FormSection = {
   key: string;
-  title: string;
+  title?: string;
+  foldable?: boolean;
   fields: FormField[];
 };
 
@@ -74,7 +75,8 @@ export type FormError = {
 };
 
 export type SectionProps = {
-  title: string;
+  title?: string;
+  foldable?: boolean;
   fields: FormField[];
   validateField: (name: string, value: any) => void;
   setValue: UseFormSetValue<any>;

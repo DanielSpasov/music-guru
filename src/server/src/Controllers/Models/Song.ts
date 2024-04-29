@@ -2,14 +2,15 @@ import { Router } from 'express';
 
 import { fetch, get, post, patch } from '../helpers/requests';
 import { authorization, upload } from '../../Middleware';
+import { postVerse, del } from '../../Services/Songs';
 import updateImage from '../../Services/Image';
-import del from '../../Services/Songs/del';
 
 const router = Router();
 
 router.get('/', fetch({ databaseName: 'models', collectionName: 'songs' }));
-router.get('/:id', get({ databaseName: 'models', collectionName: 'songs' }));
 
+router.get('/:id', get({ databaseName: 'models', collectionName: 'songs' }));
+router.patch('/:id', authorization, patch({ collectionName: 'songs' }));
 router.delete('/:id', authorization, del);
 
 router.post(
@@ -23,6 +24,7 @@ router.post(
   updateImage({ model: 'songs' })
 );
 
-router.patch('/:id', authorization, patch({ collectionName: 'songs' }));
+// Verses
+router.post('/:id/verse', [authorization], postVerse);
 
 export default router;

@@ -85,8 +85,9 @@ export default function Form({
             setValue={setValue}
             validateField={validateField}
             key={section.key}
-            title={section.title}
+            title={section?.title}
             fields={section.fields}
+            foldable={section?.foldable}
           />
         ))}
       </article>

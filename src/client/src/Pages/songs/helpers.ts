@@ -23,7 +23,17 @@ export const SongSchema = Schema.extend({
   features: z.array(z.object({ uid: z.string().uuid() })).optional()
 });
 
+export const VerseSchema = z.object({
+  title: z.string(),
+  lyrics: z.string().max(10000, 'Max length is 10000 characters')
+});
+
 type SongModel = z.infer<typeof Schema>;
+
+type Verse = {
+  title: string;
+  lyrics: string;
+};
 export interface Song extends SongModel {
   uid: string;
   image?: string;
@@ -31,6 +41,7 @@ export interface Song extends SongModel {
   created_by: string;
   artist: Artist;
   features: Artist[];
+  verses: Verse[];
 }
 
 export interface ListSong {

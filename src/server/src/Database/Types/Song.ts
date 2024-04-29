@@ -4,6 +4,11 @@ import { BaseSongSchema } from '../Schemas';
 import { Artist } from './Artist';
 import { User } from './User';
 
+export interface Verse {
+  title: string;
+  lyrics: string;
+}
+
 export interface Song extends z.infer<typeof BaseSongSchema> {
   uid: string;
   image: string;
@@ -12,6 +17,7 @@ export interface Song extends z.infer<typeof BaseSongSchema> {
   created_by: User;
   artist: Artist;
   features: Artist[];
+  verses: Verse[];
 }
 
 export interface DBSong {

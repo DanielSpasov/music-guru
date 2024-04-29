@@ -1,5 +1,6 @@
 import { serializers } from '.';
 import { Artist, Song } from '../Types';
+import { Verse } from '../Types/Song';
 
 export class ListSong {
   uid: string;
@@ -24,6 +25,7 @@ export class DetailedSong {
   release_date: Date | null;
   artist: Artist;
   features: Artist[];
+  verses: Verse[];
 
   constructor(song: Song) {
     this.uid = song.uid;
@@ -34,5 +36,6 @@ export class DetailedSong {
     this.release_date = song.release_date;
     this.artist = serializers.artists.list(song.artist);
     this.features = song.features.map(serializers.artists.list);
+    this.verses = song.verses;
   }
 }

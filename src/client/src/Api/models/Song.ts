@@ -11,6 +11,22 @@ export default class SongsAPI extends Crud<Song> {
     applyPrefix(this, props);
   }
 
+  addVerse({
+    uid,
+    payload,
+    config
+  }: {
+    uid: string;
+    payload: any;
+    config?: Config;
+  }) {
+    return post({
+      url: `${this.baseUrl}/${this.model}/${uid}/verse/`,
+      body: payload,
+      config
+    });
+  }
+
   updateImage({
     uid,
     image,

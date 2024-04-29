@@ -8,6 +8,7 @@ export default function Section({
   title,
   fields,
   control,
+  foldable = true,
   setValue,
   validateField
 }: SectionProps) {
@@ -16,11 +17,13 @@ export default function Section({
   return (
     <section>
       <div className="flex items-center">
-        <Icon
-          model={open ? 'up' : 'down'}
-          className="mr-2"
-          onClick={() => setOpen(prev => !prev)}
-        />
+        {foldable ? (
+          <Icon
+            model={open ? 'up' : 'down'}
+            className="mr-2"
+            onClick={() => setOpen(prev => !prev)}
+          />
+        ) : null}
         <h4>
           {title}{' '}
           {!open && (

@@ -3,13 +3,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
-import { Image, List, PageLayout } from '../../../Components';
+import { Image, Link, List, PageLayout } from '../../../Components';
 import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
 import { errorHandler } from '../../../Handlers';
 import { Config } from '../../../Api/helpers';
 import { Song } from '../helpers';
 import Api from '../../../Api';
+
+import Lyrics from './Lyrics';
 
 const defaultSong: Song = {
   uid: '',
@@ -19,7 +21,8 @@ const defaultSong: Song = {
   image: '',
   name: '',
   release_date: undefined,
-  artist: defaultArtist
+  artist: defaultArtist,
+  verses: []
 };
 
 export default function SongDetails() {
@@ -60,21 +63,11 @@ export default function SongDetails() {
     })();
   }, [id]);
 
-  const fetchFeatures = useCallback(
-    () => Promise.resolve({ data: song.features }),
-    [song]
-  );
-
   const fetchAlbums = useCallback(
     (config?: Config) =>
       Api.albums.fetch({
         config: { params: { 'songs.uid': song.uid, ...config?.params } }
       }),
-    [song]
-  );
-
-  const fetchArtist = useCallback(
-    async () => Promise.resolve({ data: [song.artist] }),
     [song]
   );
 
@@ -109,39 +102,59 @@ export default function SongDetails() {
         }
       ]}
     >
-      <section className="flex flex-col items-center text-white">
-        <div className="flex mb-10">
-          <Image
-            src={song?.image || ''}
-            alt={song.name}
-            editable={song.created_by === uid}
-            size={64}
-            className="rounded-lg"
-            updateFn={updateImage}
-          />
-          <div className="px-4">
-            <span className="font-bold">Release Date: </span>
-            <span>{moment(song.release_date).format('MMMM Do YYYY')}</span>
-          </div>
-        </div>
+      <article className="flex">
+        <section className="flex flex-col w-1/2 items-start text-white">
+          <div className="flex mb-10">
+            <Image
+              src={song?.image || ''}
+              alt={song.name}
+              editable={song.created_by === uid}
+              size={64}
+              className="rounded-lg"
+              updateFn={updateImage}
+            />
 
-        <div className="flex flex-wrap">
-          <div>
-            <h3 className="text-center">Artist</h3>
-            <List fetchFn={fetchArtist} skeletonLength={1} model="artists" />
+            <div className="px-4 gap-4">
+              <div>
+                <span className="font-bold">Release Date: </span>
+                <span>{moment(song.release_date).format('MMMM Do YYYY')}</span>
+              </div>
+
+              <div>
+                <span className="font-bold">Artist: </span>
+                <Link to={`/artists/${song.artist.uid}`}>
+                  {song.artist.name}
+                </Link>
+              </div>
+
+              {song.features.length ? (
+                <div>
+                  <span className="font-bold">Featured artists: </span>
+                  <span>
+                    {song.features.map((artist, i) => (
+                      <>
+                        <Link to={`/artists/${artist.uid}`} key={artist.uid}>
+                          {artist.name}
+                        </Link>
+                        {song.features.length > i + 1 ? ', ' : ''}
+                      </>
+                    ))}
+                  </span>
+                </div>
+              ) : null}
+            </div>
           </div>
 
-          <div>
-            <h3 className="text-center">Featured Artists</h3>
-            <List fetchFn={fetchFeatures} skeletonLength={2} model="artists" />
+          <div className="flex flex-col">
+            <div>
+              <h3 className="text-center">In Albums</h3>
+              <List fetchFn={fetchAlbums} skeletonLength={1} model="albums" />
+            </div>
           </div>
+        </section>
 
-          <div>
-            <h3 className="text-center">In Albums</h3>
-            <List fetchFn={fetchAlbums} skeletonLength={1} model="albums" />
-          </div>
-        </div>
-      </section>
+        <Lyrics song={song} />
+      </article>
     </PageLayout>
   );
 }
