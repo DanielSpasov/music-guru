@@ -36,10 +36,17 @@ export default function Lyrics({ song }: { song: Song }) {
       </div>
 
       <div>
-        {song.verses.map((verse, i) => (
-          <div key={i} className="py-4">
+        {song.verses.map((verse, verseKey) => (
+          <div key={verseKey} className="py-4">
             <p className="font-semibold">[{verse.title}]</p>
-            <p>{verse.lyrics}</p>
+
+            {verse.lyrics.split('\n').map((line, lineKey) => (
+              <p key={lineKey}>
+                <span className="inline-block hover:bg-neutral-200 dark:hover:bg-neutral-700">
+                  {line}
+                </span>
+              </p>
+            ))}
           </div>
         ))}
 
