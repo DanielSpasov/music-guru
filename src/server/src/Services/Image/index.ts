@@ -37,7 +37,7 @@ export default function update({ model }: { model: Exclude<Models, 'users'> }) {
         env.SECURITY.JWT_SECRET
       ) as JwtPayload;
       if (item.created_by !== userUID) {
-        res.status(401).json({ message: 'Permission denied.' });
+        res.status(403).json({ message: 'Permission denied.' });
         return;
       }
 

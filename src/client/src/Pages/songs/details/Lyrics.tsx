@@ -1,6 +1,7 @@
 import { SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
+import { AuthContext } from '../../../Contexts';
 import { Icon } from '../../../Components';
 import { Song } from '../helpers';
 
@@ -17,8 +18,6 @@ export const lightHoverButtonProps =
 export const darkHoverButtonProps = 'hover:dark:bg-neutral-900';
 export const hoverButtonProps = `hover:opacity-100 ${lightHoverButtonProps} ${darkHoverButtonProps}`;
 
-export const buttonProps = `${themeButtonProps} ${hoverButtonProps}`;
-
 export default function Lyrics({
   song,
   addVerse
@@ -28,18 +27,25 @@ export default function Lyrics({
 }) {
   const [showNewVerse, setShowNewVerse] = useState(false);
 
+  const { isAuthenticated, uid } = useContext(AuthContext);
+
   return (
     <section className="w-1/2 rounded-md p-2">
       <div className="flex items-center justify-between">
         <h2>Lyrics</h2>
         <hr />
-        <button
-          className={`flex items-center rounded-full py-1 px-3 ${buttonProps}`}
-          onClick={() => setShowNewVerse(true)}
-        >
-          <Icon model="add" />
-          <p>Add Verse</p>
-        </button>
+        {isAuthenticated ? (
+          <button
+            className={`flex items-center rounded-full py-1 px-3 ${themeButtonProps} ${
+              uid === song.created_by ? hoverButtonProps : ''
+            }`}
+            onClick={() => setShowNewVerse(true)}
+            disabled={uid !== song.created_by}
+          >
+            <Icon model="add" />
+            <p>Add Verse</p>
+          </button>
+        ) : null}
       </div>
 
       <div>

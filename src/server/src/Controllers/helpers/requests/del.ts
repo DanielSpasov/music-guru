@@ -27,7 +27,7 @@ export function del({ collectionName }: SimpleReqProps) {
       const [item] = await docs.toArray();
 
       if (item?.created_by !== userUID) {
-        res.status(401).json({ message: 'Permission denied.' });
+        res.status(403).json({ message: 'Permission denied.' });
         return;
       }
 
