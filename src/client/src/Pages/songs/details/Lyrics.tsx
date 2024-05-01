@@ -1,3 +1,4 @@
+import { SubmitHandler } from 'react-hook-form';
 import { useState } from 'react';
 
 import { Icon } from '../../../Components';
@@ -18,7 +19,13 @@ export const hoverButtonProps = `hover:opacity-100 ${lightHoverButtonProps} ${da
 
 export const buttonProps = `${themeButtonProps} ${hoverButtonProps}`;
 
-export default function Lyrics({ song }: { song: Song }) {
+export default function Lyrics({
+  song,
+  addVerse
+}: {
+  song: Song;
+  addVerse: SubmitHandler<any>;
+}) {
   const [showNewVerse, setShowNewVerse] = useState(false);
 
   return (
@@ -36,22 +43,31 @@ export default function Lyrics({ song }: { song: Song }) {
       </div>
 
       <div>
-        {song.verses.map((verse, verseKey) => (
-          <div key={verseKey} className="py-4">
-            <p className="font-semibold">[{verse.title}]</p>
+        {song.verses.length ? (
+          song.verses
+            .sort((a, b) => Number(a.number) - Number(b.number))
+            .map((verse, verseKey) => (
+              <div key={verseKey} className="py-4">
+                <p className="font-semibold">[{verse.title}]</p>
 
-            {verse.lyrics.split('\n').map((line, lineKey) => (
-              <p key={lineKey}>
-                <span className="inline-block hover:bg-neutral-200 dark:hover:bg-neutral-700">
-                  {line}
-                </span>
-              </p>
-            ))}
-          </div>
-        ))}
+                {verse.lyrics.split('\n').map((line, lineKey) => (
+                  <p key={lineKey}>
+                    <span className="inline-block hover:bg-neutral-200 dark:hover:bg-neutral-700">
+                      {line}
+                    </span>
+                  </p>
+                ))}
+              </div>
+            ))
+        ) : (
+          <p>Lyrics for this song are not available yet.</p>
+        )}
 
         {showNewVerse ? (
-          <AddVerse uid={song.uid} onClose={() => setShowNewVerse(false)} />
+          <AddVerse
+            onClose={() => setShowNewVerse(false)}
+            onSubmit={addVerse}
+          />
         ) : null}
       </div>
     </section>

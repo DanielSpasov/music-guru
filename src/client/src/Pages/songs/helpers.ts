@@ -33,6 +33,7 @@ type SongModel = z.infer<typeof Schema>;
 type Verse = {
   title: string;
   lyrics: string;
+  number: string;
 };
 export interface Song extends SongModel {
   uid: string;

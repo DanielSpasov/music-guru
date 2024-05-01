@@ -30,7 +30,10 @@ const artist: AggregationStage[] = [
 
 const verses: AggregationStage[] = [
   {
-    $unwind: '$verses'
+    $unwind: {
+      path: '$verses',
+      preserveNullAndEmptyArrays: true
+    }
   }
 ];
 

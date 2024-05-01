@@ -1,67 +1,23 @@
-import { useEffect, useState, useCallback, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useCallback, useContext } from 'react';
 import moment from 'moment';
 
 import { Image, Link, List, PageLayout } from '../../../Components';
-import { defaultArtist } from '../../artists/details';
+
 import { AuthContext } from '../../../Contexts/Auth';
-import { errorHandler } from '../../../Handlers';
 import { Config } from '../../../Api/helpers';
-import { Song } from '../helpers';
+import useSong from '../../../Hooks/useSong';
 import Api from '../../../Api';
 
 import Lyrics from './Lyrics';
 
-const defaultSong: Song = {
-  uid: '',
-  created_at: new Date(),
-  created_by: '',
-  features: [],
-  image: '',
-  name: '',
-  release_date: undefined,
-  artist: defaultArtist,
-  verses: []
-};
-
 export default function SongDetails() {
-  const [song, setSong] = useState<Song>(defaultSong);
-  const [loading, setLoading] = useState(true);
-
   const { uid, isAuthenticated } = useContext(AuthContext);
+
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const deleteSong = useCallback(async () => {
-    try {
-      setLoading(true);
-      await Api.songs.del({ id: song.uid });
-      navigate('/songs');
-      toast.success(`Successfully deleted song: ${song.name}`);
-    } catch (error) {
-      errorHandler(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [song, navigate]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { data } = await Api.songs.get({
-          id,
-          config: { params: { serializer: 'detailed' } }
-        });
-        setSong(data);
-      } catch (error) {
-        errorHandler(error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [id]);
+  const { song, loading, del, updateImage, addVerse } = useSong(id);
 
   const fetchAlbums = useCallback(
     (config?: Config) =>
@@ -69,18 +25,6 @@ export default function SongDetails() {
         config: { params: { 'songs.uid': song.uid, ...config?.params } }
       }),
     [song]
-  );
-
-  const updateImage = useCallback(
-    async (file: File) => {
-      const { image } = await Api.songs.updateImage({
-        uid: song.uid,
-        image: file,
-        config: { headers: { 'Content-Type': 'multipart/form-data' } }
-      });
-      setSong(prev => ({ ...prev, image }));
-    },
-    [song.uid]
   );
 
   return (
@@ -96,7 +40,7 @@ export default function SongDetails() {
         },
         {
           icon: 'trash',
-          onClick: deleteSong,
+          onClick: del,
           hidden: !isAuthenticated,
           disabled: uid !== song.created_by
         }
@@ -117,7 +61,13 @@ export default function SongDetails() {
             <div className="px-4 gap-4">
               <div>
                 <span className="font-bold">Release Date: </span>
-                <span>{moment(song.release_date).format('MMMM Do YYYY')}</span>
+                {song?.release_date ? (
+                  <span>
+                    {moment(song.release_date).format('MMMM Do YYYY')}
+                  </span>
+                ) : (
+                  <span>TBA</span>
+                )}
               </div>
 
               <div>
@@ -153,7 +103,7 @@ export default function SongDetails() {
           </div>
         </section>
 
-        <Lyrics song={song} />
+        <Lyrics song={song} addVerse={addVerse} />
       </article>
     </PageLayout>
   );

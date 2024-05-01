@@ -39,10 +39,19 @@ export default async function (req: Request, res: Response) {
 
     await collection.updateOne(
       { uid: req.params.id },
-      { $push: { verses: validatedVerse } }
+      {
+        $push: {
+          verses: {
+            ...validatedVerse,
+            number: doc.verses.length + 1
+          }
+        }
+      }
     );
 
-    res.status(200).send('Verse added successfully.');
+    res
+      .status(200)
+      .send({ data: validatedVerse, message: 'Verse added successfully.' });
   } catch (err) {
     errorHandler(req, res, err);
   } finally {

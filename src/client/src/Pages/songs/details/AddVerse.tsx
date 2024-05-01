@@ -1,20 +1,18 @@
-import React from 'react';
+import { SubmitHandler } from 'react-hook-form';
 
 import { Form, Icon, Input, Textarea } from '../../../Components';
 import { VerseSchema } from '../helpers';
-import { toast } from 'react-toastify';
-import Api from '../../../Api';
 
 export const wrapperLightProps = 'border-neutral-200 border-[1px]';
 export const wrapperDarkProps = 'dark:border-none dark:bg-neutral-900';
 export const wrapperProps = `${wrapperLightProps} ${wrapperDarkProps}`;
 
 export default function AddVerse({
-  uid,
-  onClose
+  onClose,
+  onSubmit
 }: {
-  uid: string;
   onClose: () => void;
+  onSubmit: SubmitHandler<any>;
 }) {
   return (
     <div className={`mt-4 rounded-md ${wrapperProps}`}>
@@ -25,14 +23,9 @@ export default function AddVerse({
 
       <Form
         showClose={false}
-        onSubmit={async formValues => {
-          try {
-            await Api.songs.addVerse({ uid, payload: formValues });
-            toast.success('Verse added sucessfully');
-            onClose();
-          } catch (err) {
-            toast.error('Failed to add Verse');
-          }
+        onSubmit={e => {
+          onSubmit(e);
+          onClose();
         }}
         validationSchema={VerseSchema}
         schema={[

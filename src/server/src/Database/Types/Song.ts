@@ -7,6 +7,7 @@ import { User } from './User';
 export interface Verse {
   title: string;
   lyrics: string;
+  number: number;
 }
 
 export interface Song extends z.infer<typeof BaseSongSchema> {
