@@ -3,9 +3,8 @@ import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ZodObject } from 'zod';
 
-import { errorHandler } from '../../../Handlers';
+import { FormProps, handleZodErrors } from './helpers';
 import { Loader } from '../../../Components';
-import { FormProps } from './helpers';
 import Section from './Section';
 
 export default function Form({
@@ -33,7 +32,7 @@ export default function Form({
         schema?.shape?.[name]?.parse?.(value);
         clearErrors(name);
       } catch (err) {
-        const [error] = errorHandler(err);
+        const [error] = handleZodErrors(err);
         setError(name, error);
       }
     },
@@ -46,8 +45,8 @@ export default function Form({
         setLoading(true);
         const validData = validationSchema?.parse(data);
         await onSubmit(validData);
-      } catch (error) {
-        const errors = errorHandler(error);
+      } catch (err) {
+        const errors = handleZodErrors(err);
         errors.forEach((error: any) => setError(error.path[0], error));
       } finally {
         setLoading(false);

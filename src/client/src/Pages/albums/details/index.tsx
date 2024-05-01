@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import { Image, List, PageLayout } from '../../../Components';
 import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
-import { errorHandler } from '../../../Handlers';
 import { Album } from '../helpers';
 import Api from '../../../Api';
 
@@ -41,7 +40,7 @@ export default function AlbumDetails() {
       navigate('/albums');
       toast.success(`Successfully deleted album: ${album.name}`);
     } catch (error) {
-      errorHandler(error, navigate);
+      toast.error('Failed to delete album');
     } finally {
       setLoading(false);
     }
@@ -56,7 +55,7 @@ export default function AlbumDetails() {
         });
         setAlbum(data);
       } catch (error) {
-        errorHandler(error);
+        toast.error('Failed to fetch Album');
       } finally {
         setLoading(false);
       }

@@ -1,9 +1,9 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { List, PageLayout, Image } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { errorHandler } from '../../../Handlers';
 import { Artist } from '../../../Types/Artist';
 import Api from '../../../Api';
 
@@ -43,7 +43,7 @@ export default function ArtistDetails() {
         });
         setArtist(data);
       } catch (error) {
-        errorHandler(error);
+        toast.error('Failed to fetch Artist');
       } finally {
         setLoading(false);
       }

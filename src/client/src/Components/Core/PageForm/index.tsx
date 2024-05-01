@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { errorHandler } from '../../../Handlers';
 import { PageFormProps } from './helpers';
 import PageLayout from '../PageLayout';
 import { Form } from '../../Forms';
@@ -36,8 +35,7 @@ export default function PageForm({ schema, ctx = {} }: PageFormProps) {
       try {
         await schema.onSubmit({ formData, toast, navigate, params, ctx });
       } catch (error) {
-        const errors = errorHandler(error);
-        toast.error(errors?.[0]?.message);
+        toast.error('Failed to submit form');
       }
     },
     [navigate, schema, params, ctx]

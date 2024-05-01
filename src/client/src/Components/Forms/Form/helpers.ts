@@ -4,13 +4,21 @@ import {
   UseFormSetValue
 } from 'react-hook-form/dist/types';
 import { NavigateFunction, Params } from 'react-router-dom';
+import { ZodError, ZodSchema } from 'zod';
 import { toast } from 'react-toastify';
-import { ZodSchema } from 'zod';
 import { FC } from 'react';
 
 import { TextareaProps } from '../Fields/Textarea/helpers';
 import { SelectProps } from '../Fields/Select/helpers';
 import { InputProps } from '../Fields/Input/helpers';
+
+export const handleZodErrors = (err: unknown) => {
+  try {
+    if (err instanceof ZodError) return JSON.parse(err.toString());
+  } catch {
+    console.error('Unhandled Zod Error');
+  }
+};
 
 export type ValidationSchema = ZodSchema;
 

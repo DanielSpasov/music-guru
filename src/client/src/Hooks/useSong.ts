@@ -1,11 +1,10 @@
+import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { defaultArtist } from '../Pages/artists/details';
 import { Song } from '../Pages/songs/helpers';
-import { errorHandler } from '../Handlers';
 import Api from '../Api';
 
 const defaultSong: Song = {
@@ -36,7 +35,7 @@ export default function useSong(uid: string) {
         });
         setSong(data);
       } catch (error) {
-        errorHandler(error);
+        toast.error('Failed to fetch Song');
       } finally {
         setLoading(false);
       }
@@ -51,7 +50,6 @@ export default function useSong(uid: string) {
       toast.success('Song deleted sucessfully');
     } catch (error) {
       toast.error('Failed to delete Song');
-      errorHandler(error);
     } finally {
       setLoading(false);
     }

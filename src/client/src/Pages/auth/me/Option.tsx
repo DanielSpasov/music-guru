@@ -2,7 +2,6 @@ import { ChangeEvent, useCallback, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { AuthContext } from '../../../Contexts/Auth';
-import { errorHandler } from '../../../Handlers';
 import { fromatDate } from '../../../Utils';
 import { Icon } from '../../../Components';
 import { OptionProps } from './helpers';
@@ -42,13 +41,10 @@ export default function Option({ data, user, setUser }: OptionProps) {
         field: data.field,
         body: { [data.field]: value }
       });
-      setUser(prev => {
-        console.log({ ...prev, ...updated }, updated);
-        return { ...prev, ...updated };
-      });
-      toast.success(`${data.label} updated successfully.`);
+      setUser(prev => ({ ...prev, ...updated }));
+      toast.success(`${data.label} updated successfully`);
     } catch (error) {
-      errorHandler(error);
+      toast.error(`Failed to update ${data.field}`);
     }
   }, [uid, data, value, setUser]);
 
