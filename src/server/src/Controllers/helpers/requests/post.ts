@@ -1,5 +1,4 @@
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import crypto from 'crypto';
 
@@ -8,21 +7,11 @@ import { errorHandler } from '../../../Error';
 import { connect } from '../../../Database';
 import { getUploadLink } from '../helpers';
 import { SimpleReqProps } from '../types';
-import env from '../../../env';
 
 export function post({ collectionName }: SimpleReqProps) {
   return async function (req: Request, res: Response) {
     const mongo = await connect();
     try {
-      const token = req.headers?.authorization;
-      if (!token) {
-        res.status(401).json({ message: 'Unauthorized.' });
-        return;
-      }
-      const { uid: userUID } = jwt.verify(
-        token,
-        env.SECURITY.JWT_SECRET
-      ) as JwtPayload;
       const uid = crypto.randomUUID();
 
       const colName = collectionName;
@@ -44,7 +33,7 @@ export function post({ collectionName }: SimpleReqProps) {
 
       const db = mongo.db('models');
       const users = db.collection('users');
-      const user = await users.findOne({ uid: userUID });
+      const user = await users.findOne({ uid: res.locals.userUID });
       if (!user) {
         res.status(400).json({ message: 'Invalid User UID.' });
         return;
@@ -54,7 +43,7 @@ export function post({ collectionName }: SimpleReqProps) {
         ...validatedData,
         ...(req?.file ? { [req.file.fieldname]: uploadedFile } : {}),
         uid,
-        created_by: userUID,
+        created_by: res.locals.userUID,
         created_at: new Date()
       };
 

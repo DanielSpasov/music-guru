@@ -5,14 +5,12 @@ import {
   ref,
   uploadBytes
 } from 'firebase/storage';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
 import { FileSchema } from '../../Database/Schemas';
 import { Models } from '../../Database/Types';
 import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
-import env from '../../env';
 
 export default function update({ model }: { model: Exclude<Models, 'users'> }) {
   return async function (req: Request, res: Response) {
@@ -26,17 +24,7 @@ export default function update({ model }: { model: Exclude<Models, 'users'> }) {
         return;
       }
 
-      const token = req.headers?.authorization;
-      if (!token) {
-        res.status(401).json({ message: 'Unauthorized.' });
-        return;
-      }
-
-      const { uid: userUID } = jwt.verify(
-        token,
-        env.SECURITY.JWT_SECRET
-      ) as JwtPayload;
-      if (item.created_by !== userUID) {
+      if (item.created_by !== res.locals.userUID) {
         res.status(403).json({ message: 'Permission denied.' });
         return;
       }

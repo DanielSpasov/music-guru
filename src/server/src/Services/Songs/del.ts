@@ -1,32 +1,20 @@
 import { deleteObject, getStorage, ref } from 'firebase/storage';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { Collection } from 'mongodb';
 
 import { DBAlbum } from '../../Database/Types';
 import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
-import env from '../../env';
 
 export default async function (req: Request, res: Response) {
   const mongo = await connect();
   try {
-    const token = req.headers?.authorization;
-    if (!token) {
-      res.status(401).json({ message: 'Unauthorized.' });
-      return;
-    }
-    const { uid: userUID } = jwt.verify(
-      token,
-      env.SECURITY.JWT_SECRET
-    ) as JwtPayload;
-
     const db = mongo.db('models');
     const collection = db.collection('songs');
     const docs = collection.aggregate([{ $match: { uid: req.params.id } }]);
     const [item] = await docs.toArray();
 
-    if (item?.created_by !== userUID) {
+    if (item?.created_by !== res.locals.userUID) {
       res.status(403).json({ message: 'Permission denied.' });
       return;
     }

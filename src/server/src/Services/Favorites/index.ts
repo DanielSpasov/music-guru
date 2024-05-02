@@ -1,30 +1,17 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
 import { Models } from '../../Database/Types';
 import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
-import env from '../../env';
 
 export default function favorite({ model }: { model: Models }) {
   return async function (req: Request, res: Response) {
     const mongo = await connect();
     try {
-      const token = req.headers.authorization;
-      if (!token) {
-        res.status(401).json({ message: 'Unauthorized.' });
-        return;
-      }
-
       if (!req?.body?.uid) {
         res.status(400).json({ message: 'Please provide object UID.' });
         return;
       }
-
-      const { uid: userUID } = jwt.verify(
-        token,
-        env.SECURITY.JWT_SECRET
-      ) as JwtPayload;
 
       const db = mongo.db('models');
 
@@ -32,7 +19,7 @@ export default function favorite({ model }: { model: Models }) {
       const modelCollection = db.collection(model);
 
       const usersDocs = usersCollection.aggregate([
-        { $match: { uid: userUID } }
+        { $match: { uid: res.locals.userUID } }
       ]);
       const [user] = await usersDocs.toArray();
 
@@ -44,7 +31,7 @@ export default function favorite({ model }: { model: Models }) {
           { $inc: { favorites: isFavorite ? -1 : 1 } }
         ),
         usersCollection.findOneAndUpdate(
-          { uid: userUID },
+          { uid: res.locals.userUID },
           isFavorite
             ? { $pull: { [`favorites.${model}`]: req.body.uid } }
             : { $addToSet: { [`favorites.${model}`]: req.body.uid } },

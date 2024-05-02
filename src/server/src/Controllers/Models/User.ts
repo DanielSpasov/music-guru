@@ -21,7 +21,7 @@ router.post('/validate-email', authorization, ValidateEmail);
 router.post('/sign-up', SignUp);
 router.post('/sign-in', SignIn);
 
-router.get('/:id', GetUser);
+router.get('/:id', authorization, GetUser);
 router.patch('/:id', authorization, UpdateUser);
 
 export default router;
