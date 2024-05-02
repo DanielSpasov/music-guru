@@ -13,7 +13,8 @@ export const BaseSongSchema = z.object({
 
 export const VerseSchema = z.object({
   title: z.string(),
-  lyrics: z.string().max(10000, 'Max length is 10000 characters')
+  lyrics: z.string().max(10000, 'Max length is 10000 characters'),
+  number: z.number()
 });
 
 export const SongSchema = BaseSongSchema.extend({

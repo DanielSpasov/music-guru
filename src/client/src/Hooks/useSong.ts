@@ -21,6 +21,8 @@ const defaultSong: Song = {
 
 export default function useSong(uid: string) {
   const [song, setSong] = useState<Song>(defaultSong);
+
+  const [verseLoading, setVerseLoading] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -58,11 +60,30 @@ export default function useSong(uid: string) {
   const addVerse = useCallback<SubmitHandler<any>>(
     async formValues => {
       try {
+        setVerseLoading(song.verses.length + 1);
         const { data } = await Api.songs.addVerse({ uid, payload: formValues });
         setSong(prev => ({ ...prev, verses: [...prev.verses, data] }));
         toast.success('Verse added sucessfully');
       } catch (err) {
         toast.error('Failed to add Verse');
+      } finally {
+        setVerseLoading(0);
+      }
+    },
+    [uid, song.verses.length]
+  );
+
+  const delVerse = useCallback(
+    async (number: number) => {
+      try {
+        setVerseLoading(number);
+        const { data } = await Api.songs.delVerse({ uid, number });
+        setSong(prev => ({ ...prev, verses: data }));
+        toast.success('Verse deleted sucessfully');
+      } catch (err) {
+        toast.error('Failed to delete Verse');
+      } finally {
+        setVerseLoading(0);
       }
     },
     [uid]
@@ -87,8 +108,10 @@ export default function useSong(uid: string) {
   return {
     song,
     loading,
+    verseLoading,
     del,
     updateImage,
-    addVerse
+    addVerse,
+    delVerse
   };
 }

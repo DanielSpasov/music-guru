@@ -63,5 +63,5 @@ export async function del({
     headers: { Authorization: localStorage.getItem('AUTH') },
     ...config
   });
-  return response;
+  return response.data;
 }

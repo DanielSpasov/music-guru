@@ -1,9 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCallback, useContext } from 'react';
+import { Fragment, useCallback, useContext } from 'react';
 import moment from 'moment';
 
 import { Image, Link, List, PageLayout } from '../../../Components';
-
 import { AuthContext } from '../../../Contexts/Auth';
 import { Config } from '../../../Api/helpers';
 import useSong from '../../../Hooks/useSong';
@@ -17,7 +16,8 @@ export default function SongDetails() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const { song, loading, del, updateImage, addVerse } = useSong(id);
+  const { song, loading, del, updateImage, addVerse, delVerse, verseLoading } =
+    useSong(id);
 
   const fetchAlbums = useCallback(
     (config?: Config) =>
@@ -82,12 +82,10 @@ export default function SongDetails() {
                   <span className="font-bold">Featured artists: </span>
                   <span>
                     {song.features.map((artist, i) => (
-                      <>
-                        <Link to={`/artists/${artist.uid}`} key={artist.uid}>
-                          {artist.name}
-                        </Link>
+                      <Fragment key={artist.uid}>
+                        <Link to={`/artists/${artist.uid}`}>{artist.name}</Link>
                         {song.features.length > i + 1 ? ', ' : ''}
-                      </>
+                      </Fragment>
                     ))}
                   </span>
                 </div>
@@ -103,7 +101,12 @@ export default function SongDetails() {
           </div>
         </section>
 
-        <Lyrics song={song} addVerse={addVerse} />
+        <Lyrics
+          song={song}
+          addVerse={addVerse}
+          delVerse={delVerse}
+          verseLoading={verseLoading}
+        />
       </article>
     </PageLayout>
   );

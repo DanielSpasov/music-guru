@@ -1,19 +1,12 @@
-import { SubmitHandler } from 'react-hook-form';
-
-import { Form, Icon, Input, Textarea } from '../../../Components';
-import { VerseSchema } from '../helpers';
+import { Form, Icon, Input, Textarea } from '../../../../Components';
+import { VerseSchema } from '../../helpers';
+import { AddVerseProps } from './helpers';
 
 export const wrapperLightProps = 'border-neutral-200 border-[1px]';
 export const wrapperDarkProps = 'dark:border-none dark:bg-neutral-900';
 export const wrapperProps = `${wrapperLightProps} ${wrapperDarkProps}`;
 
-export default function AddVerse({
-  onClose,
-  onSubmit
-}: {
-  onClose: () => void;
-  onSubmit: SubmitHandler<any>;
-}) {
+export default function AddVerse({ onClose, onSubmit }: AddVerseProps) {
   return (
     <div className={`mt-4 rounded-md ${wrapperProps}`}>
       <div className="flex justify-between pt-3 px-3">

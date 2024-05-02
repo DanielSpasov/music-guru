@@ -1,11 +1,11 @@
-import { SubmitHandler } from 'react-hook-form';
 import { useContext, useState } from 'react';
 
-import { AuthContext } from '../../../Contexts';
-import { Icon } from '../../../Components';
-import { Song } from '../helpers';
+import { AuthContext } from '../../../../Contexts';
+import { Icon } from '../../../../Components';
+import { LyricsProps } from './helpers';
 
 import AddVerse from './AddVerse';
+import Verse from './Verse';
 
 export const lightButtonProps =
   'bg-transparent border-primary [&>p]:text-primary';
@@ -20,11 +20,10 @@ export const hoverButtonProps = `hover:opacity-100 ${lightHoverButtonProps} ${da
 
 export default function Lyrics({
   song,
-  addVerse
-}: {
-  song: Song;
-  addVerse: SubmitHandler<any>;
-}) {
+  addVerse,
+  delVerse,
+  verseLoading
+}: LyricsProps) {
   const [showNewVerse, setShowNewVerse] = useState(false);
 
   const { isAuthenticated, uid } = useContext(AuthContext);
@@ -33,13 +32,19 @@ export default function Lyrics({
     <section className="w-1/2 rounded-md p-2">
       <div className="flex items-center justify-between">
         <h2>Lyrics</h2>
-        <hr />
+
         {isAuthenticated ? (
           <button
             className={`flex items-center rounded-full py-1 px-3 ${themeButtonProps} ${
               uid === song.created_by ? hoverButtonProps : ''
             }`}
-            onClick={() => setShowNewVerse(true)}
+            onClick={() => {
+              setShowNewVerse(true);
+              requestAnimationFrame(() => {
+                const form = document.querySelector('form');
+                if (form) form.scrollIntoView({ behavior: 'smooth' });
+              });
+            }}
             disabled={uid !== song.created_by}
           >
             <Icon model="add" />
@@ -48,26 +53,32 @@ export default function Lyrics({
         ) : null}
       </div>
 
-      <div>
+      <div className="h-fit overflow-scroll">
         {song.verses.length ? (
           song.verses
-            .sort((a, b) => Number(a.number) - Number(b.number))
+            .sort((a, b) => a.number - b.number)
             .map((verse, verseKey) => (
-              <div key={verseKey} className="py-4">
-                <p className="font-semibold">[{verse.title}]</p>
-
-                {verse.lyrics.split('\n').map((line, lineKey) => (
-                  <p key={lineKey}>
-                    <span className="inline-block hover:bg-neutral-200 dark:hover:bg-neutral-700">
-                      {line}
-                    </span>
-                  </p>
-                ))}
-              </div>
+              <Verse
+                loading={verseLoading}
+                created_by={song.created_by}
+                delVerse={delVerse}
+                verse={verse}
+                key={verseKey}
+              />
             ))
         ) : (
           <p>Lyrics for this song are not available yet.</p>
         )}
+
+        {song.verses.length < verseLoading ? (
+          <Verse
+            isNew
+            created_by={song.created_by}
+            verse={{ lyrics: '', number: verseLoading, title: '' }}
+            delVerse={delVerse}
+            loading={verseLoading}
+          />
+        ) : null}
 
         {showNewVerse ? (
           <AddVerse

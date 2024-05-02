@@ -29,4 +29,5 @@ export interface DBSong {
   created_by: string;
   artist: string;
   features: string[];
+  verses: Verse[];
 }

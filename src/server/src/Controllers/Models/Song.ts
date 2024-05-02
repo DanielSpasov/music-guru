@@ -1,23 +1,25 @@
 import { Router } from 'express';
 
-import { fetch, get, post, patch } from '../helpers/requests';
+import { postVerse, delVerse, del, patch } from '../../Services/Songs';
 import { authorization, upload } from '../../Middleware';
-import { postVerse, del } from '../../Services/Songs';
+import { fetch, get, post } from '../helpers/requests';
 import updateImage from '../../Services/Image';
 
 const router = Router();
 
+// Songs
 router.get('/', fetch({ databaseName: 'models', collectionName: 'songs' }));
-
-router.get('/:id', get({ databaseName: 'models', collectionName: 'songs' }));
-router.patch('/:id', authorization, patch({ collectionName: 'songs' }));
-router.delete('/:id', authorization, del);
-
 router.post(
   '/',
   [authorization, upload('image')],
   post({ collectionName: 'songs' })
 );
+
+// Song
+router.get('/:id', get({ databaseName: 'models', collectionName: 'songs' }));
+router.patch('/:id', authorization, patch);
+router.delete('/:id', authorization, del);
+
 router.post(
   '/:id/image',
   [authorization, upload('image')],
@@ -26,5 +28,6 @@ router.post(
 
 // Verses
 router.post('/:id/verse', [authorization], postVerse);
+router.delete('/:id/verse', [authorization], delVerse);
 
 export default router;

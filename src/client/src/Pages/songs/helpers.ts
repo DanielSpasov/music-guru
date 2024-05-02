@@ -30,10 +30,10 @@ export const VerseSchema = z.object({
 
 type SongModel = z.infer<typeof Schema>;
 
-type Verse = {
+export type Verse = {
   title: string;
   lyrics: string;
-  number: string;
+  number: number;
 };
 export interface Song extends SongModel {
   uid: string;

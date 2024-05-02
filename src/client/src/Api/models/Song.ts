@@ -1,6 +1,6 @@
 import { Song } from '../../Pages/songs/helpers';
 import { Config, applyPrefix } from '../helpers';
-import { post } from '../requests';
+import { del, post } from '../requests';
 import Crud from '../crud';
 
 export default class SongsAPI extends Crud<Song> {
@@ -24,6 +24,24 @@ export default class SongsAPI extends Crud<Song> {
       url: `${this.baseUrl}/${this.model}/${uid}/verse/`,
       body: payload,
       config
+    });
+  }
+
+  delVerse({
+    uid,
+    number,
+    config = {}
+  }: {
+    uid: string;
+    number: number;
+    config?: Config;
+  }) {
+    return del({
+      url: `${this.baseUrl}/${this.model}/${uid}/verse/`,
+      config: {
+        params: { number, ...config?.params },
+        ...config
+      }
     });
   }
 
