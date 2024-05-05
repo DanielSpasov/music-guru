@@ -1,7 +1,3 @@
 export { ThemeContext, ThemeProvider, type Theme } from './Theme';
+export { FavoritesContext, FavoritesProvider } from './Favorites';
 export { AuthContext, AuthProvider } from './Auth';
-export {
-  FavoritesContext,
-  FavoritesProvider,
-  type Favorites
-} from './Favorites';

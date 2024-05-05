@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { User } from '../helpers';
+import { User } from '../../../Types/User';
 import Api from '../../../Api';
 
 export type MenuOption = {

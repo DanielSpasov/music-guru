@@ -1,6 +1,6 @@
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
+import { SignUpSchema } from '../../../Validations/User';
 import { Input, Link } from '../../../Components';
-import { SignUpSchema } from '../helpers';
 import Api from '../../../Api';
 
 export const schema: FormSchema = {

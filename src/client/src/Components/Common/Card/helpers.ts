@@ -1,5 +1,5 @@
+import { Favorites } from '../../../Types/Favorites';
 import { ModelKeys } from '../../../Api/helpers';
-import { Favorites } from '../../../Contexts';
 
 export interface CardProps<T> {
   data: T;

@@ -1,6 +1,6 @@
-import { SignInData, SignUpData, User } from '../../Pages/auth/helpers';
-import { applyPrefix } from '../helpers';
+import { SignInData, SignUpData, User } from '../../Types/User';
 import { get, patch, post } from '../requests';
+import { applyPrefix } from '../helpers';
 import Crud from '../crud';
 
 export default class UserAPI extends Crud<User, User> {

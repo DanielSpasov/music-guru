@@ -1,7 +1,7 @@
-import Api from '../../../Api';
-import { Input, Link } from '../../../Components';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
-import { SignInSchema } from '../helpers';
+import { SignInSchema } from '../../../Validations/User';
+import { Input, Link } from '../../../Components';
+import Api from '../../../Api';
 
 export const schema: FormSchema = {
   title: 'Sign In',

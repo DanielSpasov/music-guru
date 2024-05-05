@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Icon, PageLayout, Summary } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { getMFAConfig, infoConfig } from './helpers';
-import { User } from '../helpers';
+import { User } from '../../../Types/User';
 import Api from '../../../Api';
 import Option from './Option';
 

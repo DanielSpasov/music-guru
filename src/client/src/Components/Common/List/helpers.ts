@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from 'react';
 
 import { Config, ModelKeys } from '../../../Api/helpers';
+import { Favorites } from '../../../Types/Favorites';
 import { ListArtist } from '../../../Types/Artist';
 import { ListAlbum } from '../../../Types/Album';
 import { ListSong } from '../../../Types/Song';
-import { Favorites } from '../../../Contexts';
 
 export type Model = ListSong | ListArtist | ListAlbum;
 

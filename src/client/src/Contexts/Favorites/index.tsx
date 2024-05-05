@@ -8,11 +8,9 @@ import {
   SetStateAction
 } from 'react';
 
-import { ModelKeys } from '../../Api/helpers';
+import { Favorites } from '../../Types/Favorites';
 import { AuthContext } from '../Auth';
 import Api from '../../Api';
-
-export type Favorites = Partial<Record<Exclude<ModelKeys, 'user'>, string[]>>;
 
 interface FavoritesContextType {
   favorites: Favorites;
