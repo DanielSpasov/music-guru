@@ -8,7 +8,11 @@ export async function GetUser(req: Request, res: Response) {
   try {
     const db = mongo.db('models');
     const collection = db.collection('users');
-    const data = await collection.findOne({ uid: res.locals.userUID });
+    const docs = collection.aggregate([
+      { $match: { uid: req.params.id } },
+      { $project: { _id: 0, password: 0 } }
+    ]);
+    const [data] = await docs.toArray();
 
     res.status(200).json({ data });
   } catch (error) {
