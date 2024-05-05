@@ -1,4 +1,4 @@
-import { Artist } from './Artist';
+import { ListArtist } from './Artist';
 
 export type Verse = {
   title: string;
@@ -13,8 +13,8 @@ export interface Song {
   created_at: Date;
   created_by: string;
   release_date: Date | null;
-  artist: Artist;
-  features: Artist[];
+  artist: ListArtist;
+  features: ListArtist[];
   verses: Verse[];
 }
 
