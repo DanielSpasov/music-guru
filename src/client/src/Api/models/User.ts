@@ -3,7 +3,7 @@ import { applyPrefix } from '../helpers';
 import { get, patch, post } from '../requests';
 import Crud from '../crud';
 
-export default class UserAPI extends Crud<User> {
+export default class UserAPI extends Crud<User, User> {
   model = 'user';
 
   constructor(props: any) {

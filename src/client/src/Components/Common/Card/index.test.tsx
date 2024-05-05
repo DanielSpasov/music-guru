@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { ListAlbum } from '../../../Pages/albums/helpers';
 import { ListArtist } from '../../../Types/Artist';
+import { ListAlbum } from '../../../Types/Album';
 import { AuthContext } from '../../../Contexts';
 import { ListSong } from '../../../Types/Song';
 import Card from './index';

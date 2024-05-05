@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Image, List, PageLayout } from '../../../Components';
 import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
-import { Album } from '../helpers';
+import { Album } from '../../../Types/Album';
 import Api from '../../../Api';
 
 const defaultAlbum: Album = {
@@ -14,7 +14,7 @@ const defaultAlbum: Album = {
   created_by: '',
   image: '',
   name: '',
-  release_date: undefined,
+  release_date: null,
   songs: [],
   artist: defaultArtist,
   favorites: 0,

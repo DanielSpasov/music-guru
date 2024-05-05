@@ -1,9 +1,9 @@
-import { Album } from '../../Pages/albums/helpers';
+import { Album, ListAlbum } from '../../Types/Album';
 import { Config, applyPrefix } from '../helpers';
 import { get, post } from '../requests';
 import Crud from '../crud';
 
-export default class AlbumsAPI extends Crud<Album> {
+export default class AlbumsAPI extends Crud<Album, ListAlbum> {
   model = 'album';
 
   constructor(props: any) {

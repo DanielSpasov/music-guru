@@ -1,9 +1,9 @@
+import { Artist, ListArtist } from '../../Types/Artist';
 import { Config, applyPrefix } from '../helpers';
-import { Artist } from '../../Types/Artist';
 import { post } from '../requests';
 import Crud from '../crud';
 
-export default class ArtistsAPI extends Crud<Artist> {
+export default class ArtistsAPI extends Crud<Artist, ListArtist> {
   model = 'artist';
 
   constructor(props: any) {

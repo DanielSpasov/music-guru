@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction } from 'react';
 
 import { Config, ModelKeys } from '../../../Api/helpers';
-import { Album } from '../../../Pages/albums/helpers';
-import { Artist } from '../../../Types/Artist';
+import { ListArtist } from '../../../Types/Artist';
+import { ListAlbum } from '../../../Types/Album';
+import { ListSong } from '../../../Types/Song';
 import { Favorites } from '../../../Contexts';
-import { Song } from '../../../Types/Song';
 
-export type Model = Song | Artist | Album;
+export type Model = ListSong | ListArtist | ListAlbum;
 
 export type Filter = {
   key: string;

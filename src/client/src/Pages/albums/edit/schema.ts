@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
 import { Calendar, Input, Select } from '../../../Components';
-import { EditAlbumSchema } from '../helpers';
+import { EditAlbumSchema } from '../../../Validations/Album';
 import { Song } from '../../../Types/Song';
 import Api from '../../../Api';
 

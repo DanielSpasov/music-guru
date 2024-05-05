@@ -9,12 +9,12 @@ export class CrudBase {
   }
 }
 
-export default class Crud<T> extends CrudBase {
+export default class Crud<T, K> extends CrudBase {
   get({ id, config = {} }: { id: string; config?: any }): Promise<{ data: T }> {
     return get({ url: `${this.baseUrl}/${this.model}/${id}/`, config });
   }
 
-  fetch({ config = {} }: { config?: any }): Promise<{ data: T[] }> {
+  fetch({ config = {} }: { config?: any }): Promise<{ data: K[] }> {
     return get({ url: `${this.baseUrl}/${this.model}/`, config });
   }
 

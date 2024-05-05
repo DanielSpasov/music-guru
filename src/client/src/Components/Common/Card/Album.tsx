@@ -1,5 +1,6 @@
 import moment from 'moment';
-import { ListAlbum } from '../../../Pages/albums/helpers';
+
+import { ListAlbum } from '../../../Types/Album';
 import { CardProps } from './helpers';
 
 export const lightProps = 'bg-neutral-200';

@@ -8,7 +8,7 @@ import AlbumCard, {
   darkHoverTextProps,
   lightHoverTextProps
 } from './Album';
-import { ListAlbum } from '../../../Pages/albums/helpers';
+import { ListAlbum } from '../../../Types/Album';
 
 describe('Album Card', () => {
   const mockData: ListAlbum = {
@@ -114,7 +114,7 @@ describe('Album Card', () => {
 
   describe('Edge Cases', () => {
     it('renders TBA if release date is not available', () => {
-      const data = { ...mockData, release_date: undefined };
+      const data = { ...mockData, release_date: null };
       render(<AlbumCard data={data} />);
       const releaseDate = screen.getByTestId('album-card-release-date');
       expect(releaseDate.textContent).toEqual('TBA');

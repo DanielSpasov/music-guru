@@ -1,4 +1,4 @@
-import { Album } from '../Pages/albums/helpers';
+import { ListAlbum } from '../Types/Album';
 import { Song } from '../Types/Song';
 
 export interface Artist {
@@ -8,7 +8,7 @@ export interface Artist {
   uid: string;
   created_at: Date;
   created_by: string;
-  albums: Album[];
+  albums: ListAlbum[];
   songs: Song[];
   features: Song[];
   favorites: number;

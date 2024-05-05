@@ -1,13 +1,13 @@
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
+import { CreateAlbumSchema } from '../../../Validations/Album';
 import { Calendar, Input, Select } from '../../../Components';
 import { Song } from '../../../Types/Song';
-import { AlbumSchema } from '../helpers';
 import Api from '../../../Api';
 
 export const schema: FormSchema = {
   title: 'Create Album',
   header: 'Create Album',
-  validationSchema: AlbumSchema,
+  validationSchema: CreateAlbumSchema,
   fetchDefaultData: async ({ toast }) => {
     try {
       const { data } = await Api.albums.fetchTypes({
