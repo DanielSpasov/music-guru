@@ -1,6 +1,6 @@
-import { Song } from '../../Pages/songs/helpers';
 import { Config, applyPrefix } from '../helpers';
 import { del, post } from '../requests';
+import { Song } from '../../Types/Song';
 import Crud from '../crud';
 
 export default class SongsAPI extends Crud<Song> {

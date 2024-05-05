@@ -1,13 +1,13 @@
-import Api from '../../../Api';
-import { Calendar, Input, Select } from '../../../Components';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
+import { Calendar, Input, Select } from '../../../Components';
+import { CreateSongSchema } from '../../../Validations/Song';
 import { Artist } from '../../../Types/Artist';
-import { SongSchema } from '../helpers';
+import Api from '../../../Api';
 
 export const schema: FormSchema = {
   title: 'Create Song',
   header: 'Create Song',
-  validationSchema: SongSchema,
+  validationSchema: CreateSongSchema,
   onSubmit: async ({ toast, formData, navigate }) => {
     try {
       const payload = {

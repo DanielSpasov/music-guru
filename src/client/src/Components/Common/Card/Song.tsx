@@ -1,4 +1,4 @@
-import { ListSong } from '../../../Pages/songs/helpers';
+import { ListSong } from '../../../Types/Song';
 import { CardProps } from './helpers';
 
 export const lightProps = 'bg-neutral-200';

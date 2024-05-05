@@ -1,6 +1,6 @@
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
 import { Calendar, Input, Select } from '../../../Components';
-import { Song } from '../../songs/helpers';
+import { Song } from '../../../Types/Song';
 import { AlbumSchema } from '../helpers';
 import Api from '../../../Api';
 

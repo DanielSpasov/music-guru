@@ -8,7 +8,7 @@ import SongCard, {
   lightHoverTextProps,
   lightProps
 } from './Song';
-import { ListSong } from '../../../Pages/songs/helpers';
+import { ListSong } from '../../../Types/Song';
 
 describe('Song Card', () => {
   const mockData: ListSong = {

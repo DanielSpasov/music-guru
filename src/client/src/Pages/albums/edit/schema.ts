@@ -1,9 +1,10 @@
-import { FormSchema } from '../../../Components/Forms/Form/helpers';
-import { Song } from '../../songs/helpers';
-import Api from '../../../Api';
-import { EditAlbumSchema } from '../helpers';
 import moment from 'moment';
+
+import { FormSchema } from '../../../Components/Forms/Form/helpers';
 import { Calendar, Input, Select } from '../../../Components';
+import { EditAlbumSchema } from '../helpers';
+import { Song } from '../../../Types/Song';
+import Api from '../../../Api';
 
 export const schema: FormSchema = {
   title: 'Edit Album',

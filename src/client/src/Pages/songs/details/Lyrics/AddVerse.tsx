@@ -1,5 +1,5 @@
 import { Form, Icon, Input, Textarea } from '../../../../Components';
-import { VerseSchema } from '../../helpers';
+import { VerseSchema } from '../../../../Validations/Song';
 import { AddVerseProps } from './helpers';
 
 export const wrapperLightProps = 'border-neutral-200 border-[1px]';

@@ -1,6 +1,6 @@
 import { SubmitHandler } from 'react-hook-form';
 
-import { Song, Verse } from '../../helpers';
+import { Song, Verse } from '../../../../Types/Song';
 
 export type DelVerseFn = (number: number) => Promise<void>;
 export type AddVerseFn = SubmitHandler<any>;

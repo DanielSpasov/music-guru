@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { defaultArtist } from '../Pages/artists/details';
-import { Song } from '../Pages/songs/helpers';
+import { Song } from '../Types/Song';
 import Api from '../Api';
 
 const defaultSong: Song = {
@@ -14,7 +14,7 @@ const defaultSong: Song = {
   features: [],
   image: '',
   name: '',
-  release_date: undefined,
+  release_date: null,
   artist: defaultArtist,
   verses: []
 };

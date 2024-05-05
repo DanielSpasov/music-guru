@@ -1,5 +1,5 @@
 import { Album } from '../Pages/albums/helpers';
-import { Song } from '../Pages/songs/helpers';
+import { Song } from '../Types/Song';
 
 export interface Artist {
   name: string;
