@@ -1,6 +1,6 @@
-import { ListSong, Song } from '../../Types/Song';
+import { ListSong, Song, Verse } from '../../Types/Song';
 import { Config, applyPrefix } from '../helpers';
-import { del, post } from '../requests';
+import { del, patch, post } from '../requests';
 import Crud from '../crud';
 
 export default class SongsAPI extends Crud<Song, ListSong> {
@@ -9,6 +9,22 @@ export default class SongsAPI extends Crud<Song, ListSong> {
   constructor(props: any) {
     super();
     applyPrefix(this, props);
+  }
+
+  updateImage({
+    uid,
+    image,
+    config = {}
+  }: {
+    uid: string;
+    image: File;
+    config?: Config;
+  }) {
+    return post({
+      url: `${this.baseUrl}/${this.model}/${uid}/image/`,
+      body: { image },
+      config
+    });
   }
 
   addVerse({
@@ -45,18 +61,20 @@ export default class SongsAPI extends Crud<Song, ListSong> {
     });
   }
 
-  updateImage({
+  editVerse({
     uid,
-    image,
+    number,
+    verse,
     config = {}
   }: {
     uid: string;
-    image: File;
+    number: number;
+    verse: Verse;
     config?: Config;
   }) {
-    return post({
-      url: `${this.baseUrl}/${this.model}/${uid}/image/`,
-      body: { image },
+    return patch({
+      url: `${this.baseUrl}/${this.model}/${uid}/verse/${number}/`,
+      body: { verse },
       config
     });
   }

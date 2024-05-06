@@ -1,6 +1,12 @@
 import { Router } from 'express';
 
-import { postVerse, delVerse, del, patch } from '../../Services/Songs';
+import {
+  postVerse,
+  delVerse,
+  patchVerse,
+  del,
+  patch
+} from '../../Services/Songs';
 import { authorization, upload } from '../../Middleware';
 import { fetch, get, post } from '../helpers/requests';
 import updateImage from '../../Services/Image';
@@ -29,5 +35,6 @@ router.post(
 // Verses
 router.post('/:id/verse', [authorization], postVerse);
 router.delete('/:id/verse', [authorization], delVerse);
+router.patch('/:id/verse/:number', [authorization], patchVerse);
 
 export default router;

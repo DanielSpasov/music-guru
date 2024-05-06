@@ -16,8 +16,16 @@ export default function SongDetails() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const { song, loading, del, updateImage, addVerse, delVerse, verseLoading } =
-    useSong(id);
+  const {
+    song,
+    loading,
+    del,
+    updateImage,
+    addVerse,
+    delVerse,
+    editVerse,
+    verseLoading
+  } = useSong(id);
 
   const fetchAlbums = useCallback(
     (config?: Config) =>
@@ -105,6 +113,7 @@ export default function SongDetails() {
           song={song}
           addVerse={addVerse}
           delVerse={delVerse}
+          editVerse={editVerse}
           verseLoading={verseLoading}
         />
       </article>

@@ -1,16 +1,19 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useState } from 'react';
 
-import { Icon, Loader } from '../../../../Components';
+import { VerseProps, wrapperProps } from './helpers';
+import { Form, Icon } from '../../../../Components';
 import { AuthContext } from '../../../../Contexts';
-import { VerseProps } from './helpers';
+import { editVerseSchema } from './schemas';
 
 export default function SongVerse({
-  isNew = false,
   created_by,
+  editVerse,
   delVerse,
   loading,
   verse
 }: VerseProps) {
+  const [isEditing, setIsEditing] = useState(false);
+
   const { isAuthenticated, uid } = useContext(AuthContext);
 
   const disableAction = useMemo(
@@ -18,10 +21,27 @@ export default function SongVerse({
     [loading, created_by, uid]
   );
 
-  if (isNew) {
+  if (isEditing) {
     return (
-      <div className="mt-4 p-4 bg-neutral-300 dark:bg-neutral-950 rounded-md">
-        <Loader size="sm" />
+      <div className={`mt-4 rounded-md ${wrapperProps}`}>
+        <div className="flex justify-between pt-3 px-3">
+          <h3>Edit Verse</h3>
+          <Icon
+            model="close"
+            onClick={() => setIsEditing(false)}
+            className="w-8 right-0"
+          />
+        </div>
+
+        <Form
+          {...editVerseSchema}
+          showClose={false}
+          defaultValues={verse}
+          onSubmit={formData => {
+            editVerse(verse.number, formData);
+            setIsEditing(false);
+          }}
+        />
       </div>
     );
   }
@@ -45,7 +65,7 @@ export default function SongVerse({
               model="edit"
               className="w-6"
               disabled={disableAction}
-              onClick={() => null} // TODO: Implement verse editing
+              onClick={() => setIsEditing(true)}
             />
             <Icon
               model="hamburger"

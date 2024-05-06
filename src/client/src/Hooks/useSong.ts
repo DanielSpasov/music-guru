@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { defaultArtist } from '../Pages/artists/details';
-import { Song } from '../Types/Song';
+import { Song, Verse } from '../Types/Song';
 import Api from '../Api';
 
 const defaultSong: Song = {
@@ -43,6 +43,22 @@ export default function useSong(uid: string) {
       }
     })();
   }, [uid]);
+
+  const updateImage = useCallback(
+    async (file: File) => {
+      try {
+        const { image } = await Api.songs.updateImage({
+          uid: song.uid,
+          image: file,
+          config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        });
+        setSong(prev => ({ ...prev, image }));
+      } catch (err) {
+        toast.error('Failed to update image');
+      }
+    },
+    [song.uid]
+  );
 
   const del = useCallback(async () => {
     try {
@@ -89,20 +105,25 @@ export default function useSong(uid: string) {
     [uid]
   );
 
-  const updateImage = useCallback(
-    async (file: File) => {
+  const editVerse = useCallback(
+    async (number: number, verse: Verse) => {
       try {
-        const { image } = await Api.songs.updateImage({
-          uid: song.uid,
-          image: file,
-          config: { headers: { 'Content-Type': 'multipart/form-data' } }
-        });
-        setSong(prev => ({ ...prev, image }));
+        setVerseLoading(number);
+        const { data } = await Api.songs.editVerse({ uid, number, verse });
+        setSong(prev => ({
+          ...prev,
+          verses: prev.verses.map(verse =>
+            verse.number === number ? data : verse
+          )
+        }));
+        toast.success('Verse edited sucessfully');
       } catch (err) {
-        toast.error('Failed to update image');
+        toast.error('Failed to edit Verse');
+      } finally {
+        setVerseLoading(0);
       }
     },
-    [song.uid]
+    [uid]
   );
 
   return {
@@ -112,6 +133,7 @@ export default function useSong(uid: string) {
     del,
     updateImage,
     addVerse,
-    delVerse
+    delVerse,
+    editVerse
   };
 }

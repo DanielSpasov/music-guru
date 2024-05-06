@@ -1,10 +1,10 @@
 import { useContext, useState } from 'react';
 
+import { Form, Icon, Loader } from '../../../../Components';
+import { LyricsProps, wrapperProps } from './helpers';
 import { AuthContext } from '../../../../Contexts';
-import { Icon } from '../../../../Components';
-import { LyricsProps } from './helpers';
+import { createVerseSchema } from './schemas';
 
-import AddVerse from './AddVerse';
 import Verse from './Verse';
 
 export const lightButtonProps =
@@ -22,6 +22,7 @@ export default function Lyrics({
   song,
   addVerse,
   delVerse,
+  editVerse,
   verseLoading
 }: LyricsProps) {
   const [showNewVerse, setShowNewVerse] = useState(false);
@@ -61,6 +62,7 @@ export default function Lyrics({
               <Verse
                 loading={verseLoading}
                 created_by={song.created_by}
+                editVerse={editVerse}
                 delVerse={delVerse}
                 verse={verse}
                 key={verseKey}
@@ -71,20 +73,31 @@ export default function Lyrics({
         )}
 
         {song.verses.length < verseLoading ? (
-          <Verse
-            isNew
-            created_by={song.created_by}
-            verse={{ lyrics: '', number: verseLoading, title: '' }}
-            delVerse={delVerse}
-            loading={verseLoading}
-          />
+          <div className="mt-4 p-4 bg-neutral-300 dark:bg-neutral-950 rounded-md">
+            <Loader size="sm" />
+          </div>
         ) : null}
 
         {showNewVerse ? (
-          <AddVerse
-            onClose={() => setShowNewVerse(false)}
-            onSubmit={addVerse}
-          />
+          <div className={`mt-4 rounded-md ${wrapperProps}`}>
+            <div className="flex justify-between pt-3 px-3">
+              <h3>New Verse</h3>
+              <Icon
+                model="close"
+                onClick={() => setShowNewVerse(false)}
+                className="w-8 right-0"
+              />
+            </div>
+
+            <Form
+              {...createVerseSchema}
+              showClose={false}
+              onSubmit={e => {
+                addVerse(e);
+                setShowNewVerse(false);
+              }}
+            />
+          </div>
         ) : null}
       </div>
     </section>
