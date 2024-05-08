@@ -54,7 +54,7 @@ export default function SongDetails() {
         }
       ]}
     >
-      <article className="flex">
+      <article className="flex relative h-[calc(100vh-200px)]">
         <section className="flex flex-col w-1/2 items-start text-white">
           <div className="flex mb-10">
             <Image

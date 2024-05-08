@@ -30,7 +30,7 @@ export default function Lyrics({
   const { isAuthenticated, uid } = useContext(AuthContext);
 
   return (
-    <section className="w-1/2 rounded-md p-2">
+    <section className="w-1/2 relative h-full rounded-md">
       <div className="flex items-center justify-between">
         <h2>Lyrics</h2>
 
@@ -54,7 +54,7 @@ export default function Lyrics({
         ) : null}
       </div>
 
-      <div className="h-fit overflow-scroll">
+      <div className="h-full overflow-y-scroll mt-1 px-2">
         {song.verses.length ? (
           song.verses
             .sort((a, b) => a.number - b.number)
