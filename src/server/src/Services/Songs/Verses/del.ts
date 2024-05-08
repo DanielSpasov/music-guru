@@ -22,15 +22,15 @@ export default async function (req: Request, res: Response) {
       return;
     }
 
-    if (!req.query?.number) {
+    if (!req.params.number) {
       res.status(400).json({ message: 'Verse number is required.' });
       return;
     }
 
     const updatedVerses = song.verses
-      .filter(verse => verse.number !== Number(req.query.number))
+      .filter(verse => verse.number !== Number(req.params.number))
       .map(verse => {
-        if (verse.number < Number(req.query.number)) return verse;
+        if (verse.number < Number(req.params.number)) return verse;
         return { ...verse, number: verse.number - 1 };
       });
 

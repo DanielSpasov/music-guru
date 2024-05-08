@@ -53,11 +53,8 @@ export default class SongsAPI extends Crud<Song, ListSong> {
     config?: Config;
   }) {
     return del({
-      url: `${this.baseUrl}/${this.model}/${uid}/verse/`,
-      config: {
-        params: { number, ...config?.params },
-        ...config
-      }
+      url: `${this.baseUrl}/${this.model}/${uid}/verse/${number}/`,
+      config
     });
   }
 

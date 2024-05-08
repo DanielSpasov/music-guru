@@ -34,7 +34,7 @@ router.post(
 
 // Verses
 router.post('/:id/verse', [authorization], postVerse);
-router.delete('/:id/verse', [authorization], delVerse);
+router.delete('/:id/verse/:number', [authorization], delVerse);
 router.patch('/:id/verse/:number', [authorization], patchVerse);
 
 export default router;
