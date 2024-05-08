@@ -48,7 +48,7 @@ export default function SongVerse({
 
   return (
     <div className={`py-4 ${loading === verse.number ? 'opacity-70' : ''}`}>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 sticky top-0 bg-neutral-50 dark:bg-neutral-800">
         <p className="font-semibold whitespace-nowrap">[{verse.title}]</p>
 
         <div className="h-[1px] w-full bg-neutral-200 dark:bg-neutral-700" />
