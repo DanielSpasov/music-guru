@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 import { defaultArtist } from '../Pages/artists/details';
 import { Song, Verse } from '../Types/Song';
+import { ListAlbum } from '../Types/Album';
 import Api from '../Api';
 
 const defaultSong: Song = {
@@ -21,6 +22,7 @@ const defaultSong: Song = {
 
 export default function useSong(uid: string) {
   const [song, setSong] = useState<Song>(defaultSong);
+  const [albums, setAlbums] = useState<ListAlbum[]>([]);
 
   const [verseLoading, setVerseLoading] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -36,6 +38,11 @@ export default function useSong(uid: string) {
           config: { params: { serializer: 'detailed' } }
         });
         setSong(data);
+
+        const { data: albums } = await Api.albums.fetch({
+          config: { params: { 'songs.uid': uid } }
+        });
+        setAlbums(albums);
       } catch (error) {
         toast.error('Failed to fetch Song');
       } finally {
@@ -128,6 +135,7 @@ export default function useSong(uid: string) {
 
   return {
     song,
+    albums,
     loading,
     verseLoading,
     del,
