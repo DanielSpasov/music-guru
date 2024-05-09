@@ -1,9 +1,9 @@
 import { useContext, useMemo, useState } from 'react';
 
-import { VerseProps, wrapperProps } from './helpers';
-import { Form, Icon } from '../../../../Components';
 import { AuthContext } from '../../../../Contexts';
-import { editVerseSchema } from './schemas';
+import { Icon } from '../../../../Components';
+import EditVerse from './Forms/EditVerse';
+import { VerseProps } from './helpers';
 
 export default function SongVerse({
   created_by,
@@ -23,26 +23,11 @@ export default function SongVerse({
 
   if (isEditing) {
     return (
-      <div className={`mt-4 rounded-md ${wrapperProps}`}>
-        <div className="flex justify-between pt-3 px-3">
-          <h3>Edit Verse</h3>
-          <Icon
-            model="close"
-            onClick={() => setIsEditing(false)}
-            className="w-8 right-0"
-          />
-        </div>
-
-        <Form
-          {...editVerseSchema}
-          showClose={false}
-          defaultValues={verse}
-          onSubmit={formData => {
-            editVerse(verse.number, formData);
-            setIsEditing(false);
-          }}
-        />
-      </div>
+      <EditVerse
+        defaultValues={verse}
+        onSubmit={editVerse}
+        setShow={setIsEditing}
+      />
     );
   }
 
@@ -66,12 +51,6 @@ export default function SongVerse({
               className="w-6"
               disabled={disableAction}
               onClick={() => setIsEditing(true)}
-            />
-            <Icon
-              model="hamburger"
-              className="w-6"
-              disabled={disableAction}
-              onClick={() => null} // TODO: Implement verse reordering
             />
           </div>
         ) : null}

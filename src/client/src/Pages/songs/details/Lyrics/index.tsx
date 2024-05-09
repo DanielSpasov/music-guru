@@ -1,22 +1,12 @@
 import { useContext, useState } from 'react';
 
-import { Form, Icon, Loader } from '../../../../Components';
-import { LyricsProps, wrapperProps } from './helpers';
 import { AuthContext } from '../../../../Contexts';
-import { createVerseSchema } from './schemas';
+import { Loader } from '../../../../Components';
+import { LyricsProps } from './helpers';
 
+import NewVerse from './Forms/NewVerse';
+import Header from './Header';
 import Verse from './Verse';
-
-export const lightButtonProps =
-  'bg-transparent border-primary [&>p]:text-primary';
-export const darkButtonProps =
-  'dark:border-neutral-900 dark:bg-transparent dark:shadow-md [&>p]:dark:text-white';
-export const themeButtonProps = `border-2 ${lightButtonProps} ${darkButtonProps}`;
-
-export const lightHoverButtonProps =
-  'hover:bg-primary [&>p]:hover:text-white [&>svg>path]:hover:fill-white';
-export const darkHoverButtonProps = 'hover:dark:bg-neutral-900';
-export const hoverButtonProps = `hover:opacity-100 ${lightHoverButtonProps} ${darkHoverButtonProps}`;
 
 export default function Lyrics({
   song,
@@ -31,28 +21,11 @@ export default function Lyrics({
 
   return (
     <section className="w-1/2 relative h-full rounded-md">
-      <div className="flex items-center justify-between">
-        <h2>Lyrics</h2>
-
-        {isAuthenticated ? (
-          <button
-            className={`flex items-center rounded-full py-1 px-3 ${themeButtonProps} ${
-              uid === song.created_by ? hoverButtonProps : ''
-            }`}
-            onClick={() => {
-              setShowNewVerse(true);
-              requestAnimationFrame(() => {
-                const form = document.querySelector('form');
-                if (form) form.scrollIntoView({ behavior: 'smooth' });
-              });
-            }}
-            disabled={uid !== song.created_by}
-          >
-            <Icon model="add" />
-            <p>Add Verse</p>
-          </button>
-        ) : null}
-      </div>
+      <Header
+        disableAdd={uid !== song.created_by}
+        showAdd={Boolean(isAuthenticated)}
+        setShowNewVerse={setShowNewVerse}
+      />
 
       <div className="h-full overflow-y-scroll mt-1 px-2">
         {song.verses.length ? (
@@ -78,27 +51,11 @@ export default function Lyrics({
           </div>
         ) : null}
 
-        {showNewVerse ? (
-          <div className={`mt-4 rounded-md ${wrapperProps}`}>
-            <div className="flex justify-between pt-3 px-3">
-              <h3>New Verse</h3>
-              <Icon
-                model="close"
-                onClick={() => setShowNewVerse(false)}
-                className="w-8 right-0"
-              />
-            </div>
-
-            <Form
-              {...createVerseSchema}
-              showClose={false}
-              onSubmit={e => {
-                addVerse(e);
-                setShowNewVerse(false);
-              }}
-            />
-          </div>
-        ) : null}
+        <NewVerse
+          show={showNewVerse}
+          setShow={setShowNewVerse}
+          onSubmit={addVerse}
+        />
       </div>
     </section>
   );
