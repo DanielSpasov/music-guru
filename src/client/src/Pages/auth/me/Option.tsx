@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import { AuthContext } from '../../../Contexts/Auth';
 import { fromatDate } from '../../../Utils';
-import { Icon } from '../../../Components';
+import { Button, Icon } from '../../../Components';
 import { OptionProps } from './helpers';
 import Api from '../../../Api';
 
@@ -92,8 +92,8 @@ export default function Option({ data, user, setUser }: OptionProps) {
                 model={user[data.field] ? 'check' : 'close'}
                 className={
                   user[data.field]
-                    ? '[&>path]:text-green-500'
-                    : '[&>path]:text-red-400'
+                    ? '[&>path]:fill-green-500'
+                    : '[&>path]:fill-red-400'
                 }
               />
             )}
@@ -108,13 +108,12 @@ export default function Option({ data, user, setUser }: OptionProps) {
 
       <div className="flex flex-1 justify-end">
         {data?.action && !data?.action?.hide && (
-          <button
-            className="py-1.5 p-3"
+          <Button
             onClick={handleOnClick}
             disabled={loading || data.action?.disabled}
           >
             {data.action?.label}
-          </button>
+          </Button>
         )}
       </div>
     </div>

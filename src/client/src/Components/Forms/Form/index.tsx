@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { ZodObject } from 'zod';
 
 import { FormProps, handleZodErrors } from './helpers';
-import { Loader } from '../../../Components';
+import { Button, Loader } from '../../../Components';
 import Section from './Section';
 
 export default function Form({
@@ -93,21 +93,16 @@ export default function Form({
 
       <div className="flex justify-end gap-4 p-4">
         {showClose && (
-          <button
-            className="bg-secondary dark:bg-secondary-dark"
-            type="button"
+          <Button
+            disabled={loading}
             onClick={closeFn}
+            type="button"
+            variant="secondary"
           >
             Close
-          </button>
+          </Button>
         )}
-        <button
-          className="bg-primary dark:bg-primary-dark"
-          type="submit"
-          disabled={loading}
-        >
-          Submit
-        </button>
+        <Button disabled={loading}>Submit</Button>
       </div>
 
       {additionalInfo}

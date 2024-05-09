@@ -24,7 +24,7 @@
   }
 
   button {
-    @apply bg-primary dark:bg-primary-dark text-white rounded-md py-3 px-4 font-bold hover:opacity-70 disabled:opacity-50;
+    @apply font-semibold;
   }
 
   h1 {
