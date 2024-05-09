@@ -1,4 +1,5 @@
-import { ButtonProps, variants } from './helpers';
+import { ButtonProps } from './types';
+import { variants } from './variants';
 
 export default function Button({
   children,

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { variants } from './helpers';
+import { variants } from './variants';
 import Button from './index';
 
 describe('Button', () => {
