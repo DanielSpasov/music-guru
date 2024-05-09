@@ -12,14 +12,11 @@ import About from './About';
 import Socials from './Socials';
 
 export const defaultArtist: Artist = {
-  albums: [],
   created_at: new Date(),
   created_by: '',
   favorites: 0,
-  features: [],
   image: '',
   name: '',
-  songs: [],
   uid: '',
   about: '',
   links: []
