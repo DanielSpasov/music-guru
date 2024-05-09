@@ -41,16 +41,16 @@ export default function SongVerse({
         {isAuthenticated ? (
           <div className="flex gap-2">
             <Icon
-              model="trash"
-              className="w-6"
-              disabled={disableAction}
-              onClick={() => delVerse(verse.number)}
-            />
-            <Icon
               model="edit"
               className="w-6"
               disabled={disableAction}
               onClick={() => setIsEditing(true)}
+            />
+            <Icon
+              model="trash"
+              className="w-6"
+              disabled={disableAction}
+              onClick={() => delVerse(verse.number)}
             />
           </div>
         ) : null}
