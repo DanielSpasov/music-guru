@@ -18,7 +18,7 @@ export default function PageLayout({
   return (
     <>
       {showNavbar && <Navbar />}
-      <main className="relative min-h-screen mt-20">
+      <main className="relative min-h-[calc(100vh-80px)] mt-20">
         <header className="flex items-center justify-center relative border-b-[1px] h-[72px] border-neutral-200 dark:border-none dark:shadow-md">
           {showHeader && <h1>{title}</h1>}
 

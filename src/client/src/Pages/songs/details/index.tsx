@@ -56,8 +56,8 @@ export default function SongDetails() {
         }
       ]}
     >
-      <article className="flex relative h-[calc(100vh-200px)]">
-        <section className="flex flex-col items-start w-1/2 px-4 text-white">
+      <section className="flex h-[calc(100vh-250px)]">
+        <div className="flex flex-col items-start w-1/2 px-4 text-white">
           <div className="flex mb-10">
             <Image
               src={song?.image || ''}
@@ -73,8 +73,7 @@ export default function SongDetails() {
 
           <About song={song} />
           <Socials song={song} />
-        </section>
-
+        </div>
         <Lyrics
           song={song}
           addVerse={addVerse}
@@ -82,7 +81,7 @@ export default function SongDetails() {
           editVerse={editVerse}
           verseLoading={verseLoading}
         />
-      </article>
+      </section>
     </PageLayout>
   );
 }
