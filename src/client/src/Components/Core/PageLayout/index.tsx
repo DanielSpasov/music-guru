@@ -19,7 +19,7 @@ export default function PageLayout({
   return (
     <>
       {showNavbar && <Navbar />}
-      <main className="min-h-screen pt-20">
+      <main className="relative min-h-screen mt-20">
         {showHeader && <h1 className="text-center p-4">{title}</h1>}
 
         {loading ? (
