@@ -20,6 +20,7 @@ export interface Song extends z.infer<typeof BaseSongSchema> {
   features: Artist[];
   verses: Verse[];
   links: { name: string; url: string }[];
+  about: string;
 }
 
 export interface DBSong {
@@ -32,4 +33,5 @@ export interface DBSong {
   features: string[];
   verses: Verse[];
   links: { name: string; url: string }[];
+  about: string;
 }

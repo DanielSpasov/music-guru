@@ -24,5 +24,6 @@ export const SongSchema = BaseSongSchema.extend({
   links: z
     .array(z.object({ name: z.string(), url: z.string().url() }))
     .refine(val => val.filter(item => item.url !== null))
-    .default([])
+    .default([]),
+  about: z.string().max(10000, 'Max length is 10000 characters')
 });

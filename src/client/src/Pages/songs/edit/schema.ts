@@ -1,7 +1,7 @@
 import moment from 'moment';
 
+import { Calendar, Input, Select, Textarea } from '../../../Components';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
-import { Calendar, Input, Select } from '../../../Components';
 import { EditSongSchema } from '../../../Validations/Song';
 import { SocialsSchema } from '../../../Validations';
 import { Artist } from '../../../Types/Artist';
@@ -120,6 +120,11 @@ export const schema: FormSchema = {
             fetchFn: ({ params }: any) =>
               Api.artists.fetch({ config: { params } })
           }
+        },
+        {
+          key: 'about',
+          label: 'About',
+          Component: Textarea
         }
       ]
     },
