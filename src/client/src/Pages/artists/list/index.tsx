@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
 import { FavoritesProvider, AuthContext } from '../../../Contexts';
-import { List, PageLayout } from '../../../Components';
+import { Icon, List, PageLayout } from '../../../Components';
 import Api from '../../../Api';
 
 export default function Artists() {
@@ -13,10 +13,16 @@ export default function Artists() {
   return (
     <PageLayout
       title="Artists"
-      showHeader={false}
       actions={[
         {
-          icon: 'add',
+          type: 'button',
+          children: (
+            <>
+              <Icon model="add" />
+              <p>New</p>
+            </>
+          ),
+          variant: 'outline',
           onClick: () => navigate('create'),
           hidden: !isAuthenticated
         }

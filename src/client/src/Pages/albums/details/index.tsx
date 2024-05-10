@@ -90,12 +90,14 @@ export default function AlbumDetails() {
       loading={loading}
       actions={[
         {
+          type: 'icon',
           icon: 'edit',
           onClick: () => navigate('edit'),
           hidden: !isAuthenticated,
           disabled: uid !== album.created_by
         },
         {
+          type: 'icon',
           icon: 'trash',
           onClick: deleteAlbum,
           hidden: !isAuthenticated,

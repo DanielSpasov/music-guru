@@ -34,12 +34,21 @@ export default function SongDetails() {
       loading={loading}
       actions={[
         {
+          type: 'icon',
+          icon: 'settings',
+          onClick: () => navigate('settings'),
+          hidden: uid !== song.created_by,
+          disabled: uid !== song.created_by
+        },
+        {
+          type: 'icon',
           icon: 'edit',
           onClick: () => navigate('edit'),
           hidden: !isAuthenticated,
           disabled: uid !== song.created_by
         },
         {
+          type: 'icon',
           icon: 'trash',
           onClick: del,
           hidden: !isAuthenticated,

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
-import { List, PageLayout } from '../../../Components';
+import { Icon, List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import Api from '../../../Api';
 
@@ -13,10 +13,16 @@ export default function Songs() {
   return (
     <PageLayout
       title="Songs"
-      showHeader={false}
       actions={[
         {
-          icon: 'add',
+          type: 'button',
+          children: (
+            <>
+              <Icon model="add" />
+              <p>New</p>
+            </>
+          ),
+          variant: 'outline',
           onClick: () => navigate('create'),
           hidden: !isAuthenticated
         }

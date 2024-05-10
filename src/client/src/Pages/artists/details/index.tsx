@@ -63,9 +63,9 @@ export default function ArtistDetails() {
     <PageLayout
       title={artist.name}
       loading={loading}
-      showHeader={false}
       actions={[
         {
+          type: 'icon',
           icon: 'edit',
           onClick: () => navigate('edit'),
           hidden: !isAuthenticated,

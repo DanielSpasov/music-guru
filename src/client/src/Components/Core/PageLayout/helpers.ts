@@ -1,14 +1,26 @@
 import { ReactNode } from 'react';
 
 import { IconModel } from '../../';
+import { ButtonVariant } from '../../Common/Button/types';
 
-export type Action = {
-  icon: IconModel;
+export type DefaultActionProps = {
   onClick: (props: any) => any;
   disabled?: boolean;
   hidden?: boolean;
-  tooltip?: string;
 };
+
+export interface IconAction extends DefaultActionProps {
+  type: 'icon';
+  icon: IconModel;
+}
+
+export interface ButtonAction extends DefaultActionProps {
+  type: 'button';
+  children: ReactNode;
+  variant: ButtonVariant;
+}
+
+export type Action = IconAction | ButtonAction;
 
 export type Tab = {
   label: string;
