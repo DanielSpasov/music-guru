@@ -1,8 +1,8 @@
 import { ChangeEvent, useCallback, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 import { AuthContext } from '../../../Contexts/Auth';
-import { fromatDate } from '../../../Utils';
 import { Button, Icon } from '../../../Components';
 import { OptionProps } from './helpers';
 import Api from '../../../Api';
@@ -99,7 +99,7 @@ export default function Option({ data, user, setUser }: OptionProps) {
             )}
             {data.type === 'date' && (
               <span>
-                {fromatDate({ date: user[data.field] as any as Date })}
+                {moment(user[data.field] as any as Date).format('LLLL')}
               </span>
             )}
           </>
