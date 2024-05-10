@@ -3,6 +3,7 @@ import moment from 'moment';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
 import { Calendar, Input, Select } from '../../../Components';
 import { EditSongSchema } from '../../../Validations/Song';
+import { SocialsSchema } from '../../../Validations';
 import { Artist } from '../../../Types/Artist';
 import Api from '../../../Api';
 
@@ -12,17 +13,21 @@ export const schema: FormSchema = {
   validationSchema: EditSongSchema,
   fetchDefaultData: async ({ toast, params: { id = '' } }) => {
     try {
-      const { data: song } = await Api.songs.get({
+      const { data } = await Api.songs.get({
         id,
         config: { params: { serializer: 'detailed' } }
       });
 
       return {
-        ...song,
-        release_date: song?.release_date
-          ? moment(song?.release_date).toDate()
+        ...data,
+        release_date: data?.release_date
+          ? moment(data?.release_date).toDate()
           : null,
-        artist: [song.artist]
+        artist: [data.artist],
+        ...data.links.reduce(
+          (acc, { name, url }) => ({ ...acc, [name]: url }),
+          {}
+        )
       };
     } catch (err) {
       toast.error('Failed to fetch default data');
@@ -31,8 +36,29 @@ export const schema: FormSchema = {
   },
   onSubmit: async ({ toast, formData, navigate, params: { id = '' } }) => {
     try {
+      const socialsKeys = Object.keys(SocialsSchema.shape);
+
+      const socialsPayload = Object.entries(formData).reduce(
+        (data, [key, value]) => {
+          if (!value) return data;
+
+          if (socialsKeys.includes(key)) {
+            return {
+              ...data,
+              links: [...(data?.links || []), { name: key, url: value }]
+            };
+          }
+          return { ...data, [key]: value };
+        },
+        formData
+      );
+
+      Object.keys(socialsPayload).forEach(
+        key => socialsPayload[key] === undefined && delete socialsPayload[key]
+      );
+
       const payload = {
-        ...formData,
+        ...socialsPayload,
         artist: formData.artist[0].uid,
         features: formData?.features?.map((x: Artist) => x?.uid)
       };
@@ -94,6 +120,32 @@ export const schema: FormSchema = {
             fetchFn: ({ params }: any) =>
               Api.artists.fetch({ config: { params } })
           }
+        }
+      ]
+    },
+    {
+      key: 'socials',
+      title: 'Socials',
+      fields: [
+        {
+          key: 'spotify',
+          label: 'Spotify',
+          Component: Input
+        },
+        {
+          key: 'apple_music',
+          label: 'Apple Music',
+          Component: Input
+        },
+        {
+          key: 'youtube',
+          label: 'Youtube',
+          Component: Input
+        },
+        {
+          key: 'soundcloud',
+          label: 'Soundcloud',
+          Component: Input
         }
       ]
     }

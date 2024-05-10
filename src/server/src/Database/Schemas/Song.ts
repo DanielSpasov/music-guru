@@ -20,5 +20,9 @@ export const VerseSchema = z.object({
 export const SongSchema = BaseSongSchema.extend({
   artist: z.string().uuid(),
   features: z.array(z.string().uuid()).optional().default([]),
-  verses: z.array(VerseSchema).optional().default([])
+  verses: z.array(VerseSchema).optional().default([]),
+  links: z
+    .array(z.object({ name: z.string(), url: z.string().url() }))
+    .refine(val => val.filter(item => item.url !== null))
+    .default([])
 });

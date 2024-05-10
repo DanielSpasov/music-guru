@@ -5,8 +5,6 @@ import { Song } from '../../../../Types/Song';
 export type SummaryProps = {
   song: Song;
   albums: ListAlbum[];
-  userUID: string | null;
-  updateImage: (file: File) => Promise<void>;
 };
 
 export type ItemType = 'link' | 'links' | 'date' | 'text';

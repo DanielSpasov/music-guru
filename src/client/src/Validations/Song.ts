@@ -1,4 +1,6 @@
 import { z } from 'zod';
+
+import { SocialsSchema } from './Socials';
 import { FileSchema } from './File';
 
 export const VerseSchema = z.object({
@@ -18,6 +20,6 @@ export const BaseSongSchema = z.object({
 
 export const CreateSongSchema = BaseSongSchema.extend({
   image: FileSchema.optional()
-});
+}).and(SocialsSchema);
 
-export const EditSongSchema = BaseSongSchema;
+export const EditSongSchema = BaseSongSchema.and(SocialsSchema);

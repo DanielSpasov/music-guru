@@ -17,7 +17,8 @@ const defaultSong: Song = {
   name: '',
   release_date: null,
   artist: defaultArtist,
-  verses: []
+  verses: [],
+  links: []
 };
 
 export default function useSong(uid: string) {

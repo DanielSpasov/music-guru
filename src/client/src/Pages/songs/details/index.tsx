@@ -2,11 +2,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useContext } from 'react';
 
 import { AuthContext } from '../../../Contexts/Auth';
-import { PageLayout } from '../../../Components';
+import { Image, PageLayout } from '../../../Components';
 import useSong from '../../../Hooks/useSong';
 
 import Summary from './Summary';
 import Lyrics from './Lyrics';
+import About from './About';
+import Socials from './Socials';
 
 export default function SongDetails() {
   const { uid, isAuthenticated } = useContext(AuthContext);
@@ -46,12 +48,23 @@ export default function SongDetails() {
       ]}
     >
       <article className="flex relative h-[calc(100vh-200px)]">
-        <Summary
-          song={song}
-          albums={albums}
-          updateImage={updateImage}
-          userUID={uid}
-        />
+        <section className="flex flex-col items-start w-1/2 px-4 text-white">
+          <div className="flex mb-10">
+            <Image
+              src={song?.image || ''}
+              alt={song.name}
+              editable={song.created_by === uid}
+              size={64}
+              className="rounded-lg"
+              updateFn={updateImage}
+            />
+
+            <Summary song={song} albums={albums} />
+          </div>
+
+          <About song={song} />
+          <Socials song={song} />
+        </section>
 
         <Lyrics
           song={song}

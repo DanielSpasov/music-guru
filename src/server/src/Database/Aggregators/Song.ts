@@ -37,6 +37,15 @@ const verses: AggregationStage[] = [
   }
 ];
 
+const socials: AggregationStage[] = [
+  {
+    $unwind: {
+      path: '$links',
+      preserveNullAndEmptyArrays: true
+    }
+  }
+];
+
 const features: AggregationStage[] = [
   {
     $lookup: {
@@ -63,7 +72,8 @@ const features: AggregationStage[] = [
       created_at: { $first: '$created_at' },
       created_by: { $first: '$created_by' },
       features: { $addToSet: '$features' },
-      verses: { $addToSet: '$verses' }
+      verses: { $addToSet: '$verses' },
+      links: { $addToSet: '$links' }
     }
   },
   {
@@ -83,5 +93,6 @@ export const songAggregators: AggregationStage[] = [
   ...created_by,
   ...artist,
   ...verses,
+  ...socials,
   ...features
 ];

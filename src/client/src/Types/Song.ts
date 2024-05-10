@@ -16,6 +16,7 @@ export interface Song {
   artist: ListArtist;
   features: ListArtist[];
   verses: Verse[];
+  links: { name: string; url: string }[];
 }
 
 export interface ListSong {

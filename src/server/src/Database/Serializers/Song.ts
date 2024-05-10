@@ -26,6 +26,7 @@ export class DetailedSong {
   artist: Artist;
   features: Artist[];
   verses: Verse[];
+  links: { name: string; url: string }[];
 
   constructor(song: Song) {
     this.uid = song.uid;
@@ -37,5 +38,6 @@ export class DetailedSong {
     this.artist = serializers.artists.list(song.artist);
     this.features = song.features.map(serializers.artists.list);
     this.verses = song.verses;
+    this.links = song.links;
   }
 }
