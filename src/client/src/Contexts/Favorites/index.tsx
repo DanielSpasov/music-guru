@@ -34,7 +34,7 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
   useEffect(() => {
     (async () => {
       if (!isAuthenticated || !uid) return;
-      const { data } = await Api.user.get({ id: uid });
+      const { data } = await Api.users.get({ id: uid });
       setFavorites(data?.favorites || {});
     })();
   }, [isAuthenticated, uid]);

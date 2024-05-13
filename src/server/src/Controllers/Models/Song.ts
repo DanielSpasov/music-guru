@@ -5,7 +5,10 @@ import {
   delVerse,
   patchVerse,
   del,
-  patch
+  patch,
+  addEditor,
+  delEditor,
+  fetchAvailable as fetchAvailableEditors
 } from '../../Services/Songs';
 import { authorization, upload } from '../../Middleware';
 import { fetch, get, post } from '../helpers/requests';
@@ -36,5 +39,10 @@ router.post(
 router.post('/:id/verse', [authorization], postVerse);
 router.delete('/:id/verse/:number', [authorization], delVerse);
 router.patch('/:id/verse/:number', [authorization], patchVerse);
+
+// Editors
+router.get('/:id/editors/available', [authorization], fetchAvailableEditors);
+router.post('/:id/editor', [authorization], addEditor);
+router.delete('/:id/editor/:editor', [authorization], delEditor);
 
 export default router;

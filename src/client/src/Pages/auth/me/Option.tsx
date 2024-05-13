@@ -36,7 +36,7 @@ export default function Option({ data, user, setUser }: OptionProps) {
 
   const onSubmit = useCallback(async () => {
     try {
-      const { data: updated } = await Api.user.patch({
+      const { data: updated } = await Api.users.patch({
         id: uid || '',
         field: data.field,
         body: { [data.field]: value }

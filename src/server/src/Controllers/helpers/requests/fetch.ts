@@ -12,9 +12,16 @@ export function fetch({ collectionName, databaseName }: ReqProps) {
     try {
       const { serializer = 'list', ...params }: QueryProps = req.query;
 
-      const filters = Object.entries(params).map(([name, value]) => ({
-        $match: { [name]: { $regex: value, $options: 'i' } }
-      }));
+      const filters = Object.entries(params).map(([name, value]) => {
+        const isBool = value === 'true' || value === 'false';
+        return {
+          $match: {
+            [name]: isBool
+              ? { $eq: value === 'true' }
+              : { $regex: value, $options: 'i' }
+          }
+        };
+      });
 
       const db = mongo.db(databaseName);
       const collection = db.collection(collectionName);

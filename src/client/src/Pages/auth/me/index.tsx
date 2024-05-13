@@ -17,7 +17,7 @@ export default function Me() {
     (async () => {
       try {
         setLoading(true);
-        const { data } = await Api.user.get({ id: uid || '' });
+        const { data } = await Api.users.get({ id: uid || '' });
         setUser(data);
       } finally {
         setLoading(false);

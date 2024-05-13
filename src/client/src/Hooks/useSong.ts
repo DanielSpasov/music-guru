@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import { defaultArtist } from '../Pages/artists/details';
 import { Song, Verse } from '../Types/Song';
 import { ListAlbum } from '../Types/Album';
+import { AuthContext } from '../Contexts';
+import { ListUser } from '../Types/User';
 import Api from '../Api';
 
 const defaultSong: Song = {
@@ -19,17 +21,23 @@ const defaultSong: Song = {
   artist: defaultArtist,
   verses: [],
   links: [],
-  about: ''
+  about: '',
+  editors: []
 };
 
 export default function useSong(uid: string) {
   const [song, setSong] = useState<Song>(defaultSong);
+
+  const [availableEditors, setAvailableEditors] = useState<ListUser[]>([]);
   const [albums, setAlbums] = useState<ListAlbum[]>([]);
 
+  const [loadingEditors, setLoadingEditors] = useState(false);
   const [verseLoading, setVerseLoading] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  const { uid: userUID } = useContext(AuthContext);
 
   useEffect(() => {
     (async () => {
@@ -52,6 +60,22 @@ export default function useSong(uid: string) {
       }
     })();
   }, [uid]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (song.created_by !== userUID) return;
+
+        setLoadingEditors(true);
+        const { data } = await Api.songs.fetchAvailableEditors({ uid });
+        setAvailableEditors(data);
+      } catch (err) {
+        toast.error('Failed to fetch users');
+      } finally {
+        setLoadingEditors(false);
+      }
+    })();
+  }, [uid, userUID, song.created_by]);
 
   const updateImage = useCallback(
     async (file: File) => {
@@ -135,15 +159,62 @@ export default function useSong(uid: string) {
     [uid]
   );
 
+  const addEditor = useCallback(
+    async (userUID: string) => {
+      try {
+        setLoadingEditors(true);
+        const { data } = await Api.songs.addEditor({ uid, userUID });
+        setAvailableEditors(prev => prev.filter(x => x.uid !== userUID));
+        setSong(prev => ({ ...prev, editors: [...prev.editors, data] }));
+        toast.success('Editor added sucessfully');
+      } catch (err) {
+        toast.error('Failed to add editor');
+      } finally {
+        setLoadingEditors(false);
+      }
+    },
+    [uid]
+  );
+
+  const delEditor = useCallback(
+    async (userUID: string) => {
+      try {
+        setLoadingEditors(true);
+        await Api.songs.delEditor({ uid, userUID });
+        const editor = song.editors.find(x => x.uid === userUID);
+        if (!editor) {
+          toast.error('Editor not found');
+          return;
+        }
+
+        setAvailableEditors(prev => [...prev, editor]);
+        setSong(prev => ({
+          ...prev,
+          editors: prev.editors.filter(x => x.uid !== userUID)
+        }));
+        toast.success('Editor removed sucessfully');
+      } catch (err) {
+        toast.error('Failed to remove editor');
+      } finally {
+        setLoadingEditors(false);
+      }
+    },
+    [uid, song.editors]
+  );
+
   return {
     song,
     albums,
     loading,
     verseLoading,
+    loadingEditors,
+    availableEditors,
     del,
     updateImage,
     addVerse,
     delVerse,
-    editVerse
+    editVerse,
+    addEditor,
+    delEditor
   };
 }

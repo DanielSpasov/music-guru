@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { ListUser } from '../Serializers/User';
 import { BaseSongSchema } from '../Schemas';
 import { Artist } from './Artist';
 import { User } from './User';
@@ -21,6 +22,7 @@ export interface Song extends z.infer<typeof BaseSongSchema> {
   verses: Verse[];
   links: { name: string; url: string }[];
   about: string;
+  editors: ListUser[];
 }
 
 export interface DBSong {
@@ -34,4 +36,5 @@ export interface DBSong {
   verses: Verse[];
   links: { name: string; url: string }[];
   about: string;
+  editors: string[];
 }

@@ -15,9 +15,9 @@ export default function SignUp() {
     (async () => {
       try {
         const token = searchParams.get('token') || '';
-        const { id } = await Api.user.validateToken(token);
+        const { id } = await Api.users.validateToken(token);
         if (id) {
-          const response = await Api.user.validateEmail(id);
+          const response = await Api.users.validateEmail(id);
           toast.success(response.message);
           navigate('/me');
         }

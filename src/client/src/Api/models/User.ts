@@ -1,9 +1,9 @@
-import { SignInData, SignUpData, User } from '../../Types/User';
+import { ListUser, SignInData, SignUpData, User } from '../../Types/User';
 import { get, patch, post } from '../requests';
 import { applyPrefix } from '../helpers';
 import Crud from '../crud';
 
-export default class UserAPI extends Crud<User, User> {
+export default class UserAPI extends Crud<User, ListUser> {
   model = 'user';
 
   constructor(props: any) {

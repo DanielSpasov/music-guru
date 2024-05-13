@@ -96,6 +96,11 @@
             "path": "edit",
             "filePath": "/songs/edit",
             "private": true
+          },
+          {
+            "path": "settings",
+            "filePath": "/songs/settings",
+            "private": true
           }
         ]
       }

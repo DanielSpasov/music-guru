@@ -9,6 +9,11 @@ export interface User {
   favorites: Favorites;
 }
 
+export interface ListUser {
+  uid: string;
+  username: string;
+}
+
 export interface SignInData {
   email: string;
   password: string;

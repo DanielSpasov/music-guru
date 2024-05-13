@@ -54,7 +54,7 @@ export const getMFAConfig = (user: User): MenuOption[] => [
     action: {
       label: 'Send Email',
       hide: user.verified,
-      onClick: () => Api.user.reSendValidationEmail()
+      onClick: () => Api.users.reSendValidationEmail()
     }
   },
   {

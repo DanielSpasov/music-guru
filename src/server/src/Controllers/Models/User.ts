@@ -10,8 +10,15 @@ import {
   GetUser
 } from '../../Services/Auth';
 import { authorization } from '../../Middleware';
+import { fetch } from '../helpers/requests';
 
 const router = Router();
+
+router.get(
+  '/',
+  authorization,
+  fetch({ collectionName: 'users', databaseName: 'models' })
+);
 
 router.get('/validate-jwt', ValidateToken);
 

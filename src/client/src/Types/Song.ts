@@ -1,4 +1,5 @@
 import { ListArtist } from './Artist';
+import { ListUser } from './User';
 
 export type Verse = {
   title: string;
@@ -18,6 +19,7 @@ export interface Song {
   verses: Verse[];
   links: { name: string; url: string }[];
   about: string;
+  editors: ListUser[];
 }
 
 export interface ListSong {

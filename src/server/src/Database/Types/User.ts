@@ -10,3 +10,16 @@ export interface User extends z.infer<typeof UserSchema> {
   uid: string;
   created_at: Date;
 }
+
+export interface DBUser {
+  uid: string;
+  username: string;
+  email: string;
+  password: string;
+  verified: boolean;
+  created_at: Date;
+  favorites: {
+    artists?: string[];
+    albums?: string[];
+  };
+}

@@ -1,6 +1,6 @@
 import { ListSong, Song, Verse } from '../../Types/Song';
+import { del, patch, post, get } from '../requests';
 import { Config, applyPrefix } from '../helpers';
-import { del, patch, post } from '../requests';
 import Crud from '../crud';
 
 export default class SongsAPI extends Crud<Song, ListSong> {
@@ -72,6 +72,50 @@ export default class SongsAPI extends Crud<Song, ListSong> {
     return patch({
       url: `${this.baseUrl}/${this.model}/${uid}/verse/${number}/`,
       body: { verse },
+      config
+    });
+  }
+
+  addEditor({
+    uid,
+    userUID,
+    config = {}
+  }: {
+    uid: string;
+    userUID: string;
+    config?: Config;
+  }) {
+    return post({
+      url: `${this.baseUrl}/${this.model}/${uid}/editor/`,
+      body: { userUID },
+      config
+    });
+  }
+
+  delEditor({
+    uid,
+    userUID,
+    config = {}
+  }: {
+    uid: string;
+    userUID: string;
+    config?: Config;
+  }) {
+    return del({
+      url: `${this.baseUrl}/${this.model}/${uid}/editor/${userUID}/`,
+      config
+    });
+  }
+
+  fetchAvailableEditors({
+    uid,
+    config = {}
+  }: {
+    uid: string;
+    config?: Config;
+  }) {
+    return get({
+      url: `${this.baseUrl}/${this.model}/${uid}/editors/available/`,
       config
     });
   }

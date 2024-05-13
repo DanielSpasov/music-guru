@@ -46,6 +46,23 @@ const socials: AggregationStage[] = [
   }
 ];
 
+const editors: AggregationStage[] = [
+  {
+    $lookup: {
+      from: 'users',
+      localField: 'editors',
+      foreignField: 'uid',
+      as: 'editors'
+    }
+  },
+  {
+    $unwind: {
+      path: '$editors',
+      preserveNullAndEmptyArrays: true
+    }
+  }
+];
+
 const features: AggregationStage[] = [
   {
     $lookup: {
@@ -74,7 +91,8 @@ const features: AggregationStage[] = [
       features: { $addToSet: '$features' },
       verses: { $addToSet: '$verses' },
       links: { $addToSet: '$links' },
-      about: { $first: '$about' }
+      about: { $first: '$about' },
+      editors: { $addToSet: '$editors' }
     }
   },
   {
@@ -95,5 +113,6 @@ export const songAggregators: AggregationStage[] = [
   ...artist,
   ...verses,
   ...socials,
+  ...editors,
   ...features
 ];

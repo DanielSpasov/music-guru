@@ -29,7 +29,7 @@ export function AuthProvider({ children }: any) {
     (async () => {
       try {
         const token = localStorage.getItem('AUTH') || '';
-        const { uid } = await Api.user.validateToken(token);
+        const { uid } = await Api.users.validateToken(token);
         dispatch({ type: 'SIGNIN', payload: { uid, token } });
       } catch (error) {
         dispatch({ type: 'SIGNOUT' });

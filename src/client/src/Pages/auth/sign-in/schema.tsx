@@ -8,7 +8,7 @@ export const schema: FormSchema = {
   header: 'Sign In',
   onSubmit: async ({ formData, ctx, navigate, toast }) => {
     try {
-      const { uid, token } = await Api.user.signIn({
+      const { uid, token } = await Api.users.signIn({
         email: formData?.email,
         password: formData?.password
       });

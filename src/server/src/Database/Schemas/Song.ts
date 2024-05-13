@@ -17,6 +17,8 @@ export const VerseSchema = z.object({
   number: z.number()
 });
 
+export const EditorSchema = z.string().uuid();
+
 export const SongSchema = BaseSongSchema.extend({
   artist: z.string().uuid(),
   features: z.array(z.string().uuid()).optional().default([]),
@@ -25,5 +27,6 @@ export const SongSchema = BaseSongSchema.extend({
     .array(z.object({ name: z.string(), url: z.string().url() }))
     .refine(val => val.filter(item => item.url !== null))
     .default([]),
-  about: z.string().max(10000, 'Max length is 10000 characters')
+  about: z.string().max(10000, 'Max length is 10000 characters'),
+  editors: z.array(EditorSchema).optional().default([])
 });
