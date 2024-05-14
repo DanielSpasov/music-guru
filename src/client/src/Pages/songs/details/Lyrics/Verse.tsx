@@ -7,8 +7,8 @@ import { VerseProps } from './helpers';
 
 export default function SongVerse({
   created_by,
-  editVerse,
-  delVerse,
+  edit,
+  del,
   loading,
   verse
 }: VerseProps) {
@@ -23,11 +23,7 @@ export default function SongVerse({
 
   if (isEditing) {
     return (
-      <EditVerse
-        defaultValues={verse}
-        onSubmit={editVerse}
-        setShow={setIsEditing}
-      />
+      <EditVerse defaultValues={verse} onSubmit={edit} setShow={setIsEditing} />
     );
   }
 
@@ -50,7 +46,7 @@ export default function SongVerse({
               model="trash"
               className="w-6"
               disabled={disableAction}
-              onClick={() => delVerse(verse.number)}
+              onClick={() => del(verse.number)}
             />
           </div>
         ) : null}

@@ -1,14 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useContext } from 'react';
 
-import { AuthContext } from '../../../Contexts/Auth';
 import { Image, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts/Auth';
 import useSong from '../../../Hooks/useSong';
 
+import Socials from './Socials';
 import Summary from './Summary';
 import Lyrics from './Lyrics';
 import About from './About';
-import Socials from './Socials';
 
 export default function SongDetails() {
   const { uid, isAuthenticated } = useContext(AuthContext);
@@ -16,17 +16,7 @@ export default function SongDetails() {
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const {
-    song,
-    albums,
-    loading,
-    del,
-    updateImage,
-    addVerse,
-    delVerse,
-    editVerse,
-    verseLoading
-  } = useSong(id);
+  const { song, albums, loading, del, updateImage, verses } = useSong(id);
 
   return (
     <PageLayout
@@ -74,13 +64,8 @@ export default function SongDetails() {
           <About song={song} />
           <Socials song={song} />
         </div>
-        <Lyrics
-          song={song}
-          addVerse={addVerse}
-          delVerse={delVerse}
-          editVerse={editVerse}
-          verseLoading={verseLoading}
-        />
+
+        <Lyrics song={song} verses={verses} />
       </section>
     </PageLayout>
   );

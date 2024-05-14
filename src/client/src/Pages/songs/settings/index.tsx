@@ -14,7 +14,7 @@ export default function Settings() {
 
   const { uid: userUID } = useContext(AuthContext);
 
-  const { song, loading, addEditor, delEditor } = useSong(uid);
+  const { song, loading, editors } = useSong(uid);
 
   const [availableEditors, setAvailableEditors] = useState<ListUser[]>([]);
   const [loadingEditors, setLoadingEditors] = useState(false);
@@ -42,7 +42,7 @@ export default function Settings() {
     async (uid: string) => {
       try {
         setLoadingEditors(true);
-        await addEditor(uid);
+        await editors.add(uid);
         setAvailableEditors(prev => prev.filter(user => user.uid !== uid));
       } catch (err) {
         toast.error('Failed to add editor');
@@ -50,14 +50,14 @@ export default function Settings() {
         setLoadingEditors(false);
       }
     },
-    [addEditor]
+    [editors]
   );
 
   const handleDelEditor = useCallback(
     async (uid: string) => {
       try {
         setLoadingEditors(true);
-        await delEditor(uid);
+        await editors.del(uid);
         const editor = song.editors.find(x => x.uid === uid);
         if (editor) setAvailableEditors(prev => [...prev, editor]);
       } catch (err) {
@@ -66,7 +66,7 @@ export default function Settings() {
         setLoadingEditors(false);
       }
     },
-    [delEditor, song.editors]
+    [editors, song.editors]
   );
 
   return (

@@ -8,13 +8,7 @@ import NewVerse from './Forms/NewVerse';
 import Header from './Header';
 import Verse from './Verse';
 
-export default function Lyrics({
-  song,
-  addVerse,
-  delVerse,
-  editVerse,
-  verseLoading
-}: LyricsProps) {
+export default function Lyrics({ song, verses }: LyricsProps) {
   const [showNewVerse, setShowNewVerse] = useState(false);
 
   const { isAuthenticated, uid } = useContext(AuthContext);
@@ -33,10 +27,10 @@ export default function Lyrics({
             .sort((a, b) => a.number - b.number)
             .map((verse, verseKey) => (
               <Verse
-                loading={verseLoading}
+                loading={verses.loading}
                 created_by={song.created_by}
-                editVerse={editVerse}
-                delVerse={delVerse}
+                edit={verses.edit}
+                del={verses.del}
                 verse={verse}
                 key={verseKey}
               />
@@ -45,7 +39,7 @@ export default function Lyrics({
           <p>Lyrics for this song are not available yet.</p>
         )}
 
-        {song.verses.length < verseLoading ? (
+        {song.verses.length < verses.loading ? (
           <div className="mt-4 p-4 bg-neutral-300 dark:bg-neutral-950 rounded-md">
             <Loader size="sm" />
           </div>
@@ -54,7 +48,7 @@ export default function Lyrics({
         <NewVerse
           show={showNewVerse}
           setShow={setShowNewVerse}
-          onSubmit={addVerse}
+          onSubmit={verses.add}
         />
       </div>
     </section>

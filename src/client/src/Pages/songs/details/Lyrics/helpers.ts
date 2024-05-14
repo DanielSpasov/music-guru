@@ -27,16 +27,18 @@ export type HeaderProps = {
 
 export type LyricsProps = {
   song: Song;
-  addVerse: AddVerseFn;
-  delVerse: DelVerseFn;
-  editVerse: EditVerseFn;
-  verseLoading: number;
+  verses: {
+    add: AddVerseFn;
+    del: DelVerseFn;
+    edit: EditVerseFn;
+    loading: number;
+  };
 };
 
 export type VerseProps = {
   loading: number;
   created_by: string;
-  delVerse: DelVerseFn;
-  editVerse: EditVerseFn;
+  del: DelVerseFn;
+  edit: EditVerseFn;
   verse: Verse;
 };

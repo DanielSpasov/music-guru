@@ -170,13 +170,17 @@ export default function useSong(uid: string) {
     song,
     albums,
     loading,
-    verseLoading,
     del,
     updateImage,
-    addVerse,
-    delVerse,
-    editVerse,
-    addEditor,
-    delEditor
+    editors: {
+      add: addEditor,
+      del: delEditor
+    },
+    verses: {
+      add: addVerse,
+      del: delVerse,
+      edit: editVerse,
+      loading: verseLoading
+    }
   };
 }
