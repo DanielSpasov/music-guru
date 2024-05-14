@@ -1,20 +1,73 @@
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts';
+import { ListUser } from '../../../Types/User';
 import useSong from '../../../Hooks/useSong';
 import UserList from './UserList';
+import Api from '../../../Api';
 
 export default function Settings() {
-  const { id = '0' } = useParams();
+  const { id: uid = '0' } = useParams();
 
-  const {
-    song,
-    loading,
-    loadingEditors,
-    availableEditors,
-    addEditor,
-    delEditor
-  } = useSong(id);
+  const { uid: userUID } = useContext(AuthContext);
+
+  const { song, loading, addEditor, delEditor } = useSong(uid);
+
+  const [availableEditors, setAvailableEditors] = useState<ListUser[]>([]);
+  const [loadingEditors, setLoadingEditors] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (song.created_by !== userUID) return;
+
+        setLoadingEditors(true);
+        const { data } = await Api.songs.fetchAvailableEditors({
+          uid,
+          config: { params: { username: '' } }
+        });
+        setAvailableEditors(data);
+      } catch (err) {
+        toast.error('Failed to fetch users');
+      } finally {
+        setLoadingEditors(false);
+      }
+    })();
+  }, [uid, userUID, song.created_by]);
+
+  const handleAddEditor = useCallback(
+    async (uid: string) => {
+      try {
+        setLoadingEditors(true);
+        await addEditor(uid);
+        setAvailableEditors(prev => prev.filter(user => user.uid !== uid));
+      } catch (err) {
+        toast.error('Failed to add editor');
+      } finally {
+        setLoadingEditors(false);
+      }
+    },
+    [addEditor]
+  );
+
+  const handleDelEditor = useCallback(
+    async (uid: string) => {
+      try {
+        setLoadingEditors(true);
+        await delEditor(uid);
+        const editor = song.editors.find(x => x.uid === uid);
+        if (editor) setAvailableEditors(prev => [...prev, editor]);
+      } catch (err) {
+        toast.error('Failed to remove editor');
+      } finally {
+        setLoadingEditors(false);
+      }
+    },
+    [delEditor, song.editors]
+  );
 
   return (
     <PageLayout
@@ -28,7 +81,7 @@ export default function Settings() {
           <UserList
             items={availableEditors}
             loading={loadingEditors}
-            action={addEditor}
+            action={handleAddEditor}
             missingMessage="This song has no available editors."
             icon="add-user"
           />
@@ -40,7 +93,7 @@ export default function Settings() {
           <UserList
             items={song.editors}
             loading={loadingEditors}
-            action={delEditor}
+            action={handleDelEditor}
             missingMessage="This song has no editors yet."
             icon="del-user"
           />

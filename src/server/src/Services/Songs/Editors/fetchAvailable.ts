@@ -9,6 +9,19 @@ import { connect } from '../../../Database';
 export default async function (req: Request, res: Response) {
   const mongo = await connect();
   try {
+    const { limit = 25, ...params } = req.query;
+
+    const filters = Object.entries(params).map(([name, value]) => {
+      const isBool = value === 'true' || value === 'false';
+      return {
+        $match: {
+          [name]: isBool
+            ? { $eq: value === 'true' }
+            : { $regex: value, $options: 'i' }
+        }
+      };
+    });
+
     const db = mongo.db('models');
     const collection: Collection<DBSong> = db.collection('songs');
     const song = await collection.findOne({ uid: req.params.id });
@@ -26,11 +39,12 @@ export default async function (req: Request, res: Response) {
     const availableEditors = userCollection.aggregate([
       {
         $match: {
-          uid: { $nin: song.editors, $ne: song.created_by },
-          verified: { $eq: true }
+          uid: { $nin: song.editors, $ne: song.created_by }
         }
       },
-      { $project: { _id: 0 } }
+      ...filters,
+      { $project: { _id: 0 } },
+      { $limit: Number(limit) }
     ]);
 
     const items = await availableEditors.toArray();
