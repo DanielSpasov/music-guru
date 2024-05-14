@@ -10,7 +10,7 @@ export async function ResendValidationEmail(req: Request, res: Response) {
   try {
     const db = mongo.db('models');
     const collection = db.collection('users');
-    const user = await collection.findOne<User>({ uid: res.locals.userUID });
+    const user = await collection.findOne<User>({ uid: res.locals.user.uid });
 
     if (!user) {
       res.status(404).json({ message: 'User not found.' });

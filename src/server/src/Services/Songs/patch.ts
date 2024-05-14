@@ -18,7 +18,7 @@ export default async function patch(req: Request, res: Response) {
       return;
     }
 
-    if (song.created_by !== res.locals.userUID) {
+    if (song.created_by !== res.locals.user.uid) {
       res.status(403).json({ message: 'Permission denied.' });
       return;
     }

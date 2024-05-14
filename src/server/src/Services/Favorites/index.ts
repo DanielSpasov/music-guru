@@ -19,7 +19,7 @@ export default function favorite({ model }: { model: Models }) {
       const modelCollection = db.collection(model);
 
       const usersDocs = usersCollection.aggregate([
-        { $match: { uid: res.locals.userUID } }
+        { $match: { uid: res.locals.user.uid } }
       ]);
       const [user] = await usersDocs.toArray();
 
@@ -31,7 +31,7 @@ export default function favorite({ model }: { model: Models }) {
           { $inc: { favorites: isFavorite ? -1 : 1 } }
         ),
         usersCollection.findOneAndUpdate(
-          { uid: res.locals.userUID },
+          { uid: res.locals.user.uid },
           isFavorite
             ? { $pull: { [`favorites.${model}`]: req.body.uid } }
             : { $addToSet: { [`favorites.${model}`]: req.body.uid } },

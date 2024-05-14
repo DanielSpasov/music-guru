@@ -23,7 +23,7 @@ export default async function post(req: Request, res: Response) {
 
     const db = mongo.db('models');
     const users = db.collection('users');
-    const user = await users.findOne({ uid: res.locals.userUID });
+    const user = await users.findOne({ uid: res.locals.user.uid });
     if (!user) {
       res.status(400).json({ message: 'Invalid User UID.' });
       return;
@@ -33,7 +33,7 @@ export default async function post(req: Request, res: Response) {
       ...ArtistSchema.parse(req.body),
       ...(req?.file ? { [req.file.fieldname]: uploadedFile } : {}),
       uid,
-      created_by: res.locals.userUID,
+      created_by: res.locals.user.uid,
       created_at: new Date()
     };
 

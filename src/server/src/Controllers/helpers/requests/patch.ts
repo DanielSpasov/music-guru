@@ -13,7 +13,7 @@ export function patch({ collectionName }: SimpleReqProps) {
       const collection = db.collection(collectionName);
       const doc = collection.aggregate([{ $match: { uid: req.params.id } }]);
       const [item] = await doc.toArray();
-      if (item.created_by !== res.locals.userUID) {
+      if (item.created_by !== res.locals.user.uid) {
         res.status(403).json({ message: 'Permission denied.' });
         return;
       }

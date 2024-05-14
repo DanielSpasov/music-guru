@@ -21,10 +21,10 @@ export async function UpdateUser(req: Request, res: Response) {
     const db = mongo.db('models');
     const collection = db.collection('users');
     await collection.updateOne(
-      { uid: res.locals.userUID },
+      { uid: res.locals.user.uid },
       { $set: { [field]: validData } }
     );
-    const data = await collection.findOne({ uid: res.locals.userUID });
+    const data = await collection.findOne({ uid: res.locals.user.uid });
 
     res.status(200).json({ message: `User updated.`, data });
   } catch (error) {

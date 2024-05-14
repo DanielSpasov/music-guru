@@ -10,7 +10,7 @@ export default async function patch(req: Request, res: Response) {
     const collection = mongo.db('models').collection('artists');
     const doc = collection.aggregate([{ $match: { uid: req.params.id } }]);
     const [item] = await doc.toArray();
-    if (item.created_by !== res.locals.userUID) {
+    if (item.created_by !== res.locals.user.uid) {
       res.status(403).json({ message: 'Permission denied.' });
       return;
     }

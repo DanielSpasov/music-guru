@@ -17,7 +17,7 @@ export default async function authorization(
     const secret = env.SECURITY.JWT_SECRET || '';
     const { uid } = jwt.verify(token, secret) as JwtPayload;
 
-    res.locals.userUID = uid;
+    res.locals.user.uid = uid;
 
     next();
   } catch (err) {

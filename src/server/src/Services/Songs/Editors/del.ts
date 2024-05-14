@@ -17,7 +17,7 @@ export default async function (req: Request, res: Response) {
       return;
     }
 
-    if (doc.created_by !== res.locals.userUID) {
+    if (doc.created_by !== res.locals.user.uid) {
       res.status(403).json({ message: 'Permission denied.' });
       return;
     }
