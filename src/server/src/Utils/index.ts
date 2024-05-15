@@ -10,3 +10,16 @@ export const serialize = ({ req, res }: { req: Request; res: Response }) => {
   const collection = res.locals.collection as Models;
   return serializers[collection][serializer](res.locals.item);
 };
+
+export const useFilters = (query: { [key: string]: string | undefined }) => {
+  return Object.entries(query).map(([name, value]) => {
+    const isBool = value === 'true' || value === 'false';
+    return {
+      $match: {
+        [name]: isBool
+          ? { $eq: value === 'true' }
+          : { $regex: value, $options: 'i' }
+      }
+    };
+  });
+};

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { song, verses, editors } from '../../Services/Songs';
+import { song, verses } from '../../Services/Songs';
 import {
   authorization,
   ownership,
@@ -10,6 +10,7 @@ import {
 } from '../../Middleware';
 import { fetch, post } from '../helpers/requests';
 import updateImage from '../../Services/Image';
+import { editors } from '../../Services/Editors';
 
 const router = Router();
 

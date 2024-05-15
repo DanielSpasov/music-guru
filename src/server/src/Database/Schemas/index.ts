@@ -11,6 +11,7 @@ export { ArtistSchema } from './Artist';
 export { AlbumSchema, BaseAlbumSchema } from './Album';
 export { SongSchema, BaseSongSchema } from './Song';
 export { FileUploadSchema, FileSchema } from './File';
+export { EditorSchema } from './Editor';
 export {
   BaseUserSchema,
   SignInSchema,

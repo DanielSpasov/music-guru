@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { EditorSchema } from './Editor';
 
 const DateSchema = z.union([z.string(), z.null()]).transform(x => {
   if (x === null) return null;
@@ -16,8 +17,6 @@ export const VerseSchema = z.object({
   lyrics: z.string().max(10000, 'Max length is 10000 characters'),
   number: z.number()
 });
-
-export const EditorSchema = z.string().uuid();
 
 export const SongSchema = BaseSongSchema.extend({
   artist: z.string().uuid(),
