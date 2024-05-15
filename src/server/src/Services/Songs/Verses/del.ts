@@ -1,35 +1,24 @@
 import { Request, Response } from 'express';
-import { Collection } from 'mongodb';
 
-import { Song } from '../../../Database/Types';
+import { DBSong } from '../../../Database/Types';
 import { errorHandler } from '../../../Error';
 import { connect } from '../../../Database';
+import { Verse } from '../../../Database/Types/Song';
 
 export default async function (req: Request, res: Response) {
   const mongo = await connect();
   try {
     const db = mongo.db('models');
-    const collection: Collection<Song> = db.collection('songs');
-    const song = await collection.findOne({ uid: req.params.id });
-
-    if (!song) {
-      res.status(404).json({ message: 'Song Not found.' });
-      return;
-    }
-
-    if (song.created_by !== res.locals.user.uid) {
-      res.status(403).json({ message: 'Permission denied.' });
-      return;
-    }
+    const collection = db.collection<DBSong>('songs');
 
     if (!req.params.number) {
       res.status(400).json({ message: 'Verse number is required.' });
       return;
     }
 
-    const updatedVerses = song.verses
-      .filter(verse => verse.number !== Number(req.params.number))
-      .map(verse => {
+    const updatedVerses = res.locals.item.verses
+      .filter((verse: Verse) => verse.number !== Number(req.params.number))
+      .map((verse: Verse) => {
         if (verse.number < Number(req.params.number)) return verse;
         return { ...verse, number: verse.number - 1 };
       });

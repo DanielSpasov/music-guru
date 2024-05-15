@@ -1,17 +1,14 @@
 import { Router } from 'express';
 
+import { song, verses, editors } from '../../Services/Songs';
 import {
-  postVerse,
-  delVerse,
-  patchVerse,
-  del,
-  patch,
-  addEditor,
-  delEditor,
-  fetchAvailable as fetchAvailableEditors
-} from '../../Services/Songs';
-import { authorization, upload } from '../../Middleware';
-import { fetch, get, post } from '../helpers/requests';
+  authorization,
+  ownership,
+  upload,
+  get,
+  editorship
+} from '../../Middleware';
+import { fetch, post } from '../helpers/requests';
 import updateImage from '../../Services/Image';
 
 const router = Router();
@@ -25,24 +22,65 @@ router.post(
 );
 
 // Song
-router.get('/:id', get({ databaseName: 'models', collectionName: 'songs' }));
-router.patch('/:id', authorization, patch);
-router.delete('/:id', authorization, del);
+router.get(
+  '/:id',
+  [get({ database: 'models', collection: 'songs' })],
+  song.get
+);
+router.patch(
+  '/:id',
+  [get({ database: 'models', collection: 'songs' }), authorization, editorship],
+  song.patch
+);
+router.delete(
+  '/:id',
+  [get({ database: 'models', collection: 'songs' }), authorization, ownership],
+  song.del
+);
 
 router.post(
   '/:id/image',
-  [authorization, upload('image')],
+  [
+    upload('image'),
+    get({ database: 'models', collection: 'songs' }),
+    authorization,
+    editorship
+  ],
   updateImage({ model: 'songs' })
 );
 
 // Verses
-router.post('/:id/verse', [authorization], postVerse);
-router.delete('/:id/verse/:number', [authorization], delVerse);
-router.patch('/:id/verse/:number', [authorization], patchVerse);
+router.post(
+  '/:id/verse',
+  [get({ database: 'models', collection: 'songs' }), authorization, editorship],
+  verses.post
+);
+router.delete(
+  '/:id/verse/:number',
+  [get({ database: 'models', collection: 'songs' }), authorization, editorship],
+  verses.del
+);
+router.patch(
+  '/:id/verse/:number',
+  [get({ database: 'models', collection: 'songs' }), authorization, editorship],
+  verses.patch
+);
 
 // Editors
-router.get('/:id/editors/available', [authorization], fetchAvailableEditors);
-router.post('/:id/editor', [authorization], addEditor);
-router.delete('/:id/editor/:editor', [authorization], delEditor);
+router.get(
+  '/:id/editors/available',
+  [get({ database: 'models', collection: 'songs' }), authorization, ownership],
+  editors.fetch
+);
+router.post(
+  '/:id/editor',
+  [get({ database: 'models', collection: 'songs' }), authorization, ownership],
+  editors.post
+);
+router.delete(
+  '/:id/editor/:editor',
+  [get({ database: 'models', collection: 'songs' }), authorization, ownership],
+  editors.del
+);
 
 export default router;

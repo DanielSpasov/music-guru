@@ -62,12 +62,9 @@ export const schema: FormSchema = {
         artist: formData.artist[0].uid,
         features: formData?.features?.map((x: Artist) => x?.uid)
       };
-      const { data } = await Api.songs.patch({
-        id,
-        body: payload
-      });
+      await Api.songs.patch({ id, body: payload });
       toast.success('Successfully Edited Song');
-      navigate(`/songs/${data.uid}`);
+      navigate(`/songs/${id}`);
     } catch (err) {
       toast.error('Failed to Edit Song');
     }
