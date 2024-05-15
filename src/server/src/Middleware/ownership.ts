@@ -6,7 +6,7 @@ export default async function ownership(
   next: NextFunction
 ) {
   try {
-    if (res.locals?.item?.created_by !== res.locals.user.uid) {
+    if (res.locals?.item?.created_by?.uid !== res.locals.user.uid) {
       res.status(403).json({
         message:
           'Permission denied. Only the creator of this item can access this resource.'
