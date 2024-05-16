@@ -9,8 +9,8 @@ import {
   editorship
 } from '../../Middleware';
 import { fetch, post } from '../helpers/requests';
-import updateImage from '../../Services/Image';
 import { editors } from '../../Services/Editors';
+import updateImage from '../../Services/Image';
 
 const router = Router();
 

@@ -9,7 +9,7 @@ import { UserSchema } from './User';
 
 export { ArtistSchema } from './Artist';
 export { AlbumSchema, BaseAlbumSchema } from './Album';
-export { SongSchema, BaseSongSchema } from './Song';
+export { SongSchema, BaseSongSchema, PatchSongSchema } from './Song';
 export { FileUploadSchema, FileSchema } from './File';
 export { EditorSchema } from './Editor';
 export {

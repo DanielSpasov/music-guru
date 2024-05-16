@@ -8,15 +8,15 @@ import NewVerse from './Forms/NewVerse';
 import Header from './Header';
 import Verse from './Verse';
 
-export default function Lyrics({ song, verses }: LyricsProps) {
+export default function Lyrics({ song, verses, isEditor }: LyricsProps) {
   const [showNewVerse, setShowNewVerse] = useState(false);
 
-  const { isAuthenticated, uid } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <section className="w-1/2 relative h-full rounded-md">
       <Header
-        disableAdd={uid !== song.created_by}
+        disableAdd={!isEditor}
         showAdd={Boolean(isAuthenticated)}
         setShowNewVerse={setShowNewVerse}
       />
@@ -28,7 +28,7 @@ export default function Lyrics({ song, verses }: LyricsProps) {
             .map((verse, verseKey) => (
               <Verse
                 loading={verses.loading}
-                created_by={song.created_by}
+                isEditor={isEditor}
                 edit={verses.edit}
                 del={verses.del}
                 verse={verse}

@@ -27,6 +27,7 @@ export type HeaderProps = {
 
 export type LyricsProps = {
   song: Song;
+  isEditor: boolean;
   verses: {
     add: AddVerseFn;
     del: DelVerseFn;
@@ -37,8 +38,8 @@ export type LyricsProps = {
 
 export type VerseProps = {
   loading: number;
-  created_by: string;
   del: DelVerseFn;
   edit: EditVerseFn;
   verse: Verse;
+  isEditor: boolean;
 };

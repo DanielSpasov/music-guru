@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { AuthContext } from '../../../../Contexts';
 import { Icon } from '../../../../Components';
@@ -6,20 +6,15 @@ import EditVerse from './Forms/EditVerse';
 import { VerseProps } from './helpers';
 
 export default function SongVerse({
-  created_by,
   edit,
   del,
   loading,
+  isEditor,
   verse
 }: VerseProps) {
   const [isEditing, setIsEditing] = useState(false);
 
-  const { isAuthenticated, uid } = useContext(AuthContext);
-
-  const disableAction = useMemo(
-    () => Boolean(loading) || created_by !== uid,
-    [loading, created_by, uid]
-  );
+  const { isAuthenticated } = useContext(AuthContext);
 
   if (isEditing) {
     return (
@@ -39,13 +34,13 @@ export default function SongVerse({
             <Icon
               model="edit"
               className="w-6"
-              disabled={disableAction}
+              disabled={!isEditor}
               onClick={() => setIsEditing(true)}
             />
             <Icon
               model="trash"
               className="w-6"
-              disabled={disableAction}
+              disabled={!isEditor}
               onClick={() => del(verse.number)}
             />
           </div>
