@@ -43,6 +43,6 @@ export class DetailedSong {
     this.verses = song.verses;
     this.links = song.links;
     this.about = song.about;
-    this.editors = song.editors;
+    this.editors = song.editors.map(serializers.users.list);
   }
 }
