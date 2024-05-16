@@ -13,9 +13,6 @@ export const imgProps = `shadow-lg rounded-full ${lightImgProps} ${darkImgProps}
 export const hoverProps =
   'cursor-pointer [&+svg]:hover:opacity-100 hover:opacity-60';
 
-export const getSize = (size: number) =>
-  `min-h-${size} min-w-${size} max-h-${size} max-w-${size} h-${size} w-${size}`;
-
 export default function Image({
   src,
   alt = 'image',
@@ -67,14 +64,12 @@ export default function Image({
   );
 
   return (
-    <div className="relative">
+    <div className={`relative flex flex-shrink-0 w-${size} h-${size}`}>
       <img
         src={src}
         alt={alt}
         onClick={onImageClick}
-        className={`${getSize(
-          size
-        )} ${loadingImageProps} ${hoverImageProps} ${imgProps} ${className}`}
+        className={`w-full ${loadingImageProps} ${hoverImageProps} ${imgProps} ${className}`}
         loading="lazy"
         data-testid="image"
       />
