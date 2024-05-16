@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { ListUser } from '../Database/Serializers/User';
 
 export default async function editorship(
   req: Request,
@@ -6,10 +7,14 @@ export default async function editorship(
   next: NextFunction
 ) {
   try {
-    if (
-      !res.locals?.item?.editors?.includes(res.locals.user.uid) &&
-      res.locals?.item?.created_by?.uid !== res.locals.user.uid
-    ) {
+    const isOwner = res.locals?.item?.created_by?.uid === res.locals.user.uid;
+    const isEditor = Boolean(
+      res.locals?.item?.editors?.find(
+        (user: ListUser) => user.uid === res.locals.user.uid
+      )
+    );
+
+    if (!isEditor && !isOwner) {
       res.status(403).json({
         message:
           'Permission denied. Only the editors of this item can access this resource.'
