@@ -16,7 +16,8 @@ export default function File({
   required = false,
   ...props
 }: FileProps) {
-  const { register, formState, watch, setValue } = useFormContext();
+  const { register, formState, watch, setValue, clearErrors } =
+    useFormContext();
 
   const id = useMemo(() => `${name}-input`, [name]);
 
@@ -24,7 +25,8 @@ export default function File({
     const input = document.getElementById(id) as HTMLInputElement;
     input.files = null;
     setValue(name, null);
-  }, [id, setValue, name]);
+    clearErrors(name);
+  }, [id, setValue, name, clearErrors]);
 
   const openUpload = useCallback(() => {
     const field = document.getElementById(id);
