@@ -4,21 +4,14 @@ import {
   UseFormSetValue
 } from 'react-hook-form/dist/types';
 import { NavigateFunction, Params } from 'react-router-dom';
-import { ZodError, ZodSchema } from 'zod';
+import { FC, FormHTMLAttributes, ReactNode } from 'react';
 import { toast } from 'react-toastify';
-import { FC } from 'react';
+import { ZodSchema } from 'zod';
 
 import { TextareaProps } from '../Fields/Textarea/helpers';
 import { SelectProps } from '../Fields/Select/helpers';
 import { InputProps } from '../Fields/Input/helpers';
-
-export const handleZodErrors = (err: unknown) => {
-  try {
-    if (err instanceof ZodError) return JSON.parse(err.toString());
-  } catch {
-    console.error('Unhandled Zod Error');
-  }
-};
+import { FileProps } from '../Fields/File/helpers';
 
 export type ValidationSchema = ZodSchema;
 
@@ -27,7 +20,7 @@ export type FormField = {
   label: string;
   Component: FC<any>;
   validations?: any;
-  props?: InputProps | SelectProps | TextareaProps;
+  props?: InputProps | SelectProps | TextareaProps | FileProps;
 };
 
 export type FormSection = {
@@ -63,14 +56,11 @@ export type FormSchema = {
 
 export type FormProps = {
   onSubmit: SubmitHandler<any>;
-  schema: FormSection[];
   header?: string;
   defaultValues?: any;
   validationSchema?: ValidationSchema;
-  additionalInfo?: JSX.Element;
-  onClose?: (props?: any) => void;
-  showClose?: boolean;
-};
+  children?: ReactNode;
+} & FormHTMLAttributes<HTMLFormElement>;
 
 export type FormError = {
   code: string;

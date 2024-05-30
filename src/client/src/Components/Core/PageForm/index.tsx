@@ -7,7 +7,7 @@ import PageLayout from '../PageLayout';
 import { Form } from '../../Forms';
 
 const darkProps = 'dark:bg-neutral-950 dark:shadow-neutral-950';
-const lightProps = 'bg-neutral-200 shadow-neutral-300';
+const lightProps = 'bg-white shadow-neutral-300';
 const themeProps = `${darkProps} ${lightProps}`;
 
 export default function PageForm({ schema, ctx = {} }: PageFormProps) {

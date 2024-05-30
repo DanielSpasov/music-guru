@@ -1,4 +1,4 @@
-import { Calendar, Input, Select, Textarea } from '../../../Components';
+import { Calendar, File, Input, Select, Textarea } from '../../../Components';
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
 import { CreateSongSchema } from '../../../Validations/Song';
 import { SocialsSchema } from '../../../Validations';
@@ -70,9 +70,8 @@ export const schema: FormSchema = {
         {
           key: 'image',
           label: 'Image',
-          Component: Input,
+          Component: File,
           props: {
-            type: 'file',
             accept: ['image/jpeg', 'image/png']
           }
         },

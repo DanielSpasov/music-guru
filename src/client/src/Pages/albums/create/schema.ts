@@ -1,6 +1,6 @@
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
 import { CreateAlbumSchema } from '../../../Validations/Album';
-import { Calendar, Input, Select } from '../../../Components';
+import { Calendar, File, Input, Select } from '../../../Components';
 import { Song } from '../../../Types/Song';
 import Api from '../../../Api';
 
@@ -74,9 +74,8 @@ export const schema: FormSchema = {
         {
           key: 'image',
           label: 'Image URL',
-          Component: Input,
+          Component: File,
           props: {
-            type: 'file',
             accept: ['image/jpeg', 'image/png']
           },
           validations: {

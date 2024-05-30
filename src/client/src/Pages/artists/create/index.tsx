@@ -1,6 +1,84 @@
-import { PageForm } from '../../../Components';
-import { schema } from './schema';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useCallback } from 'react';
+
+import {
+  Fieldset,
+  File,
+  Form,
+  Input,
+  PageLayout,
+  Textarea
+} from '../../../Components';
+import { ArtistSocialsSchema, CreateArtistSchema } from '../../../Validations';
+import Api from '../../../Api';
 
 export default function CreateArtist() {
-  return <PageForm schema={schema} />;
+  const navigate = useNavigate();
+
+  const onSubmit = useCallback(
+    async (formData: any) => {
+      try {
+        const socialsKeys = Object.keys(ArtistSocialsSchema.shape);
+        const payload = Object.entries(formData).reduce(
+          (data, [key, value]) => {
+            if (!value) return data;
+            if (socialsKeys.includes(key)) {
+              return {
+                ...data,
+                links: [...(data?.links || []), { name: key, url: value }]
+              };
+            }
+            return { ...data, [key]: value };
+          },
+          formData
+        );
+        Object.keys(payload).forEach(
+          key => payload[key] === undefined && delete payload[key]
+        );
+
+        const res = await Api.artists.post({
+          body: payload,
+          config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        });
+        toast.success('Successfully Created Artist');
+        navigate(`/artists/${res.uid}`);
+      } catch (err) {
+        toast.error('Failed to Create Artist');
+      }
+    },
+    [navigate]
+  );
+
+  return (
+    <PageLayout title="Create Artist" showHeader={false}>
+      <Form
+        onSubmit={onSubmit}
+        header="New Artist"
+        validationSchema={CreateArtistSchema}
+        className="m-auto"
+      >
+        <Fieldset title="Details" foldable>
+          <Input label="Name" name="name" required={true} />
+          <File
+            label="Image"
+            name="image"
+            required={true}
+            accept="image/jpeg, image/png"
+          />
+          <Textarea label="About" name="about" />
+        </Fieldset>
+
+        <Fieldset title="Socials" foldable>
+          <Input label="Instagram" name="intagram" />
+          <Input label="X" name="x" />
+          <Input label="Facebook" name="facebook" />
+          <Input label="Spotify" name="spotify" />
+          <Input label="Apple Music" name="apple_music" />
+          <Input label="Youtube" name="youtube" />
+          <Input label="Soundcloud" name="soundcloud" />
+        </Fieldset>
+      </Form>
+    </PageLayout>
+  );
 }

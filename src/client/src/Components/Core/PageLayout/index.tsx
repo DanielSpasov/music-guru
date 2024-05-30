@@ -57,7 +57,9 @@ export default function PageLayout({
             <Loader size="sm" />
           </div>
         ) : (
-          <article className="mx-[10%] mt-4">{children}</article>
+          <article className="px-[10%] min-h-[calc(100vh-80px-72px)] pt-4 bg-neutral-100 dark:bg-neutral-800">
+            {children}
+          </article>
         )}
       </main>
     </>

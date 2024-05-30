@@ -1,3 +1,6 @@
+import { TextareaHTMLAttributes } from 'react';
+
 export type TextareaProps = {
-  maxLength?: number;
-};
+  label: string;
+  name: string;
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;

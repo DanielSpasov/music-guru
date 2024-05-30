@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 import { FormSchema } from '../../../Components/Forms/Form/helpers';
 import { SignInSchema } from '../../../Validations/User';
 import { Input, Link } from '../../../Components';
@@ -16,7 +18,11 @@ export const schema: FormSchema = {
       toast.success('Successfully signed in');
       navigate('/');
     } catch (error) {
-      toast.error('Failed to Sign In');
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || 'Failed to Sign In');
+      } else {
+        toast.error('Failed to Sign In');
+      }
     }
   },
   validationSchema: SignInSchema,
