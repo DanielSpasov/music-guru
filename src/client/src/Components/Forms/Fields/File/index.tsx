@@ -42,7 +42,7 @@ const File: FC<FileProps> = ({
           openUpload();
         }}
         onClick={() => openUpload()}
-        className={`block w-full h-[3.625em] border-b-2 border-neutral-300 p-1 cursor-pointer outline-none ${hoverProps} ${focusProps} ${darkProps} ${className}`}
+        className={`block w-full h-[3.625em] border-b-2 border-neutral-300 py-1 cursor-pointer outline-none ${hoverProps} ${focusProps} ${darkProps} ${className}`}
       >
         {label} <span className="text-red-400">{required && '*'}</span>
         <p>{watch(name)?.name}</p>
