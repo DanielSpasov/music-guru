@@ -1,20 +1,20 @@
 import { useFormContext } from 'react-hook-form';
+import { FC } from 'react';
 
 import { TextareaProps } from './helpers';
 
 const hoverProps = 'hover:border-neutral-400';
-const focusProps =
-  'focus:border-primary [&~label]:focus:-top-7 [&~label]:focus:left-1';
+const focusProps = 'focus:border-primary';
 const darkProps =
   'dark:bg-neutral-900 dark:border-neutral-600 dark:hover:border-neutral-500 dark:focus:border-primary-dark';
 
-export default function Textarea({
+const Textarea: FC<TextareaProps> = ({
   name,
   label,
   required = false,
   className,
   ...props
-}: TextareaProps) {
+}) => {
   const { register, formState } = useFormContext();
 
   return (
@@ -34,4 +34,6 @@ export default function Textarea({
       </span>
     </div>
   );
-}
+};
+
+export default Textarea;

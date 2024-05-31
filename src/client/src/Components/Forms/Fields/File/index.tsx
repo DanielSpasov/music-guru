@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 
 import { Icon } from '../../../Common';
 import { FileProps } from './helpers';
@@ -9,13 +9,13 @@ const focusProps = 'focus:border-dashed focus:border-primary';
 const darkProps =
   'dark:bg-neutral-900 dark:border-neutral-600 dark:hover:border-neutral-500 dark:focus:border-primary-dark';
 
-export default function File({
+const File: FC<FileProps> = ({
   name,
   label,
   className,
   required = false,
   ...props
-}: FileProps) {
+}) => {
   const { register, formState, watch, setValue, clearErrors } =
     useFormContext();
 
@@ -72,4 +72,6 @@ export default function File({
       )}
     </div>
   );
-}
+};
+
+export default File;
