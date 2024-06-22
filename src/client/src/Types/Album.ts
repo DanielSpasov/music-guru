@@ -4,6 +4,7 @@ import { ListSong } from './Song';
 export type AlbumType = {
   code: string;
   name: string;
+  uid: string;
 };
 
 export interface Album {

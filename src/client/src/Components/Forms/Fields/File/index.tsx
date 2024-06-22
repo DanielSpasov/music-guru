@@ -45,7 +45,7 @@ const File: FC<FileProps> = ({
         className={`block w-full h-[3.625em] border-b-2 border-neutral-300 py-1 cursor-pointer outline-none ${hoverProps} ${focusProps} ${darkProps} ${className}`}
       >
         {label} <span className="text-red-400">{required && '*'}</span>
-        <p>{watch(name)?.name}</p>
+        <p className="px-1">{watch(name)?.name}</p>
       </label>
 
       <input

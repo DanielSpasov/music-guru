@@ -20,7 +20,8 @@ const defaultAlbum: Album = {
   favorites: 0,
   type: {
     name: '',
-    code: ''
+    code: '',
+    uid: ''
   }
 };
 

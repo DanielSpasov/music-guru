@@ -1,11 +1,23 @@
-import { z } from 'zod';
+import { RefinementCtx, z } from 'zod';
 import { FileSchema } from './File';
 
-const AlbumTypeSchema = z.object({
-  type: z
-    .array(z.object({ code: z.string().length(1), name: z.string() }))
-    .length(1)
-});
+const Required = (label: string) => (value: any, ctx: RefinementCtx) => {
+  if (value === null) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `${label} is required.`
+    });
+  }
+};
+
+const AlbumTypeSchema = z
+  .object({
+    code: z.string().length(1),
+    name: z.string(),
+    uid: z.string().uuid()
+  })
+  .nullish()
+  .superRefine(Required('Type'));
 
 const DateSchema = z
   .string()
@@ -14,18 +26,18 @@ const DateSchema = z
     'Invalid date format, must be mm/dd/yyyy'
   );
 
+const AlbumArtistSchema = z
+  .object({ uid: z.string().uuid() })
+  .nullish()
+  .superRefine(Required('Artist'));
+
 export const BaseAlbumSchema = z.object({
-  name: z
-    .string()
-    .min(1, { message: 'Name is required.' })
-    .max(128, { message: 'Name is too long.' }),
+  name: z.string().min(1, 'Name is required.').max(128, 'Name is too long.'),
   image: FileSchema,
-  release_date: z.union([DateSchema, z.literal('')])
-  // artist: z.array(z.object({ uid: z.string().uuid() })).length(1),
-  // songs: z.array(z.object({ uid: z.string().uuid() })).optional()
+  release_date: z.union([DateSchema, z.literal('')]),
+  artist: AlbumArtistSchema,
+  songs: z.array(z.object({ uid: z.string().uuid() })).optional(),
+  type: AlbumTypeSchema
 });
 
-export const CreateAlbumSchema = BaseAlbumSchema; //.and(AlbumTypeSchema);
-export const EditAlbumSchema = BaseAlbumSchema.omit({ image: true }).and(
-  AlbumTypeSchema
-);
+export const EditAlbumSchema = BaseAlbumSchema.omit({ image: true });

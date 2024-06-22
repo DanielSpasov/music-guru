@@ -3,10 +3,17 @@ import { toast } from 'react-toastify';
 import { useCallback } from 'react';
 import moment from 'moment';
 
-import { Fieldset, File, Form, Input, PageLayout } from '../../../Components';
-import { CreateAlbumSchema } from '../../../Validations/Album';
-import MaskField from '../../../Components/Forms/Fields/Date';
-import { Song } from '../../../Types/Song';
+import {
+  Fieldset,
+  File,
+  Form,
+  Input,
+  PageLayout,
+  Select,
+  Mask
+} from '../../../Components';
+import { BaseAlbumSchema } from '../../../Validations/Album';
+import { ListSong } from '../../../Types/Song';
 import Api from '../../../Api';
 
 export default function CreateAlbum() {
@@ -17,18 +24,19 @@ export default function CreateAlbum() {
       try {
         const payload = {
           ...formData,
-          release_date: moment(formData?.release_date, 'MM/DD/YYYY').toDate(),
-          type: formData?.type?.[0],
-          artist: formData?.artist?.[0]?.uid,
-          songs: formData?.songs?.map((x: Song) => x?.uid)
+          release_date: formData?.release_date
+            ? moment(formData?.release_date, 'MM/DD/YYYY').toDate()
+            : null,
+          type: formData?.type,
+          artist: formData?.artist?.uid,
+          songs: formData?.songs?.map((x: ListSong) => x?.uid)
         };
-        console.log(payload);
-        // const res = await Api.albums.post({
-        //   body: payload,
-        //   config: { headers: { 'Content-Type': 'multipart/form-data' } }
-        // });
-        // toast.success('Successfully Created Album');
-        // navigate(`/albums/${res.uid}`);
+        const res = await Api.albums.post({
+          body: payload,
+          config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        });
+        toast.success('Successfully Created Album');
+        navigate(`/albums/${res.uid}`);
       } catch (err) {
         toast.error('Failed to Create Album');
       }
@@ -42,16 +50,44 @@ export default function CreateAlbum() {
         onSubmit={onSubmit}
         className="m-auto"
         header="New Album"
-        validationSchema={CreateAlbumSchema}
+        validationSchema={BaseAlbumSchema}
       >
         <Fieldset title="Details" foldable>
-          <Input label="Name" name="name" required={true} />
-          <File label="Image" name="image" required={true} />
-          <MaskField
-            label="Release Date"
-            name="release_date"
-            mask="99/99/9999"
-          />
+          <Fieldset className="flex gap-2">
+            <Input label="Name" name="name" required />
+            <File label="Image" name="image" required />
+          </Fieldset>
+
+          <Fieldset>
+            <Fieldset className="flex gap-2">
+              <Mask
+                label="Release Date"
+                name="release_date"
+                mask="99/99/9999"
+              />
+              <Select
+                label="Type"
+                name="type"
+                required
+                hideSearch
+                fetchFn={({ config }) => Api.albums.fetchTypes({ config })}
+              />
+            </Fieldset>
+
+            <Select
+              label="Artist"
+              name="artist"
+              required
+              fetchFn={({ config }) => Api.artists.fetch({ config })}
+            />
+
+            <Select
+              label="Songs"
+              name="songs"
+              multiple
+              fetchFn={({ config }) => Api.songs.fetch({ config })}
+            />
+          </Fieldset>
         </Fieldset>
       </Form>
     </PageLayout>
