@@ -1,6 +1,6 @@
 import { FC, useCallback, useRef, useState } from 'react';
 
-import { Option, SelectComponentProps } from './helpers';
+import { Option, SelectComponentProps, themeProps } from './helpers';
 import Dropdown from './components/Dropdown';
 import { Icon } from '../../../Common';
 
@@ -31,7 +31,7 @@ const Multi: FC<SelectComponentProps> = ({
 
   return (
     <div
-      className="border-b-2 border-b-neutral-300 m-0.5 h-8 outline-none focus:border-b-primary"
+      className={`m-0.5 h-8 outline-none ${themeProps}`}
       onFocus={() => setOpen(true)}
       onBlur={() => {
         requestAnimationFrame(() => {
@@ -58,11 +58,7 @@ const Multi: FC<SelectComponentProps> = ({
             </p>
           ))
         ) : (
-          <span
-            className={`${selected.length ? 'text-black' : 'text-neutral-400'}`}
-          >
-            {placeholder}
-          </span>
+          <span className="text-neutral-400">{placeholder}</span>
         )}
       </div>
 

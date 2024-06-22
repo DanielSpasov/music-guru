@@ -5,6 +5,12 @@ import useDebounce from '../../../../../Hooks/useDebounce';
 import { DropdownProps, Option } from '../helpers';
 import Search from './Search';
 
+const lightProps = 'hover:bg-neutral-200';
+const darkProps = 'dark:hover:bg-neutral-800';
+const themeProps = `${lightProps} ${darkProps}`;
+
+const selectedProps = 'bg-neutral-200 dark:bg-neutral-800';
+
 const Dropdown: FC<DropdownProps> = ({
   hideSearch,
   open,
@@ -47,8 +53,8 @@ const Dropdown: FC<DropdownProps> = ({
               key={option.uid}
               onClick={() => onOptionClick(option)}
               className={`flex items-center rounded-md p-1 cursor-pointer ${
-                isSelected && 'bg-neutral-200'
-              } hover:bg-neutral-200`}
+                isSelected && selectedProps
+              } ${themeProps}`}
             >
               <span className="px-2">{option.name}</span>
             </div>

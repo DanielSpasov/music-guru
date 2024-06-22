@@ -1,6 +1,6 @@
 import { FC, useCallback, useRef, useState } from 'react';
 
-import { Option, SelectComponentProps } from './helpers';
+import { Option, SelectComponentProps, themeProps } from './helpers';
 import Dropdown from './components/Dropdown';
 import { Icon } from '../../../Common';
 
@@ -36,7 +36,7 @@ const Single: FC<SelectComponentProps> = ({
 
   return (
     <div
-      className="border-b-2 border-b-neutral-300 m-0.5 h-8 outline-none focus:border-b-primary"
+      className={`m-0.5 h-8 outline-none ${themeProps}`}
       onFocus={() => setOpen(true)}
       onBlur={() => {
         requestAnimationFrame(() => {
@@ -46,12 +46,12 @@ const Single: FC<SelectComponentProps> = ({
       ref={fieldRef}
       tabIndex={0}
     >
-      <p
-        className={`h-full p-0.5 px-1 my-0.5 ${
-          selected ? 'text-black' : 'text-neutral-400'
-        }`}
-      >
-        {selected?.name || placeholder}
+      <p className="h-full p-0.5 px-1 my-0.5">
+        {selected ? (
+          <span>{selected?.name}</span>
+        ) : (
+          <span className="text-neutral-400">{placeholder}</span>
+        )}
       </p>
 
       <Dropdown
