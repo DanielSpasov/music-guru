@@ -37,7 +37,7 @@ export default function SignUp() {
         onSubmit={onSubmit}
         validationSchema={SignUpSchema}
         className="m-auto"
-        header="Sign In"
+        header="Sign Up"
         additionalContent={
           <div className="text-center p-4">
             <span>Or</span>
