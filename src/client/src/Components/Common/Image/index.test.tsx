@@ -1,11 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import Image, {
-  lightImgProps,
-  darkImgProps,
-  hoverProps,
-  getSize
-} from './index';
+import Image, { lightImgProps, darkImgProps, hoverProps } from './index';
 
 describe('Image', () => {
   describe('Basic props', () => {
@@ -41,7 +36,7 @@ describe('Image', () => {
       render(<Image src={src} size={size} />);
       const imageElement = screen.getByTestId('image');
       expect(imageElement).toBeInTheDocument();
-      expect(imageElement).toHaveClass(getSize(size));
+      expect(imageElement.parentElement).toHaveClass(`w-${size} h-${size}`);
     });
 
     test('calls updateFn when a file is uploaded', () => {

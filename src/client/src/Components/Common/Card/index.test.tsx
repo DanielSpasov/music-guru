@@ -13,6 +13,7 @@ describe('Card', () => {
         name: 'Test Album Name',
         uid: 'test-album-uuid',
         type: {
+          uid: 'test-type-uid',
           code: 'M',
           name: 'Mixtape'
         },
