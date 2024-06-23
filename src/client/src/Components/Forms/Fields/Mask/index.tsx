@@ -2,14 +2,14 @@ import { useFormContext } from 'react-hook-form';
 import InputMask from 'react-input-mask';
 import { FC } from 'react';
 
-import { MaskFieldProps } from './helpers';
+import { MaskProps } from './helpers';
 
 const hoverProps = 'hover:border-neutral-400';
 const focusProps = 'focus:border-primary dark:focus:border-primary-dark';
 const darkProps =
   'dark:bg-neutral-900 dark:border-neutral-600 dark:hover:border-neutral-500';
 
-const MaskField: FC<MaskFieldProps> = ({
+const Mask: FC<MaskProps> = ({
   name,
   label,
   required,
@@ -38,4 +38,4 @@ const MaskField: FC<MaskFieldProps> = ({
   );
 };
 
-export default MaskField;
+export default Mask;
