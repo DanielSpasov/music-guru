@@ -5,6 +5,8 @@ import { Option, SelectProps } from './helpers';
 
 import Single from './SingleSelect';
 import Multi from './MultiSelect';
+import Label from '../Label';
+import Error from '../Error';
 
 const Select: FC<SelectProps> = ({
   multiple = false,
@@ -36,9 +38,7 @@ const Select: FC<SelectProps> = ({
 
   return (
     <div className="relative my-2 w-full">
-      <label>
-        {label} <span className="text-red-400">{required && '*'}</span>
-      </label>
+      <Label label={label} required={required} />
 
       <SelectComponent
         defaultValue={defaultValue.current}
@@ -58,9 +58,7 @@ const Select: FC<SelectProps> = ({
         className="hidden"
       />
 
-      <span className="text-red-400">
-        {formState.errors[name]?.message?.toString()}
-      </span>
+      <Error message={formState.errors[name]?.message} />
     </div>
   );
 };

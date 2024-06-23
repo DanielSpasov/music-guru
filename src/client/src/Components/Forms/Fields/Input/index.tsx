@@ -3,6 +3,8 @@ import { FC, useState } from 'react';
 
 import { InputProps } from './helpers';
 import { Icon } from '../../../Common';
+import Label from '../Label';
+import Error from '../Error';
 
 const hoverProps = 'hover:border-neutral-400';
 const focusProps = 'focus:border-primary dark:focus:border-primary-dark';
@@ -24,9 +26,7 @@ const Input: FC<InputProps> = ({
 
   return (
     <div className="relative my-2 w-full">
-      <label>
-        {label} <span className="text-red-400">{required && '*'}</span>
-      </label>
+      <Label label={label} required={required} />
 
       <input
         {...register(name, {
@@ -40,9 +40,7 @@ const Input: FC<InputProps> = ({
         {...props}
       />
 
-      <span className="text-red-400">
-        {formState.errors[name]?.message?.toString()}
-      </span>
+      <Error message={formState.errors[name]?.message} />
 
       {inputType === 'password' && (
         <Icon

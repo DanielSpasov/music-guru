@@ -2,6 +2,8 @@ import { useFormContext } from 'react-hook-form';
 import { FC } from 'react';
 
 import { TextareaProps } from './helpers';
+import Label from '../Label';
+import Error from '../Error';
 
 const hoverProps = 'hover:border-neutral-400';
 const focusProps = 'focus:border-primary';
@@ -19,9 +21,7 @@ const Textarea: FC<TextareaProps> = ({
 
   return (
     <div className="relative my-2 w-full">
-      <label>
-        {label} <span className="text-red-400">{required && '*'}</span>
-      </label>
+      <Label label={label} required={required} />
 
       <textarea
         {...register(name, { required })}
@@ -29,9 +29,7 @@ const Textarea: FC<TextareaProps> = ({
         {...props}
       ></textarea>
 
-      <span className="text-red-400">
-        {formState.errors[name]?.message?.toString()}
-      </span>
+      <Error message={formState.errors[name]?.message} />
     </div>
   );
 };

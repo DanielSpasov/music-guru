@@ -3,6 +3,8 @@ import { FC, useCallback, useMemo } from 'react';
 
 import { Icon } from '../../../Common';
 import { FileProps } from './helpers';
+import Error from '../Error';
+import Label from '../Label';
 
 const hoverProps = 'hover:border-dashed hover:border-neutral-400';
 const focusProps = 'focus:border-dashed focus:border-primary';
@@ -33,20 +35,27 @@ const File: FC<FileProps> = ({
     if (field) field.click();
   }, [id]);
 
+  const file = watch(name);
+  const showClose = useMemo(() => {
+    if (file instanceof FileList) return file.length > 1;
+    return Boolean(file);
+  }, [file]);
+
   return (
     <div className="relative my-2 w-full">
-      <label
+      <Label label={label} required={required} />
+
+      <div
         tabIndex={0}
         onKeyDown={e => {
           if (e.key !== 'Enter') return;
           openUpload();
         }}
         onClick={() => openUpload()}
-        className={`block w-full h-[3.625em] border-b-2 border-neutral-300 py-1 cursor-pointer outline-none ${hoverProps} ${focusProps} ${darkProps} ${className}`}
+        className={`block w-full h-[2.125rem] border-b-2 border-neutral-300 py-1 cursor-pointer outline-none ${hoverProps} ${focusProps} ${darkProps} ${className}`}
       >
-        {label} <span className="text-red-400">{required && '*'}</span>
-        <p className="px-1">{watch(name)?.name}</p>
-      </label>
+        <p className="px-1.5">{watch(name)?.name}</p>
+      </div>
 
       <input
         id={id}
@@ -59,11 +68,9 @@ const File: FC<FileProps> = ({
         type="file"
       />
 
-      <span className="text-red-400">
-        {formState.errors[name]?.message?.toString()}
-      </span>
+      <Error message={formState.errors[name]?.message} />
 
-      {watch(name) && (
+      {showClose && (
         <Icon
           model="close"
           onClick={() => onClear()}
