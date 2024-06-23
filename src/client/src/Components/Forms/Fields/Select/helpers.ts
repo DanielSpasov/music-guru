@@ -22,9 +22,15 @@ export type DropdownProps = InheritedProps & {
   open: boolean;
 };
 
-export type SelectComponentProps = InheritedProps & {
+type SelectType = 'single' | 'multi';
+
+type SingleSelectDefaultValue = { defaultValue: Option };
+type MultiSelectDefaultValue = { defaultValue: Option[] };
+
+export type SelectComponentProps<T extends SelectType> = InheritedProps & {
   onChange: (value: any) => Promise<void>;
-} & Pick<SelectProps, 'placeholder'>;
+} & Pick<SelectProps, 'placeholder'> &
+  (T extends 'single' ? SingleSelectDefaultValue : MultiSelectDefaultValue);
 
 export type SearchProps = {
   setSearch: Dispatch<SetStateAction<string>>;

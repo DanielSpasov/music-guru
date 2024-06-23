@@ -4,13 +4,14 @@ import { Option, SelectComponentProps, themeProps } from './helpers';
 import Dropdown from './components/Dropdown';
 import { Icon } from '../../../Common';
 
-const Multi: FC<SelectComponentProps> = ({
+const Multi: FC<SelectComponentProps<'multi'>> = ({
+  defaultValue = [],
   placeholder,
   hideSearch,
   onChange,
   fetchFn
 }) => {
-  const [selected, setSelected] = useState<Option[]>([]);
+  const [selected, setSelected] = useState<Option[]>(defaultValue);
 
   const [open, setOpen] = useState(false);
 
@@ -42,17 +43,15 @@ const Multi: FC<SelectComponentProps> = ({
     >
       <div className="flex h-full p-0.5 px-1 my-0.5">
         {selected.length ? (
-          selected.map(item => (
+          selected.map(option => (
             <p
-              key={item.uid}
+              key={option.uid}
               className="flex items-center h-full bg-neutral-200 dark:bg-neutral-700 rounded-md p-2 pr-0 mr-1 my-0"
             >
-              {item.name}
+              {option.name}
               <Icon
                 model="close"
-                onClick={() => {
-                  setSelected(prev => prev.filter(x => x.uid !== item.uid));
-                }}
+                onClick={() => onOptionClick(option)}
                 className="inline w-6 h-6 [&>path]:fill-red-500 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-md"
               />
             </p>

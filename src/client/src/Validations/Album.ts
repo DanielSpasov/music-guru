@@ -10,15 +10,6 @@ const Required = (label: string) => (value: any, ctx: RefinementCtx) => {
   }
 };
 
-const AlbumTypeSchema = z
-  .object({
-    code: z.string().length(1),
-    name: z.string(),
-    uid: z.string().uuid()
-  })
-  .nullish()
-  .superRefine(Required('Type'));
-
 const DateSchema = z
   .string()
   .regex(
@@ -26,18 +17,15 @@ const DateSchema = z
     'Invalid date format, must be mm/dd/yyyy'
   );
 
-const AlbumArtistSchema = z
-  .object({ uid: z.string().uuid() })
-  .nullish()
-  .superRefine(Required('Artist'));
+const SelectOptionSchema = z.object({ uid: z.string().uuid() }).nullish();
 
 export const BaseAlbumSchema = z.object({
   name: z.string().min(1, 'Name is required.').max(128, 'Name is too long.'),
   image: FileSchema,
   release_date: z.union([DateSchema, z.literal('')]),
-  artist: AlbumArtistSchema,
-  songs: z.array(z.object({ uid: z.string().uuid() })).optional(),
-  type: AlbumTypeSchema
+  artist: SelectOptionSchema.superRefine(Required('Artist')),
+  songs: z.array(SelectOptionSchema.superRefine(Required('Song'))).optional(),
+  type: SelectOptionSchema.superRefine(Required('Type'))
 });
 
 export const EditAlbumSchema = BaseAlbumSchema.omit({ image: true });

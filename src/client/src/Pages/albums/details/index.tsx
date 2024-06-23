@@ -8,7 +8,7 @@ import { AuthContext } from '../../../Contexts/Auth';
 import { Album } from '../../../Types/Album';
 import Api from '../../../Api';
 
-const defaultAlbum: Album = {
+export const defaultAlbum: Album = {
   uid: '',
   created_at: new Date(),
   created_by: '',

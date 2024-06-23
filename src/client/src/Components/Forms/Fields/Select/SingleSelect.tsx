@@ -4,13 +4,14 @@ import { Option, SelectComponentProps, themeProps } from './helpers';
 import Dropdown from './components/Dropdown';
 import { Icon } from '../../../Common';
 
-const Single: FC<SelectComponentProps> = ({
+const Single: FC<SelectComponentProps<'single'>> = ({
+  defaultValue = null,
   placeholder,
   hideSearch,
   onChange,
   fetchFn
 }) => {
-  const [selected, setSelected] = useState<Option | null>(null);
+  const [selected, setSelected] = useState<Option | null>(defaultValue);
 
   const [open, setOpen] = useState(false);
 

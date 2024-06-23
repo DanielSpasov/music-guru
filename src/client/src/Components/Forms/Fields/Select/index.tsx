@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Option, SelectProps } from './helpers';
@@ -7,7 +7,7 @@ import Single from './SingleSelect';
 import Multi from './MultiSelect';
 
 const Select: FC<SelectProps> = ({
-  multiple,
+  multiple = false,
   label,
   required,
   name,
@@ -16,7 +16,10 @@ const Select: FC<SelectProps> = ({
   placeholder,
   ...props
 }) => {
-  const { register, formState, setValue, trigger } = useFormContext();
+  const { register, formState, setValue, trigger, getValues } =
+    useFormContext();
+
+  const defaultValue = useRef(getValues()[name]);
 
   const SelectComponent = useMemo(
     () => (multiple ? Multi : Single),
@@ -38,6 +41,7 @@ const Select: FC<SelectProps> = ({
       </label>
 
       <SelectComponent
+        defaultValue={defaultValue.current}
         placeholder={placeholder}
         hideSearch={hideSearch}
         onChange={onChange}

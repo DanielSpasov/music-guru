@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 import InputMask from 'react-input-mask';
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 
 import { MaskProps } from './helpers';
 
@@ -16,7 +16,9 @@ const Mask: FC<MaskProps> = ({
   className,
   ...props
 }) => {
-  const { register, formState } = useFormContext();
+  const { register, formState, getValues } = useFormContext();
+
+  const defaultValue = useRef(getValues()[name]);
 
   return (
     <div className="relative my-2 w-full">
@@ -27,6 +29,8 @@ const Mask: FC<MaskProps> = ({
       <InputMask
         {...register(name, { required })}
         placeholder="mm/dd/yyyy"
+        defaultValue={defaultValue.current}
+        maskChar={null}
         className={`w-full border-b-2 border-b-neutral-300 p-1 outline-none ${hoverProps} ${darkProps} ${focusProps} ${className}`}
         {...props}
       />
