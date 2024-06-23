@@ -16,7 +16,7 @@ const fileSize = (x: number) => {
 };
 
 export const FileSchema = z
-  .instanceof(File, { message: 'File is required' })
+  .instanceof(File, { message: 'File is required.' })
   .refine(
     file => file?.size <= MAX_FILE_SIZE,
     `Max file size is ${fileSize(MAX_FILE_SIZE)}.`
@@ -27,3 +27,13 @@ export const FileSchema = z
       ', '
     )} files are accepted.`
   );
+
+export const OptionalFileSchema = z
+  .union([
+    z
+      .instanceof(FileList, { message: 'what' })
+      .refine(files => files.length === 0, 'Onlt one file is accepted.'),
+    FileSchema,
+    z.null()
+  ])
+  .optional();
