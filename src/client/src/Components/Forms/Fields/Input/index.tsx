@@ -1,7 +1,8 @@
 import { useFormContext } from 'react-hook-form';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { InputProps } from './helpers';
+import { Icon } from '../../../Common';
 
 const hoverProps = 'hover:border-neutral-400';
 const focusProps = 'focus:border-primary dark:focus:border-primary-dark';
@@ -13,9 +14,12 @@ const Input: FC<InputProps> = ({
   label,
   required = false,
   className,
+  type: inputType,
   ...props
 }) => {
   const { register, formState } = useFormContext();
+
+  const [type, setType] = useState(inputType);
 
   return (
     <div className="relative my-2 w-full">
@@ -26,12 +30,23 @@ const Input: FC<InputProps> = ({
       <input
         {...register(name, { required })}
         className={`w-full border-b-2 border-neutral-300 p-1 outline-none ${darkProps} ${focusProps} ${hoverProps} ${className}`}
+        type={type}
         {...props}
       />
 
       <span className="text-red-400">
         {formState.errors[name]?.message?.toString()}
       </span>
+
+      {inputType === 'password' && (
+        <Icon
+          model={type === 'password' ? 'hide' : 'show'}
+          onClick={() =>
+            setType(prev => (prev === 'text' ? 'password' : 'text'))
+          }
+          className="absolute right-0 top-5 w-5"
+        />
+      )}
     </div>
   );
 };
