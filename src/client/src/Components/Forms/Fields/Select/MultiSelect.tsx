@@ -45,7 +45,7 @@ const Multi: FC<SelectComponentProps> = ({
           selected.map(item => (
             <p
               key={item.uid}
-              className="flex items-center h-full bg-neutral-200 rounded-md p-2 pr-0 mr-1 my-0"
+              className="flex items-center h-full bg-neutral-200 dark:bg-neutral-700 rounded-md p-2 pr-0 mr-1 my-0"
             >
               {item.name}
               <Icon
@@ -53,7 +53,7 @@ const Multi: FC<SelectComponentProps> = ({
                 onClick={() => {
                   setSelected(prev => prev.filter(x => x.uid !== item.uid));
                 }}
-                className="inline w-6 h-6 [&>path]:fill-red-500 hover:bg-neutral-300 rounded-md"
+                className="inline w-6 h-6 [&>path]:fill-red-500 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-md"
               />
             </p>
           ))
