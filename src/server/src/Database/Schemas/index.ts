@@ -1,4 +1,4 @@
-import { ZodSchema } from 'zod';
+import { z, ZodSchema } from 'zod';
 
 import { Models } from '../Types';
 
@@ -25,5 +25,6 @@ export const validationSchemas: Record<Models, ZodSchema> = {
   albums: AlbumSchema,
   artists: ArtistSchema,
   songs: SongSchema,
-  users: UserSchema
+  users: UserSchema,
+  album_types: z.object({})
 };

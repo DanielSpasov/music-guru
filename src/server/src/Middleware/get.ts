@@ -1,12 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { aggregators } from '../Database/Aggregators';
-import { Models, Types } from '../Database/Types';
+import { Models } from '../Database/Types';
 import { connect } from '../Database';
 
-export type GetProps =
-  | { database: 'models'; collection: Models }
-  | { database: 'types'; collection: Types };
+export type GetProps = { database: 'models'; collection: Models };
 
 export default function get({ database, collection }: GetProps) {
   return async function get(req: Request, res: Response, next: NextFunction) {
