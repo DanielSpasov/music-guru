@@ -16,7 +16,7 @@ export default function Form({
   additionalContent,
   ...props
 }: FormProps) {
-  const { handleSubmit, setError, ...formProps } = useForm({
+  const { handleSubmit, ...formProps } = useForm({
     defaultValues,
     ...(validationSchema ? { resolver: zodResolver(validationSchema) } : {})
   });
@@ -38,11 +38,7 @@ export default function Form({
   );
 
   return (
-    <FormProvider
-      handleSubmit={handleSubmit}
-      setError={setError}
-      {...formProps}
-    >
+    <FormProvider handleSubmit={handleSubmit} {...formProps}>
       <form
         onSubmit={handleSubmit(submitFn)}
         encType="multipart/form-data"
