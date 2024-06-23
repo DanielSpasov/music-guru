@@ -59,12 +59,12 @@ export default function CreateArtist() {
         className="m-auto"
       >
         <Fieldset title="Details" foldable>
-          <Input label="Name" name="name" required={true} />
+          <Input label="Name" name="name" required />
           <File
             label="Image"
             name="image"
-            required={true}
             accept="image/jpeg, image/png"
+            required
           />
           <Textarea label="About" name="about" />
         </Fieldset>

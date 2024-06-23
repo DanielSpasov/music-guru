@@ -55,7 +55,12 @@ export default function CreateAlbum() {
         <Fieldset title="Details" foldable>
           <Fieldset className="flex gap-2">
             <Input label="Name" name="name" required />
-            <File label="Image" name="image" required />
+            <File
+              label="Image"
+              name="image"
+              accept="image/jpeg, image/png"
+              required
+            />
           </Fieldset>
 
           <Fieldset>
