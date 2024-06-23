@@ -13,6 +13,7 @@ export default function Form({
   header,
   children,
   className,
+  additionalContent,
   ...props
 }: FormProps) {
   const { handleSubmit, setError, ...formProps } = useForm({
@@ -63,6 +64,8 @@ export default function Form({
         <div className="flex justify-end gap-4 p-4">
           <Button disabled={loading}>Submit</Button>
         </div>
+
+        {additionalContent}
       </form>
     </FormProvider>
   );

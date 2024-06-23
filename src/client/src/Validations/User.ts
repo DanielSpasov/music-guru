@@ -1,33 +1,32 @@
 import { z } from 'zod';
 
-export const BaseUserSchema = z.object({
+export const BaseSchema = z.object({
   username: z
     .union([
       z
         .string()
-        .min(2, { message: 'Username is too short.' })
-        .max(30, { message: 'Username is too long.' }),
+        .min(2, 'Username is too short.')
+        .max(30, 'Username is too long.'),
       z.string().length(0)
     ])
     .optional(),
-  email: z.string().email({ message: 'Invalid email.' }),
-  password: z.string(),
-  repeat_password: z.string()
+  email: z
+    .string()
+    .min(1, 'Email is required.')
+    .email('Invalid email address.'),
+  password: z.string().min(1, 'Password is required.'),
+  repeat_password: z.string().min(1, 'Repeat Password is required.')
 });
 
-export const SignUpSchema = BaseUserSchema.superRefine(
-  ({ repeat_password, password }, context) => {
-    if (repeat_password !== password) {
-      context.addIssue({
-        code: 'custom',
-        message: "Passwords doesn't match.",
-        path: ['password', 'repeat_password']
-      });
-    }
+export const SignUpSchema = BaseSchema.refine(
+  ({ password, repeat_password }) => password === repeat_password,
+  {
+    message: 'Passwords do not match.',
+    path: ['repeat_password']
   }
 );
 
-export const SignInSchema = BaseUserSchema.pick({
+export const SignInSchema = BaseSchema.pick({
   email: true,
   password: true
 });

@@ -2,7 +2,7 @@ import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { Form, Input, PageLayout } from '../../../Components';
+import { Form, Input, Link, PageLayout } from '../../../Components';
 import { SignInSchema } from '../../../Validations/User';
 import { AuthContext } from '../../../Contexts/Auth';
 import Api from '../../../Api';
@@ -36,9 +36,18 @@ export default function SignIn() {
         validationSchema={SignInSchema}
         className="m-auto"
         header="Sign In"
+        additionalContent={
+          <div className="text-center p-4">
+            <span>Or</span>
+            <Link to="/sign-up" className="underline p-1">
+              sign up
+            </Link>
+            <span>if you don&apos;t have an account yet.</span>
+          </div>
+        }
       >
-        <Input name="email" label="Email" type="email" />
-        <Input name="password" label="Password" type="password" />
+        <Input name="email" label="Email" type="email" required />
+        <Input name="password" label="Password" type="password" required />
       </Form>
     </PageLayout>
   );

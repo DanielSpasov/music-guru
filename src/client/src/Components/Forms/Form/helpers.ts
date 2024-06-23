@@ -60,6 +60,7 @@ export type FormProps = {
   defaultValues?: any;
   validationSchema?: ValidationSchema;
   children?: ReactNode;
+  additionalContent?: ReactNode;
 } & FormHTMLAttributes<HTMLFormElement>;
 
 export type FormError = {

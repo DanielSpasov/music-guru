@@ -14,10 +14,11 @@ const Input: FC<InputProps> = ({
   label,
   required = false,
   className,
+  sideEffect,
   type: inputType,
   ...props
 }) => {
-  const { register, formState } = useFormContext();
+  const { register, formState, ...formContextProps } = useFormContext();
 
   const [type, setType] = useState(inputType);
 
@@ -28,7 +29,12 @@ const Input: FC<InputProps> = ({
       </label>
 
       <input
-        {...register(name, { required })}
+        {...register(name, {
+          required,
+          onChange: e => {
+            if (sideEffect) sideEffect(e, { formState, ...formContextProps });
+          }
+        })}
         className={`w-full border-b-2 border-neutral-300 p-1 outline-none ${darkProps} ${focusProps} ${hoverProps} ${className}`}
         type={type}
         {...props}
