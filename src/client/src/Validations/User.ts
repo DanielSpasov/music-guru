@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const BaseSchema = z.object({
+const BaseUserSchema = z.object({
   username: z
     .union([
       z
@@ -18,7 +18,7 @@ export const BaseSchema = z.object({
   repeat_password: z.string().min(1, 'Repeat Password is required.')
 });
 
-export const SignUpSchema = BaseSchema.refine(
+export const SignUpSchema = BaseUserSchema.refine(
   ({ password, repeat_password }) => password === repeat_password,
   {
     message: 'Passwords do not match.',
@@ -26,7 +26,7 @@ export const SignUpSchema = BaseSchema.refine(
   }
 );
 
-export const SignInSchema = BaseSchema.pick({
+export const SignInSchema = BaseUserSchema.pick({
   email: true,
   password: true
 });
