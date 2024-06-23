@@ -1,7 +1,7 @@
+import { Form, Icon, Input, Textarea } from '../../../../../Components';
 import { VerseSchema } from '../../../../../Validations/Song';
-import { editVerseSchema, wrapperProps } from './helpers';
-import { Form, Icon } from '../../../../../Components';
 import { EditVerseProps } from '../helpers';
+import { wrapperProps } from './helpers';
 
 export default function EditVerse({
   setShow,
@@ -20,15 +20,17 @@ export default function EditVerse({
       </div>
 
       <Form
-        schema={editVerseSchema}
+        className="w-full"
         validationSchema={VerseSchema}
-        showClose={false}
         defaultValues={defaultValues}
         onSubmit={formData => {
           onSubmit(defaultValues.number, formData);
           setShow(false);
         }}
-      />
+      >
+        <Input name="title" label="Title" required />
+        <Textarea name="lyrics" label="Lyrics" required />
+      </Form>
     </div>
   );
 }

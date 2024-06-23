@@ -1,7 +1,7 @@
+import { Form, Icon, Input, Textarea } from '../../../../../Components';
 import { VerseSchema } from '../../../../../Validations/Song';
-import { newVerseSchema, wrapperProps } from './helpers';
-import { Form, Icon } from '../../../../../Components';
 import { NewVerseProps } from '../helpers';
+import { wrapperProps } from './helpers';
 
 export default function NewVerse({ show, setShow, onSubmit }: NewVerseProps) {
   if (!show) return null;
@@ -17,14 +17,16 @@ export default function NewVerse({ show, setShow, onSubmit }: NewVerseProps) {
       </div>
 
       <Form
-        showClose={false}
-        schema={newVerseSchema}
         validationSchema={VerseSchema}
+        className="w-full"
         onSubmit={formData => {
           onSubmit(formData);
           setShow(false);
         }}
-      />
+      >
+        <Input name="title" label="Title" required />
+        <Textarea name="lyrics" label="Lyrics" required />
+      </Form>
     </div>
   );
 }

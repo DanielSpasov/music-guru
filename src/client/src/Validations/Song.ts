@@ -4,8 +4,11 @@ import { OptionalFileSchema } from './File';
 import { SocialsSchema } from './Socials';
 
 export const VerseSchema = z.object({
-  title: z.string(),
-  lyrics: z.string().max(10000, 'Max length is 10000 characters')
+  title: z.string().min(1, 'Title is required.'),
+  lyrics: z
+    .string()
+    .min(1, 'Lyrics are required.')
+    .max(10000, 'Max length is 10000 characters.')
 });
 
 const Required = (label: string) => (value: any, ctx: RefinementCtx) => {
