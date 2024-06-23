@@ -14,8 +14,5 @@ export const BaseAlbumSchema = z.object({
 export const AlbumSchema = BaseAlbumSchema.extend({
   artist: z.string().uuid(),
   songs: z.array(z.string().uuid()).optional().default([]),
-  type: z.object({
-    code: z.string().length(1),
-    name: z.string()
-  })
+  type: z.string().uuid()
 });

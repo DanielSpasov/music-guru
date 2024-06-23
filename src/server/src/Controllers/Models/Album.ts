@@ -10,7 +10,7 @@ const router = Router();
 router.get('/', fetch({ databaseName: 'models', collectionName: 'albums' }));
 router.get(
   '/types',
-  fetch({ databaseName: 'types', collectionName: 'albums' })
+  fetch({ databaseName: 'models', collectionName: 'album_types' })
 );
 
 router.get('/:id', get({ databaseName: 'models', collectionName: 'albums' }));

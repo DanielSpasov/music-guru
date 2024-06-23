@@ -21,5 +21,9 @@ export const serializers: Record<Models, ObjSerialzier> = {
   users: {
     list: (data: User) => new ListUser(data),
     detailed: (data: User) => data
+  },
+  album_types: {
+    list: data => data,
+    detailed: data => data
   }
 };

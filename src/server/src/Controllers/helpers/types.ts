@@ -1,16 +1,11 @@
-import { Models, Serializer, Types } from '../../Database/Types';
+import { Models, Serializer } from '../../Database/Types';
 
 export type QueryProps = { serializer?: Serializer };
 
-export type ReqProps =
-  | {
-      databaseName: 'models';
-      collectionName: Models;
-    }
-  | {
-      databaseName: 'types';
-      collectionName: Types;
-    };
+export type ReqProps = {
+  databaseName: 'models';
+  collectionName: Models;
+};
 
 export type SimpleReqProps = {
   collectionName: Models;

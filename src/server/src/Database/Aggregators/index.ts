@@ -8,5 +8,6 @@ export const aggregators: Record<Models, AggregationStage[]> = {
   albums: albumAggregators,
   artists: artistAggregators,
   songs: songAggregators,
+  album_types: [],
   users: []
 };
