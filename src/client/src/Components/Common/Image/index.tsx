@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ZodError } from 'zod';
 
@@ -36,10 +36,11 @@ export default function Image({
     [loading]
   );
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const onImageClick = useCallback(() => {
-    if (!editable || loading) return;
-    const input = document.getElementById('image-input');
-    (input as HTMLInputElement).click();
+    if (!editable || loading || !inputRef.current) return;
+    inputRef.current.click();
   }, [editable, loading]);
 
   const onImageUpload = useCallback(
@@ -83,7 +84,7 @@ export default function Image({
         type="file"
         className="hidden"
         accept="image/jpeg, image/png"
-        id="image-input"
+        ref={inputRef}
         data-testid="image-input"
         onChange={onImageUpload}
       />
