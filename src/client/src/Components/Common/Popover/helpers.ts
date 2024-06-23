@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 export type PopoverProps = {
   open: boolean;
-  label?: JSX.Element;
+  label?: ReactNode;
   children?: ReactNode;
   className?: string;
 };
