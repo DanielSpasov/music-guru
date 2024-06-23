@@ -284,7 +284,7 @@ const icons = {
       />
     </SVG>
   ),
-  'apple-music': (props: SVGProps) => (
+  apple_music: (props: SVGProps) => (
     <SVG viewBox="0 0 24 24" {...props}>
       <path
         fill="currentColor"
