@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { FC, useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo, useRef } from 'react';
 
 import { Icon } from '../../../Common';
 import { FileProps } from './helpers';
@@ -21,19 +21,18 @@ const File: FC<FileProps> = ({
   const { register, formState, watch, setValue, clearErrors } =
     useFormContext();
 
-  const id = useMemo(() => `${name}-input`, [name]);
+  const fieldRef = useRef<HTMLInputElement>(null);
 
   const onClear = useCallback(() => {
-    const input = document.getElementById(id) as HTMLInputElement;
-    input.files = null;
+    if (!fieldRef.current) return;
+    fieldRef.current.files = null;
     setValue(name, null);
     clearErrors(name);
-  }, [id, setValue, name, clearErrors]);
+  }, [setValue, name, clearErrors, fieldRef]);
 
   const openUpload = useCallback(() => {
-    const field = document.getElementById(id);
-    if (field) field.click();
-  }, [id]);
+    if (fieldRef.current) fieldRef.current.click();
+  }, [fieldRef]);
 
   const file = watch(name);
   const showClose = useMemo(() => {
@@ -58,12 +57,12 @@ const File: FC<FileProps> = ({
       </div>
 
       <input
-        id={id}
         className="hidden"
         {...register(name, {
           required,
           onChange: e => setValue(name, e.target.files[0])
         })}
+        ref={fieldRef}
         {...props}
         type="file"
       />
