@@ -7,8 +7,8 @@ import AlbumCard, {
   lightHoverProps,
   darkHoverTextProps,
   lightHoverTextProps
-} from './Album';
-import { ListAlbum } from '../../../Types/Album';
+} from '../Album';
+import { ListAlbum } from '../../../../Types/Album';
 
 describe('Album Card', () => {
   const mockData: ListAlbum = {

@@ -1,6 +1,6 @@
-import { ListArtist } from '../../../Types/Artist';
-import { CardProps } from './helpers';
-import { IHeart } from '../../Icons';
+import { ListArtist } from '../../../../Types/Artist';
+import { IHeart } from '../../../Icons';
+import { CardProps } from '../helpers';
 
 export const lightHoverProps = 'hover:bg-neutral-200';
 export const darkHoverProps = 'dark:hover:bg-neutral-700';
