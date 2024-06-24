@@ -1,14 +1,28 @@
 import { render, screen } from '@testing-library/react';
-import Popover, { darkProps, lightProps } from '.';
+
+import { darkProps, lightProps } from './helpers';
+import Popover from '.';
 
 describe('Popover', () => {
-  describe('Basic Props', () => {
+  describe('Rendering', () => {
     test('renders popover component without crashing', () => {
       render(<Popover open={false} />);
       const element = screen.getByTestId('popover');
       expect(element).toBeInTheDocument();
     });
 
+    test('renders correct children', () => {
+      render(
+        <Popover open={true} label="Test Label">
+          <span>test child</span>
+        </Popover>
+      );
+      const element = screen.getByTestId('popover-content');
+      expect(element).toContainHTML('<span>test child</span>');
+    });
+  });
+
+  describe('Component props', () => {
     test("doesn't render popover content if open is false", () => {
       render(<Popover open={false} />);
       const element = screen.queryByTestId('popover-content');
@@ -31,16 +45,6 @@ describe('Popover', () => {
       render(<Popover open={true} label="Test Label" />);
       const element = screen.queryByTestId('popover-label');
       expect(element).toBeInTheDocument();
-    });
-
-    test('renders children currectly', () => {
-      render(
-        <Popover open={true} label="Test Label">
-          <span>test child</span>
-        </Popover>
-      );
-      const element = screen.getByTestId('popover-content');
-      expect(element).toContainHTML('<span>test child</span>');
     });
 
     test('renders with custom class name', () => {
