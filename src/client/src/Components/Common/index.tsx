@@ -7,4 +7,3 @@ export { default as Card } from './Card';
 export { default as List } from './List';
 export { default as Link } from './Link';
 export { default as SVG } from './SVG';
-export { default as Icon } from './Icon';
