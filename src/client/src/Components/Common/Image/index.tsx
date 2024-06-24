@@ -1,26 +1,19 @@
-import { ChangeEvent, useCallback, useRef, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ZodError } from 'zod';
 
 import { FileSchema } from '../../../Validations';
-import { ImageProps } from './helpers';
+import { ImageProps, hoverProps, imgProps } from './helpers';
 import { IPen, ISpinner } from '../..';
 
-export const lightImgProps = 'shadow-neutral-400';
-export const darkImgProps = 'dark:shadow-neutral-900';
-export const imgProps = `shadow-lg rounded-full ${lightImgProps} ${darkImgProps}`;
-
-export const hoverProps =
-  'cursor-pointer [&+svg]:hover:opacity-100 hover:opacity-60';
-
-export default function Image({
+const Image: FC<ImageProps> = ({
   src,
   alt = 'image',
   editable = false,
   className = '',
   size = 64,
   updateFn
-}: ImageProps) {
+}) => {
   const [loading, setLoading] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -80,4 +73,6 @@ export default function Image({
       />
     </div>
   );
-}
+};
+
+export default Image;

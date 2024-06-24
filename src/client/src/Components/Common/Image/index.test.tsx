@@ -1,14 +1,23 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import Image, { lightImgProps, darkImgProps, hoverProps } from './index';
+import { lightImgProps, darkImgProps, hoverProps } from './helpers';
+import Image from '.';
 
 describe('Image', () => {
-  describe('Basic props', () => {
-    test('renders Image with default props', () => {
+  describe('Rendering', () => {
+    test('renders Image without crashing', () => {
       const src = 'https://example.com/image.jpg';
       render(<Image src={src} />);
       const imageElement = screen.getByTestId('image');
       expect(imageElement).toBeInTheDocument();
+    });
+  });
+
+  describe('Component props', () => {
+    test('renders Image with correct src attribute', () => {
+      const src = 'https://example.com/image.jpg';
+      render(<Image src={src} />);
+      const imageElement = screen.getByTestId('image');
       expect(imageElement).toHaveAttribute('src', src);
     });
 
@@ -17,7 +26,6 @@ describe('Image', () => {
       const alt = 'Example Image';
       render(<Image src={src} alt={alt} />);
       const imageElement = screen.getByTestId('image');
-      expect(imageElement).toBeInTheDocument();
       expect(imageElement).toHaveAttribute('alt', alt);
     });
 
@@ -26,7 +34,6 @@ describe('Image', () => {
       const className = 'bg-neutral-50';
       render(<Image src={src} className={className} />);
       const imageElement = screen.getByTestId('image');
-      expect(imageElement).toBeInTheDocument();
       expect(imageElement).toHaveClass(className);
     });
 
@@ -35,38 +42,27 @@ describe('Image', () => {
       const size = 24;
       render(<Image src={src} size={size} />);
       const imageElement = screen.getByTestId('image');
-      expect(imageElement).toBeInTheDocument();
       expect(imageElement.parentElement).toHaveClass(`w-${size} h-${size}`);
     });
 
     test('calls updateFn when a file is uploaded', () => {
       const src = 'https://example.com/image.jpg';
       const file = new File(['image.jpg'], 'image.jpg', { type: 'image/jpeg' });
-
-      let clickCounter = 0;
-      const updateFn = async () => {
-        clickCounter++;
-      };
-
+      const updateFn = vi.fn();
       render(<Image src={src} editable updateFn={updateFn} />);
       const inputField = screen.getByTestId('image-input');
       fireEvent.change(inputField, { target: { files: [file] } });
-      expect(clickCounter).toBe(1);
+      expect(updateFn).toBeCalled();
     });
 
     test('does not call updateFn when editable is false', () => {
       const src = 'https://example.com/image.jpg';
       const file = new File(['image.jpg'], 'image.jpg', { type: 'image/jpeg' });
-
-      let clickCounter = 0;
-      const updateFn = async () => {
-        clickCounter++;
-      };
-
+      const updateFn = vi.fn();
       render(<Image src={src} updateFn={updateFn} />);
       const inputField = screen.getByTestId('image-input');
       fireEvent.change(inputField, { target: { files: [file] } });
-      expect(clickCounter).toBe(0);
+      expect(updateFn).not.toBeCalled();
     });
   });
 
