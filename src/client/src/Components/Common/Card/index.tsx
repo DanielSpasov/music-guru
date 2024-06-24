@@ -9,7 +9,7 @@ import { FavoritesContext } from '../../../Contexts/Favorites';
 import { IHeart, IHeartOutline, ISpinner } from '../../Icons';
 import { CardSwitchProps, loadingProps } from './helpers';
 import { AuthContext } from '../../../Contexts';
-import { themeProps } from '../Popover';
+import { themeProps } from './helpers';
 
 const Card: FC<CardSwitchProps> = ({
   model,
