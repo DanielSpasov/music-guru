@@ -4,21 +4,35 @@ import { variants } from './variants';
 import Button from './index';
 
 describe('Button', () => {
-  test('renders without crashing', () => {
-    render(<Button>Click me</Button>);
-    const button = screen.getByTestId('button');
-    expect(button).toBeInTheDocument();
+  describe('Rendering', () => {
+    test('renders without crashing', () => {
+      render(<Button>Click me</Button>);
+      const button = screen.getByTestId('button');
+      expect(button).toBeInTheDocument();
+    });
+
+    test('renders correct children', () => {
+      render(
+        <Button>
+          <span>Test</span>
+        </Button>
+      );
+      const button = screen.getByTestId('button');
+      expect(button).toContainHTML('<span>Test</span>');
+    });
   });
 
-  test('renders default variant', () => {
-    render(<Button>Click me</Button>);
-    const button = screen.getByTestId('button');
-    expect(button).toHaveClass(variants.primary);
-  });
+  describe('Component props', () => {
+    test('renders default variant', () => {
+      render(<Button>Click me</Button>);
+      const button = screen.getByTestId('button');
+      expect(button).toHaveClass(variants.primary);
+    });
 
-  test('renders correct variant', () => {
-    render(<Button variant="outline">Click me</Button>);
-    const button = screen.getByTestId('button');
-    expect(button).toHaveClass(variants.outline);
+    test('renders correct variant', () => {
+      render(<Button variant="outline">Click me</Button>);
+      const button = screen.getByTestId('button');
+      expect(button).toHaveClass(variants.outline);
+    });
   });
 });

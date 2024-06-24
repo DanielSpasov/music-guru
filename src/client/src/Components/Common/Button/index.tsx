@@ -1,12 +1,13 @@
+import { FC } from 'react';
 import { ButtonProps } from './types';
 import { variants } from './variants';
 
-export default function Button({
+const Button: FC<ButtonProps> = ({
   children,
   variant = 'primary',
   className,
   ...HTMLButtonProps
-}: ButtonProps) {
+}) => {
   return (
     <button
       className={`${variants[variant]} ${className}`}
@@ -16,4 +17,6 @@ export default function Button({
       {children}
     </button>
   );
-}
+};
+
+export default Button;
