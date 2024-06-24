@@ -1,8 +1,8 @@
 import { useFormContext } from 'react-hook-form';
 import { FC, useCallback, useMemo, useRef } from 'react';
 
-import { Icon } from '../../../Common';
 import { FileProps } from './helpers';
+import { IX } from '../../../Icons';
 import Error from '../Error';
 import Label from '../Label';
 
@@ -70,8 +70,7 @@ const File: FC<FileProps> = ({
       <Error message={formState.errors[name]?.message} />
 
       {showClose && (
-        <Icon
-          model="close"
+        <IX
           onClick={() => onClear()}
           className="absolute top-7 right-0 w-6 h-6"
         />

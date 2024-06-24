@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { Button, Icon } from '../../../../Components';
+import { Button, IPlus } from '../../../../Components';
 import { HeaderProps } from './helpers';
 
 export default function Header({
@@ -26,7 +26,7 @@ export default function Header({
           disabled={disableAdd}
           variant="outline"
         >
-          <Icon model="add" />
+          <IPlus />
           <p>Add Verse</p>
         </Button>
       )}

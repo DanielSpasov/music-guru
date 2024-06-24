@@ -2,8 +2,8 @@ import { ChangeEvent, useCallback, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
+import { Button, ICheck, IPen, IX } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { Button, Icon } from '../../../Components';
 import { OptionProps } from './helpers';
 import Api from '../../../Api';
 
@@ -53,16 +53,14 @@ export default function Option({ data, user, setUser }: OptionProps) {
       <div className="w-10">
         {data?.editable &&
           (isEditing ? (
-            <Icon
-              model="check"
+            <ICheck
               onClick={() => {
                 setIsEditing(prev => !prev);
                 onSubmit();
               }}
             />
           ) : (
-            <Icon
-              model="edit"
+            <IPen
               className="w-6 h-6"
               onClick={() => setIsEditing(prev => !prev)}
             />
@@ -87,16 +85,12 @@ export default function Option({ data, user, setUser }: OptionProps) {
             {data.type === 'string' && (
               <span>{user[data.field]?.toString()}</span>
             )}
-            {data.type === 'boolean' && (
-              <Icon
-                model={user[data.field] ? 'check' : 'close'}
-                className={
-                  user[data.field]
-                    ? '[&>path]:fill-green-500'
-                    : '[&>path]:fill-red-400'
-                }
-              />
-            )}
+            {data.type === 'boolean' &&
+              (user[data.field] ? (
+                <ICheck className="[&>path]:fill-green-500" />
+              ) : (
+                <IX className="[&>path]:fill-red-400" />
+              ))}
             {data.type === 'date' && (
               <span>
                 {moment(user[data.field] as any as Date).format('LLLL')}

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { Icon, Loader } from '../../../Components';
+import { IMagnifyingGlass, Loader } from '../../../Components';
 import { UserListProps } from './helpers';
 
 const lightInputProps =
@@ -14,7 +14,7 @@ export default function UserList({
   loading,
   action,
   missingMessage,
-  icon
+  Icon
 }: UserListProps) {
   const [search, setSearch] = useState('');
 
@@ -37,7 +37,7 @@ export default function UserList({
           type="text"
         />
 
-        <Icon model="search" className="absolute top-0 right-0 w-8 h-8" />
+        <IMagnifyingGlass className="absolute top-0 right-0 w-8 h-8" />
       </div>
 
       {displayedItems.length ? (
@@ -57,7 +57,8 @@ export default function UserList({
                 >
                   <p className="w-1/3">{user.username}</p>
                   <p className="w-2/3">{user.uid}</p>
-                  <Icon model={icon} className="w-6 h-6" />
+
+                  <Icon className="w-6 h-6" />
                 </div>
               ))
             ) : (

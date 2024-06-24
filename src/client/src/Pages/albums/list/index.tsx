@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { FavoritesProvider, AuthContext } from '../../../Contexts';
-import { Icon, List, PageLayout } from '../../../Components';
+import { IPlus, List, PageLayout } from '../../../Components';
 import Api from '../../../Api';
 
 export default function Albums() {
@@ -17,7 +17,7 @@ export default function Albums() {
           type: 'button',
           children: (
             <>
-              <Icon model="add" />
+              <IPlus />
               <p>New</p>
             </>
           ),

@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { PageLayout } from '../../../Components';
+import { IAddUser, IDelUser, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts';
 import { ListUser } from '../../../Types/User';
 import useSong from '../../../Hooks/useSong';
@@ -83,7 +83,7 @@ export default function Settings() {
             loading={loadingEditors}
             action={handleAddEditor}
             missingMessage="This song has no available editors."
-            icon="add-user"
+            Icon={IAddUser}
           />
         </div>
 
@@ -95,7 +95,7 @@ export default function Settings() {
             loading={loadingEditors}
             action={handleDelEditor}
             missingMessage="This song has no editors yet."
-            icon="del-user"
+            Icon={IDelUser}
           />
         </div>
       </section>

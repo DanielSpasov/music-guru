@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { toast } from 'react-toastify';
 
-import { Image, List, PageLayout } from '../../../Components';
+import { IPen, ITrashBin, Image, List, PageLayout } from '../../../Components';
 import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
 import { Album } from '../../../Types/Album';
@@ -92,14 +92,14 @@ export default function AlbumDetails() {
       actions={[
         {
           type: 'icon',
-          icon: 'edit',
+          Icon: IPen,
           onClick: () => navigate('edit'),
           hidden: !isAuthenticated,
           disabled: uid !== album.created_by
         },
         {
           type: 'icon',
-          icon: 'trash',
+          Icon: ITrashBin,
           onClick: deleteAlbum,
           hidden: !isAuthenticated,
           disabled: uid !== album.created_by

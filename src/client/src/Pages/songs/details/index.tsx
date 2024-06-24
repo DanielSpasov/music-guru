@@ -1,7 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useContext, useMemo } from 'react';
 
-import { Image, PageLayout } from '../../../Components';
+import {
+  IPen,
+  ISettings,
+  ITrashBin,
+  Image,
+  PageLayout
+} from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import useSong from '../../../Hooks/useSong';
 
@@ -35,21 +41,21 @@ export default function SongDetails() {
       actions={[
         {
           type: 'icon',
-          icon: 'settings',
+          Icon: ISettings,
           onClick: () => navigate('settings'),
           hidden: !isOwner,
           disabled: !isOwner
         },
         {
           type: 'icon',
-          icon: 'edit',
+          Icon: IPen,
           onClick: () => navigate('edit'),
           hidden: !isAuthenticated,
           disabled: !isEditor
         },
         {
           type: 'icon',
-          icon: 'trash',
+          Icon: ITrashBin,
           onClick: del,
           hidden: !isOwner,
           disabled: !isOwner

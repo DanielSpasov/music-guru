@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Icon } from '../../../../Common';
+import { IMagnifyingGlass } from '../../../../Icons';
 import { SearchProps } from '../helpers';
 
 const lightProps =
@@ -12,7 +12,7 @@ const themeProps = `border-b-2 ${lightProps} ${darkProps}`;
 const Search: FC<SearchProps> = ({ setSearch, searchRef }) => {
   return (
     <div className="flex items-center p-0.5">
-      <Icon model="search" className="w-6 h-6 [&>path]:fill-neutral-500" />
+      <IMagnifyingGlass className="w-6 h-6 [&>path]:fill-neutral-500" />
       <input
         ref={searchRef}
         onChange={e => setSearch(e.target.value)}

@@ -1,7 +1,7 @@
 import { ChangeEvent, KeyboardEvent, useCallback } from 'react';
 
+import { IMagnifyingGlass } from '../../Icons';
 import { FiltersProps } from './helpers';
-import Icon from '../Icon';
 
 const lightProps = 'border-neutral-300 border-[1px]';
 const darkProps =
@@ -64,7 +64,7 @@ export default function Filters({
         className={`rounded-full p-2 [&>svg>path]:text-white hover:opacity-75 cursor-pointer ${iconProps}`}
         onClick={onSubmit}
       >
-        <Icon model="search" />
+        <IMagnifyingGlass />
       </div>
     </div>
   );

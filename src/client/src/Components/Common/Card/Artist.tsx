@@ -1,6 +1,6 @@
 import { ListArtist } from '../../../Types/Artist';
 import { CardProps } from './helpers';
-import Icon from '../Icon';
+import { IHeart } from '../../Icons';
 
 export const lightHoverProps = 'hover:bg-neutral-200';
 export const darkHoverProps = 'dark:hover:bg-neutral-700';
@@ -37,10 +37,7 @@ export default function ArtistCard({
           <span className="text-sm p-1" data-testid="artist-card-favorites">
             {data.favorites}
           </span>
-          <Icon
-            model="heart"
-            className="w-4 h-4 dark:[&>path]:fill-primary-dark"
-          />
+          <IHeart className="w-4 h-4 dark:[&>path]:fill-primary-dark" />
         </div>
       </div>
     </div>

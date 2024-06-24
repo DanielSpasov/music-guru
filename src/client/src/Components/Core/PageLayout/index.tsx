@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Button, Icon, Loader, Navbar } from '../../';
+import { Button, Loader, Navbar } from '../../';
 import { PageLayoutProps } from './helpers';
 
 export default function PageLayout({
@@ -40,9 +40,8 @@ export default function PageLayout({
                     );
                   default:
                     return (
-                      <Icon
+                      <action.Icon
                         key={i}
-                        model={action.icon}
                         disabled={action?.disabled}
                         onClick={action.onClick}
                       />

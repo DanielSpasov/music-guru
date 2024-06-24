@@ -6,9 +6,9 @@ import AlbumCard from './Album';
 import SongCard from './Song';
 
 import { FavoritesContext } from '../../../Contexts/Favorites';
+import { IHeart, IHeartOutline, ISpinner } from '../../Icons';
 import { AuthContext } from '../../../Contexts';
 import { CardSwitchProps } from './helpers';
-import Icon, { IconModel } from '../Icon';
 
 const lightIconProps = '[&>path]:fill-primary';
 const darkIconProps = 'dark:[&>path]:fill-primary-dark';
@@ -34,11 +34,6 @@ export default function Card({
   const [counter, setCounter] = useState<number>(data?.favorites || 0);
   const [processing, setProcessing] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-
-  const icon = useMemo<IconModel>(() => {
-    if (processing) return 'loading';
-    return favorites?.[model]?.includes(data?.uid) ? 'heart' : 'heart-outline';
-  }, [data?.uid, favorites, processing, model]);
 
   const toggleFav = useCallback(async () => {
     try {
@@ -93,12 +88,13 @@ export default function Card({
           data-testid="card-favorite-icon"
           className="absolute top-6 right-6 z-50"
         >
-          <Icon
-            model={icon}
-            disabled={processing}
-            className={`${processing ? loadingProps : themeProps}`}
-            onClick={toggleFav}
-          />
+          {processing ? (
+            <ISpinner className={loadingProps} />
+          ) : favorites?.[model]?.includes(data?.uid) ? (
+            <IHeart className={themeProps} onClick={toggleFav} />
+          ) : (
+            <IHeartOutline className={themeProps} onClick={toggleFav} />
+          )}
         </div>
       ) : null}
 

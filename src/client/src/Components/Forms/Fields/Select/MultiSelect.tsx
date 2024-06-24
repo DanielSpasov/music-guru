@@ -2,7 +2,7 @@ import { FC, useCallback, useRef, useState } from 'react';
 
 import { Option, SelectComponentProps, themeProps } from './helpers';
 import Dropdown from './components/Dropdown';
-import { Icon } from '../../../Common';
+import { IX } from '../../../Icons';
 
 const Multi: FC<SelectComponentProps<'multi'>> = ({
   defaultValue = [],
@@ -49,8 +49,7 @@ const Multi: FC<SelectComponentProps<'multi'>> = ({
               className="flex items-center h-full bg-neutral-200 dark:bg-neutral-700 rounded-md p-2 pr-0 mr-1 my-0"
             >
               {option.name}
-              <Icon
-                model="close"
+              <IX
                 onClick={() => onOptionClick(option)}
                 className="inline w-6 h-6 [&>path]:fill-red-500 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-md"
               />

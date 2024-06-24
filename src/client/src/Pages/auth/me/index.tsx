@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { Icon, PageLayout, Summary } from '../../../Components';
+import { ILock, IUser, PageLayout, Summary } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { getMFAConfig, infoConfig } from './helpers';
 import { User } from '../../../Types/User';
@@ -30,10 +30,7 @@ export default function Me() {
       {user && (
         <>
           <div className="flex items-start m-3">
-            <Icon
-              model="user"
-              className="h-16 w-16 [&>path]:text-primary dark:[&>path]:text-primary-dark"
-            />
+            <IUser className="h-16 w-16 [&>path]:text-primary dark:[&>path]:text-primary-dark" />
             <Summary label="Information" open>
               {infoConfig.map((data, i) => (
                 <Option data={data} key={i} setUser={setUser} user={user} />
@@ -42,10 +39,7 @@ export default function Me() {
           </div>
 
           <div className="flex items-start m-3">
-            <Icon
-              model="lock"
-              className="h-16 w-16 [&>path]:text-primary dark:[&>path]:text-primary-dark"
-            />
+            <ILock className="h-16 w-16 [&>path]:text-primary dark:[&>path]:text-primary-dark" />
             <Summary label="MFA" open>
               {getMFAConfig(user).map((data, i) => (
                 <Option data={data} key={i} setUser={setUser} user={user} />

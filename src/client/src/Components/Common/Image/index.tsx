@@ -1,10 +1,10 @@
-import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ZodError } from 'zod';
 
 import { FileSchema } from '../../../Validations';
 import { ImageProps } from './helpers';
-import { Icon } from '../..';
+import { IPen, ISpinner } from '../..';
 
 export const lightImgProps = 'shadow-neutral-400';
 export const darkImgProps = 'dark:shadow-neutral-900';
@@ -22,19 +22,6 @@ export default function Image({
   updateFn
 }: ImageProps) {
   const [loading, setLoading] = useState(false);
-
-  const hoverImageProps = useMemo(
-    () => (editable ? hoverProps : ''),
-    [editable]
-  );
-  const loadingImageProps = useMemo(
-    () => (loading ? 'opacity-60' : ''),
-    [loading]
-  );
-  const loadingIconProps = useMemo(
-    () => (loading ? 'animate-spin opacity-100' : ''),
-    [loading]
-  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -70,15 +57,18 @@ export default function Image({
         src={src}
         alt={alt}
         onClick={onImageClick}
-        className={`w-full ${loadingImageProps} ${hoverImageProps} ${imgProps} ${className}`}
+        className={`w-full ${loading ? 'opacity-60' : ''} ${
+          editable ? hoverProps : ''
+        } ${imgProps} ${className}`}
         loading="lazy"
         data-testid="image"
       />
 
-      <Icon
-        model={loading ? 'loading' : 'edit'}
-        className={`absolute opacity-0 pointer-events-none top-[calc(50%-1.2em)] left-[calc(50%-1.2em)] w-[2.4em] h-[2.4em] ${loadingIconProps}`}
-      />
+      {loading ? (
+        <ISpinner className="absolute animate-spin opacity-100 pointer-events-none top-[calc(50%-1.2em)] left-[calc(50%-1.2em)] w-[2.4em] h-[2.4em]" />
+      ) : (
+        <IPen className="absolute opacity-0 pointer-events-none top-[calc(50%-1.2em)] left-[calc(50%-1.2em)] w-[2.4em] h-[2.4em]" />
+      )}
 
       <input
         type="file"

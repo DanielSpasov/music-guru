@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
-import { Icon, List, PageLayout } from '../../../Components';
+import { IPlus, List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import Api from '../../../Api';
 
@@ -18,7 +18,7 @@ export default function Songs() {
           type: 'button',
           children: (
             <>
-              <Icon model="add" />
+              <IPlus />
               <p>New</p>
             </>
           ),

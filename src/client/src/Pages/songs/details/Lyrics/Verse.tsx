@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 
+import { IPen, ITrashBin } from '../../../../Components';
 import { AuthContext } from '../../../../Contexts';
-import { Icon } from '../../../../Components';
 import EditVerse from './Forms/EditVerse';
 import { VerseProps } from './helpers';
 
@@ -31,14 +31,12 @@ export default function SongVerse({
 
         {isAuthenticated ? (
           <div className="flex gap-2">
-            <Icon
-              model="edit"
+            <IPen
               className="w-6"
               disabled={!isEditor}
               onClick={() => setIsEditing(true)}
             />
-            <Icon
-              model="trash"
+            <ITrashBin
               className="w-6"
               disabled={!isEditor}
               onClick={() => del(verse.number)}

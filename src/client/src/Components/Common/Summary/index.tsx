@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import { SummaryProps } from './helpers';
-import { Icon } from '../../';
+import { IDown, IUp } from '../../';
 
 const hoverProps = 'hover:bg-neutral-300';
 const darkProps = 'dark:bg-neutral-700 dark:hover:bg-neutral-600';
@@ -23,7 +23,7 @@ export default function Summary({
         className="flex items-center py-2 hover:cursor-pointer"
         onClick={toggleSummary}
       >
-        <Icon model={isOpen ? 'up' : 'down'} />
+        {isOpen ? <IUp /> : <IDown />}
         <h4>{label}</h4>
       </div>
       {isOpen && children}

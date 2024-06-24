@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 
 import { FieldsetProps } from './helpers';
-import { Icon } from '../../Common';
+import { IDown, IUp } from '../../Icons';
 
 const Fieldset: FC<FieldsetProps> = ({
   title,
@@ -15,13 +15,15 @@ const Fieldset: FC<FieldsetProps> = ({
     <fieldset {...props}>
       <p className="font-semibold">
         {title}
-        {foldable && (
-          <Icon
-            model={hidden ? 'up' : 'down'}
-            onClick={() => setHidden(prev => !prev)}
-            className="inline w-8 h-8"
-          />
-        )}
+        {foldable &&
+          (hidden ? (
+            <IDown
+              onClick={() => setHidden(false)}
+              className="inline w-8 h-8"
+            />
+          ) : (
+            <IUp onClick={() => setHidden(true)} className="inline w-8 h-8" />
+          ))}
       </p>
 
       {!hidden && children}

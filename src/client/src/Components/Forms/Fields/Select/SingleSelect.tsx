@@ -2,7 +2,7 @@ import { FC, useCallback, useRef, useState } from 'react';
 
 import { Option, SelectComponentProps, themeProps } from './helpers';
 import Dropdown from './components/Dropdown';
-import { Icon } from '../../../Common';
+import { IX } from '../../../Icons';
 
 const Single: FC<SelectComponentProps<'single'>> = ({
   defaultValue = null,
@@ -65,8 +65,7 @@ const Single: FC<SelectComponentProps<'single'>> = ({
       />
 
       {selected && (
-        <Icon
-          model="close"
+        <IX
           className="absolute right-0 top-6 w-6"
           onClick={() => {
             setSelected(null);

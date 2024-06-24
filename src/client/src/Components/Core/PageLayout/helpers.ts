@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
-import { IconModel } from '../../';
 import { ButtonVariant } from '../../Common/Button/types';
+import { SVGProps } from '../../Common/SVG/helpers';
 
 export type DefaultActionProps = {
   onClick: (props: any) => any;
@@ -11,7 +11,7 @@ export type DefaultActionProps = {
 
 export interface IconAction extends DefaultActionProps {
   type: 'icon';
-  icon: IconModel;
+  Icon: FC<SVGProps>;
 }
 
 export interface ButtonAction extends DefaultActionProps {

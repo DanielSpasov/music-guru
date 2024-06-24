@@ -1,4 +1,9 @@
-import { Icon, IconModel } from '../../../Components';
+import {
+  ISpotify,
+  IYoutube,
+  IAppleMusic,
+  ISoundcloud
+} from '../../../Components';
 import { Song } from '../../../Types/Song';
 
 const socialsColors: Record<string, string> = {
@@ -8,17 +13,26 @@ const socialsColors: Record<string, string> = {
   soundcloud: '[&>path]:hover:fill-[#ff7700]'
 };
 
+const icons = {
+  spotify: ISpotify,
+  apple_music: IAppleMusic,
+  youtube: IYoutube,
+  soundcloud: ISoundcloud
+};
+
 export default function Socials({ song }: { song: Song }) {
   return (
     <div className="flex w-full flex-wrap justify-center py-3 gap-3">
-      {song.links.map(({ name, url }) => (
-        <Icon
-          className={socialsColors[name]}
-          onClick={() => window.open(url, '_blank')}
-          model={name as IconModel}
-          key={name}
-        />
-      ))}
+      {song.links.map(({ name, url }) => {
+        const Component = icons[name as keyof typeof icons];
+        return (
+          <Component
+            className={socialsColors[name]}
+            onClick={() => window.open(url, '_blank')}
+            key={name}
+          />
+        );
+      })}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { List, PageLayout, Image } from '../../../Components';
+import { List, PageLayout, Image, IPen } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { Artist } from '../../../Types/Artist';
 import Api from '../../../Api';
@@ -66,7 +66,7 @@ export default function ArtistDetails() {
       actions={[
         {
           type: 'icon',
-          icon: 'edit',
+          Icon: IPen,
           onClick: () => navigate('edit'),
           hidden: !isAuthenticated,
           disabled: uid !== artist.created_by

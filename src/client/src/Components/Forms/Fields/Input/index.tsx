@@ -1,8 +1,8 @@
 import { useFormContext } from 'react-hook-form';
 import { FC, useState } from 'react';
 
+import { IEye, IEyeSlash } from '../../../Icons';
 import { InputProps } from './helpers';
-import { Icon } from '../../../Common';
 import Label from '../Label';
 import Error from '../Error';
 
@@ -42,15 +42,22 @@ const Input: FC<InputProps> = ({
 
       <Error message={formState.errors[name]?.message} />
 
-      {inputType === 'password' && (
-        <Icon
-          model={type === 'password' ? 'hide' : 'show'}
-          onClick={() =>
-            setType(prev => (prev === 'text' ? 'password' : 'text'))
-          }
-          className="absolute right-0 top-5 w-5"
-        />
-      )}
+      {inputType === 'password' &&
+        (type === 'password' ? (
+          <IEyeSlash
+            className="absolute right-0 top-5 w-5"
+            onClick={() =>
+              setType(prev => (prev === 'text' ? 'password' : 'text'))
+            }
+          />
+        ) : (
+          <IEye
+            className="absolute right-0 top-5 w-5"
+            onClick={() =>
+              setType(prev => (prev === 'text' ? 'password' : 'text'))
+            }
+          />
+        ))}
     </div>
   );
 };

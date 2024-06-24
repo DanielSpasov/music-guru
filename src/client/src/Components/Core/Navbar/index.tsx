@@ -1,8 +1,8 @@
-import { useLocation } from 'react-router-dom';
 import { useCallback, useContext, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
+import { Link, Popover, IMoon, ISun, IHamburger, IUser } from '../../';
 import { ThemeContext, AuthContext, Theme } from '../../../Contexts';
-import { Link, Popover, Icon } from '../../';
 
 const lightProps = 'bg-neutral-50 border-b-[1px]';
 const darkProps =
@@ -82,10 +82,11 @@ export default function Navbar() {
             setAnimateTheme(false);
           }}
         >
-          <Icon
-            model={theme === 'dark' ? 'dark' : 'light'}
-            onClick={toggleTheme}
-          />
+          {theme === 'dark' ? (
+            <IMoon onClick={toggleTheme} />
+          ) : (
+            <ISun onClick={toggleTheme} />
+          )}
         </div>
 
         <Popover
@@ -95,8 +96,8 @@ export default function Navbar() {
               onClick={() => setOpenUser(prev => !prev)}
               className={`flex rounded-full px-3 py-2 cursor-pointer border-[1px] ${userMenuProps}`}
             >
-              <Icon model="hamburger" />
-              <Icon model="user" />
+              <IHamburger />
+              <IUser />
             </div>
           }
           className="w-24"

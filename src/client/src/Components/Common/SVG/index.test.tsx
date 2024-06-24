@@ -1,12 +1,13 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 
-import SVG, {
+import {
   darkProps,
   lightProps,
   darkHoverProps,
   lightHoverProps,
   disabledProps
-} from './SVG';
+} from './helpers';
+import SVG from './index';
 
 describe('SVG component', () => {
   describe('Basic props', () => {

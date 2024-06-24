@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
 import { FavoritesProvider, AuthContext } from '../../../Contexts';
-import { Icon, List, PageLayout } from '../../../Components';
+import { IPlus, List, PageLayout } from '../../../Components';
 import Api from '../../../Api';
 
 export default function Artists() {
@@ -18,7 +18,7 @@ export default function Artists() {
           type: 'button',
           children: (
             <>
-              <Icon model="add" />
+              <IPlus />
               <p>New</p>
             </>
           ),

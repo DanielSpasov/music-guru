@@ -1,10 +1,12 @@
-import { IconModel } from '../../../Components';
+import { FC } from 'react';
+
 import { ListUser } from '../../../Types/User';
+import { SVGProps } from '../../../Components/Common/SVG/helpers';
 
 export type UserListProps = {
   items: ListUser[];
   loading: boolean;
   action: (uid: string) => Promise<void>;
   missingMessage: string;
-  icon: IconModel;
+  Icon: FC<SVGProps>;
 };
