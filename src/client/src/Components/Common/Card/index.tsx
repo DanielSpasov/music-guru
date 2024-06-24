@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { FC, useCallback, useContext, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import ArtistCard from './Artist';
@@ -7,27 +7,17 @@ import SongCard from './Song';
 
 import { FavoritesContext } from '../../../Contexts/Favorites';
 import { IHeart, IHeartOutline, ISpinner } from '../../Icons';
+import { CardSwitchProps, loadingProps } from './helpers';
 import { AuthContext } from '../../../Contexts';
-import { CardSwitchProps } from './helpers';
+import { themeProps } from '../Popover';
 
-const lightIconProps = '[&>path]:fill-primary';
-const darkIconProps = 'dark:[&>path]:fill-primary-dark';
-const iconProps = `[&>path]:opacity-100 ${lightIconProps} ${darkIconProps}`;
-
-const iconHoverProps = `[&>path]:hover:opacity-70`;
-const themeProps = `${iconProps} ${iconHoverProps}`;
-
-const lightLoadingProps = '[&>path]:fill-primary';
-const darkLoadingProps = 'dark:[&>path]:fill-primary-dark';
-const loadingProps = `animate-spin ${lightLoadingProps} ${darkLoadingProps}`;
-
-export default function Card({
+const Card: FC<CardSwitchProps> = ({
   model,
   data,
   loading,
   onClick,
   favoriteFn
-}: CardSwitchProps) {
+}) => {
   const { favorites, setFavorites } = useContext(FavoritesContext);
   const { isAuthenticated } = useContext(AuthContext);
 
@@ -101,4 +91,6 @@ export default function Card({
       {Component}
     </div>
   );
-}
+};
+
+export default Card;

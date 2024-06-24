@@ -8,7 +8,7 @@ import Card from './index';
 
 describe('Card', () => {
   describe('Models Logic', () => {
-    it('renders Album Card without crashing', () => {
+    test('renders Album Card without crashing', () => {
       const mockData: ListAlbum = {
         name: 'Test Album Name',
         uid: 'test-album-uuid',
@@ -26,7 +26,7 @@ describe('Card', () => {
       expect(card).toBeInTheDocument();
     });
 
-    it('renders Song Card without crashing', () => {
+    test('renders Song Card without crashing', () => {
       const mockData: ListSong = {
         name: 'Test Song Name',
         uid: 'test-song-uuid',
@@ -38,7 +38,7 @@ describe('Card', () => {
       expect(card).toBeInTheDocument();
     });
 
-    it('renders Artist Card without crashing', () => {
+    test('renders Artist Card without crashing', () => {
       const mockData: ListArtist = {
         name: 'Test Artist Name',
         uid: 'test-artist-uid',
@@ -64,7 +64,7 @@ describe('Card', () => {
       dispatch: () => null
     };
 
-    it('renders Favorite Icon on hover', () => {
+    test('renders Favorite Icon on hover', () => {
       render(
         <AuthContext.Provider value={mockAuthContext}>
           <Card
@@ -81,7 +81,7 @@ describe('Card', () => {
       expect(icon).toBeInTheDocument();
     });
 
-    it("doesn't render Favorite Icon when unauthenticated", () => {
+    test("doesn't render Favorite Icon when unauthenticated", () => {
       render(
         <AuthContext.Provider
           value={{ ...mockAuthContext, isAuthenticated: false }}
@@ -100,7 +100,7 @@ describe('Card', () => {
       expect(icon).not.toBeInTheDocument();
     });
 
-    it("doesn't render Favorite Icon when favoriteFn is not passed", () => {
+    test("doesn't render Favorite Icon when favoriteFn is not passed", () => {
       render(
         <AuthContext.Provider value={mockAuthContext}>
           <Card model="artists" data={mockData} loading={false} />
@@ -112,7 +112,7 @@ describe('Card', () => {
       expect(icon).not.toBeInTheDocument();
     });
 
-    it("doesn't render Favorite Icon when not hovering", () => {
+    test("doesn't render Favorite Icon when not hovering", () => {
       render(
         <AuthContext.Provider value={mockAuthContext}>
           <Card
@@ -127,7 +127,7 @@ describe('Card', () => {
       expect(icon).not.toBeInTheDocument();
     });
 
-    it("doesn't render Favorite Icon when loading", () => {
+    test("doesn't render Favorite Icon when loading", () => {
       render(
         <AuthContext.Provider value={mockAuthContext}>
           <Card
