@@ -1,16 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import CustomLink, {
+import {
   darkActiveProps,
   darkHoverProps,
   lightActiveProps,
   lightHoverProps
-} from './index';
+} from './helpers';
+import CustomLink from '.';
 
 describe('Link', () => {
-  describe('Basic Props', () => {
-    it('renders link without crashing', () => {
+  describe('Rendering', () => {
+    test('renders link without crashing', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route">Test Label</CustomLink>
@@ -19,8 +20,10 @@ describe('Link', () => {
       const linkElement = screen.getByTestId('link');
       expect(linkElement).toBeInTheDocument();
     });
+  });
 
-    it('redirects to correct route', () => {
+  describe('Component props', () => {
+    test('redirects to correct route', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route">Test Label</CustomLink>
@@ -30,7 +33,7 @@ describe('Link', () => {
       expect(linkElement).toHaveAttribute('href', '/test-route');
     });
 
-    it('renders correct label', () => {
+    test('renders correct label', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route">Test Label</CustomLink>
@@ -41,7 +44,7 @@ describe('Link', () => {
       expect(linkElement.textContent).toEqual('Test Label');
     });
 
-    it('renders link with custom class', () => {
+    test('renders link with custom class', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" className="custom-class">
@@ -53,11 +56,33 @@ describe('Link', () => {
       expect(linkElement).toHaveClass('custom-class');
     });
   });
+
+  describe('CSS', () => {
+    test('renders dark mode hover', () => {
+      render(
+        <MemoryRouter>
+          <CustomLink to="/test-route">Test Label</CustomLink>
+        </MemoryRouter>
+      );
+      const linkElement = screen.getByTestId('link');
+      expect(linkElement).toHaveClass(darkHoverProps);
+    });
+
+    test('renders light mode hover', () => {
+      render(
+        <MemoryRouter>
+          <CustomLink to="/test-route">Test Label</CustomLink>
+        </MemoryRouter>
+      );
+      const linkElement = screen.getByTestId('link');
+      expect(linkElement).toHaveClass(lightHoverProps);
+    });
+  });
 });
 
 describe('NavLink', () => {
-  describe('Basic Props', () => {
-    it('renders navlink without crashing', () => {
+  describe('Rendering', () => {
+    test('renders navlink without crashing', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" type="navlink">
@@ -68,8 +93,10 @@ describe('NavLink', () => {
       const linkElement = screen.getByTestId('navlink');
       expect(linkElement).toBeInTheDocument();
     });
+  });
 
-    it('redirects to correct route', () => {
+  describe('Component Props', () => {
+    test('redirects to correct route', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" type="navlink">
@@ -81,7 +108,7 @@ describe('NavLink', () => {
       expect(linkElement).toHaveAttribute('href', '/test-route');
     });
 
-    it('renders correct label', () => {
+    test('renders correct label', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" type="navlink">
@@ -89,12 +116,11 @@ describe('NavLink', () => {
           </CustomLink>
         </MemoryRouter>
       );
-
       const linkElement = screen.getByTestId('navlink');
       expect(linkElement.textContent).toEqual('Test Label');
     });
 
-    it('renders navlink with custom class', () => {
+    test('renders navlink with custom class', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" type="navlink" className="custom-class">
@@ -108,7 +134,7 @@ describe('NavLink', () => {
   });
 
   describe('CSS', () => {
-    it('renders dark mode hover', () => {
+    test('renders dark mode hover', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" type="navlink">
@@ -120,7 +146,7 @@ describe('NavLink', () => {
       expect(linkElement).toHaveClass(darkHoverProps);
     });
 
-    it('renders light mode hover', () => {
+    test('renders light mode hover', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" type="navlink">
@@ -132,7 +158,7 @@ describe('NavLink', () => {
       expect(linkElement).toHaveClass(lightHoverProps);
     });
 
-    it('renders dark mode active class', () => {
+    test('renders dark mode active class', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" type="navlink" isActive>
@@ -144,7 +170,7 @@ describe('NavLink', () => {
       expect(linkElement).toHaveClass(darkActiveProps);
     });
 
-    it('renders light mode active class', () => {
+    test('renders light mode active class', () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" type="navlink" isActive>
@@ -156,7 +182,7 @@ describe('NavLink', () => {
       expect(linkElement).toHaveClass(lightActiveProps);
     });
 
-    it("doesn't render darm active class", () => {
+    test("doesn't render darm active class", () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" type="navlink">
@@ -168,7 +194,7 @@ describe('NavLink', () => {
       expect(linkElement).not.toHaveClass(darkActiveProps);
     });
 
-    it("doesn't render light active class", () => {
+    test("doesn't render light active class", () => {
       render(
         <MemoryRouter>
           <CustomLink to="/test-route" type="navlink">

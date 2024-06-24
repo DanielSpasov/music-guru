@@ -1,26 +1,15 @@
 import { NavLink, Link } from 'react-router-dom';
+import { FC } from 'react';
 
-import { LinkProps } from './helpers';
+import { LinkProps, activeProps, hoverProps, themeProps } from './helpers';
 
-export const lightProps = 'text-neutral-400';
-export const darkProps = 'dark:text-white';
-const themeProps = `${lightProps} ${darkProps}`;
-
-export const lightHoverProps = 'hover:text-primary';
-export const darkHoverProps = 'dark:hover:text-primary-dark';
-const hoverProps = `${lightHoverProps} ${darkHoverProps}`;
-
-export const lightActiveProps = 'text-neutral-950';
-export const darkActiveProps = 'dark:text-primary-dark';
-const activeProps = `${lightActiveProps} ${darkActiveProps} font-bold`;
-
-export default function CustomLink({
+const CustomLink: FC<LinkProps> = ({
   children,
   to = '/',
   type = 'link',
   className,
   isActive
-}: LinkProps) {
+}) => {
   return type === 'navlink' ? (
     <NavLink
       to={to}
@@ -40,4 +29,6 @@ export default function CustomLink({
       {children}
     </Link>
   );
-}
+};
+
+export default CustomLink;
