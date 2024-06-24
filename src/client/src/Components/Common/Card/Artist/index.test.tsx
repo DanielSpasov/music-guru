@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 
-import ArtistCard, { darkHoverProps, lightHoverProps } from '../Artist';
+import { darkHoverProps, lightHoverProps } from './helpers';
 import { ListArtist } from '../../../../Types/Artist';
+import ArtistCard from '.';
 
 describe('Artist Card', () => {
   const mockData: ListArtist = {
@@ -11,13 +12,15 @@ describe('Artist Card', () => {
     favorites: 0
   };
 
-  describe('Business Logic', () => {
+  describe('Rendering', () => {
     it('renders without crashing', () => {
       render(<ArtistCard data={mockData} />);
       const card = screen.getByTestId('artist-card');
       expect(card).toBeInTheDocument();
     });
+  });
 
+  describe('Component props', () => {
     it('renders skeleton when loading', () => {
       render(<ArtistCard data={mockData} loading />);
       const card = screen.getByTestId('artist-card-skeleton');
@@ -43,14 +46,11 @@ describe('Artist Card', () => {
     });
 
     it('calls onClick when clicked', () => {
-      let clickCounter = 0;
-      const onClick = () => {
-        clickCounter++;
-      };
+      const onClick = vi.fn();
       render(<ArtistCard data={mockData} onClick={onClick} />);
       const card = screen.getByTestId('artist-card');
       card.click();
-      expect(clickCounter).toBe(1);
+      expect(onClick).toBeCalled();
     });
   });
 

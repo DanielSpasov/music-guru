@@ -1,16 +1,15 @@
+import { FC } from 'react';
+
 import { ListArtist } from '../../../../Types/Artist';
 import { IHeart } from '../../../Icons';
 import { CardProps } from '../helpers';
+import { hoverProps } from './helpers';
 
-export const lightHoverProps = 'hover:bg-neutral-200';
-export const darkHoverProps = 'dark:hover:bg-neutral-700';
-const hoverProps = `${lightHoverProps} ${darkHoverProps}`;
-
-export default function ArtistCard({
+const ArtistCard: FC<CardProps<ListArtist>> = ({
   data,
   onClick,
   loading = false
-}: CardProps<ListArtist>) {
+}) => {
   if (loading) return <Skeleton />;
   return (
     <div
@@ -42,9 +41,11 @@ export default function ArtistCard({
       </div>
     </div>
   );
-}
+};
 
-function Skeleton() {
+export default ArtistCard;
+
+const Skeleton = () => {
   return (
     <div
       data-testid="artist-card-skeleton"
@@ -57,4 +58,4 @@ function Skeleton() {
       </div>
     </div>
   );
-}
+};
