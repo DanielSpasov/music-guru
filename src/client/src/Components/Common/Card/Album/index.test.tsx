@@ -1,13 +1,15 @@
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
-import AlbumCard, {
+import {
   darkProps,
   lightProps,
   darkHoverProps,
   lightHoverProps,
   darkHoverTextProps,
   lightHoverTextProps
-} from '../Album';
+} from './helpers';
+import AlbumCard from '.';
 import { ListAlbum } from '../../../../Types/Album';
 
 describe('Album Card', () => {
@@ -24,13 +26,15 @@ describe('Album Card', () => {
     favorites: 0
   };
 
-  describe('Business Logic', () => {
+  describe('Rendering', () => {
     it('renders without crashing', () => {
       render(<AlbumCard data={mockData} />);
       const card = screen.getByTestId('album-card');
       expect(card).toBeInTheDocument();
     });
+  });
 
+  describe('Component props', () => {
     it('renders skeleton when loading', () => {
       render(<AlbumCard data={mockData} loading />);
       const card = screen.getByTestId('album-card-skeleton');
@@ -57,6 +61,13 @@ describe('Album Card', () => {
       );
     });
 
+    it('renders TBA if release date is not available', () => {
+      const data = { ...mockData, release_date: null };
+      render(<AlbumCard data={data} />);
+      const releaseDate = screen.getByTestId('album-card-release-date');
+      expect(releaseDate.textContent).toEqual('TBA');
+    });
+
     it('renders correct type', () => {
       render(<AlbumCard data={mockData} />);
       const type = screen.getByTestId('album-card-type');
@@ -64,14 +75,11 @@ describe('Album Card', () => {
     });
 
     it('calls onClick when clicked', () => {
-      let clickCounter = 0;
-      const onClick = () => {
-        clickCounter++;
-      };
+      const onClick = vi.fn();
       render(<AlbumCard data={mockData} onClick={onClick} />);
       const card = screen.getByTestId('album-card');
       card.click();
-      expect(clickCounter).toBe(1);
+      expect(onClick).toBeCalled();
     });
   });
 
@@ -110,15 +118,6 @@ describe('Album Card', () => {
       render(<AlbumCard data={mockData} />);
       const card = screen.getByTestId('album-card');
       expect(card).toHaveClass(lightHoverTextProps);
-    });
-  });
-
-  describe('Edge Cases', () => {
-    it('renders TBA if release date is not available', () => {
-      const data = { ...mockData, release_date: null };
-      render(<AlbumCard data={data} />);
-      const releaseDate = screen.getByTestId('album-card-release-date');
-      expect(releaseDate.textContent).toEqual('TBA');
     });
   });
 });
