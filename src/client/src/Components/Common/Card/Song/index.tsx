@@ -1,27 +1,14 @@
+import { FC } from 'react';
+
 import { ListSong } from '../../../../Types/Song';
+import { defaultProps } from './helpers';
 import { CardProps } from '../helpers';
 
-export const lightProps = 'bg-neutral-200';
-export const darkProps = 'dark:bg-neutral-900';
-const themeProps = `${lightProps} ${darkProps}`;
-
-export const lightHoverProps = 'hover:shadow-neutral-400';
-export const darkHoverProps = 'dark:hover:shadow-neutral-900';
-const hoverProps = `${lightHoverProps} ${darkHoverProps}`;
-
-export const lightHoverTextProps =
-  '[&>div>span:nth-child(1)]:hover:text-primary';
-export const darkHoverTextProps =
-  'dark:[&>div>span:nth-child(1)]:hover:text-primary-dark';
-const hoverTextProps = `${lightHoverTextProps} ${darkHoverTextProps}`;
-
-const defaultProps = `${themeProps} ${hoverProps} ${hoverTextProps}`;
-
-export default function SongCard({
+const SongCard: FC<CardProps<ListSong>> = ({
   data,
   onClick,
   loading = false
-}: CardProps<ListSong>) {
+}) => {
   if (loading) return <Skeleton />;
 
   return (
@@ -52,9 +39,11 @@ export default function SongCard({
       </div>
     </div>
   );
-}
+};
 
-function Skeleton() {
+export default SongCard;
+
+const Skeleton = () => {
   return (
     <div
       data-testid="song-card-skeleton"
@@ -67,4 +56,4 @@ function Skeleton() {
       </div>
     </div>
   );
-}
+};

@@ -1,13 +1,14 @@
 import { render, screen } from '@testing-library/react';
 
-import SongCard, {
+import {
   darkHoverProps,
   darkHoverTextProps,
   darkProps,
   lightHoverProps,
   lightHoverTextProps,
   lightProps
-} from '../Song';
+} from './helpers';
+import SongCard from '.';
 import { ListSong } from '../../../../Types/Song';
 
 describe('Song Card', () => {
@@ -18,13 +19,15 @@ describe('Song Card', () => {
     artist: 'Test Artist Name'
   };
 
-  describe('Business Logic', () => {
+  describe('Rendering', () => {
     it('renders without crashing', () => {
       render(<SongCard data={mockData} />);
       const card = screen.getByTestId('song-card');
       expect(card).toBeInTheDocument();
     });
+  });
 
+  describe('Business Logic', () => {
     it('renders skeleton when loading', () => {
       render(<SongCard data={mockData} loading />);
       const card = screen.getByTestId('song-card-skeleton');
@@ -50,14 +53,11 @@ describe('Song Card', () => {
     });
 
     it('calls onClick when clicked', () => {
-      let clickCounter = 0;
-      const onClick = () => {
-        clickCounter++;
-      };
+      const onClick = vi.fn();
       render(<SongCard data={mockData} onClick={onClick} />);
       const card = screen.getByTestId('song-card');
       card.click();
-      expect(clickCounter).toBe(1);
+      expect(onClick).toBeCalled();
     });
   });
 
