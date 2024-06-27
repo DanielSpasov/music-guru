@@ -14,7 +14,6 @@ const FavoritesCounter: FC<FavoritesCounterProps> = ({
   canFavorite = false,
   ...hookProps
 }) => {
-  console.log('Favorites Counter');
   const { isFav, favCount, loadingFav, onFavorite } = useFavorite(hookProps);
 
   return (

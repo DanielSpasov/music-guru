@@ -65,8 +65,6 @@ export default function List({
     [loading]
   );
 
-  console.log('List');
-
   return (
     <section className="flex flex-col items-center">
       <Filters

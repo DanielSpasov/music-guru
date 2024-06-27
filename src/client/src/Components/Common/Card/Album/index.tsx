@@ -1,5 +1,5 @@
+import { FC, memo } from 'react';
 import moment from 'moment';
-import { FC } from 'react';
 
 import { ListAlbum } from '../../../../Types/Album';
 import FavoritesCounter from '../FavoritesConuter';
@@ -68,7 +68,7 @@ const AlbumCard: FC<CardProps<ListAlbum>> = ({
   );
 };
 
-export default AlbumCard;
+export default memo(AlbumCard);
 
 const Skeleton = () => {
   return (

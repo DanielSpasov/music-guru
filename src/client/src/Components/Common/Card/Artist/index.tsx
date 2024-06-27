@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import { ListArtist } from '../../../../Types/Artist';
 import FavoritesCounter from '../FavoritesConuter';
@@ -49,7 +49,7 @@ const ArtistCard: FC<CardProps<ListArtist>> = ({
   );
 };
 
-export default ArtistCard;
+export default memo(ArtistCard);
 
 const Skeleton = () => {
   return (

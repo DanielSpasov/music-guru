@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import FavoritesCounter from '../FavoritesConuter';
 import { ListSong } from '../../../../Types/Song';
@@ -60,7 +60,7 @@ const SongCard: FC<CardProps<ListSong>> = ({
   );
 };
 
-export default SongCard;
+export default memo(SongCard);
 
 const Skeleton = () => {
   return (

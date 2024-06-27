@@ -7,7 +7,7 @@ import Api from '../../../Api';
 
 export default function Artists() {
   const { isAuthenticated } = useContext(AuthContext);
-  console.log('Page');
+
   const navigate = useNavigate();
 
   return (

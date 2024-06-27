@@ -1,9 +1,8 @@
-import { FC, useMemo } from 'react';
+import { FC, memo, useMemo } from 'react';
 
 import { CardSwitchProps, cards } from './helpers';
 
 const Card: FC<CardSwitchProps> = ({ model, ...props }) => {
-  console.log('Card');
   const Component = useMemo(() => cards[model], [model]);
   return Component ? (
     <Component {...props} />
@@ -12,4 +11,4 @@ const Card: FC<CardSwitchProps> = ({ model, ...props }) => {
   );
 };
 
-export default Card;
+export default memo(Card);
