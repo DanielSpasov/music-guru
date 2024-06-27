@@ -1,41 +1,60 @@
 import { FC } from 'react';
 
+import FavoritesCounter from '../FavoritesConuter';
 import { ListSong } from '../../../../Types/Song';
 import { defaultProps } from './helpers';
 import { CardProps } from '../helpers';
+import { Link } from '../..';
 
 const SongCard: FC<CardProps<ListSong>> = ({
   data,
-  onClick,
-  loading = false
+  favoriteFn,
+  canFavorite,
+  loading = false,
+  isFavorite = false
 }) => {
   if (loading) return <Skeleton />;
-
   return (
     <div
       data-testid="song-card"
-      className={`flex items-center w-48 h-16 p-2 m-3 rounded-md cursor-pointer shadow-md ${defaultProps}`}
-      onClick={onClick}
+      className={`flex w-52 h-16  m-3 rounded-md shadow-md ${defaultProps}`}
     >
       <img
-        onClick={onClick}
         alt={data.name}
         src={data?.image || '/images/logo/blue-logo-square512.png'}
-        className="w-12 h-12 rounded-sm"
+        className="w-12 h-12 m-2 rounded-sm"
         data-testid="song-card-image"
         loading="lazy"
       />
 
-      <div className="relative flex flex-col p-2">
-        <span className="line-clamp-1" data-testid="song-card-name">
-          {data.name}
-        </span>
-        <span
-          className="text-neutral-500 truncate"
-          data-testid="song-card-artist"
+      <div className="flex flex-col justify-between w-full">
+        <Link
+          to={`/songs/${data.uid}`}
+          data-testid="song-card-name"
+          className="w-32 whitespace-nowrap overflow-hidden text-ellipsis"
         >
-          {data.artist}
-        </span>
+          {data.name}
+        </Link>
+        <Link
+          to={`/artists/${data.artist.uid}`}
+          data-testid="song-card-artist"
+          className="w-28 text-sm text-neutral-500 whitespace-nowrap overflow-hidden text-ellipsis"
+        >
+          {data.artist.name}
+        </Link>
+
+        <div className="flex justify-between pr-1">
+          <span className="text-sm text-neutral-500"></span>
+
+          <FavoritesCounter
+            model="songs"
+            defaultCount={data.favorites}
+            defaultIsFav={isFavorite}
+            canFavorite={canFavorite}
+            favoriteFn={favoriteFn}
+            uid={data.uid}
+          />
+        </div>
       </div>
     </div>
   );

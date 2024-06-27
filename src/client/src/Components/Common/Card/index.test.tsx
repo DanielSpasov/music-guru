@@ -1,8 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { ListArtist } from '../../../Types/Artist';
 import { ListAlbum } from '../../../Types/Album';
-import { AuthContext } from '../../../Contexts';
 import { ListSong } from '../../../Types/Song';
 import Card from './index';
 
@@ -21,7 +21,11 @@ describe('Card', () => {
         release_date: new Date(),
         favorites: 0
       };
-      render(<Card model="albums" data={mockData} />);
+      render(
+        <MemoryRouter>
+          <Card model="albums" data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('album-card');
       expect(card).toBeInTheDocument();
     });
@@ -31,9 +35,19 @@ describe('Card', () => {
         name: 'Test Song Name',
         uid: 'test-song-uuid',
         image: 'http://test123',
-        artist: 'Test Artist Name'
+        artist: {
+          uid: 'testuid',
+          image: 'http://test',
+          name: 'Test Artist Name',
+          favorites: 0
+        },
+        favorites: 0
       };
-      render(<Card model="songs" data={mockData} />);
+      render(
+        <MemoryRouter>
+          <Card model="songs" data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('song-card');
       expect(card).toBeInTheDocument();
     });
@@ -45,103 +59,13 @@ describe('Card', () => {
         image: 'http://test123',
         favorites: 0
       };
-      render(<Card model="artists" data={mockData} />);
+      render(
+        <MemoryRouter>
+          <Card model="artists" data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('artist-card');
       expect(card).toBeInTheDocument();
-    });
-  });
-
-  describe('Favorites Logic', () => {
-    const mockData: ListArtist = {
-      name: 'Test Artist Name',
-      uid: 'test-artist-uid',
-      image: 'http://test123',
-      favorites: 0
-    };
-    const mockAuthContext = {
-      uid: 'test-uid-123',
-      isAuthenticated: true,
-      dispatch: () => null
-    };
-
-    test('renders Favorite Icon on hover', () => {
-      render(
-        <AuthContext.Provider value={mockAuthContext}>
-          <Card
-            model="artists"
-            data={mockData}
-            loading={false}
-            favoriteFn={() => Promise.resolve({ favorites: {} })}
-          />
-        </AuthContext.Provider>
-      );
-      const card = screen.getByTestId('card');
-      fireEvent.mouseEnter(card);
-      const icon = screen.queryByTestId('card-favorite-icon');
-      expect(icon).toBeInTheDocument();
-    });
-
-    test("doesn't render Favorite Icon when unauthenticated", () => {
-      render(
-        <AuthContext.Provider
-          value={{ ...mockAuthContext, isAuthenticated: false }}
-        >
-          <Card
-            model="artists"
-            data={mockData}
-            loading={false}
-            favoriteFn={() => Promise.resolve({ favorites: {} })}
-          />
-        </AuthContext.Provider>
-      );
-      const card = screen.getByTestId('card');
-      fireEvent.mouseEnter(card);
-      const icon = screen.queryByTestId('card-favorite-icon');
-      expect(icon).not.toBeInTheDocument();
-    });
-
-    test("doesn't render Favorite Icon when favoriteFn is not passed", () => {
-      render(
-        <AuthContext.Provider value={mockAuthContext}>
-          <Card model="artists" data={mockData} loading={false} />
-        </AuthContext.Provider>
-      );
-      const card = screen.getByTestId('card');
-      fireEvent.mouseEnter(card);
-      const icon = screen.queryByTestId('card-favorite-icon');
-      expect(icon).not.toBeInTheDocument();
-    });
-
-    test("doesn't render Favorite Icon when not hovering", () => {
-      render(
-        <AuthContext.Provider value={mockAuthContext}>
-          <Card
-            model="artists"
-            data={mockData}
-            loading={false}
-            favoriteFn={() => Promise.resolve({ favorites: {} })}
-          />
-        </AuthContext.Provider>
-      );
-      const icon = screen.queryByTestId('card-favorite-icon');
-      expect(icon).not.toBeInTheDocument();
-    });
-
-    test("doesn't render Favorite Icon when loading", () => {
-      render(
-        <AuthContext.Provider value={mockAuthContext}>
-          <Card
-            model="artists"
-            data={mockData}
-            loading={true}
-            favoriteFn={() => Promise.resolve({ favorites: {} })}
-          />
-        </AuthContext.Provider>
-      );
-      const card = screen.getByTestId('card');
-      fireEvent.mouseEnter(card);
-      const icon = screen.queryByTestId('card-favorite-icon');
-      expect(icon).not.toBeInTheDocument();
     });
   });
 });

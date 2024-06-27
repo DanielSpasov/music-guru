@@ -1,5 +1,6 @@
 import { ListArtist } from '../Serializers/Artist';
 import { ListUser } from '../Serializers/User';
+import { Artist } from './Artist';
 
 export interface Verse {
   title: string;
@@ -14,12 +15,13 @@ export interface Song {
   created_at: Date;
   release_date: Date | null;
   created_by: ListUser;
-  artist: ListArtist;
+  artist: Artist;
   features: ListArtist[];
   verses: Verse[];
   links: { name: string; url: string }[];
   about: string;
   editors: ListUser[];
+  favorites: number;
 }
 
 export interface DBSong {
@@ -34,4 +36,5 @@ export interface DBSong {
   links: { name: string; url: string }[];
   about: string;
   editors: string[];
+  favorites: number;
 }

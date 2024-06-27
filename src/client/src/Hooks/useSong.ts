@@ -20,7 +20,8 @@ const defaultSong: Song = {
   verses: [],
   links: [],
   about: '',
-  editors: []
+  editors: [],
+  favorites: 0
 };
 
 export default function useSong(uid: string) {

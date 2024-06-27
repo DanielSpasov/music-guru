@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, ReactNode } from 'react';
+import { BaseSyntheticEvent, ReactNode, SVGAttributes } from 'react';
 
 export type SVGProps = {
   viewBox?: string;
@@ -6,7 +6,8 @@ export type SVGProps = {
   children?: ReactNode;
   disabled?: boolean;
   onClick?: (e: BaseSyntheticEvent) => void;
-};
+  'data-testid'?: string;
+} & SVGAttributes<HTMLOrSVGElement>;
 
 export const lightProps = '[&>path]:text-primary';
 export const darkProps = 'dark:[&>path]:text-neutral-50';

@@ -92,7 +92,8 @@ const features: AggregationStage[] = [
       verses: { $addToSet: '$verses' },
       links: { $addToSet: '$links' },
       about: { $first: '$about' },
-      editors: { $addToSet: '$editors' }
+      editors: { $addToSet: '$editors' },
+      favorites: { $first: '$favorites' }
     }
   },
   {

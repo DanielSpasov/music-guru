@@ -2,53 +2,69 @@ import moment from 'moment';
 import { FC } from 'react';
 
 import { ListAlbum } from '../../../../Types/Album';
+import FavoritesCounter from '../FavoritesConuter';
 import { defaultProps } from './helpers';
 import { CardProps } from '../helpers';
+import { Link } from '../../../';
 
 const AlbumCard: FC<CardProps<ListAlbum>> = ({
   data,
-  onClick,
-  loading = false
+  favoriteFn,
+  canFavorite,
+  loading = false,
+  isFavorite = false
 }) => {
   if (loading) return <Skeleton />;
-
   return (
-    <div
+    <article
       data-testid="album-card"
-      className={`relative flex flex-col items-center rounded-md m-3 cursor-pointer shadow-md ${defaultProps}`}
-      onClick={onClick}
+      className={`flex flex-col m-3 p-2 shadow-md rounded-md ${defaultProps}`}
     >
-      <div className="w-44 h-44 p-2">
-        <img
-          alt={data.name}
-          src={data.image}
-          data-testid="album-card-image"
-          loading="lazy"
-          className="w-full h-full rounded-md"
-        />
-      </div>
+      <img
+        alt={data.name}
+        src={data.image}
+        data-testid="album-card-image"
+        loading="lazy"
+        className="w-40 h-40 rounded-md"
+      />
 
-      <div className="flex flex-col pb-2">
-        <span
-          className="text-md truncate w-44 px-2"
-          data-testid="album-card-name"
+      <section className="flex flex-col pt-1">
+        <Link
+          to={`/albums/${data.uid}`}
+          data-testid="album-card-link"
+          className="text-base w-40 whitespace-nowrap overflow-hidden text-ellipsis"
         >
           {data.name}
-        </span>
-        <div className="text-md truncate w-44">
-          <span
-            className="text-neutral-500 pl-2"
-            data-testid="album-card-release-date"
-          >
-            {data?.release_date ? moment(data?.release_date).year() : 'TBA'}
-          </span>
-          <span className="text-neutral-500 px-1">•</span>
-          <span className="text-neutral-500 pr-1" data-testid="album-card-type">
-            {data.type.name}
-          </span>
+        </Link>
+
+        <div className="flex justify-between items-center text-md truncate w-40">
+          <div>
+            <span
+              className="text-neutral-500"
+              data-testid="album-card-release-date"
+            >
+              {data?.release_date ? moment(data?.release_date).year() : 'TBA'}
+            </span>
+            <span className="text-neutral-500 px-1">•</span>
+            <span
+              className="text-neutral-500 pr-1"
+              data-testid="album-card-type"
+            >
+              {data.type.name}
+            </span>
+          </div>
+
+          <FavoritesCounter
+            model="albums"
+            defaultCount={data.favorites}
+            defaultIsFav={isFavorite}
+            canFavorite={canFavorite}
+            favoriteFn={favoriteFn}
+            uid={data.uid}
+          />
         </div>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 };
 

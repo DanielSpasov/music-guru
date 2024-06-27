@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
-import { FavoritesProvider, AuthContext } from '../../../Contexts';
 import { IPlus, List, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts';
 import Api from '../../../Api';
 
 export default function Artists() {
   const { isAuthenticated } = useContext(AuthContext);
-
+  console.log('Page');
   const navigate = useNavigate();
 
   return (
@@ -28,14 +28,12 @@ export default function Artists() {
         }
       ]}
     >
-      <FavoritesProvider>
-        <List
-          fetchFn={config => Api.artists.fetch({ config })}
-          favoriteFn={uid => Api.artists.favorite({ uid })}
-          model="artists"
-          center={false}
-        />
-      </FavoritesProvider>
+      <List
+        fetchFn={config => Api.artists.fetch({ config })}
+        favoriteFn={uid => Api.artists.favorite({ uid })}
+        model="artists"
+        center={false}
+      />
     </PageLayout>
   );
 }

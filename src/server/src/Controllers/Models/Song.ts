@@ -11,6 +11,7 @@ import {
 import { fetch, post } from '../helpers/requests';
 import { editors } from '../../Services/Editors';
 import updateImage from '../../Services/Image';
+import favorite from '../../Services/Favorites';
 
 const router = Router();
 
@@ -49,6 +50,8 @@ router.post(
   ],
   updateImage({ model: 'songs' })
 );
+
+router.post('/favorite', [authorization], favorite({ model: 'songs' }));
 
 // Verses
 router.post(

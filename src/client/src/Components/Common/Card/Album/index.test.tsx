@@ -10,6 +10,7 @@ import {
 } from './helpers';
 import AlbumCard from '.';
 import { ListAlbum } from '../../../../Types/Album';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('Album Card', () => {
   const mockData: ListAlbum = {
@@ -26,95 +27,139 @@ describe('Album Card', () => {
   };
 
   describe('Rendering', () => {
-    it('renders without crashing', () => {
-      render(<AlbumCard data={mockData} />);
+    test('renders without crashing', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('album-card');
       expect(card).toBeInTheDocument();
     });
   });
 
   describe('Component props', () => {
-    it('renders skeleton when loading', () => {
-      render(<AlbumCard data={mockData} loading />);
+    test('renders skeleton when loading', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} loading />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('album-card-skeleton');
       expect(card).toBeInTheDocument();
     });
 
-    it('renders correct name', () => {
-      render(<AlbumCard data={mockData} />);
-      const name = screen.getByTestId('album-card-name');
+    test('renders correct name', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
+      const name = screen.getByTestId('album-card-link');
       expect(name.textContent).toEqual(mockData.name);
     });
 
-    it('renders correct image', () => {
-      render(<AlbumCard data={mockData} />);
+    test('renders correct image', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
       const image = screen.getByTestId('album-card-image');
       expect(image).toHaveAttribute('src', mockData.image);
     });
 
-    it('renders correct release date', () => {
-      render(<AlbumCard data={mockData} />);
+    test('renders correct release date', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
       const releaseDate = screen.getByTestId('album-card-release-date');
       expect(releaseDate.textContent).toEqual(
         mockData?.release_date?.getFullYear().toString()
       );
     });
 
-    it('renders TBA if release date is not available', () => {
+    test('renders TBA if release date is not available', () => {
       const data = { ...mockData, release_date: null };
-      render(<AlbumCard data={data} />);
+      render(
+        <MemoryRouter>
+          <AlbumCard data={data} />
+        </MemoryRouter>
+      );
       const releaseDate = screen.getByTestId('album-card-release-date');
       expect(releaseDate.textContent).toEqual('TBA');
     });
 
-    it('renders correct type', () => {
-      render(<AlbumCard data={mockData} />);
+    test('renders correct type', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
       const type = screen.getByTestId('album-card-type');
       expect(type.textContent).toEqual(mockData.type.name);
-    });
-
-    it('calls onClick when clicked', () => {
-      const onClick = vi.fn();
-      render(<AlbumCard data={mockData} onClick={onClick} />);
-      const card = screen.getByTestId('album-card');
-      card.click();
-      expect(onClick).toBeCalled();
     });
   });
 
   describe('CSS', () => {
-    it('renders dark mode', () => {
-      render(<AlbumCard data={mockData} />);
+    test('renders dark mode', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('album-card');
       expect(card).toHaveClass(darkProps);
     });
 
-    it('renders light mode', () => {
-      render(<AlbumCard data={mockData} />);
+    test('renders light mode', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('album-card');
       expect(card).toHaveClass(lightProps);
     });
 
-    it('renders dark mode hover', () => {
-      render(<AlbumCard data={mockData} />);
+    test('renders dark mode hover', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('album-card');
       expect(card).toHaveClass(darkHoverProps);
     });
 
-    it('renders light mode hover', () => {
-      render(<AlbumCard data={mockData} />);
+    test('renders light mode hover', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('album-card');
       expect(card).toHaveClass(lightHoverProps);
     });
 
-    it('renders dark mode hover text', () => {
-      render(<AlbumCard data={mockData} />);
+    test('renders dark mode hover text', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('album-card');
       expect(card).toHaveClass(darkHoverTextProps);
     });
 
-    it('renders light mode hover text', () => {
-      render(<AlbumCard data={mockData} />);
+    test('renders light mode hover text', () => {
+      render(
+        <MemoryRouter>
+          <AlbumCard data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('album-card');
       expect(card).toHaveClass(lightHoverTextProps);
     });

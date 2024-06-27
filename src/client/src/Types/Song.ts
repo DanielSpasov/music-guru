@@ -20,11 +20,13 @@ export interface Song {
   links: { name: string; url: string }[];
   about: string;
   editors: ListUser[];
+  favorites: number;
 }
 
 export interface ListSong {
   uid: string;
   name: string;
   image: string;
-  artist: string;
+  artist: ListArtist;
+  favorites: number;
 }

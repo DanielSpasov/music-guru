@@ -1,13 +1,12 @@
-import { ReactNode } from 'react';
+import { AnchorHTMLAttributes, ReactNode } from 'react';
 
 export type LinkProps = {
   to: string;
   children: ReactNode;
   type?: 'navlink' | 'link';
   isActive?: boolean;
-  className?: string;
-  [css: string]: any;
-};
+  'data-testid'?: string;
+} & AnchorHTMLAttributes<HTMLAnchorElement>;
 
 export const lightProps = 'text-neutral-400';
 export const darkProps = 'dark:text-white';

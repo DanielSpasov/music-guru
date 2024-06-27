@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 
 import {
   SVGProps,
@@ -13,14 +13,20 @@ const SVG: FC<SVGProps> = ({
   className,
   children,
   viewBox,
-  onClick
+  onClick,
+  ...svgProps
 }) => {
   const onClickProps = `${darkProps} ${lightProps} ${onClick && hoverProps}`;
   const defaultProps = disabled ? disabledProps : onClickProps;
 
+  const dataTestId = useMemo(
+    () => svgProps?.['data-testid'] || 'svg-icon',
+    [svgProps]
+  );
+
   return (
     <svg
-      data-testid="svg-icon"
+      data-testid={dataTestId}
       xmlns="http://www.w3.org/2000/svg"
       viewBox={viewBox}
       onClick={!disabled && onClick ? onClick : () => null}

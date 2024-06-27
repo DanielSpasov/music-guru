@@ -1,16 +1,31 @@
-import { Favorites } from '../../../Types/Favorites';
+import { FC } from 'react';
+
+import { favoriteFn } from '../../../Hooks/useFavorite';
 import { ModelKeys } from '../../../Api/helpers';
 
-export interface CardProps<T> {
+import ArtistCard from './Artist';
+import AlbumCard from './Album';
+import SongCard from './Song';
+
+export type CardProps<T> = {
   data: T;
   loading?: boolean;
-  onClick?: (props: any) => any;
-}
+  favoriteFn?: favoriteFn;
+  canFavorite?: boolean;
+  isFavorite?: boolean;
+};
 
-export interface CardSwitchProps extends CardProps<any> {
-  model: Exclude<ModelKeys, 'user'>;
-  favoriteFn?: (uid: string) => Promise<{ favorites: Favorites }>;
-}
+export type CardModel = Exclude<ModelKeys, 'users'>;
+
+export type CardSwitchProps = CardProps<any> & {
+  model: CardModel;
+};
+
+export const cards: Record<CardModel, FC<CardProps<any>>> = {
+  artists: ArtistCard,
+  albums: AlbumCard,
+  songs: SongCard
+};
 
 const lightIconProps = '[&>path]:fill-primary';
 const darkIconProps = 'dark:[&>path]:fill-primary-dark';
@@ -22,3 +37,5 @@ export const themeProps = `${iconProps} ${iconHoverProps}`;
 const lightLoadingProps = '[&>path]:fill-primary';
 const darkLoadingProps = 'dark:[&>path]:fill-primary-dark';
 export const loadingProps = `animate-spin ${lightLoadingProps} ${darkLoadingProps}`;
+
+export const favoriteIconProps = 'w-4 h-4 dark:[&>path]:fill-red-500';

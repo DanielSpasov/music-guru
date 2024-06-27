@@ -1,45 +1,51 @@
 import { FC } from 'react';
 
 import { ListArtist } from '../../../../Types/Artist';
-import { IHeart } from '../../../Icons';
+import FavoritesCounter from '../FavoritesConuter';
 import { CardProps } from '../helpers';
 import { hoverProps } from './helpers';
+import { Link } from '../../../';
 
 const ArtistCard: FC<CardProps<ListArtist>> = ({
   data,
-  onClick,
-  loading = false
+  favoriteFn,
+  canFavorite,
+  loading = false,
+  isFavorite = false
 }) => {
   if (loading) return <Skeleton />;
   return (
-    <div
+    <article
       data-testid="artist-card"
-      className={`flex flex-col m-3 cursor-pointer p-2 rounded-md ${hoverProps}`}
-      onClick={onClick}
+      className={`flex flex-col m-3 p-2 pb-1 rounded-md ${hoverProps}`}
     >
-      <div className="h-44 w-44">
-        <img
-          alt={data.name}
-          src={data.image}
-          data-testid="artist-card-image"
-          className="w-full h-full rounded-md"
-          loading="lazy"
-        />
-      </div>
+      <img
+        alt={data.name}
+        src={data.image}
+        data-testid="artist-card-image"
+        className="w-40 h-40 rounded-md"
+        loading="lazy"
+      />
 
-      <div className="flex justify-between items-center mt-1">
-        <span className="text-lg" data-testid="artist-card-name">
+      <section className="flex justify-between items-center mt-1">
+        <Link
+          to={`/artists/${data.uid}`}
+          data-testid="artist-card-name"
+          className="w-32 whitespace-nowrap overflow-hidden text-ellipsis"
+        >
           {data.name}
-        </span>
+        </Link>
 
-        <div className="flex items-center">
-          <span className="text-sm p-1" data-testid="artist-card-favorites">
-            {data.favorites}
-          </span>
-          <IHeart className="w-4 h-4 dark:[&>path]:fill-primary-dark" />
-        </div>
-      </div>
-    </div>
+        <FavoritesCounter
+          model="artists"
+          defaultCount={data.favorites}
+          defaultIsFav={isFavorite}
+          canFavorite={canFavorite}
+          favoriteFn={favoriteFn}
+          uid={data.uid}
+        />
+      </section>
+    </article>
   );
 };
 
@@ -51,7 +57,7 @@ const Skeleton = () => {
       data-testid="artist-card-skeleton"
       className="relative bg-neutral-200 dark:bg-neutral-700 flex flex-col m-3 cursor-pointer p-2 rounded-md"
     >
-      <div className="bg-neutral-300 dark:bg-neutral-800 w-44 h-44 rounded-md" />
+      <div className="bg-neutral-300 dark:bg-neutral-800 w-40 h-40 rounded-md" />
       <div className="flex justify-between">
         <div className="bg-neutral-300 dark:bg-neutral-800 w-28 h-6 mt-2 rounded-md" />
         <div className="bg-neutral-300 dark:bg-neutral-800 w-10 h-6 mt-2 rounded-md" />

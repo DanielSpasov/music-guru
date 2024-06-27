@@ -119,4 +119,12 @@ export default class SongsAPI extends Crud<Song, ListSong> {
       config
     });
   }
+
+  favorite({ uid, config = {} }: { uid: string; config?: Config }) {
+    return post({
+      url: `${this.baseUrl}/${this.model}/favorite/`,
+      body: { uid },
+      config
+    });
+  }
 }

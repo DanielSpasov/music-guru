@@ -1,12 +1,13 @@
-import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 
-import { FavoritesProvider, AuthContext } from '../../../Contexts';
 import { IPlus, List, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts';
 import Api from '../../../Api';
 
 export default function Albums() {
   const { isAuthenticated } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   return (
@@ -27,24 +28,22 @@ export default function Albums() {
         }
       ]}
     >
-      <FavoritesProvider>
-        <List
-          filtersConfig={[
-            {
-              key: 'name',
-              label: 'Name'
-            },
-            {
-              key: 'artist.name',
-              label: 'Artist'
-            }
-          ]}
-          fetchFn={config => Api.albums.fetch({ config })}
-          favoriteFn={uid => Api.albums.favorite({ uid })}
-          model="albums"
-          center={false}
-        />
-      </FavoritesProvider>
+      <List
+        filtersConfig={[
+          {
+            key: 'name',
+            label: 'Name'
+          },
+          {
+            key: 'artist.name',
+            label: 'Artist'
+          }
+        ]}
+        fetchFn={config => Api.albums.fetch({ config })}
+        favoriteFn={uid => Api.albums.favorite({ uid })}
+        model="albums"
+        center={false}
+      />
     </PageLayout>
   );
 }

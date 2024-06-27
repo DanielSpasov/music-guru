@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { AuthContext } from '../../../Contexts';
 import { ListProps, Model } from './helpers';
 import Filters from './Filters';
+import Api from '../../../Api';
 import { Card } from '../../';
 
 export default function List({
@@ -15,21 +16,25 @@ export default function List({
   center = true,
   emptyMessage = 'No items available.'
 }: ListProps) {
-  const [filters, setFilters] = useState({});
-  const [data, setData] = useState<Model[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { uid, isAuthenticated } = useContext(AuthContext);
 
-  const navigate = useNavigate();
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [data, setData] = useState<Model[]>([]);
+  const [filters, setFilters] = useState({});
+  const [loading, setLoading] = useState({
+    list: true,
+    favorites: !uid || !favoriteFn
+  });
 
   const fetchList = useCallback(async () => {
     try {
-      setLoading(true);
+      setLoading(prev => ({ ...prev, list: true }));
       const { data } = await fetchFn({ params: filters });
       setData(data);
     } catch (err) {
       toast.error(`Failed to fetch ${model}.`);
     } finally {
-      setLoading(false);
+      setLoading(prev => ({ ...prev, list: false }));
     }
   }, [fetchFn, model, filters]);
 
@@ -39,10 +44,28 @@ export default function List({
     // eslint-disable-next-line
   }, []);
 
-  const onClick = useCallback(
-    (option: Model) => navigate(`/${model}/${option?.uid}/`),
-    [model, navigate]
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!uid) return;
+
+        setLoading(prev => ({ ...prev, favorites: true }));
+        const { data } = await Api.users.get({ id: uid });
+        setFavorites(data.favorites?.[model] || []);
+      } catch (err) {
+        toast.error('Failed to fetch favorites.');
+      } finally {
+        setLoading(prev => ({ ...prev, favorites: false }));
+      }
+    })();
+  }, [uid, model]);
+
+  const isLoading = useMemo(
+    () => Object.values(loading).some(Boolean),
+    [loading]
   );
+
+  console.log('List');
 
   return (
     <section className="flex flex-col items-center">
@@ -57,7 +80,7 @@ export default function List({
           center ? 'items-center justify-center' : 'items-start justify-start'
         }`}
       >
-        {loading ? (
+        {isLoading ? (
           Array(skeletonLength)
             .fill(null)
             .map((_, i) => (
@@ -71,9 +94,10 @@ export default function List({
               data={x}
               key={x?.uid}
               model={model}
-              onClick={() => onClick(x)}
-              loading={loading}
+              loading={isLoading}
               favoriteFn={favoriteFn}
+              isFavorite={favorites.includes(x.uid)}
+              canFavorite={Boolean(isAuthenticated)}
             />
           ))
         )}

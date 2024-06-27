@@ -27,7 +27,8 @@ export const BaseSongSchema = z.object({
   links: z
     .array(LinkSchema)
     .refine(link => link.filter(item => item.url !== null))
-    .default([])
+    .default([]),
+  favorites: z.number().optional().default(0)
 });
 
 export const SongSchema = BaseSongSchema.extend({
