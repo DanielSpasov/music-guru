@@ -21,7 +21,7 @@ export default function SignUp() {
           repeat_password: formData?.repeat_password,
           username: formData?.username
         });
-        dispatch({ type: 'SIGNUP', payload: { uid, token } });
+        dispatch({ type: 'SIGNIN', payload: { uid, token } });
         toast.success('Account created successfully');
         navigate('/');
       } catch (error) {

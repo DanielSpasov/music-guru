@@ -1,4 +1,4 @@
-import { Dispatch } from 'react';
+import { Dispatch, ReactNode } from 'react';
 
 export const defaultAuth = {
   uid: null,
@@ -11,10 +11,12 @@ export interface IAuth {
 }
 
 export type Action = {
-  type: 'SIGNUP' | 'SIGNIN' | 'SIGNOUT';
+  type: 'SIGNIN' | 'SIGNOUT';
   payload?: any;
 };
 
 export interface AuthContextType extends IAuth {
   dispatch: Dispatch<Action>;
 }
+
+export type AuthProviderProps = { children: ReactNode };

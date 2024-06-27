@@ -1,11 +1,16 @@
 import { createContext, useReducer, useEffect } from 'react';
 
-import { Action, AuthContextType, defaultAuth, IAuth } from './helpers';
+import {
+  Action,
+  AuthContextType,
+  AuthProviderProps,
+  defaultAuth,
+  IAuth
+} from './helpers';
 import Api from '../../Api';
 
 function authReducer(state: IAuth, action: Action): IAuth {
   switch (action.type) {
-    case 'SIGNUP':
     case 'SIGNIN':
       localStorage.setItem('AUTH', action?.payload?.token);
       return { uid: action?.payload?.uid, isAuthenticated: true };
@@ -19,10 +24,10 @@ function authReducer(state: IAuth, action: Action): IAuth {
 
 export const AuthContext = createContext<AuthContextType>({
   ...defaultAuth,
-  dispatch: () => ({ uid: null, isAuthenticated: null })
+  dispatch: () => defaultAuth
 });
 
-export function AuthProvider({ children }: any) {
+export function AuthProvider({ children }: AuthProviderProps) {
   const [state, dispatch] = useReducer(authReducer, defaultAuth);
 
   useEffect(() => {
