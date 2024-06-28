@@ -1,67 +1,68 @@
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { CardModel } from '../Components/Common/Card/helpers';
+import { Favorites } from '../Types/Favorites';
+
 const useFavorite: UseFavoriteHook = ({
-  favoriteFn,
   uid,
-  defaultCount,
-  defaultIsFav
+  model,
+  isFavorite,
+  favoriteFn,
+  updateFavs,
+  defaultCount
 }) => {
   const [favCount, setFavCount] = useState(defaultCount);
   const [loadingFav, setLoadingFav] = useState(false);
-  const [isFav, setIsFav] = useState(defaultIsFav);
 
   const onFavorite = useCallback(async () => {
     try {
-      if (!favoriteFn) return;
+      if (!favoriteFn || !updateFavs) return;
       setLoadingFav(true);
 
-      await favoriteFn(uid);
+      const { favorites } = await favoriteFn(uid);
+      updateFavs(favorites?.[model] || []);
 
-      if (isFav) {
+      if (isFavorite) {
         setFavCount(prev => prev - 1);
-        setIsFav(false);
         return;
       }
 
       setFavCount(prev => prev + 1);
-      setIsFav(true);
     } catch (err) {
       toast.error('Failed to favorite.');
     } finally {
       setLoadingFav(false);
     }
-  }, [favoriteFn, uid, isFav]);
+  }, [favoriteFn, updateFavs, uid, isFavorite, model]);
 
   return {
     loadingFav,
     onFavorite,
-    favCount,
-    isFav
+    favCount
   };
 };
 
 export default useFavorite;
 
-export type favoriteFn = (uid: string) => Promise<void>;
+export type FavoriteFn = (uid: string) => Promise<{ favorites: Favorites }>;
+export type UpdateFavsFn = (newFavs: string[]) => void;
 
 export type UseFavoriteHookProps = {
-  favoriteFn?: favoriteFn;
   uid: string;
+  model: CardModel;
+  isFavorite: boolean;
   defaultCount: number;
-  defaultIsFav: boolean;
+  favoriteFn?: FavoriteFn;
+  updateFavs?: UpdateFavsFn;
 };
 
 type UseFavoriteHookReturnProps = {
   onFavorite: () => Promise<void>;
   loadingFav: boolean;
   favCount: number;
-  isFav: boolean;
 };
 
-type UseFavoriteHook = ({
-  uid,
-  favoriteFn,
-  defaultCount,
-  defaultIsFav
-}: UseFavoriteHookProps) => UseFavoriteHookReturnProps;
+type UseFavoriteHook = (
+  props: UseFavoriteHookProps
+) => UseFavoriteHookReturnProps;

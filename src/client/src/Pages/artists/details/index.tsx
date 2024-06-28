@@ -93,7 +93,6 @@ export default function ArtistDetails() {
           <div>
             <h2>Albums</h2>
             <List
-              center={false}
               fetchFn={() =>
                 Api.albums.fetch({
                   config: { params: { 'artist.uid': artist.uid } }
@@ -106,7 +105,6 @@ export default function ArtistDetails() {
           <div>
             <h2>Songs</h2>
             <List
-              center={false}
               fetchFn={() =>
                 Api.songs.fetch({
                   config: { params: { 'artist.uid': artist.uid } }

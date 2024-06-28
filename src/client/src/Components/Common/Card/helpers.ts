@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { favoriteFn } from '../../../Hooks/useFavorite';
+import { FavoriteFn, UpdateFavsFn } from '../../../Hooks/useFavorite';
 import { ModelKeys } from '../../../Api/helpers';
 
 import ArtistCard from './Artist';
@@ -10,9 +10,10 @@ import SongCard from './Song';
 export type CardProps<T> = {
   data: T;
   loading?: boolean;
-  favoriteFn?: favoriteFn;
   canFavorite?: boolean;
   isFavorite?: boolean;
+  favoriteFn?: FavoriteFn;
+  updateFavs?: UpdateFavsFn;
 };
 
 export type CardModel = Exclude<ModelKeys, 'users'>;

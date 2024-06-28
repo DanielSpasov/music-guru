@@ -1,8 +1,8 @@
 import { FC, memo } from 'react';
 import moment from 'moment';
 
+import FavoritesCounter from '../components/FavoritesConuter';
 import { ListAlbum } from '../../../../Types/Album';
-import FavoritesCounter from '../FavoritesConuter';
 import { defaultProps } from './helpers';
 import { CardProps } from '../helpers';
 import { Link } from '../../../';
@@ -10,6 +10,7 @@ import { Link } from '../../../';
 const AlbumCard: FC<CardProps<ListAlbum>> = ({
   data,
   favoriteFn,
+  updateFavs,
   canFavorite,
   loading = false,
   isFavorite = false
@@ -57,9 +58,10 @@ const AlbumCard: FC<CardProps<ListAlbum>> = ({
           <FavoritesCounter
             model="albums"
             defaultCount={data.favorites}
-            defaultIsFav={isFavorite}
             canFavorite={canFavorite}
+            isFavorite={isFavorite}
             favoriteFn={favoriteFn}
+            updateFavs={updateFavs}
             uid={data.uid}
           />
         </div>

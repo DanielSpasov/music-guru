@@ -32,7 +32,6 @@ export default function Artists() {
         fetchFn={config => Api.artists.fetch({ config })}
         favoriteFn={uid => Api.artists.favorite({ uid })}
         model="artists"
-        center={false}
       />
     </PageLayout>
   );

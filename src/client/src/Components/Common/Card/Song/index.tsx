@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 
-import FavoritesCounter from '../FavoritesConuter';
+import FavoritesCounter from '../components/FavoritesConuter';
 import { ListSong } from '../../../../Types/Song';
 import { defaultProps } from './helpers';
 import { CardProps } from '../helpers';
@@ -9,6 +9,7 @@ import { Link } from '../..';
 const SongCard: FC<CardProps<ListSong>> = ({
   data,
   favoriteFn,
+  updateFavs,
   canFavorite,
   loading = false,
   isFavorite = false
@@ -49,9 +50,10 @@ const SongCard: FC<CardProps<ListSong>> = ({
           <FavoritesCounter
             model="songs"
             defaultCount={data.favorites}
-            defaultIsFav={isFavorite}
             canFavorite={canFavorite}
+            isFavorite={isFavorite}
             favoriteFn={favoriteFn}
+            updateFavs={updateFavs}
             uid={data.uid}
           />
         </div>

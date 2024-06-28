@@ -1,12 +1,13 @@
-import { Dispatch, SetStateAction } from 'react';
-
 import { Config, ModelKeys } from '../../../Api/helpers';
-import { favoriteFn } from '../../../Hooks/useFavorite';
-import { ListArtist } from '../../../Types/Artist';
-import { ListAlbum } from '../../../Types/Album';
-import { ListSong } from '../../../Types/Song';
+import { FavoriteFn } from '../../../Hooks/useFavorite';
+import { CardModel } from '../Card/helpers';
 
-export type Model = ListSong | ListArtist | ListAlbum;
+export type BaseModel = { uid: string };
+
+export type ListState<T> = {
+  items: T[];
+  favs: string[];
+};
 
 export type Filter = {
   key: string;
@@ -14,20 +15,12 @@ export type Filter = {
   placeholder?: string;
 };
 
-export type ListProps = {
-  fetchFn: (config?: Config) => Promise<{ data: Model[] }>;
-  favoriteFn?: favoriteFn;
-  model: Exclude<ModelKeys, 'users'>;
+export type ListProps<T> = {
+  fetchFn: (config?: Config) => Promise<{ data: T[] }>;
+  favoriteFn?: FavoriteFn;
+  model: CardModel;
   filtersConfig?: Filter[];
   skeletonLength?: number;
-  center?: boolean;
-  emptyMessage?: string;
-};
-
-export type FiltersProps = {
-  config: Filter[];
-  setFilters: Dispatch<SetStateAction<Record<string, any>>>;
-  onSubmit: (...props: any) => void;
 };
 
 export type SkeletonProps = {

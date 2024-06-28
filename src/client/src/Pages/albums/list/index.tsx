@@ -42,7 +42,6 @@ export default function Albums() {
         fetchFn={config => Api.albums.fetch({ config })}
         favoriteFn={uid => Api.albums.favorite({ uid })}
         model="albums"
-        center={false}
       />
     </PageLayout>
   );

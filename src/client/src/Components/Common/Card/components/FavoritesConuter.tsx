@@ -1,8 +1,10 @@
 import { FC } from 'react';
 
-import useFavorite, { UseFavoriteHookProps } from '../../../Hooks/useFavorite';
-import { IHeart, IHeartOutline, ISpinner } from '../../Icons';
-import { CardModel, favoriteIconProps } from './helpers';
+import { IHeart, IHeartOutline, ISpinner } from '../../../Icons';
+import { CardModel, favoriteIconProps } from '../helpers';
+import useFavorite, {
+  UseFavoriteHookProps
+} from '../../../../Hooks/useFavorite';
 
 export type FavoritesCounterProps = {
   model: CardModel;
@@ -12,9 +14,14 @@ export type FavoritesCounterProps = {
 const FavoritesCounter: FC<FavoritesCounterProps> = ({
   model,
   canFavorite = false,
+  isFavorite,
   ...hookProps
 }) => {
-  const { isFav, favCount, loadingFav, onFavorite } = useFavorite(hookProps);
+  const { favCount, loadingFav, onFavorite } = useFavorite({
+    ...hookProps,
+    isFavorite,
+    model
+  });
 
   return (
     <div
@@ -33,7 +40,7 @@ const FavoritesCounter: FC<FavoritesCounterProps> = ({
           className={`${favoriteIconProps} animate-spin`}
           data-testid={`${model}-card-spinner-svg`}
         />
-      ) : isFav ? (
+      ) : isFavorite ? (
         <IHeart
           data-testid={`${model}-card-heart-svg`}
           className={favoriteIconProps}

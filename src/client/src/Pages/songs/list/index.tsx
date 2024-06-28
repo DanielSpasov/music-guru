@@ -30,7 +30,6 @@ export default function Songs() {
     >
       <List
         model="songs"
-        center={false}
         fetchFn={config => Api.songs.fetch({ config })}
         favoriteFn={uid => Api.songs.favorite({ uid })}
         skeletonLength={54}
