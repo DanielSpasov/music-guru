@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import { lightImgProps, darkImgProps, hoverProps } from './helpers';
 import Image from '.';
@@ -45,23 +45,27 @@ describe('Image', () => {
       expect(imageElement.parentElement).toHaveClass(`w-${size} h-${size}`);
     });
 
-    test('calls updateFn when a file is uploaded', () => {
+    test('calls updateFn when a file is uploaded', async () => {
       const src = 'https://example.com/image.jpg';
       const file = new File(['image.jpg'], 'image.jpg', { type: 'image/jpeg' });
       const updateFn = vi.fn();
       render(<Image src={src} editable updateFn={updateFn} />);
       const inputField = screen.getByTestId('image-input');
-      fireEvent.change(inputField, { target: { files: [file] } });
+      await act(async () =>
+        fireEvent.change(inputField, { target: { files: [file] } })
+      );
       expect(updateFn).toBeCalled();
     });
 
-    test('does not call updateFn when editable is false', () => {
+    test('does not call updateFn when editable is false', async () => {
       const src = 'https://example.com/image.jpg';
       const file = new File(['image.jpg'], 'image.jpg', { type: 'image/jpeg' });
       const updateFn = vi.fn();
       render(<Image src={src} updateFn={updateFn} />);
       const inputField = screen.getByTestId('image-input');
-      fireEvent.change(inputField, { target: { files: [file] } });
+      await act(async () =>
+        fireEvent.change(inputField, { target: { files: [file] } })
+      );
       expect(updateFn).not.toBeCalled();
     });
   });

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 
 import {
   darkProps,
@@ -43,19 +43,19 @@ describe('SVG component', () => {
       expect(svgElement).toHaveAttribute('viewBox', viewBox);
     });
 
-    test('calls onClick function when SVG element is clicked', () => {
+    test('calls onClick function when SVG element is clicked', async () => {
       const onClick = vi.fn();
       render(<SVG onClick={onClick} />);
       const svgElement = screen.getByTestId('svg-icon');
-      fireEvent.click(svgElement);
+      await act(async () => fireEvent.click(svgElement));
       expect(onClick).toBeCalled();
     });
 
-    test("doesn't call onClick function when SVG element is disabled and clicked", () => {
+    test("doesn't call onClick function when SVG element is disabled and clicked", async () => {
       const onClick = vi.fn();
       render(<SVG onClick={onClick} disabled />);
       const svgElement = screen.getByTestId('svg-icon');
-      fireEvent.click(svgElement);
+      await act(async () => fireEvent.click(svgElement));
       expect(onClick).not.toBeCalled();
     });
   });
