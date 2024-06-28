@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { memo, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { BaseModel, ListProps, ListState } from './helpers';
@@ -116,4 +116,4 @@ const List = <T extends BaseModel>({
   );
 };
 
-export default List;
+export default memo(List);
