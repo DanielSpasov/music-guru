@@ -34,15 +34,14 @@ describe('Image', () => {
       const className = 'bg-neutral-50';
       render(<Image src={src} className={className} />);
       const imageElement = screen.getByTestId('image');
-      expect(imageElement).toHaveClass(className);
+      expect(imageElement.parentElement).toHaveClass(className);
     });
 
-    test('renders Image with custom size attribute', () => {
+    test('renders Image with custom shape attribute', () => {
       const src = 'https://example.com/image.jpg';
-      const size = 24;
-      render(<Image src={src} size={size} />);
+      render(<Image src={src} shape="circle" />);
       const imageElement = screen.getByTestId('image');
-      expect(imageElement.parentElement).toHaveClass(`w-${size} h-${size}`);
+      expect(imageElement).toHaveClass(`rounded-full`);
     });
 
     test('calls updateFn when a file is uploaded', async () => {
