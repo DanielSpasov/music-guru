@@ -2,17 +2,18 @@ import { ChangeEvent, FC, useCallback, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ZodError } from 'zod';
 
+import { ImageProps, hoverProps, imgProps, shapes } from './helpers';
 import { FileSchema } from '../../../Validations';
-import { ImageProps, hoverProps, imgProps } from './helpers';
 import { IPen, ISpinner } from '../..';
 
 const Image: FC<ImageProps> = ({
   src,
   alt = 'image',
+  shape = 'square',
   editable = false,
-  className = '',
-  size = 64,
-  updateFn
+  className,
+  updateFn,
+  ...props
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -45,16 +46,17 @@ const Image: FC<ImageProps> = ({
   );
 
   return (
-    <div className={`relative flex flex-shrink-0 w-${size} h-${size}`}>
+    <div className={`relative flex flex-shrink-0 ${className}`}>
       <img
         src={src}
         alt={alt}
         onClick={onImageClick}
-        className={`w-full ${loading ? 'opacity-60' : ''} ${
-          editable ? hoverProps : ''
-        } ${imgProps} ${className}`}
+        className={`${loading && 'opacity-60'} ${editable && hoverProps} ${
+          shapes[shape]
+        } ${imgProps}`}
         loading="lazy"
         data-testid="image"
+        {...props}
       />
 
       {loading ? (
@@ -67,8 +69,8 @@ const Image: FC<ImageProps> = ({
         type="file"
         className="hidden"
         accept="image/jpeg, image/png"
-        ref={inputRef}
         data-testid="image-input"
+        ref={inputRef}
         onChange={onImageUpload}
       />
     </div>

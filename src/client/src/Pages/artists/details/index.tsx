@@ -81,6 +81,8 @@ export default function ArtistDetails() {
               alt={artist.name}
               editable={artist.created_by === uid}
               updateFn={updateImage}
+              shape="circle"
+              className="w-64 h-64"
             />
             <h2 className="py-2">{artist.name}</h2>
           </div>

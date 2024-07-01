@@ -112,8 +112,7 @@ export default function AlbumDetails() {
           alt={album.name}
           editable={album.created_by === uid}
           updateFn={updateImage}
-          size={64}
-          className="rounded-lg"
+          className="w-64 h-64"
         />
 
         <div className="flex justify-between w-full">
