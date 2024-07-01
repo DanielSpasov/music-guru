@@ -13,7 +13,7 @@ export default function Router() {
   if (isAuthenticated === null) {
     return (
       <div className="h-screen">
-        <Loader type="vinyl" />
+        <Loader type="vinyl" size="lg" />
       </div>
     );
   }
@@ -22,7 +22,7 @@ export default function Router() {
     <Suspense
       fallback={
         <div className="h-screen">
-          <Loader type="vinyl" />
+          <Loader type="vinyl" size="lg" />
         </div>
       }
     >

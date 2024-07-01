@@ -48,7 +48,7 @@ export default function Form({
         {loading && (
           <div className="absolute w-full h-full z-10">
             <div className="absolute w-full h-full bg-neutral-400 dark:bg-neutral-950 opacity-75 rounded-md" />
-            <Loader size="sm" />
+            <Loader type="vinyl" />
           </div>
         )}
 

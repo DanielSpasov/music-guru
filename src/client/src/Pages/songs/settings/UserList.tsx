@@ -62,7 +62,7 @@ export default function UserList({
                 </div>
               ))
             ) : (
-              <Loader size="sm" />
+              <Loader type="vinyl" />
             )}
           </section>
         </>

@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 
 import { ImageProps, hoverProps, imgProps, shapes } from './helpers';
 import { FileSchema } from '../../../Validations';
-import { IPen, ISpinner } from '../..';
+import { IPen, Loader } from '../../';
 
 const Image: FC<ImageProps> = ({
   src,
@@ -60,7 +60,7 @@ const Image: FC<ImageProps> = ({
       />
 
       {loading ? (
-        <ISpinner className="absolute animate-spin opacity-100 pointer-events-none top-[calc(50%-1.2em)] left-[calc(50%-1.2em)] w-[2.4em] h-[2.4em]" />
+        <Loader className="absolute animate-spin opacity-100 pointer-events-none top-[calc(50%-1.2em)] left-[calc(50%-1.2em)] w-[2.4em] h-[2.4em]" />
       ) : (
         <IPen className="absolute opacity-0 pointer-events-none top-[calc(50%-1.2em)] left-[calc(50%-1.2em)] w-[2.4em] h-[2.4em]" />
       )}

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { IHeart, IHeartOutline, ISpinner } from '../../../Icons';
+import { IHeart, IHeartOutline, Loader } from '../../../';
 import { CardModel, favoriteIconProps } from '../helpers';
 import useFavorite, {
   UseFavoriteHookProps
@@ -36,8 +36,8 @@ const FavoritesCounter: FC<FavoritesCounterProps> = ({
       </span>
 
       {loadingFav ? (
-        <ISpinner
-          className={`${favoriteIconProps} animate-spin`}
+        <Loader
+          className={`${favoriteIconProps}`}
           data-testid={`${model}-card-spinner-svg`}
         />
       ) : isFavorite ? (

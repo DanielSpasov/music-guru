@@ -44,7 +44,7 @@ const Dropdown: FC<DropdownProps> = ({
       {!hideSearch && <Search setSearch={setSearch} searchRef={searchRef} />}
 
       {loading ? (
-        <Loader size="sm" />
+        <Loader type="vinyl" />
       ) : results.length ? (
         results.map(option => {
           const isSelected = Boolean(selected.find(x => x.uid === option.uid));

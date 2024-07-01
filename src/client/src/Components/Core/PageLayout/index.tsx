@@ -53,7 +53,7 @@ export default function PageLayout({
 
         {loading ? (
           <div className="pt-4">
-            <Loader size="sm" />
+            <Loader type="vinyl" />
           </div>
         ) : (
           <article className="px-[10%] min-h-[calc(100vh-80px-72px)] pt-4 bg-neutral-100 dark:bg-neutral-800">

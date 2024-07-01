@@ -40,7 +40,7 @@ export default function SignUp() {
       <header className="h-screen flex flex-col items-center justify-center">
         <h2>{loading ? 'Verifying Email' : 'Redirecting'}...</h2>
         <div className="p-12">
-          <Loader />
+          <Loader type="player" />
         </div>
       </header>
     </PageLayout>

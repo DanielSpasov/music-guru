@@ -41,7 +41,7 @@ export default function Lyrics({ song, verses, isEditor }: LyricsProps) {
 
         {song.verses.length < verses.loading ? (
           <div className="mt-4 p-4 bg-neutral-300 dark:bg-neutral-950 rounded-md">
-            <Loader size="sm" />
+            <Loader type="vinyl" />
           </div>
         ) : null}
 
