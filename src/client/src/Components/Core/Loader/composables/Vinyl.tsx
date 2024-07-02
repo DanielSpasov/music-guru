@@ -13,7 +13,7 @@ const Vinyl: FC<VinylProps> = ({
   return (
     <div
       data-testid="loader-vinyl"
-      className={`relative bg-neutral-700 dark:bg-neutral-900 rounded-full ${
+      className={`relative m-auto bg-neutral-700 dark:bg-neutral-900 rounded-full ${
         vinyl[size].record
       } ${onPlayer && onPlayerProps}`}
     >

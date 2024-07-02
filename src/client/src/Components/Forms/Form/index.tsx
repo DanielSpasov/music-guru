@@ -46,7 +46,7 @@ export default function Form({
         {...props}
       >
         {loading && (
-          <div className="absolute w-full h-full z-10">
+          <div className="absolute flex align-center w-full h-full z-10">
             <div className="absolute w-full h-full bg-neutral-400 dark:bg-neutral-950 opacity-75 rounded-md" />
             <Loader type="vinyl" />
           </div>

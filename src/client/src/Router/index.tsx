@@ -12,7 +12,7 @@ export default function Router() {
 
   if (isAuthenticated === null) {
     return (
-      <div className="h-screen">
+      <div className="h-screen flex align-center">
         <Loader type="vinyl" size="lg" />
       </div>
     );
@@ -21,7 +21,7 @@ export default function Router() {
   return (
     <Suspense
       fallback={
-        <div className="h-screen">
+        <div className="h-screen flex align-center">
           <Loader type="vinyl" size="lg" />
         </div>
       }
