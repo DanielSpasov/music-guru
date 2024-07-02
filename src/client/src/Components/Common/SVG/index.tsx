@@ -31,6 +31,7 @@ const SVG: FC<SVGProps> = ({
       viewBox={viewBox}
       onClick={!disabled && onClick ? onClick : () => null}
       className={`${defaultProps} ${className}`}
+      {...svgProps}
     >
       {children}
     </svg>
