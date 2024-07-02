@@ -1,6 +1,6 @@
 import { Size } from './types';
 
-export const onPlayerProps = 'top-4 left-6';
+export const onPlayerProps = 'top-4 -left-16';
 
 export const stripeProps = `
 border-l-neutral-800 dark:border-l-neutral-900
