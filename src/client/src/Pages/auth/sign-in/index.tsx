@@ -15,11 +15,11 @@ export default function SignIn() {
   const onSubmit = useCallback(
     async (formData: any) => {
       try {
-        const { uid, token } = await Api.users.signIn({
+        const { uid, token, data } = await Api.users.signIn({
           email: formData?.email,
           password: formData?.password
         });
-        dispatch({ type: 'SIGNIN', payload: { uid, token } });
+        dispatch({ type: 'SIGNIN', payload: { uid, token, data } });
         toast.success('Successfully signed in');
         navigate('/');
       } catch (error) {

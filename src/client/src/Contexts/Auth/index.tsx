@@ -13,10 +13,14 @@ function authReducer(state: IAuth, action: Action): IAuth {
   switch (action.type) {
     case 'SIGNIN':
       localStorage.setItem('AUTH', action?.payload?.token);
-      return { uid: action?.payload?.uid, isAuthenticated: true };
+      return {
+        uid: action?.payload?.uid,
+        data: action?.payload?.data,
+        isAuthenticated: true
+      };
     case 'SIGNOUT':
       localStorage.removeItem('AUTH');
-      return { uid: null, isAuthenticated: false };
+      return { uid: null, isAuthenticated: false, data: null };
     default:
       return state;
   }
@@ -35,7 +39,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       try {
         const token = localStorage.getItem('AUTH') || '';
         const { uid } = await Api.users.validateToken(token);
-        dispatch({ type: 'SIGNIN', payload: { uid, token } });
+        const { data } = await Api.users.get({ id: uid });
+        dispatch({ type: 'SIGNIN', payload: { uid, token, data } });
       } catch (error) {
         dispatch({ type: 'SIGNOUT' });
       }

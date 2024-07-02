@@ -53,7 +53,18 @@ export async function SignUp(req: Request, res: Response) {
 
     await sendVerificationEmail(data);
 
-    res.status(200).json({ token: authToken, uid });
+    res.status(200).json({
+      token: authToken,
+      uid,
+      data: {
+        username: data.username,
+        email: data.email,
+        verified: data.verified,
+        created_at: data.created_at,
+        favorites: data.favorites,
+        uid: data.uid
+      }
+    });
   } catch (error) {
     errorHandler(req, res, error);
   } finally {

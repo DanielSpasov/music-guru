@@ -15,13 +15,13 @@ export default function SignUp() {
   const onSubmit = useCallback(
     async (formData: any) => {
       try {
-        const { uid, token } = await Api.users.signUp({
+        const { uid, token, data } = await Api.users.signUp({
           email: formData?.email,
           password: formData?.password,
           repeat_password: formData?.repeat_password,
           username: formData?.username
         });
-        dispatch({ type: 'SIGNIN', payload: { uid, token } });
+        dispatch({ type: 'SIGNIN', payload: { uid, token, data } });
         toast.success('Account created successfully');
         navigate('/');
       } catch (error) {
