@@ -1,14 +1,10 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import { ISpinner } from '../../../Icons';
 import { SpinnerProps } from '../types';
 import { spinner } from '../styles';
 
-export const Spinner: FC<SpinnerProps> = ({
-  size = 'sm',
-  className,
-  ...props
-}) => {
+const Spinner: FC<SpinnerProps> = ({ size = 'sm', className, ...props }) => {
   return (
     <ISpinner
       data-testid="loader-spinner"
@@ -17,3 +13,5 @@ export const Spinner: FC<SpinnerProps> = ({
     />
   );
 };
+
+export default memo(Spinner);

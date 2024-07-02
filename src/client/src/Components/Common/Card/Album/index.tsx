@@ -1,11 +1,13 @@
 import { FC, memo } from 'react';
 import moment from 'moment';
 
-import FavoritesCounter from '../components/FavoritesConuter';
 import { ListAlbum } from '../../../../Types/Album';
 import { defaultProps } from './helpers';
 import { CardProps } from '../helpers';
 import { Link } from '../../../';
+
+// Composables
+import FavoritesCounter from '../composables/FavoritesConuter';
 
 const AlbumCard: FC<CardProps<ListAlbum>> = ({
   data,

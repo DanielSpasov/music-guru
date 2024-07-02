@@ -1,10 +1,12 @@
 import { FC, memo } from 'react';
 
-import FavoritesCounter from '../components/FavoritesConuter';
 import { ListSong } from '../../../../Types/Song';
 import { defaultProps } from './helpers';
 import { CardProps } from '../helpers';
 import { Link } from '../..';
+
+// Composables
+import FavoritesCounter from '../composables/FavoritesConuter';
 
 const SongCard: FC<CardProps<ListSong>> = ({
   data,

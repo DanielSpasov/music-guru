@@ -1,12 +1,9 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import { PlayerProps } from '../types';
-import { Vinyl } from './Vinyl';
+import Vinyl from './Vinyl';
 
-export const Player: FC<PlayerProps> = ({
-  color = 'bg-primary',
-  vinylColor
-}) => {
+const Player: FC<PlayerProps> = ({ color = 'bg-primary', vinylColor }) => {
   return (
     <div
       className={`relative w-96 h-64 rounded-md ${color}`}
@@ -41,3 +38,5 @@ export const Player: FC<PlayerProps> = ({
     </div>
   );
 };
+
+export default memo(Player);

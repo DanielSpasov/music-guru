@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import { vinyl, getColor, onPlayerProps, stripeProps } from '../styles';
 import { VinylProps } from '../types';
 
-export const Vinyl: FC<VinylProps> = ({
+const Vinyl: FC<VinylProps> = ({
   onPlayer = false,
   color = 'random',
   size = 'sm'
@@ -38,3 +38,5 @@ export const Vinyl: FC<VinylProps> = ({
     </div>
   );
 };
+
+export default memo(Vinyl);

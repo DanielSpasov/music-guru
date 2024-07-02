@@ -1,7 +1,11 @@
 import { FC, memo } from 'react';
 
 import { LoaderProps, PlayerProps, VinylProps, SpinnerProps } from './types';
-import { Player, Vinyl, Spinner } from './components';
+
+// Comoposables
+import Spinner from './composables/Spinner';
+import Player from './composables/Player';
+import Vinyl from './composables/Vinyl';
 
 export const Loader: FC<LoaderProps> = ({ type = 'spinner', ...props }) => {
   switch (type) {

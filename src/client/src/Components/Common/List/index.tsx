@@ -4,9 +4,11 @@ import { toast } from 'react-toastify';
 import { BaseModel, ListProps, ListState } from './helpers';
 import { AuthContext } from '../../../Contexts';
 import { Config } from '../../../Api/helpers';
-import Filters from './components/Filters';
 import Api from '../../../Api';
 import { Card } from '../../';
+
+// Composables
+import Filters from './composables/Filters';
 
 const List = <T extends BaseModel>({
   model,
