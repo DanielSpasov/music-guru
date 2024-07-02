@@ -36,3 +36,5 @@ export { ISoundcloud } from './ISoundcloud';
 export { ISettings } from './ISettings';
 export { IAddUser } from './IAddUser';
 export { IDelUser } from './IDelUser';
+export { ISignOut } from './ISignOut';
+export { ISignIn } from './ISignIn';
