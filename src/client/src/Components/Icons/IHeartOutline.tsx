@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { SVGProps } from '../Common/SVG/helpers';
-import { SVG } from '../';
+import SVG from '../Common/SVG';
 
 export const IHeartOutline: FC<SVGProps> = props => {
   return (
