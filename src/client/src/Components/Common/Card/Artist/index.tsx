@@ -32,6 +32,7 @@ const ArtistCard: FC<CardProps<ListArtist>> = ({
 
       <section className="flex justify-between items-center mt-1">
         <Link
+          type="link"
           to={`/artists/${data.uid}`}
           data-testid="artist-card-name"
           className="w-32 whitespace-nowrap overflow-hidden text-ellipsis"

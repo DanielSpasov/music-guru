@@ -41,7 +41,7 @@ export default function SignUp() {
         additionalContent={
           <div className="text-center p-4">
             <span>Or</span>
-            <Link to="/sign-in" className="underline p-1">
+            <Link type="link" to="/sign-in" className="underline p-1">
               sign in
             </Link>
             <span>if you already have an account.</span>

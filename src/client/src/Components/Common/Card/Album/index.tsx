@@ -33,6 +33,7 @@ const AlbumCard: FC<CardProps<ListAlbum>> = ({
 
       <section className="flex flex-col pt-1">
         <Link
+          type="link"
           to={`/albums/${data.uid}`}
           data-testid="album-card-link"
           className="text-base w-40 whitespace-nowrap overflow-hidden text-ellipsis"

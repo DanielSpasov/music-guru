@@ -22,7 +22,9 @@ function Component({ type, value, linkType }: ItemComponentProps) {
   switch (type) {
     case 'link':
       return value ? (
-        <Link to={`/${linkType}/${value?.uid}`}>{value?.name}</Link>
+        <Link type="link" to={`/${linkType}/${value?.uid}`}>
+          {value?.name}
+        </Link>
       ) : (
         <span className="text-lg text-neutral-400">None</span>
       );
@@ -32,7 +34,9 @@ function Component({ type, value, linkType }: ItemComponentProps) {
         <span className="text-lg">
           {value.map((obj: any, i: number) => (
             <Fragment key={obj.uid}>
-              <Link to={`/${linkType}/${obj.uid}`}>{obj.name}</Link>
+              <Link type="link" to={`/${linkType}/${obj.uid}`}>
+                {obj.name}
+              </Link>
               {value.length > i + 1 ? ', ' : ''}
             </Fragment>
           ))}

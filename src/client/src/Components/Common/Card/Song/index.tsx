@@ -32,6 +32,7 @@ const SongCard: FC<CardProps<ListSong>> = ({
 
       <div className="flex flex-col justify-between w-full">
         <Link
+          type="link"
           to={`/songs/${data.uid}`}
           data-testid="song-card-name"
           className="w-32 whitespace-nowrap overflow-hidden text-ellipsis"
@@ -39,6 +40,7 @@ const SongCard: FC<CardProps<ListSong>> = ({
           {data.name}
         </Link>
         <Link
+          type="link"
           to={`/artists/${data.artist.uid}`}
           data-testid="song-card-artist"
           className="w-28 text-sm text-neutral-500 whitespace-nowrap overflow-hidden text-ellipsis"

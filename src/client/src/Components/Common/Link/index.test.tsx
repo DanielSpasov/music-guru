@@ -1,209 +1,162 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { FC } from 'react';
 
-import {
-  darkActiveProps,
-  darkHoverProps,
-  lightActiveProps,
-  lightHoverProps
-} from './helpers';
-import CustomLink from '.';
+import { SVGProps } from '../SVG/helpers';
+import { styles } from './styles';
+import Link from '.';
+
+const MockedIcon: FC<SVGProps> = props => <div {...props}>test</div>;
 
 describe('Link', () => {
-  describe('Rendering', () => {
-    test('renders link without crashing', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route">Test Label</CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('link');
-      expect(linkElement).toBeInTheDocument();
-    });
+  test('renders link without crashing', () => {
+    render(
+      <MemoryRouter>
+        <Link type="link" to="/test-route">
+          Test Label
+        </Link>
+      </MemoryRouter>
+    );
+
+    const linkEl = screen.getByTestId('link');
+
+    expect(linkEl).toBeInTheDocument();
+    expect(linkEl.textContent).toEqual('Test Label');
+    expect(linkEl).toHaveAttribute('href', '/test-route');
   });
 
-  describe('Component props', () => {
-    test('redirects to correct route', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route">Test Label</CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('link');
-      expect(linkElement).toHaveAttribute('href', '/test-route');
-    });
+  test('renders link with additional props', () => {
+    render(
+      <MemoryRouter>
+        <Link
+          type="link"
+          to="/test-route"
+          className="bg-neutral-50"
+          data-testid="custom-link-data-testid"
+        >
+          Test Label
+        </Link>
+      </MemoryRouter>
+    );
+    const linkEl = screen.getByTestId('custom-link-data-testid');
 
-    test('renders correct label', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route">Test Label</CustomLink>
-        </MemoryRouter>
-      );
-
-      const linkElement = screen.getByTestId('link');
-      expect(linkElement.textContent).toEqual('Test Label');
-    });
-
-    test('renders link with custom class', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" className="custom-class">
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('link');
-      expect(linkElement).toHaveClass('custom-class');
-    });
-  });
-
-  describe('CSS', () => {
-    test('renders dark mode hover', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route">Test Label</CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('link');
-      expect(linkElement).toHaveClass(darkHoverProps);
-    });
-
-    test('renders light mode hover', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route">Test Label</CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('link');
-      expect(linkElement).toHaveClass(lightHoverProps);
-    });
+    expect(linkEl).toBeInTheDocument();
+    expect(linkEl).toHaveClass('bg-neutral-50');
   });
 });
 
 describe('NavLink', () => {
-  describe('Rendering', () => {
-    test('renders navlink without crashing', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" type="navlink">
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('navlink');
-      expect(linkElement).toBeInTheDocument();
-    });
+  test('renders navlink without crashing', () => {
+    render(
+      <MemoryRouter>
+        <Link type="navlink" to="/test-route">
+          Test Navlink Label
+        </Link>
+      </MemoryRouter>
+    );
+
+    const linkEl = screen.getByTestId('navlink');
+
+    expect(linkEl).toBeInTheDocument();
+    expect(linkEl.textContent).toEqual('Test Navlink Label');
+    expect(linkEl).toHaveAttribute('href', '/test-route');
+    expect(linkEl).toHaveClass(styles.navlink.defaultProps);
+    expect(linkEl).not.toHaveClass(styles.navlink.activeProps);
   });
 
-  describe('Component Props', () => {
-    test('redirects to correct route', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" type="navlink">
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('navlink');
-      expect(linkElement).toHaveAttribute('href', '/test-route');
-    });
+  test('renders navlink with additional props', () => {
+    const customClass = 'fill-black';
+    render(
+      <MemoryRouter>
+        <Link
+          type="navlink"
+          to="/test-route"
+          isActive
+          data-testid="custom-navlink-data-testid"
+          className={customClass}
+        >
+          Test Navlink Label
+        </Link>
+      </MemoryRouter>
+    );
 
-    test('renders correct label', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" type="navlink">
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('navlink');
-      expect(linkElement.textContent).toEqual('Test Label');
-    });
+    const linkEl = screen.getByTestId('custom-navlink-data-testid');
 
-    test('renders navlink with custom class', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" type="navlink" className="custom-class">
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('navlink');
-      expect(linkElement).toHaveClass('custom-class');
-    });
+    expect(linkEl).toBeInTheDocument();
+    expect(linkEl).not.toHaveClass(styles.navlink.defaultProps);
+    expect(linkEl).toHaveClass(styles.navlink.activeProps);
+    expect(linkEl).toHaveClass(customClass);
+  });
+});
+
+describe('Dropdown Link', () => {
+  test('renders dropdown link without crashing', () => {
+    render(
+      <MemoryRouter>
+        <Link type="dropdown-link" to="/some-page" Icon={MockedIcon}>
+          Test Dropdown Link Label
+        </Link>
+      </MemoryRouter>
+    );
+
+    const linkEl = screen.getByTestId('dropdown-link');
+    expect(linkEl).toBeInTheDocument();
+    expect(linkEl).toHaveAttribute('href', '/some-page');
+
+    const linkLabelEl = screen.getByTestId('dropdown-link-label');
+    expect(linkLabelEl.textContent).toEqual('Test Dropdown Link Label');
+    expect(linkLabelEl).not.toHaveClass(
+      styles['dropdown-link'].activeLabelProps
+    );
+
+    const linkIconEl = screen.getByTestId('dropdown-link-icon');
+    expect(linkIconEl).toBeInTheDocument();
+    expect(linkIconEl).toHaveClass(styles['dropdown-link'].iconProps);
+    expect(linkIconEl).not.toHaveClass(styles['dropdown-link'].activeIconProps);
   });
 
-  describe('CSS', () => {
-    test('renders dark mode hover', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" type="navlink">
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('navlink');
-      expect(linkElement).toHaveClass(darkHoverProps);
-    });
+  test('renders dropdown link with additional props', () => {
+    const dataTestId = 'custom-dropdown-link-data-testid';
+    const customClassName = 'fill-green-500';
+    render(
+      <MemoryRouter>
+        <Link
+          type="dropdown-link"
+          to="/some-page"
+          isActive
+          Icon={MockedIcon}
+          data-testid={dataTestId}
+          className={customClassName}
+        >
+          Test Dropdown Link Label
+        </Link>
+      </MemoryRouter>
+    );
 
-    test('renders light mode hover', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" type="navlink">
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('navlink');
-      expect(linkElement).toHaveClass(lightHoverProps);
-    });
+    const linkEl = screen.getByTestId(dataTestId);
+    expect(linkEl).toBeInTheDocument();
+    expect(linkEl).toHaveClass(customClassName);
 
-    test('renders dark mode active class', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" type="navlink" isActive>
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('navlink');
-      expect(linkElement).toHaveClass(darkActiveProps);
-    });
+    const linkLabelEl = screen.getByTestId(`${dataTestId}-label`);
+    expect(linkLabelEl).toBeInTheDocument();
+    expect(linkLabelEl).toHaveClass(styles['dropdown-link'].activeLabelProps);
 
-    test('renders light mode active class', () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" type="navlink" isActive>
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('navlink');
-      expect(linkElement).toHaveClass(lightActiveProps);
-    });
+    const linkIconEl = screen.getByTestId(`${dataTestId}-icon`);
+    expect(linkIconEl).toBeInTheDocument();
+    expect(linkIconEl).not.toHaveClass(styles['dropdown-link'].iconProps);
+    expect(linkIconEl).toHaveClass(styles['dropdown-link'].activeIconProps);
+  });
 
-    test("doesn't render darm active class", () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" type="navlink">
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('navlink');
-      expect(linkElement).not.toHaveClass(darkActiveProps);
-    });
+  test("doesn't render dropdown link if hide is true", () => {
+    render(
+      <MemoryRouter>
+        <Link type="dropdown-link" to="/some-page" Icon={MockedIcon} hide>
+          Test Dropdown Link Label
+        </Link>
+      </MemoryRouter>
+    );
 
-    test("doesn't render light active class", () => {
-      render(
-        <MemoryRouter>
-          <CustomLink to="/test-route" type="navlink">
-            Test Label
-          </CustomLink>
-        </MemoryRouter>
-      );
-      const linkElement = screen.getByTestId('navlink');
-      expect(linkElement).not.toHaveClass(lightActiveProps);
-    });
+    const linkEl = screen.queryByTestId('dropdown-link');
+    expect(linkEl).not.toBeInTheDocument();
   });
 });
