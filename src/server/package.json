@@ -5,6 +5,9 @@
   "main": "index.ts",
   "author": "ShadyGotRabies|Daniel Spasov",
   "license": "MIT",
+  "engines": {
+    "node": "21.7.3"
+  },
   "scripts": {
     "build": "tsc -p .",
     "lint": "eslint \"**/*.{ts,tsx}\"",
