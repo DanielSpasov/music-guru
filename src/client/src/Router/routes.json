@@ -127,8 +127,8 @@
     "private": false
   },
   {
-    "path": "/me",
-    "filePath": "/auth/me",
+    "path": "/settings",
+    "filePath": "/auth/settings",
     "private": false
   },
   {

@@ -7,7 +7,7 @@ import { User } from '../../../Types/User';
 import Api from '../../../Api';
 import Option from './Option';
 
-export default function Me() {
+const Settings = () => {
   const { uid } = useContext(AuthContext);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -60,4 +60,6 @@ export default function Me() {
       )}
     </PageLayout>
   );
-}
+};
+
+export default Settings;

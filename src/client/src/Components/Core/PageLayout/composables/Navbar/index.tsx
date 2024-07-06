@@ -83,16 +83,16 @@ const Navbar = () => {
 
             <Link
               iconColor={
-                pathname === '/me'
+                pathname === '/settings'
                   ? '[&>path]:fill-primary dark:[&>path]:fill-primary-dark'
                   : '[&>path]:fill-black dark:[&>path]:fill-white'
               }
               type="dropdown-link"
               data-testid="navbar-user-menu-settings"
-              isActive={pathname === '/me'}
+              isActive={pathname === '/settings'}
               hide={!isAuthenticated}
               Icon={ISettings}
-              to="/me"
+              to="/settings"
             >
               Settings
             </Link>
