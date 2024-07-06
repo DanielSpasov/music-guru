@@ -12,7 +12,7 @@ const themeProps = `border-b-2 ${lightProps} ${darkProps}`;
 const Search: FC<SearchProps> = ({ setSearch, searchRef }) => {
   return (
     <div className="flex items-center p-0.5">
-      <IMagnifyingGlass className="w-6 h-6 [&>path]:fill-neutral-500" />
+      <IMagnifyingGlass color="[&>path]:fill-neutral-500" className="w-6 h-6" />
       <input
         ref={searchRef}
         onChange={e => setSearch(e.target.value)}

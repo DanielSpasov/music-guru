@@ -59,7 +59,10 @@ const Navbar = () => {
         >
           {data && (
             <div className="flex items-center gap-2 p-2 rounded-md">
-              <IUser className="bg-neutral-300 w-10 h-10 p-2 rounded-full [&>path]:fill-black" />
+              <IUser
+                className="w-10 h-10 p-2 rounded-full"
+                color="bg-neutral-300 [&>path]:fill-black"
+              />
               <div
                 className="flex flex-col"
                 data-testid="navbar-user-menu-username"

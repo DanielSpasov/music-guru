@@ -87,9 +87,9 @@ export default function Option({ data, user, setUser }: OptionProps) {
             )}
             {data.type === 'boolean' &&
               (user[data.field] ? (
-                <ICheck className="[&>path]:fill-green-500" />
+                <ICheck color="[&>path]:fill-green-500" />
               ) : (
-                <IX className="[&>path]:fill-red-400" />
+                <IX color="[&>path]:fill-red-400" />
               ))}
             {data.type === 'date' && (
               <span>

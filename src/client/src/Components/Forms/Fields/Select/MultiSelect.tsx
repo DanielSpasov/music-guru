@@ -51,7 +51,8 @@ const Multi: FC<SelectComponentProps<'multi'>> = ({
               {option.name}
               <IX
                 onClick={() => onOptionClick(option)}
-                className="inline w-6 h-6 [&>path]:fill-red-500 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-md"
+                color="[&>path]:fill-red-500 hover:bg-neutral-300 dark:hover:bg-neutral-600"
+                className="inline w-6 h-6 rounded-md"
               />
             </p>
           ))

@@ -34,7 +34,10 @@ export default function Me() {
       {user && (
         <>
           <div className="flex items-start m-3">
-            <IUser className="h-16 w-16 [&>path]:text-primary dark:[&>path]:text-primary-dark" />
+            <IUser
+              color="[&>path]:text-primary dark:[&>path]:text-primary-dark"
+              className="h-16 w-16"
+            />
             <Details label="Information" open>
               {infoConfig.map((data, i) => (
                 <Option data={data} key={i} setUser={setUser} user={user} />
@@ -43,7 +46,10 @@ export default function Me() {
           </div>
 
           <div className="flex items-start m-3">
-            <ILock className="h-16 w-16 [&>path]:text-primary dark:[&>path]:text-primary-dark" />
+            <ILock
+              color="[&>path]:text-primary dark:[&>path]:text-primary-dark"
+              className="h-16 w-16"
+            />
             <Details label="MFA" open>
               {getMFAConfig(user).map((data, i) => (
                 <Option data={data} key={i} setUser={setUser} user={user} />
