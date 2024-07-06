@@ -1,4 +1,4 @@
-import { Size } from './types';
+import { Size, VinylSize } from './types';
 
 export const onPlayerProps = 'top-4 -left-16';
 
@@ -17,7 +17,7 @@ type VinylPropType =
   | 'outterStripe'
   | 'innerStripe';
 
-export const vinyl: Record<Size, Record<VinylPropType, string>> = {
+export const vinyl: Record<VinylSize, Record<VinylPropType, string>> = {
   lg: {
     record: 'w-56 h-56',
     recordLabel: 'w-24 h-24 top-16 left-16',
@@ -36,7 +36,8 @@ export const vinyl: Record<Size, Record<VinylPropType, string>> = {
 
 export const spinner: Record<Size, string> = {
   lg: 'w-16 h-16',
-  sm: 'w-8 h-8'
+  sm: 'w-8 h-8',
+  xsm: 'w-4 h-4'
 };
 
 const COLORS = [

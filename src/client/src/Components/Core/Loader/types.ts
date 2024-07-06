@@ -1,6 +1,6 @@
 import { SVGProps } from '../../Common/SVG/helpers';
 
-export type Size = 'sm' | 'lg';
+export type Size = 'xsm' | 'sm' | 'lg';
 export type LoaderType = 'player' | 'vinyl' | 'spinner';
 
 export type PlayerProps = {
@@ -9,9 +9,11 @@ export type PlayerProps = {
   vinylColor?: string;
 };
 
+export type VinylSize = Extract<Size, 'sm' | 'lg'>;
+
 export type VinylProps = {
   type?: Extract<LoaderType, 'vinyl'>;
-  size?: Size;
+  size?: VinylSize;
   color?: string;
   onPlayer?: boolean;
 };

@@ -37,7 +37,8 @@ const FavoritesCounter: FC<FavoritesCounterProps> = ({
 
       {loadingFav ? (
         <Loader
-          className={`${favoriteIconProps}`}
+          size="xsm"
+          color="[&>path]:fill-red-500"
           data-testid={`${model}-card-spinner-svg`}
         />
       ) : isFavorite ? (
