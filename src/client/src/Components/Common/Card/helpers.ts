@@ -39,4 +39,4 @@ const lightLoadingProps = '[&>path]:fill-primary';
 const darkLoadingProps = 'dark:[&>path]:fill-primary-dark';
 export const loadingProps = `animate-spin ${lightLoadingProps} ${darkLoadingProps}`;
 
-export const favoriteIconProps = 'w-4 h-4 dark:[&>path]:fill-red-500';
+export const favoriteIconProps = 'w-4 h-4 [&>path]:fill-red-500';
