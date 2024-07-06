@@ -45,7 +45,7 @@ export default function CreateAlbum() {
   );
 
   return (
-    <PageLayout title="Create Album" showHeader={false}>
+    <PageLayout title="Create Album" hideHeader>
       <Form
         onSubmit={onSubmit}
         className="m-auto"

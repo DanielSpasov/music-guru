@@ -1,7 +1,7 @@
 import { memo, useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { AuthContext } from '../../../Contexts';
+import { AuthContext } from '../../../../../Contexts';
 import { themeProps } from './styles';
 import {
   IAddUser,
@@ -11,13 +11,13 @@ import {
   ISignOut,
   IUser,
   Link,
-  Popover
-} from '../../';
+  Popover,
+  Category
+} from '../../../../';
 
 // Composables
-import DropdownLink from './composables/DropdownLink';
-import DarkTheme from './composables/DarkTheme';
-import Category from './composables/Category';
+import DarkTheme from './DarkTheme';
+import Search from './Search';
 
 const Navbar = () => {
   const { isAuthenticated, data } = useContext(AuthContext);
@@ -28,32 +28,26 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed w-full h-20 z-50 flex top-0 p-2 ${themeProps}`}
+      className={`fixed w-full h-16 z-50 flex top-0 p-2 ${themeProps}`}
       data-testid="navbar"
     >
-      <div className="flex items-center flex-1">
-        <Link to="/">
+      <section className="flex items-center flex-1">
+        <Link to="/" type="link" className="flex items-center gap-2">
           <img
             src="/images/logo/blue-logo192.png"
-            className="w-16 h-16 min-w-max"
+            className="w-12 h-12 min-w-max"
             alt="Music Guru"
           />
-        </Link>
-      </div>
 
-      <div className="flex items-center justify-center flex-1">
-        <Link to="/artists" type="navlink" isActive={pathname === '/artists'}>
-          Artists
+          <h1 className="whitespace-nowrap">Music Guru</h1>
         </Link>
-        <Link to="/albums" type="navlink" isActive={pathname === '/albums'}>
-          Albums
-        </Link>
-        <Link to="/songs" type="navlink" isActive={pathname === '/songs'}>
-          Songs
-        </Link>
-      </div>
+      </section>
 
-      <div className="flex items-center justify-end flex-1">
+      <section className="flex items-center flex-1">
+        <Search models={['albums', 'artists', 'songs']} />
+      </section>
+
+      <section className="flex items-center justify-end flex-1">
         <Popover
           open={open}
           label={
@@ -84,44 +78,68 @@ const Navbar = () => {
           <Category separate={isAuthenticated}>
             <DarkTheme />
 
-            <DropdownLink
+            <Link
+              iconColor={
+                pathname === '/me'
+                  ? '[&>path]:fill-primary dark:[&>path]:fill-primary-dark'
+                  : '[&>path]:fill-black dark:[&>path]:fill-white'
+              }
+              type="dropdown-link"
               data-testid="navbar-user-menu-settings"
               isActive={pathname === '/me'}
               hide={!isAuthenticated}
               Icon={ISettings}
-              label="Settings"
               to="/me"
-            />
+            >
+              Settings
+            </Link>
           </Category>
 
           <Category separate>
-            <DropdownLink
+            <Link
+              iconColor="[&>path]:fill-black dark:[&>path]:fill-white"
               data-testid="navbar-user-menu-sign-out"
+              type="dropdown-link"
               hide={!isAuthenticated}
               isActive={false}
-              label="Sign Out"
               Icon={ISignOut}
               to="/sign-out"
-            />
-            <DropdownLink
+            >
+              Sign Out
+            </Link>
+            <Link
+              iconColor={
+                pathname === '/sign-in'
+                  ? '[&>path]:fill-primary dark:[&>path]:fill-primary-dark'
+                  : '[&>path]:fill-black dark:[&>path]:fill-white'
+              }
+              type="dropdown-link"
               data-testid="navbar-user-menu-sign-in"
               isActive={pathname === '/sign-in'}
               hide={isAuthenticated}
-              label="Sign In"
               Icon={ISignIn}
               to="/sign-in"
-            />
-            <DropdownLink
-              data-testid="navbar-user-menu-sign-up"
+            >
+              Sign In
+            </Link>
+            <Link
+              iconColor={
+                pathname === '/sign-up'
+                  ? '[&>path]:fill-primary dark:[&>path]:fill-primary-dark'
+                  : '[&>path]:fill-black dark:[&>path]:fill-white'
+              }
               isActive={pathname === '/sign-up'}
+              type="dropdown-link"
+              data-testid="navbar-user-menu-sign-up"
               hide={isAuthenticated}
-              label="Sign Up"
               Icon={IAddUser}
               to="/sign-up"
-            />
+            >
+              Sign Up
+            </Link>
           </Category>
         </Popover>
-      </div>
+      </section>
     </nav>
   );
 };

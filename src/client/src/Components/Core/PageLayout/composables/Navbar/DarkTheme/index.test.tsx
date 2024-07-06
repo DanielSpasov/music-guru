@@ -1,8 +1,8 @@
 import { screen, render, fireEvent } from '@testing-library/react';
 
-import { Theme, ThemeProvider } from '../../../../../Contexts';
-import { toggleCirlceStyles, toggleStyles } from '../styles';
-import DarkTheme from '.';
+import { Theme, ThemeProvider } from '../../../../../../Contexts';
+import { toggleCirlceStyles, toggleStyles } from './styles';
+import DarkTheme from './';
 
 const themes: Theme[] = ['dark', 'light'];
 

@@ -15,5 +15,5 @@ export default function SignOut() {
     navigate('/');
   }, [navigate, dispatch]);
 
-  return <PageLayout title=""></PageLayout>;
+  return <PageLayout title="Signing Out..."></PageLayout>;
 }

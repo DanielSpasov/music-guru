@@ -10,7 +10,7 @@ export type SVGProps = {
 } & SVGAttributes<HTMLOrSVGElement>;
 
 export const lightProps = '[&>path]:text-primary';
-export const darkProps = 'dark:[&>path]:text-neutral-50';
+export const darkProps = 'dark:[&>path]:text-white';
 
 export const lightHoverProps = '[&>path]:hover:text-secondary';
 export const darkHoverProps = 'dark:[&>path]:hover:text-primary-dark';

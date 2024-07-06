@@ -10,13 +10,16 @@ import {
 
 const SVG: FC<SVGProps> = ({
   disabled = false,
-  className,
+  className = '',
   children,
   viewBox,
   onClick,
+  color = '',
   ...svgProps
 }) => {
-  const onClickProps = `${darkProps} ${lightProps} ${onClick && hoverProps}`;
+  const onClickProps = `${darkProps} ${lightProps} ${
+    onClick ? hoverProps : ''
+  }`;
   const defaultProps = disabled ? disabledProps : onClickProps;
 
   const dataTestId = useMemo(
@@ -30,7 +33,7 @@ const SVG: FC<SVGProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       viewBox={viewBox}
       onClick={!disabled && onClick ? onClick : () => null}
-      className={`${defaultProps} ${className}`}
+      className={`${defaultProps} ${className} ${color}`}
       {...svgProps}
     >
       {children}

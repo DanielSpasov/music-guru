@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { AuthContext } from '../../../Contexts';
-import { User } from '../../../Types/User';
+import { AuthContext } from '../../../../../Contexts';
+import { User } from '../../../../../Types/User';
 import Navbar from '.';
 
 describe('Navbar', () => {

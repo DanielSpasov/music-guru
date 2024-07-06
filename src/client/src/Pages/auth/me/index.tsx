@@ -26,7 +26,11 @@ export default function Me() {
   }, [uid]);
 
   return (
-    <PageLayout title={user?.username || ''} loading={loading}>
+    <PageLayout
+      title={user?.username || ''}
+      heading={user?.username}
+      loading={loading}
+    >
       {user && (
         <>
           <div className="flex items-start m-3">

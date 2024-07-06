@@ -30,8 +30,10 @@ export type Tab = {
 
 export type PageLayoutProps = {
   title: string;
-  showNavbar?: boolean;
-  showHeader?: boolean;
+  heading?: string;
+  hideNavbar?: boolean;
+  hideHeader?: boolean;
+  hideSidebar?: boolean;
   children?: ReactNode;
   actions?: Action[];
   loading?: boolean;

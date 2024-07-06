@@ -79,7 +79,7 @@ export default function EditArtist() {
   }, [id]);
 
   return (
-    <PageLayout title="Edit Artist" showHeader={false} loading={loading}>
+    <PageLayout title="Edit Artist" hideHeader loading={loading}>
       <Form
         onSubmit={onSubmit}
         validationSchema={EditArtistSchema}

@@ -3,11 +3,16 @@ import { FC, memo } from 'react';
 import { PlayerProps } from '../types';
 import Vinyl from './Vinyl';
 
-const Player: FC<PlayerProps> = ({ color = 'bg-primary', vinylColor }) => {
+const Player: FC<PlayerProps> = ({
+  color = 'bg-primary',
+  vinylColor,
+  ...props
+}) => {
   return (
     <div
       className={`relative w-96 h-64 rounded-md ${color}`}
       data-testid="loader-player"
+      {...props}
     >
       {/* 2 Circle buttons on the left */}
       <div className="absolute top-3 left-3 bg-neutral-900 w-8 h-8 rounded-full" />

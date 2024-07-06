@@ -72,7 +72,7 @@ export default function EditAlbum() {
   }, [id]);
 
   return (
-    <PageLayout title="Edit Album" showHeader={false} loading={loading}>
+    <PageLayout title="Edit Album" hideHeader loading={loading}>
       <Form
         onSubmit={onSubmit}
         header="Edit Album"

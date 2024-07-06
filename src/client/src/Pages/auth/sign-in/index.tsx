@@ -30,7 +30,7 @@ export default function SignIn() {
   );
 
   return (
-    <PageLayout title="Sign In" showHeader={false}>
+    <PageLayout title="Sign In" hideHeader>
       <Form
         onSubmit={onSubmit}
         validationSchema={SignInSchema}

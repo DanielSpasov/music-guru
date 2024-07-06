@@ -32,11 +32,7 @@ export default function SignUp() {
   }, [navigate, searchParams]);
 
   return (
-    <PageLayout
-      title="Verifying Email..."
-      showHeader={false}
-      showNavbar={false}
-    >
+    <PageLayout title="Verifying Email..." hideHeader hideNavbar hideSidebar>
       <header className="h-screen flex flex-col items-center justify-center">
         <h2>{loading ? 'Verifying Email' : 'Redirecting'}...</h2>
         <div className="p-12">

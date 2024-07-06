@@ -51,7 +51,7 @@ export default function CreateArtist() {
   );
 
   return (
-    <PageLayout title="Create Artist" showHeader={false}>
+    <PageLayout title="Create Artist" hideHeader>
       <Form
         onSubmit={onSubmit}
         header="New Artist"

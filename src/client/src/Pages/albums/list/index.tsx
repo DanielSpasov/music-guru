@@ -13,6 +13,7 @@ export default function Albums() {
   return (
     <PageLayout
       title="Albums"
+      heading="Albums"
       actions={[
         {
           type: 'button',

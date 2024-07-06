@@ -32,7 +32,7 @@ export default function SignUp() {
   );
 
   return (
-    <PageLayout title="Sign Up" showHeader={false}>
+    <PageLayout title="Sign Up" hideHeader>
       <Form
         onSubmit={onSubmit}
         validationSchema={SignUpSchema}

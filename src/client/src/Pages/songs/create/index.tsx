@@ -60,7 +60,7 @@ export default function CreateSong() {
   );
 
   return (
-    <PageLayout title="Create Song" showHeader={false}>
+    <PageLayout title="Create Song" hideHeader>
       <Form
         onSubmit={onSubmit}
         validationSchema={CreateSongSchema}

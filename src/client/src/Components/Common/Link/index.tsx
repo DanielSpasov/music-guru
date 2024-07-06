@@ -39,6 +39,7 @@ const CustomLink: FC<LinkProps> = ({
       Icon,
       isActive = false,
       hide = false,
+      iconColor = '',
       ...props
     } = linkProps as DropdownLinkProps;
 
@@ -54,6 +55,7 @@ const CustomLink: FC<LinkProps> = ({
         <div className="flex items-center gap-2">
           <Icon
             data-testid={`${dataTestId}-icon`}
+            color={iconColor}
             className={`w-5 h-5 ${
               isActive ? styles[type].activeIconProps : styles[type].iconProps
             }`}

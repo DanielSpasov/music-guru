@@ -63,7 +63,7 @@ export default function EditSong() {
   const { song, loading } = useSong(id);
 
   return (
-    <PageLayout title="Edit Song" showHeader={false} loading={loading}>
+    <PageLayout title="Edit Song" hideHeader loading={loading}>
       <Form
         onSubmit={onSubmit}
         validationSchema={EditSongSchema}

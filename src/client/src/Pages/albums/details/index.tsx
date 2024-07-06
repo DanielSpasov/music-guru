@@ -88,6 +88,7 @@ export default function AlbumDetails() {
   return (
     <PageLayout
       title={album.name}
+      heading={album.name}
       loading={loading}
       actions={[
         {

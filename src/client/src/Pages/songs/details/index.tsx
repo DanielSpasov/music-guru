@@ -37,6 +37,7 @@ export default function SongDetails() {
   return (
     <PageLayout
       title={song.name}
+      heading={song.name}
       loading={loading}
       actions={[
         {

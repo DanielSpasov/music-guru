@@ -38,3 +38,6 @@ export { IAddUser } from './IAddUser';
 export { IDelUser } from './IDelUser';
 export { ISignOut } from './ISignOut';
 export { ISignIn } from './ISignIn';
+export { IArtist } from './IArtist';
+export { IAlbum } from './IAlbum';
+export { ISong } from './ISong';

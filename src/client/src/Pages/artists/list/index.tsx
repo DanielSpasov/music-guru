@@ -13,6 +13,7 @@ export default function Artists() {
   return (
     <PageLayout
       title="Artists"
+      heading="Artists"
       actions={[
         {
           type: 'button',

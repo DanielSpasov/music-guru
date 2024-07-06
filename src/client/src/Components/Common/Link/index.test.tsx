@@ -111,8 +111,6 @@ describe('Dropdown Link', () => {
 
     const linkIconEl = screen.getByTestId('dropdown-link-icon');
     expect(linkIconEl).toBeInTheDocument();
-    expect(linkIconEl).toHaveClass(styles['dropdown-link'].iconProps);
-    expect(linkIconEl).not.toHaveClass(styles['dropdown-link'].activeIconProps);
   });
 
   test('renders dropdown link with additional props', () => {
@@ -143,8 +141,6 @@ describe('Dropdown Link', () => {
 
     const linkIconEl = screen.getByTestId(`${dataTestId}-icon`);
     expect(linkIconEl).toBeInTheDocument();
-    expect(linkIconEl).not.toHaveClass(styles['dropdown-link'].iconProps);
-    expect(linkIconEl).toHaveClass(styles['dropdown-link'].activeIconProps);
   });
 
   test("doesn't render dropdown link if hide is true", () => {

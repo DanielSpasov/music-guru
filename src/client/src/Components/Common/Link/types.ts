@@ -9,6 +9,7 @@ export type NavlinkProps = {
 export type DropdownLinkProps = {
   type: Extract<LinkType, 'dropdown-link'>;
   Icon: ElementType;
+  iconColor?: string;
   isActive?: boolean;
   hide?: boolean | null;
 };

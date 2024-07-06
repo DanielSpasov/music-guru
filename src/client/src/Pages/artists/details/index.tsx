@@ -62,6 +62,7 @@ export default function ArtistDetails() {
   return (
     <PageLayout
       title={artist.name}
+      heading={artist.name}
       loading={loading}
       actions={[
         {

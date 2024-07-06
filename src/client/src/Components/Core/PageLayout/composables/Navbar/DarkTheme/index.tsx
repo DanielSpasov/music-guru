@@ -1,8 +1,8 @@
 import { FC, memo, useCallback, useContext } from 'react';
 
-import { iconProps, toggleCirlceStyles, toggleStyles } from '../styles';
-import { ThemeContext } from '../../../../../Contexts';
-import { IMoon } from '../../../../Icons';
+import { toggleCirlceStyles, toggleStyles } from './styles';
+import { ThemeContext } from '../../../../../../Contexts';
+import { IMoon } from '../../../../../Icons';
 
 const DarkTheme: FC = () => {
   const { theme, setTheme } = useContext(ThemeContext);
@@ -26,7 +26,10 @@ const DarkTheme: FC = () => {
       onClick={toggleTheme}
     >
       <div className="flex items-center gap-2">
-        <IMoon className={`inline w-5 h-5 ${iconProps}`} />
+        <IMoon
+          color="[&>path]:fill-black dark:[&>path]:fill-white"
+          className="inline w-5 h-5"
+        />
         <span className="text-lg whitespace-nowrap mr-2">Dark Theme</span>
       </div>
 

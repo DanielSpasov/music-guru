@@ -1,9 +1,10 @@
 import { FC, memo } from 'react';
 
-import { CategoryProps } from '../types';
+import { CategoryProps } from './types';
 
 const Category: FC<CategoryProps> = ({
   separate = false,
+  title,
   children,
   className,
   ...props
@@ -20,6 +21,7 @@ const Category: FC<CategoryProps> = ({
           className="mt-1 dark:border-neutral-700"
         />
       )}
+      {title && <h4 className="text-neutral-500">{title}</h4>}
       {children}
     </section>
   );

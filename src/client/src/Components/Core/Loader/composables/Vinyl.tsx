@@ -6,7 +6,8 @@ import { VinylProps } from '../types';
 const Vinyl: FC<VinylProps> = ({
   onPlayer = false,
   color = 'random',
-  size = 'sm'
+  size = 'sm',
+  ...props
 }) => {
   const colorProps = getColor(color);
 
@@ -16,6 +17,7 @@ const Vinyl: FC<VinylProps> = ({
       className={`relative m-auto bg-neutral-700 dark:bg-neutral-900 rounded-full ${
         vinyl[size].record
       } ${onPlayer && onPlayerProps}`}
+      {...props}
     >
       <div
         data-testid="loader-vinyl-record-label"
