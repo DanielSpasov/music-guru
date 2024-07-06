@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 
-import { DetailsProps, darkProps, hoverProps } from './helpers';
+import { DetailsProps } from './types';
 import { IDown, IUp } from '../..';
 
 const Details: FC<DetailsProps> = ({ children, label, open = false }) => {
@@ -8,7 +8,7 @@ const Details: FC<DetailsProps> = ({ children, label, open = false }) => {
 
   return (
     <details
-      className={`w-full bg-neutral-200 rounded-md p-2 ${hoverProps} ${darkProps}`}
+      className={`w-full bg-neutral-200 rounded-md p-2 hover:bg-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-600`}
       data-testid="details"
       open={open}
     >

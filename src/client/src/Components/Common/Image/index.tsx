@@ -2,9 +2,10 @@ import { ChangeEvent, FC, useCallback, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ZodError } from 'zod';
 
-import { ImageProps, hoverProps, imgProps, shapes } from './helpers';
+import { hoverProps, imgProps, shapes } from './styles';
 import { FileSchema } from '../../../Validations';
 import { IPen, Loader } from '../../';
+import { ImageProps } from './types';
 
 const Image: FC<ImageProps> = ({
   src,

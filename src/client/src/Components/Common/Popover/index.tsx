@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { PopoverProps, themeProps } from './helpers';
+import { PopoverProps } from './types';
 
 const Popover: FC<PopoverProps> = ({ open, label, children, className }) => {
   return (
@@ -12,7 +12,7 @@ const Popover: FC<PopoverProps> = ({ open, label, children, className }) => {
       )}
       {open && (
         <div
-          className={`absolute right-0 shadow-md p-2 rounded-md ${themeProps} ${className}`}
+          className={`absolute right-0 shadow-md p-2 rounded-md bg-neutral-100 dark:bg-neutral-900 dark:shadow-black ${className}`}
           data-testid="popover-content"
         >
           {children}

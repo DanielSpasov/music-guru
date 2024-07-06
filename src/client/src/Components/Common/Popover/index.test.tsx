@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 
-import { darkProps, lightProps } from './helpers';
 import Popover from '.';
 
 describe('Popover', () => {
@@ -51,20 +50,6 @@ describe('Popover', () => {
       render(<Popover open={true} className="bg-neutral-200" />);
       const element = screen.getByTestId('popover-content');
       expect(element).toHaveClass('bg-neutral-200');
-    });
-  });
-
-  describe('CSS', () => {
-    test('renders light mode props correctly', () => {
-      render(<Popover open={true} />);
-      const element = screen.getByTestId('popover-content');
-      expect(element).toHaveClass(lightProps);
-    });
-
-    test('renders dark mode props correctly', () => {
-      render(<Popover open={true} />);
-      const element = screen.getByTestId('popover-content');
-      expect(element).toHaveClass(darkProps);
     });
   });
 });

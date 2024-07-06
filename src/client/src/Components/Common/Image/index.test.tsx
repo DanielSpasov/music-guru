@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
-import { lightImgProps, darkImgProps, hoverProps } from './helpers';
+import { lightImgProps, darkImgProps, hoverProps } from './styles';
 import Image from '.';
 
 describe('Image', () => {

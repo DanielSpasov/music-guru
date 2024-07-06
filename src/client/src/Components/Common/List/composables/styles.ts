@@ -1,11 +1,3 @@
-import { Config } from '../../../../Api/helpers';
-import { Filter } from '../helpers';
-
-export type FiltersProps = {
-  config: Filter[];
-  onApplyFilters: (config: Config) => Promise<void>;
-};
-
 const lightProps = 'border-neutral-300 border-[1px]';
 const darkProps =
   'dark:border-none dark:shadow-md dark:shadow-neutral-900 dark:bg-neutral-900';

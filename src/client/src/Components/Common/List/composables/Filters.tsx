@@ -7,8 +7,9 @@ import {
   useState
 } from 'react';
 
-import { FiltersProps, hoverProps, iconProps, themeProps } from './helpers';
+import { hoverProps, iconProps, themeProps } from './styles';
 import { IMagnifyingGlass } from '../../../Icons';
+import { FiltersProps } from './types';
 
 const Filters: FC<FiltersProps> = ({ config = [], onApplyFilters }) => {
   const [params, setParams] = useState({});

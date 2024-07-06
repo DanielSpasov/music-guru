@@ -1,7 +1,7 @@
 import { memo, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { BaseModel, ListProps, ListState } from './helpers';
+import { BaseModel, ListProps, ListState } from './types';
 import { AuthContext } from '../../../Contexts';
 import { Config } from '../../../Api/helpers';
 import Api from '../../../Api';
