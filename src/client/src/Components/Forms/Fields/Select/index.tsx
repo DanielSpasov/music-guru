@@ -1,12 +1,14 @@
 import { FC, useCallback, useMemo, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { Option, SelectProps } from './helpers';
+import { Option, SelectProps } from './types';
 
 import Single from './SingleSelect';
 import Multi from './MultiSelect';
-import Label from '../Label';
-import Error from '../Error';
+
+// Composables
+import Label from '../composables/Label';
+import Error from '../composables/Error';
 
 const Select: FC<SelectProps> = ({
   multiple = false,

@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 
-import { FieldsetProps } from './helpers';
 import { IDown, IUp } from '../../Icons';
+import { FieldsetProps } from './types';
 
 const Fieldset: FC<FieldsetProps> = ({
   title,

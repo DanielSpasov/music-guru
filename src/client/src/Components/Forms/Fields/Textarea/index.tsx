@@ -1,14 +1,12 @@
 import { useFormContext } from 'react-hook-form';
 import { FC } from 'react';
 
-import { TextareaProps } from './helpers';
-import Label from '../Label';
-import Error from '../Error';
+import { TextareaProps } from './types';
+import { themeProps } from './styles';
 
-const hoverProps = 'hover:border-neutral-400';
-const focusProps = 'focus:border-primary';
-const darkProps =
-  'dark:bg-neutral-900 dark:border-neutral-600 dark:hover:border-neutral-500 dark:focus:border-primary-dark';
+// Composables
+import Label from '../composables/Label';
+import Error from '../composables/Error';
 
 const Textarea: FC<TextareaProps> = ({
   name,
@@ -25,7 +23,7 @@ const Textarea: FC<TextareaProps> = ({
 
       <textarea
         {...register(name, { required })}
-        className={`w-full min-h-[80px] border-b-2 p-1 pr-16 border-neutral-300 outline-none resize-y ${hoverProps} ${focusProps} ${darkProps} ${className}`}
+        className={`w-full min-h-[80px] border-b-2 p-1 pr-16 outline-none resize-y ${themeProps} ${className}`}
         {...props}
       ></textarea>
 

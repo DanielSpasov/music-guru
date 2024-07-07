@@ -2,14 +2,12 @@ import { useFormContext } from 'react-hook-form';
 import { FC, useState } from 'react';
 
 import { IEye, IEyeSlash } from '../../../Icons';
-import { InputProps } from './helpers';
-import Label from '../Label';
-import Error from '../Error';
+import { themeProps } from './styles';
+import { InputProps } from './types';
 
-const hoverProps = 'hover:border-neutral-400';
-const focusProps = 'focus:border-primary dark:focus:border-primary-dark';
-const darkProps =
-  'dark:bg-neutral-900 dark:border-neutral-600 dark:hover:border-neutral-500';
+// Composables
+import Label from '../composables/Label';
+import Error from '../composables/Error';
 
 const Input: FC<InputProps> = ({
   name,
@@ -35,7 +33,7 @@ const Input: FC<InputProps> = ({
             if (sideEffect) sideEffect(e, { formState, ...formContextProps });
           }
         })}
-        className={`w-full border-b-2 border-neutral-300 p-1 outline-none ${darkProps} ${focusProps} ${hoverProps} ${className}`}
+        className={`w-full border-b-2 p-1 outline-none ${themeProps} ${className}`}
         type={type}
         {...props}
       />

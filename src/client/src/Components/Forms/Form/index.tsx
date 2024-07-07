@@ -1,12 +1,12 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { Button, Loader } from '../../../Components';
-import { toast } from 'react-toastify';
-import { FormProps } from './helpers';
+import { FormProps } from './types';
 
-export default function Form({
+const Form: FC<FormProps> = ({
   onSubmit = () => null,
   defaultValues = {},
   validationSchema,
@@ -15,7 +15,7 @@ export default function Form({
   className,
   additionalContent,
   ...props
-}: FormProps) {
+}) => {
   const { handleSubmit, ...formProps } = useForm({
     defaultValues,
     ...(validationSchema ? { resolver: zodResolver(validationSchema) } : {})
@@ -65,4 +65,6 @@ export default function Form({
       </form>
     </FormProvider>
   );
-}
+};
+
+export default Form;

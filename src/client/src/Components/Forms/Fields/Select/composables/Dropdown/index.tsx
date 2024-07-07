@@ -1,15 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 
-import { Popover, Loader } from '../../../../../Components';
-import useDebounce from '../../../../../Hooks/useDebounce';
-import { DropdownProps, Option } from '../helpers';
-import Search from './Search';
+import { Popover, Loader } from '../../../../../../Components';
+import useDebounce from '../../../../../../Hooks/useDebounce';
+import { selectedProps, themeProps } from './styles';
+import { DropdownProps, Option } from '../../types';
 
-const lightProps = 'hover:bg-neutral-200';
-const darkProps = 'dark:hover:bg-neutral-800';
-const themeProps = `${lightProps} ${darkProps}`;
-
-const selectedProps = 'bg-neutral-200 dark:bg-neutral-800';
+// Composables
+import Search from '../Search';
 
 const Dropdown: FC<DropdownProps> = ({
   hideSearch,

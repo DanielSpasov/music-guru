@@ -2,14 +2,12 @@ import { useFormContext } from 'react-hook-form';
 import InputMask from 'react-input-mask';
 import { FC, useRef } from 'react';
 
-import { MaskProps } from './helpers';
-import Label from '../Label';
-import Error from '../Error';
+import { themeProps } from './styles';
+import { MaskProps } from './types';
 
-const hoverProps = 'hover:border-neutral-400';
-const focusProps = 'focus:border-primary dark:focus:border-primary-dark';
-const darkProps =
-  'dark:bg-neutral-900 dark:border-neutral-600 dark:hover:border-neutral-500';
+// Composables
+import Label from '../composables/Label';
+import Error from '../composables/Error';
 
 const Mask: FC<MaskProps> = ({
   name,
@@ -31,7 +29,7 @@ const Mask: FC<MaskProps> = ({
         placeholder="mm/dd/yyyy"
         defaultValue={defaultValue.current}
         maskChar={null}
-        className={`w-full border-b-2 border-b-neutral-300 p-1 outline-none ${hoverProps} ${darkProps} ${focusProps} ${className}`}
+        className={`w-full border-b-2 p-1 outline-none ${themeProps} ${className}`}
         {...props}
       />
 

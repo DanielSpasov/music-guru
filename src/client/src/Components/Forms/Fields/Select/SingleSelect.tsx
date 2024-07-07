@@ -1,8 +1,11 @@
 import { FC, useCallback, useRef, useState } from 'react';
 
-import { Option, SelectComponentProps, themeProps } from './helpers';
-import Dropdown from './components/Dropdown';
+import { Option, SelectComponentProps } from './types';
+import { themeProps } from './styles';
 import { IX } from '../../../Icons';
+
+// Composables
+import Dropdown from './composables/Dropdown';
 
 const Single: FC<SelectComponentProps<'single'>> = ({
   defaultValue = null,

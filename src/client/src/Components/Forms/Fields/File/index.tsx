@@ -1,15 +1,13 @@
-import { useFormContext } from 'react-hook-form';
 import { FC, useCallback, useMemo, useRef } from 'react';
+import { useFormContext } from 'react-hook-form';
 
-import { FileProps } from './helpers';
+import { themeProps } from './styles';
+import { FileProps } from './types';
 import { IX } from '../../../Icons';
-import Error from '../Error';
-import Label from '../Label';
 
-const hoverProps = 'hover:border-dashed hover:border-neutral-400';
-const focusProps = 'focus:border-dashed focus:border-primary';
-const darkProps =
-  'dark:bg-neutral-900 dark:border-neutral-600 dark:hover:border-neutral-500 dark:focus:border-primary-dark';
+// Composables
+import Error from '../composables/Error';
+import Label from '../composables/Label';
 
 const File: FC<FileProps> = ({
   name,
@@ -51,7 +49,7 @@ const File: FC<FileProps> = ({
           openUpload();
         }}
         onClick={() => openUpload()}
-        className={`block w-full h-[2.125rem] border-b-2 border-neutral-300 py-1 cursor-pointer outline-none ${hoverProps} ${focusProps} ${darkProps} ${className}`}
+        className={`block w-full h-[2.125rem] border-b-2 py-1 cursor-pointer outline-none ${themeProps} ${className}`}
       >
         <p className="px-1.5">{watch(name)?.name}</p>
       </div>
