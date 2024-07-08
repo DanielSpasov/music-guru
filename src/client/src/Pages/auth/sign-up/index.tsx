@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { Form, Input, Link, PageLayout } from '../../../Components';
-import { SignUpSchema } from '../../../Validations/User';
 import { AuthContext } from '../../../Contexts/Auth';
+import { SignUpSchema } from '../../../Validations';
 import Api from '../../../Api';
 
 export default function SignUp() {

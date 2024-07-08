@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest';
 
 const localStorageMock = (() => {
-  let store: Record<string, any> = {};
+  let store: Record<string, string> = {};
 
   return {
     clear: () => {
@@ -10,7 +10,7 @@ const localStorageMock = (() => {
     getItem: (key: string) => {
       return store[key] || null;
     },
-    setItem: (key: string, value: any) => {
+    setItem: (key: string, value: string) => {
       store[key] = String(value);
     },
     removeItem: (key: string) => {

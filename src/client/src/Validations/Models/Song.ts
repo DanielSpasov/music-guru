@@ -1,7 +1,6 @@
-import { RefinementCtx, z } from 'zod';
+import { z } from 'zod';
 
-import { OptionalFileSchema } from './File';
-import { SocialsSchema } from './Socials';
+import { OptionalFileSchema, SocialsSchema, Require } from '../Utils';
 
 export const VerseSchema = z.object({
   title: z.string().min(1, 'Title is required.'),
@@ -10,15 +9,6 @@ export const VerseSchema = z.object({
     .min(1, 'Lyrics are required.')
     .max(10000, 'Max length is 10000 characters.')
 });
-
-const Required = (label: string) => (value: any, ctx: RefinementCtx) => {
-  if (value === null) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: `${label} is required.`
-    });
-  }
-};
 
 const DateSchema = z.union([
   z
@@ -30,17 +20,16 @@ const DateSchema = z.union([
   z.literal('')
 ]);
 
-const ArtistSchema = z
-  .object({ uid: z.string().uuid() })
-  .nullish()
-  .superRefine(Required('Artist'));
+const SelectOptionSchema = z.object({ uid: z.string().uuid() }).nullish();
 
 export const BaseSongSchema = z.object({
   name: z.string().min(1, 'Name is required.').max(128, 'Name is too long.'),
   image: OptionalFileSchema,
   release_date: DateSchema,
-  artist: ArtistSchema,
-  features: z.array(ArtistSchema).optional(),
+  artist: SelectOptionSchema.superRefine(Require('Artist')),
+  features: z
+    .array(SelectOptionSchema.superRefine(Require('Artist')))
+    .optional(),
   about: z.string().max(10000, 'Max length is 10000 characters')
 });
 

@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
-import { FileSchema } from './File';
-import { ArtistSocialsSchema } from './Socials';
+import { FileSchema, ArtistSocialsSchema } from '../Utils';
 
 export const BaseArtistSchema = z.object({
   name: z.string().min(1, 'Name is required'),

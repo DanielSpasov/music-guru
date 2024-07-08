@@ -1,5 +1,5 @@
 import { Form, IX, Input, Textarea } from '../../../../../Components';
-import { VerseSchema } from '../../../../../Validations/Song';
+import { VerseSchema } from '../../../../../Validations';
 import { NewVerseProps } from '../helpers';
 import { wrapperProps } from './helpers';
 

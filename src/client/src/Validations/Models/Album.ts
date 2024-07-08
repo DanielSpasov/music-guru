@@ -1,14 +1,6 @@
-import { RefinementCtx, z } from 'zod';
-import { FileSchema } from './File';
+import { z } from 'zod';
 
-const Required = (label: string) => (value: any, ctx: RefinementCtx) => {
-  if (value === null) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: `${label} is required.`
-    });
-  }
-};
+import { FileSchema, Require } from '../Utils';
 
 const DateSchema = z
   .string()
@@ -23,9 +15,9 @@ export const BaseAlbumSchema = z.object({
   name: z.string().min(1, 'Name is required.').max(128, 'Name is too long.'),
   image: FileSchema,
   release_date: z.union([DateSchema, z.literal('')]),
-  artist: SelectOptionSchema.superRefine(Required('Artist')),
-  songs: z.array(SelectOptionSchema.superRefine(Required('Song'))).optional(),
-  type: SelectOptionSchema.superRefine(Required('Type'))
+  artist: SelectOptionSchema.superRefine(Require('Artist')),
+  songs: z.array(SelectOptionSchema.superRefine(Require('Song'))).optional(),
+  type: SelectOptionSchema.superRefine(Require('Type'))
 });
 
 export const EditAlbumSchema = BaseAlbumSchema.omit({ image: true });

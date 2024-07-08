@@ -12,7 +12,7 @@ import {
   Select,
   Mask
 } from '../../../Components';
-import { BaseAlbumSchema } from '../../../Validations/Album';
+import { BaseAlbumSchema } from '../../../Validations';
 import { ListSong } from '../../../Types/Song';
 import Api from '../../../Api';
 
