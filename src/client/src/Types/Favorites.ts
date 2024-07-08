@@ -1,3 +1,3 @@
-import { ModelKeys } from '../Api/helpers';
+import { Model } from '../Api/types';
 
-export type Favorites = Partial<Record<Exclude<ModelKeys, 'users'>, string[]>>;
+export type Favorites = Partial<Record<Exclude<Model, 'users'>, string[]>>;

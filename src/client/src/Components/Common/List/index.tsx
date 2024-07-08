@@ -1,9 +1,9 @@
 import { memo, useCallback, useContext, useEffect, useState } from 'react';
+import { AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 
 import { BaseModel, ListProps, ListState } from './types';
 import { AuthContext } from '../../../Contexts';
-import { Config } from '../../../Api/helpers';
 import Api from '../../../Api';
 import { Card } from '../../';
 
@@ -23,7 +23,7 @@ const List = <T extends BaseModel>({
   const [loading, setLoading] = useState(true);
 
   const fetchList = useCallback(
-    async (config: Config = {}) => {
+    async (config: AxiosRequestConfig = {}) => {
       try {
         const { data } = await fetchFn(config);
         return data;
@@ -45,7 +45,7 @@ const List = <T extends BaseModel>({
   }, [uid, model]);
 
   const onApplyFilters = useCallback(
-    async (config: Config = {}) => {
+    async (config: AxiosRequestConfig = {}) => {
       try {
         setLoading(true);
 

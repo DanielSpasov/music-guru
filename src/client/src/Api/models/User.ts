@@ -1,27 +1,35 @@
+import { AxiosRequestConfig } from 'axios';
+
 import { ListUser, SignInData, SignUpData, User } from '../../Types/User';
 import { get, patch, post } from '../requests';
-import { applyPrefix } from '../helpers';
+import { Body } from '../types';
 import Crud from '../crud';
 
 export default class UserAPI extends Crud<User, ListUser> {
   model = 'user';
 
-  constructor(props: any) {
+  constructor() {
     super();
-    applyPrefix(this, props);
   }
 
-  patch({
-    id,
-    field,
-    body = {},
-    config = {}
-  }: {
-    id: string;
-    field: keyof User;
-    body: any;
-    config?: any;
-  }): Promise<{ data: User }> {
+  patch(
+    {
+      id,
+      field,
+      body = {},
+      config = {}
+    }: {
+      id: string;
+      field: keyof User;
+      body: Body;
+      config?: AxiosRequestConfig;
+    } = {
+      id: '',
+      field: 'username',
+      body: {},
+      config: {}
+    }
+  ): Promise<{ data: User }> {
     return patch({
       url: `${this.baseUrl}/${this.model}/${id}/`,
       body,

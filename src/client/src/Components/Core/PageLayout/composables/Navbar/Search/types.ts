@@ -1,7 +1,7 @@
-import { ModelKeys } from '../../../../../../Api/helpers';
+import { Model } from '../../../../../../Api/types';
 
 export type SearchProps = {
-  models: ModelKeys[];
+  models: Model[];
 };
 
-export type Results = Partial<Record<ModelKeys, any[]>>;
+export type Results = Partial<Record<Model, any[]>>;

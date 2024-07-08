@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { FavoriteFn, UpdateFavsFn } from '../../../Hooks/useFavorite';
-import { ModelKeys } from '../../../Api/helpers';
+import { Model } from '../../../Api/types';
 
 import ArtistCard from './Artist';
 import AlbumCard from './Album';
@@ -16,7 +16,7 @@ export type CardProps<T> = {
   updateFavs?: UpdateFavsFn;
 };
 
-export type CardModel = Exclude<ModelKeys, 'users'>;
+export type CardModel = Exclude<Model, 'users'>;
 
 export type CardSwitchProps = CardProps<any> & {
   model: CardModel;

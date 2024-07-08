@@ -1,5 +1,5 @@
-import { ModelKeys } from '../../../../Api/helpers';
 import { ListAlbum } from '../../../../Types/Album';
+import { Model } from '../../../../Api/types';
 import { Song } from '../../../../Types/Song';
 
 export type SummaryProps = {
@@ -11,7 +11,7 @@ export type ItemType = 'link' | 'links' | 'date' | 'text';
 export type ItemComponentProps = {
   value: any;
   type: ItemType;
-  linkType?: ModelKeys;
+  linkType?: Model;
 };
 
 export interface ItemProps extends ItemComponentProps {

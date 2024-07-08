@@ -1,6 +1,8 @@
-import { Config, ModelKeys } from '../../../Api/helpers';
+import { AxiosRequestConfig } from 'axios';
+
 import { FavoriteFn } from '../../../Hooks/useFavorite';
 import { CardModel } from '../Card/helpers';
+import { Model } from '../../../Api/types';
 
 export type BaseModel = { uid: string };
 
@@ -16,7 +18,7 @@ export type Filter = {
 };
 
 export type ListProps<T> = {
-  fetchFn: (config?: Config) => Promise<{ data: T[] }>;
+  fetchFn: (config?: AxiosRequestConfig) => Promise<{ data: T[] }>;
   favoriteFn?: FavoriteFn;
   model: CardModel;
   filtersConfig?: Filter[];
@@ -24,6 +26,6 @@ export type ListProps<T> = {
 };
 
 export type SkeletonProps = {
-  model: ModelKeys;
+  model: Model;
   length?: number;
 };
