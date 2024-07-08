@@ -27,7 +27,7 @@ export default function CreateAlbum() {
           release_date: formData?.release_date
             ? moment(formData?.release_date, 'MM/DD/YYYY').toDate()
             : null,
-          type: formData?.type,
+          type: formData?.type?.uid,
           artist: formData?.artist?.uid,
           songs: formData?.songs?.map((x: ListSong) => x?.uid)
         };
