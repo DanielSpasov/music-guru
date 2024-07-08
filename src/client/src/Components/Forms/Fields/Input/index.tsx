@@ -20,8 +20,6 @@ const Input: FC<InputProps> = ({
 }) => {
   const { register, formState, ...formContextProps } = useFormContext();
 
-  console.log(typeof formState.errors[name]?.message);
-
   const [type, setType] = useState(inputType);
 
   return (
