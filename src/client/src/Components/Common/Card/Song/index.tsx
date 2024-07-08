@@ -27,7 +27,6 @@ const SongCard: FC<CardProps<ListSong>> = ({
         src={data?.image || '/images/logo/blue-logo-square512.png'}
         className="w-12 h-12 m-2 rounded-sm"
         data-testid="song-card-image"
-        loading="lazy"
       />
 
       <div className="flex flex-col justify-between w-full">

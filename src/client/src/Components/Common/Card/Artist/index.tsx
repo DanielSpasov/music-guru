@@ -27,7 +27,6 @@ const ArtistCard: FC<CardProps<ListArtist>> = ({
         src={data.image}
         data-testid="artist-card-image"
         className="w-40 h-40 rounded-md"
-        loading="lazy"
       />
 
       <section className="flex justify-between items-center mt-1">

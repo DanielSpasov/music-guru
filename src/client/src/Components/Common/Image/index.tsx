@@ -55,7 +55,6 @@ const Image: FC<ImageProps> = ({
         className={`${loading && 'opacity-60'} ${editable && hoverProps} ${
           shapes[shape]
         } ${imgProps}`}
-        loading="lazy"
         data-testid="image"
         {...props}
       />

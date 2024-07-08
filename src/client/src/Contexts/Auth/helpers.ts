@@ -14,10 +14,21 @@ export interface IAuth {
   isAuthenticated: boolean | null;
 }
 
-export type Action = {
-  type: 'SIGNIN' | 'SIGNOUT';
-  payload?: any;
+export type ActionType = 'SIGNIN' | 'SIGNOUT';
+
+type SignOut = {
+  type: Extract<ActionType, 'SIGNOUT'>;
 };
+type SignIn = {
+  type: Extract<ActionType, 'SIGNIN'>;
+  payload: {
+    uid: string | null;
+    token: string;
+    data: User | null;
+  };
+};
+
+export type Action = SignOut | SignIn;
 
 export interface AuthContextType extends IAuth {
   dispatch: Dispatch<Action>;

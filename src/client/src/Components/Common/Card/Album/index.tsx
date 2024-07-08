@@ -27,7 +27,6 @@ const AlbumCard: FC<CardProps<ListAlbum>> = ({
         alt={data.name}
         src={data.image}
         data-testid="album-card-image"
-        loading="lazy"
         className="w-40 h-40 rounded-md"
       />
 

@@ -1,19 +1,21 @@
-import { ChangeEvent, useCallback, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import moment from 'moment';
+import {
+  ChangeEvent,
+  FC,
+  memo,
+  useCallback,
+  useContext,
+  useState
+} from 'react';
 
 import { Button, ICheck, IPen, IX } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { OptionProps } from './helpers';
+import { labelProps, themeProps } from './styles';
+import { OptionProps } from './types';
 import Api from '../../../Api';
 
-const hoverProps = 'hover:border-neutral-300';
-const focusProps =
-  'focus:border-primary dark:focus:border-primary-dark [&~label]:focus:-top-7 [&~label]:focus:left-1';
-const darkProps =
-  'dark:bg-neutral-800 dark:border-neutral-600 dark:hover:border-neutral-500';
-
-export default function Option({ data, user, setUser }: OptionProps) {
+const Option: FC<OptionProps> = ({ data, user, setUser }) => {
   const { uid } = useContext(AuthContext);
 
   const [value, setValue] = useState(user[data.field]);
@@ -26,9 +28,7 @@ export default function Option({ data, user, setUser }: OptionProps) {
       const res = await data?.action?.onClick();
       toast.success(res?.message || 'Action successful.');
     } catch (error) {
-      toast.error(
-        'An error occurred when trying to send the verification email.'
-      );
+      toast.error('Failed to perform action.');
     } finally {
       setLoading(false);
     }
@@ -42,9 +42,9 @@ export default function Option({ data, user, setUser }: OptionProps) {
         body: { [data.field]: value }
       });
       setUser(prev => ({ ...prev, ...updated }));
-      toast.success(`${data.label} updated successfully`);
+      toast.success(`${data.label} updated successfully.`);
     } catch (error) {
-      toast.error(`Failed to update ${data.field}`);
+      toast.error(`Failed to update ${data.field}.`);
     }
   }, [uid, data, value, setUser]);
 
@@ -78,23 +78,23 @@ export default function Option({ data, user, setUser }: OptionProps) {
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setValue(e?.target?.value)
             }
-            className={`w-full h-11 rounded-md bg-neutral-100 border-2 border-neutral-200 p-2 outline-none ${darkProps} ${focusProps} ${hoverProps}`}
+            className={`w-full h-11 rounded-md border-2 p-2 outline-none ${themeProps} ${labelProps}`}
           />
         ) : (
           <>
             {data.type === 'string' && (
               <span>{user[data.field]?.toString()}</span>
             )}
+
             {data.type === 'boolean' &&
               (user[data.field] ? (
                 <ICheck color="[&>path]:fill-green-500" />
               ) : (
                 <IX color="[&>path]:fill-red-400" />
               ))}
+
             {data.type === 'date' && (
-              <span>
-                {moment(user[data.field] as any as Date).format('LLLL')}
-              </span>
+              <span>{moment(user[data.field] as Date).format('LLLL')}</span>
             )}
           </>
         )}
@@ -112,4 +112,6 @@ export default function Option({ data, user, setUser }: OptionProps) {
       </div>
     </div>
   );
-}
+};
+
+export default memo(Option);

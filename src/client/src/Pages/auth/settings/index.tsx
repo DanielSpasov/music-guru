@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 
 import { ILock, IUser, PageLayout, Details } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { getMFAConfig, infoConfig } from './helpers';
 import { User } from '../../../Types/User';
 import Api from '../../../Api';
 import Option from './Option';
@@ -35,25 +34,97 @@ const Settings = () => {
         <>
           <div className="flex items-start m-3">
             <IUser
-              color="[&>path]:text-primary dark:[&>path]:text-primary-dark"
+              color="[&>path]:fill-primary dark:[&>path]:fill-primary-dark"
               className="h-16 w-16"
             />
             <Details label="Information" open>
-              {infoConfig.map((data, i) => (
-                <Option data={data} key={i} setUser={setUser} user={user} />
-              ))}
+              <Option
+                data={{
+                  field: 'uid',
+                  label: 'UID',
+                  type: 'string'
+                }}
+                setUser={setUser}
+                user={user}
+              />
+              <Option
+                data={{
+                  field: 'email',
+                  label: 'Email',
+                  type: 'string'
+                }}
+                setUser={setUser}
+                user={user}
+              />
+              <Option
+                data={{
+                  field: 'username',
+                  label: 'Username',
+                  type: 'string',
+                  editable: true
+                }}
+                setUser={setUser}
+                user={user}
+              />
+              <Option
+                data={{
+                  field: 'created_at',
+                  label: 'Date Created',
+                  type: 'date'
+                }}
+                setUser={setUser}
+                user={user}
+              />
             </Details>
           </div>
 
           <div className="flex items-start m-3">
             <ILock
-              color="[&>path]:text-primary dark:[&>path]:text-primary-dark"
+              color="[&>path]:fill-primary dark:[&>path]:fill-primary-dark"
               className="h-16 w-16"
             />
             <Details label="MFA" open>
-              {getMFAConfig(user).map((data, i) => (
-                <Option data={data} key={i} setUser={setUser} user={user} />
-              ))}
+              <Option
+                data={{
+                  field: 'verified',
+                  label: 'Verified Email',
+                  type: 'boolean',
+                  action: {
+                    label: 'Send Email',
+                    hide: user.verified,
+                    onClick: () => Api.users.reSendValidationEmail()
+                  }
+                }}
+                setUser={setUser}
+                user={user}
+              />
+              <Option
+                data={{
+                  field: 'verified',
+                  label: 'Email 2FA',
+                  type: 'boolean'
+                }}
+                setUser={setUser}
+                user={user}
+              />
+              <Option
+                data={{
+                  field: 'verified',
+                  label: 'Phone Number',
+                  type: 'boolean'
+                }}
+                setUser={setUser}
+                user={user}
+              />
+              <Option
+                data={{
+                  field: 'verified',
+                  label: 'Google Authenticator',
+                  type: 'boolean'
+                }}
+                setUser={setUser}
+                user={user}
+              />
             </Details>
           </div>
         </>
