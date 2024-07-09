@@ -43,7 +43,7 @@ describe('SVG component', () => {
       expect(svgElement).toHaveAttribute('viewBox', viewBox);
     });
 
-    test('calls onClick function when SVG element is clicked', async () => {
+    test('calls onClick when SVG element is clicked', async () => {
       const onClick = vi.fn();
       render(<SVG onClick={onClick} />);
       const svgElement = screen.getByTestId('svg-icon');
@@ -51,7 +51,7 @@ describe('SVG component', () => {
       expect(onClick).toBeCalled();
     });
 
-    test("doesn't call onClick function when SVG element is disabled and clicked", async () => {
+    test("doesn't call onClick when SVG element is disabled and clicked", async () => {
       const onClick = vi.fn();
       render(<SVG onClick={onClick} disabled />);
       const svgElement = screen.getByTestId('svg-icon');
