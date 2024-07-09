@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Loader, PageLayout } from '../../../Components';
 import Api from '../../../Api';
 
-export default function SignUp() {
+const SignUp = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -41,4 +41,5 @@ export default function SignUp() {
       </header>
     </PageLayout>
   );
-}
+};
+export default SignUp;

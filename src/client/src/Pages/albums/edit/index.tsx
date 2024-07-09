@@ -16,7 +16,7 @@ import { SubmitFn } from '../../../Components/Forms/Form/types';
 import { defaultAlbum } from '../details';
 import Api from '../../../Api';
 
-export default function EditAlbum() {
+const EditAlbum = () => {
   const navigate = useNavigate();
   const { id = '0' } = useParams();
 
@@ -118,4 +118,6 @@ export default function EditAlbum() {
       </Form>
     </PageLayout>
   );
-}
+};
+
+export default EditAlbum;

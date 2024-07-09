@@ -29,7 +29,7 @@ const icons = {
   soundcloud: ISoundcloud
 };
 
-export default function Socials({ artist }: { artist: Artist }) {
+const Socials = ({ artist }: { artist: Artist }) => {
   return (
     <div className="flex w-full flex-wrap justify-center py-3 gap-3">
       {artist.links.map(({ name, url }) => {
@@ -44,4 +44,6 @@ export default function Socials({ artist }: { artist: Artist }) {
       })}
     </div>
   );
-}
+};
+
+export default Socials;

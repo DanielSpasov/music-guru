@@ -1,6 +1,6 @@
 import { Link, Loader, PageLayout } from '../../Components';
 
-export default function NotFound() {
+const NotFound = () => {
   return (
     <PageLayout title="Page not Found" heading="Page not found.">
       <article className="flex flex-col items-center p-4">
@@ -16,4 +16,6 @@ export default function NotFound() {
       </article>
     </PageLayout>
   );
-}
+};
+
+export default NotFound;

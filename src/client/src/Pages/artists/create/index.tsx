@@ -18,7 +18,7 @@ import {
   Textarea
 } from '../../../Components';
 
-export default function CreateArtist() {
+const CreateArtist = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitFn<CreateArtistData> = useCallback(
@@ -86,4 +86,6 @@ export default function CreateArtist() {
       </Form>
     </PageLayout>
   );
-}
+};
+
+export default CreateArtist;

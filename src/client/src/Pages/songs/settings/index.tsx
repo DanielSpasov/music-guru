@@ -9,7 +9,7 @@ import { useSong } from '../../../Hooks';
 import UserList from './UserList';
 import Api from '../../../Api';
 
-export default function Settings() {
+const Settings = () => {
   const { id: uid = '0' } = useParams();
 
   const { uid: userUID } = useContext(AuthContext);
@@ -102,4 +102,6 @@ export default function Settings() {
       </section>
     </PageLayout>
   );
-}
+};
+
+export default Settings;

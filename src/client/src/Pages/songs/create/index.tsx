@@ -20,7 +20,7 @@ import {
   CreateSongData
 } from '../../../Validations';
 
-export default function CreateSong() {
+const CreateSong = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitFn<CreateSongData> = useCallback(
@@ -102,4 +102,6 @@ export default function CreateSong() {
       </Form>
     </PageLayout>
   );
-}
+};
+
+export default CreateSong;

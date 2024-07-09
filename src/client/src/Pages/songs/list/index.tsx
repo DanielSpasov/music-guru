@@ -5,7 +5,7 @@ import { IPlus, List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import Api from '../../../Api';
 
-export default function Songs() {
+const Songs = () => {
   const { isAuthenticated } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -37,4 +37,6 @@ export default function Songs() {
       />
     </PageLayout>
   );
-}
+};
+
+export default Songs;

@@ -8,7 +8,7 @@ import { SignInData, SignInSchema } from '../../../Validations';
 import { AuthContext } from '../../../Contexts/Auth';
 import Api from '../../../Api';
 
-export default function SignIn() {
+const SignIn = () => {
   const { dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -52,4 +52,6 @@ export default function SignIn() {
       </Form>
     </PageLayout>
   );
-}
+};
+
+export default SignIn;

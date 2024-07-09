@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 import { IMagnifyingGlass, Loader } from '../../../Components';
 import { UserListProps } from './helpers';
@@ -9,13 +9,13 @@ const darkInputProps =
   'dark:border-b-neutral-800 dark:hover:border-b-neutral-600 dark:focus:border-b-primary-dark';
 const themeInputProps = `${lightInputProps} ${darkInputProps}`;
 
-export default function UserList({
+const UserList: FC<UserListProps> = ({
   items,
   loading,
   action,
   missingMessage,
   Icon
-}: UserListProps) {
+}) => {
   const [search, setSearch] = useState('');
 
   const displayedItems = useMemo(() => {
@@ -73,4 +73,6 @@ export default function UserList({
       )}
     </article>
   );
-}
+};
+
+export default UserList;

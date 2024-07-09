@@ -17,7 +17,7 @@ import Summary from './Summary';
 import Lyrics from './Lyrics';
 import About from './About';
 
-export default function SongDetails() {
+const SongDetails = () => {
   const { uid, isAuthenticated } = useContext(AuthContext);
 
   const { id = '0' } = useParams();
@@ -86,4 +86,6 @@ export default function SongDetails() {
       </section>
     </PageLayout>
   );
-}
+};
+
+export default SongDetails;

@@ -8,7 +8,7 @@ import { SignUpData, SignUpSchema } from '../../../Validations';
 import Api from '../../../Api';
 import { SubmitFn } from '../../../Components/Forms/Form/types';
 
-export default function SignUp() {
+const SignUp = () => {
   const { dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -69,4 +69,6 @@ export default function SignUp() {
       </Form>
     </PageLayout>
   );
-}
+};
+
+export default SignUp;

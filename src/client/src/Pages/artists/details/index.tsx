@@ -22,7 +22,7 @@ export const defaultArtist: Artist = {
   links: []
 };
 
-export default function ArtistDetails() {
+const ArtistDetails = () => {
   const { uid, isAuthenticated } = useContext(AuthContext);
 
   const { id = '0' } = useParams();
@@ -120,4 +120,6 @@ export default function ArtistDetails() {
       </section>
     </PageLayout>
   );
-}
+};
+
+export default ArtistDetails;

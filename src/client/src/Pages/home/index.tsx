@@ -1,6 +1,6 @@
 import { Loader, PageLayout } from '../../Components';
 
-export default function Home() {
+const Home = () => {
   return (
     <PageLayout title="Home" heading="Home">
       <div className="flex justify-center">
@@ -8,4 +8,6 @@ export default function Home() {
       </div>
     </PageLayout>
   );
-}
+};
+
+export default Home;

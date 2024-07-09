@@ -1,7 +1,8 @@
 import { SummaryProps } from './types';
 import Item from './Item';
+import { FC } from 'react';
 
-export default function Summary({ song, albums }: SummaryProps) {
+const Summary: FC<SummaryProps> = ({ song, albums }) => {
   return (
     <div className="pl-4">
       <Item label="Artist" type="link" linkType="artists" value={song.artist} />
@@ -17,4 +18,6 @@ export default function Summary({ song, albums }: SummaryProps) {
       <Item label="Albums" type="links" linkType="albums" value={albums} />
     </div>
   );
-}
+};
+
+export default Summary;

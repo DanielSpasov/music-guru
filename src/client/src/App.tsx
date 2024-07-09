@@ -6,7 +6,7 @@ import Router from './Router';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <ThemeProvider>
@@ -24,4 +24,6 @@ export default function App() {
       </ThemeProvider>
     </BrowserRouter>
   );
-}
+};
+
+export default App;

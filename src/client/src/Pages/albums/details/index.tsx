@@ -25,7 +25,7 @@ export const defaultAlbum: Album = {
   }
 };
 
-export default function AlbumDetails() {
+const AlbumDetails = () => {
   const { uid, isAuthenticated } = useContext(AuthContext);
 
   const { id = '0' } = useParams();
@@ -129,4 +129,6 @@ export default function AlbumDetails() {
       </section>
     </PageLayout>
   );
-}
+};
+
+export default AlbumDetails;

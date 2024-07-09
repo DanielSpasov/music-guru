@@ -16,7 +16,7 @@ import {
   Mask
 } from '../../../Components';
 
-export default function CreateAlbum() {
+const CreateAlbum = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitFn<CreateAlbumData> = useCallback(
@@ -97,4 +97,6 @@ export default function CreateAlbum() {
       </Form>
     </PageLayout>
   );
-}
+};
+
+export default CreateAlbum;
