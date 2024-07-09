@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import { CreateVerseData, VerseSchema } from '../../../../../Validations';
-import { Form, IX, Input, Textarea } from '../../../../../Components';
-import { NewVerseProps } from '../types';
-import { wrapperProps } from './styles';
+import { CreateVerseData, VerseSchema } from '../../../../../../../Validations';
+import { Form, IX, Input, Textarea } from '../../../../../../../Components';
+import { wrapperProps } from '../styles';
+import { NewVerseProps } from './types';
 
 const NewVerse: FC<NewVerseProps> = ({ show, setShow, onSubmit }) => {
   if (!show) return null;

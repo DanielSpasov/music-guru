@@ -12,10 +12,10 @@ import { AuthContext } from '../../../Contexts/Auth';
 import { useSong } from '../../../Hooks';
 
 // Composables
-import Socials from './Socials';
-import Summary from './Summary';
-import Lyrics from './Lyrics';
-import About from './About';
+import Summary from './composables/Summary';
+import Socials from './composables/Socials';
+import Lyrics from './composables/Lyrics';
+import About from './composables/About';
 
 const SongDetails = () => {
   const { uid, isAuthenticated } = useContext(AuthContext);

@@ -1,13 +1,8 @@
 import { FC, useMemo, useState } from 'react';
 
-import { IMagnifyingGlass, Loader } from '../../../Components';
-import { UserListProps } from './helpers';
-
-const lightInputProps =
-  'border-b-neutral-300 hover:border-b-neutral-400 focus:border-b-primary';
-const darkInputProps =
-  'dark:border-b-neutral-800 dark:hover:border-b-neutral-600 dark:focus:border-b-primary-dark';
-const themeInputProps = `${lightInputProps} ${darkInputProps}`;
+import { IMagnifyingGlass, Loader } from '../../../../../Components';
+import { UserListProps } from './types';
+import { themeInputProps } from './styles';
 
 const UserList: FC<UserListProps> = ({
   items,

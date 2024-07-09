@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import { Form, IX, Input, Textarea } from '../../../../../Components';
-import { VerseSchema } from '../../../../../Validations';
-import { EditVerseProps } from '../types';
-import { wrapperProps } from './styles';
+import { Form, IX, Input, Textarea } from '../../../../../../../Components';
+import { VerseSchema } from '../../../../../../../Validations';
+import { EditVerseProps } from './types';
+import { wrapperProps } from '../styles';
 
 const EditVerse: FC<EditVerseProps> = ({
   setShow,

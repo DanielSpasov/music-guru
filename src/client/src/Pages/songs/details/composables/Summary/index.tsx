@@ -1,6 +1,9 @@
-import { SummaryProps } from './types';
-import Item from './Item';
 import { FC } from 'react';
+
+import { SummaryProps } from './types';
+
+// Composables
+import Item from '../Item';
 
 const Summary: FC<SummaryProps> = ({ song, albums }) => {
   return (

@@ -7,9 +7,9 @@ import { AuthContext } from '../../../Contexts/Auth';
 import { Artist } from '../../../Types';
 import Api from '../../../Api';
 
-// Deatiled view Components
-import About from './About';
-import Socials from './Socials';
+// Composables
+import Socials from './composables/Socials';
+import About from './composables/About';
 
 export const defaultArtist: Artist = {
   created_at: new Date(),

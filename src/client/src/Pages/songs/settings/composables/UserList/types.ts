@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-import { SVGProps } from '../../../Components/Common/SVG/helpers';
-import { ListUser } from '../../../Types';
+import { SVGProps } from '../../../../../Components/Common/SVG/helpers';
+import { ListUser } from '../../../../../Types';
 
 export type UserListProps = {
   items: ListUser[];

@@ -1,4 +1,4 @@
-import { Model } from '../../../../../Api/types';
+import { Model } from '../../../../../../../Api/types';
 
 export type ItemType = 'link' | 'links' | 'date' | 'text';
 
@@ -22,18 +22,4 @@ export type DateProps = {
 export type TextProps = {
   value: string;
   type: Extract<ItemType, 'text'>;
-};
-
-export type ItemComponentProps<T> =
-  | LinkProps<T>
-  | LinksProps<T>
-  | DateProps
-  | TextProps;
-
-export type ItemProps<T> = {
-  label: string;
-} & ItemComponentProps<T>;
-
-export type MissingTextProps = {
-  message?: string;
 };

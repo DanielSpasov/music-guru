@@ -6,8 +6,10 @@ import { IAddUser, IDelUser, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts';
 import { ListUser } from '../../../Types';
 import { useSong } from '../../../Hooks';
-import UserList from './UserList';
 import Api from '../../../Api';
+
+// Composables
+import UserList from './composables/UserList';
 
 const Settings = () => {
   const { id: uid = '0' } = useParams();

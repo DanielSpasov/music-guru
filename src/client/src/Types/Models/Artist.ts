@@ -1,3 +1,4 @@
+import { ArtistSocials } from '../../Validations';
 import { BaseModel } from './Base';
 
 export type Artist = BaseModel & {
@@ -6,7 +7,7 @@ export type Artist = BaseModel & {
   created_at: Date;
   created_by: string;
   favorites: number;
-  links: { name: string; url: string }[];
+  links: { name: keyof ArtistSocials; url: string }[];
 };
 
 export type ListArtist = BaseModel & {

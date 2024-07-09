@@ -1,6 +1,6 @@
 import { FC, useCallback } from 'react';
 
-import { Button, IPlus } from '../../../../Components';
+import { Button, IPlus } from '../../../../../../../Components';
 import { HeaderProps } from './types';
 
 const Header: FC<HeaderProps> = ({ disableAdd, showAdd, setShowNewVerse }) => {

@@ -1,3 +1,4 @@
+import { Socials } from '../../Validations';
 import { ListArtist } from './Artist';
 import { BaseModel } from './Base';
 import { ListUser } from './User';
@@ -16,7 +17,7 @@ export type Song = BaseModel & {
   artist: ListArtist;
   features: ListArtist[];
   verses: Verse[];
-  links: { name: string; url: string }[];
+  links: { name: keyof Socials; url: string }[];
   about: string;
   editors: ListUser[];
   favorites: number;

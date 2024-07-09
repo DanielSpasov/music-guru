@@ -1,9 +1,11 @@
 import { FC, useContext, useState } from 'react';
 
-import { IPen, ITrashBin } from '../../../../Components';
-import { AuthContext } from '../../../../Contexts';
-import EditVerse from './Forms/EditVerse';
+import { IPen, ITrashBin } from '../../../../../../../Components';
+import { AuthContext } from '../../../../../../../Contexts';
 import { VerseProps } from './types';
+
+// Composables
+import EditVerse from '../EditVerse';
 
 const SongVerse: FC<VerseProps> = ({ edit, del, loading, isEditor, verse }) => {
   const [isEditing, setIsEditing] = useState(false);

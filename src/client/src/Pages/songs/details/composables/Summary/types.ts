@@ -1,4 +1,4 @@
-import { Song, ListAlbum } from '../../../../Types';
+import { Song, ListAlbum } from '../../../../../Types';
 
 export type SummaryProps = {
   song: Song;
