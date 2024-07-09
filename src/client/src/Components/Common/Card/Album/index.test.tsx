@@ -1,4 +1,6 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import moment from 'moment';
 
 import {
   darkProps,
@@ -9,9 +11,7 @@ import {
   lightHoverTextProps
 } from './helpers';
 import AlbumCard from '.';
-import { ListAlbum } from '../../../../Types/Album';
-import { MemoryRouter } from 'react-router-dom';
-import moment from 'moment';
+import { ListAlbum } from '../../../../Types';
 
 describe('Album Card', () => {
   const mockData: ListAlbum = {

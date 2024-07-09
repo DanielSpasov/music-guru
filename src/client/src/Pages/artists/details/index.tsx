@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import { List, PageLayout, Image, IPen } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { Artist } from '../../../Types/Artist';
+import { Artist } from '../../../Types';
 import Api from '../../../Api';
 
 // Deatiled view Components

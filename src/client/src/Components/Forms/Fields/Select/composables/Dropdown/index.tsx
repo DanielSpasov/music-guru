@@ -1,22 +1,22 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Popover, Loader } from '../../../../../../Components';
-import useDebounce from '../../../../../../Hooks/useDebounce';
 import { selectedProps, themeProps } from './styles';
 import { DropdownProps, Option } from '../../types';
+import { useDebounce } from '../../../../../../Hooks';
 
 // Composables
 import Search from '../Search';
 
-const Dropdown: FC<DropdownProps> = ({
+const Dropdown = <T extends Option>({
   hideSearch,
   open,
   onOptionClick,
   selected,
   searchRef,
   fetchFn
-}) => {
-  const [results, setResults] = useState<Option[]>([]);
+}: DropdownProps<T>) => {
+  const [results, setResults] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
 
   const [rawSearch, setSearch] = useState('');
@@ -38,7 +38,7 @@ const Dropdown: FC<DropdownProps> = ({
 
   return (
     <Popover open={open} className="w-full">
-      {!hideSearch && <Search setSearch={setSearch} searchRef={searchRef} />}
+      {!hideSearch && <Search<T> setSearch={setSearch} searchRef={searchRef} />}
 
       {loading ? (
         <Loader type="vinyl" />

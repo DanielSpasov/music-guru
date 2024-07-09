@@ -9,8 +9,9 @@ import {
   PageLayout
 } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import useSong from '../../../Hooks/useSong';
+import { useSong } from '../../../Hooks';
 
+// Composables
 import Socials from './Socials';
 import Summary from './Summary';
 import Lyrics from './Lyrics';

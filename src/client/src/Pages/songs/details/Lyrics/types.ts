@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { SubmitFn } from '../../../../Components/Forms/Form/types';
 import { CreateVerseData } from '../../../../Validations';
-import { Song, Verse } from '../../../../Types/Song';
+import { Song, Verse } from '../../../../Types';
 
 export type DelVerseFn = (number: number) => Promise<void>;
 export type EditVerseFn = (number: number, verse: Verse) => Promise<void>;

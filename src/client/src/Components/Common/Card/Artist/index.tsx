@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 
-import { ListArtist } from '../../../../Types/Artist';
+import { ListArtist } from '../../../../Types';
 import { CardProps } from '../helpers';
 import { hoverProps } from './helpers';
 import { Link } from '../../../';

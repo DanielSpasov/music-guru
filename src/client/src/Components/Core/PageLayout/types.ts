@@ -1,24 +1,24 @@
-import { FC, ReactNode } from 'react';
+import { BaseSyntheticEvent, FC, ReactNode } from 'react';
 
 import { ButtonVariant } from '../../Common/Button/types';
 import { SVGProps } from '../../Common/SVG/helpers';
 
 export type DefaultActionProps = {
-  onClick: (props: any) => any;
+  onClick: (e: BaseSyntheticEvent) => void;
   disabled?: boolean;
   hidden?: boolean;
 };
 
-export interface IconAction extends DefaultActionProps {
+export type IconAction = DefaultActionProps & {
   type: 'icon';
   Icon: FC<SVGProps>;
-}
+};
 
-export interface ButtonAction extends DefaultActionProps {
+export type ButtonAction = DefaultActionProps & {
   type: 'button';
   children: ReactNode;
   variant: ButtonVariant;
-}
+};
 
 export type Action = IconAction | ButtonAction;
 

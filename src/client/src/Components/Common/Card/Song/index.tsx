@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 
-import { ListSong } from '../../../../Types/Song';
+import { ListSong } from '../../../../Types';
 import { defaultProps } from './helpers';
 import { CardProps } from '../helpers';
 import { Link } from '../..';

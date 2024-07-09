@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { Button, Loader } from '../../../Components';
 import { FormProps, SubmitFn } from './types';
 
-function Form<T extends FieldValues>({
+const Form = <T extends FieldValues>({
   onSubmit,
   defaultValues,
   validationSchema,
@@ -15,7 +15,7 @@ function Form<T extends FieldValues>({
   className,
   additionalContent,
   ...props
-}: FormProps<T>) {
+}: FormProps<T>) => {
   const { handleSubmit, ...formProps } = useForm<T>({
     defaultValues,
     ...(validationSchema ? { resolver: zodResolver(validationSchema) } : {})
@@ -65,6 +65,6 @@ function Form<T extends FieldValues>({
       </form>
     </FormProvider>
   );
-}
+};
 
 export default Form;

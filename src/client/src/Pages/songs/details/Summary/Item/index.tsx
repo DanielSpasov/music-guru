@@ -2,34 +2,34 @@ import { Fragment, memo } from 'react';
 import moment from 'moment';
 
 import { Link } from '../../../../../Components';
+import { BaseModel } from '../../../../../Types';
 import {
   DateProps,
   ItemComponentProps,
   ItemProps,
   LinkProps,
   LinksProps,
-  TextProps,
-  BaseItem
+  TextProps
 } from './types';
 
 // Composables
 import MissingText from './MissingText';
 
-function Item<T extends BaseItem>({ label, ...props }: ItemProps<T>) {
+const Item = <T extends BaseModel>({ label, ...props }: ItemProps<T>) => {
   return (
     <div>
       <span className="font-semibold text-lg">{label}: </span>
       {ItemComponent<T>(props)}
     </div>
   );
-}
+};
 
 export default memo(Item);
 
-function ItemComponent<T extends BaseItem>({
+const ItemComponent = <T extends BaseModel>({
   type = 'text',
   ...props
-}: ItemComponentProps<T>) {
+}: ItemComponentProps<T>) => {
   if (type === 'link') {
     const { value, linkType } = props as LinkProps<T>;
     if (!value) return <MissingText />;
@@ -68,4 +68,4 @@ function ItemComponent<T extends BaseItem>({
   const { value } = props as TextProps;
   if (!value) return <MissingText />;
   return <span className="text-lg">{value}</span>;
-}
+};

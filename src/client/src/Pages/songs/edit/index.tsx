@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import moment from 'moment';
 
 import { SubmitFn } from '../../../Components/Forms/Form/types';
-import useSong from '../../../Hooks/useSong';
+import { useSong } from '../../../Hooks';
 import Api from '../../../Api';
 import {
   Fieldset,

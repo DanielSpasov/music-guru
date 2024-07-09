@@ -1,10 +1,9 @@
 import { FC } from 'react';
 
+import { UseFavoriteHookProps } from '../../../../Hooks/useFavorite/types';
 import { IHeart, IHeartOutline, Loader } from '../../../';
 import { CardModel, favoriteIconProps } from '../helpers';
-import useFavorite, {
-  UseFavoriteHookProps
-} from '../../../../Hooks/useFavorite';
+import { useFavorite } from '../../../../Hooks';
 
 export type FavoritesCounterProps = {
   model: CardModel;

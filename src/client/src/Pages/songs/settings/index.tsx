@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 
 import { IAddUser, IDelUser, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts';
-import { ListUser } from '../../../Types/User';
-import useSong from '../../../Hooks/useSong';
+import { ListUser } from '../../../Types';
+import { useSong } from '../../../Hooks';
 import UserList from './UserList';
 import Api from '../../../Api';
 

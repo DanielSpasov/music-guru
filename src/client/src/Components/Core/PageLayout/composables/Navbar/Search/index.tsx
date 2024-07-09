@@ -1,13 +1,13 @@
-import { memo, useEffect, useMemo, useState } from 'react';
+import { FC, memo, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { capitalize } from 'lodash';
 
 import { IMagnifyingGlass, Link, Popover, Loader } from '../../../../../';
-import useDebounce from '../../../../../../Hooks/useDebounce';
+import { useDebounce } from '../../../../../../Hooks';
 import { Results, SearchProps } from './types';
 import Api from '../../../../../../Api';
 
-function Search({ models }: SearchProps) {
+const Search: FC<SearchProps> = ({ models }) => {
   const [value, setValue] = useState('');
   const search = useDebounce({ value, delay: 500 });
 
@@ -113,6 +113,6 @@ function Search({ models }: SearchProps) {
       </Popover>
     </article>
   );
-}
+};
 
 export default memo(Search) as typeof Search;

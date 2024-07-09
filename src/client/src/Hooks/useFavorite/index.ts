@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { CardModel } from '../Components/Common/Card/helpers';
-import { Favorites } from '../Types/Favorites';
+import { UseFavoriteHook } from './types';
 
-const useFavorite: UseFavoriteHook = ({
+export const useFavorite: UseFavoriteHook = ({
   uid,
   model,
   isFavorite,
@@ -42,27 +41,3 @@ const useFavorite: UseFavoriteHook = ({
     favCount
   };
 };
-
-export default useFavorite;
-
-export type FavoriteFn = (uid: string) => Promise<{ favorites: Favorites }>;
-export type UpdateFavsFn = (newFavs: string[]) => void;
-
-export type UseFavoriteHookProps = {
-  uid: string;
-  model: CardModel;
-  isFavorite: boolean;
-  defaultCount: number;
-  favoriteFn?: FavoriteFn;
-  updateFavs?: UpdateFavsFn;
-};
-
-type UseFavoriteHookReturnProps = {
-  onFavorite: () => Promise<void>;
-  loadingFav: boolean;
-  favCount: number;
-};
-
-type UseFavoriteHook = (
-  props: UseFavoriteHookProps
-) => UseFavoriteHookReturnProps;

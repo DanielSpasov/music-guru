@@ -1,8 +1,9 @@
-import { FC, memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { CardSwitchProps, cards } from './helpers';
+import { BaseModel } from '../../../Types';
 
-const Card: FC<CardSwitchProps> = ({ model, ...props }) => {
+const Card = <T extends BaseModel>({ model, ...props }: CardSwitchProps<T>) => {
   const Component = useMemo(() => cards[model], [model]);
   return Component ? (
     <Component {...props} />
@@ -11,4 +12,4 @@ const Card: FC<CardSwitchProps> = ({ model, ...props }) => {
   );
 };
 
-export default memo(Card);
+export default memo(Card) as typeof Card;

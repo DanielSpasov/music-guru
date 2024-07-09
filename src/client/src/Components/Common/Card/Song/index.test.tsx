@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import {
   darkHoverProps,
@@ -9,8 +10,7 @@ import {
   lightProps
 } from './helpers';
 import SongCard from '.';
-import { ListSong } from '../../../../Types/Song';
-import { MemoryRouter } from 'react-router-dom';
+import { ListSong } from '../../../../Types';
 
 describe('Song Card', () => {
   const mockData: ListSong = {

@@ -1,4 +1,4 @@
-import { Artist } from '../../../Types/Artist';
+import { Artist } from '../../../Types';
 
 export default function About({ artist }: { artist: Artist }) {
   return (

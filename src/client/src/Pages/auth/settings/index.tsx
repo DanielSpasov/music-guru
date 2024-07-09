@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { ILock, IUser, PageLayout, Details } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { User } from '../../../Types/User';
+import { User } from '../../../Types';
 import Api from '../../../Api';
 import Option from './Option';
 

@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { Option, SelectComponentProps } from './types';
 import { themeProps } from './styles';
@@ -7,13 +7,13 @@ import { IX } from '../../../Icons';
 // Composables
 import Dropdown from './composables/Dropdown';
 
-const Multi: FC<SelectComponentProps<'multi'>> = ({
+const Multi = <T extends Option>({
   defaultValue = [],
   placeholder,
   hideSearch,
   onChange,
   fetchFn
-}) => {
+}: SelectComponentProps<'multi', T>) => {
   const [selected, setSelected] = useState<Option[]>(defaultValue);
 
   const [open, setOpen] = useState(false);
@@ -64,7 +64,7 @@ const Multi: FC<SelectComponentProps<'multi'>> = ({
         )}
       </div>
 
-      <Dropdown
+      <Dropdown<T>
         onOptionClick={onOptionClick}
         hideSearch={hideSearch}
         searchRef={searchRef}

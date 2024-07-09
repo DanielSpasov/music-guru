@@ -4,7 +4,7 @@ import {
   IAppleMusic,
   ISoundcloud
 } from '../../../Components';
-import { Song } from '../../../Types/Song';
+import { Song } from '../../../Types';
 
 const socialsColors: Record<string, string> = {
   spotify: '[&>path]:hover:fill-[#1DB954]',

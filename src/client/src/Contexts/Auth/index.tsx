@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect } from 'react';
+import { createContext, useReducer, useEffect, FC } from 'react';
 
 import {
   Action,
@@ -9,7 +9,7 @@ import {
 } from './helpers';
 import Api from '../../Api';
 
-function authReducer(state: IAuth, action: Action): IAuth {
+const authReducer = (state: IAuth, action: Action): IAuth => {
   switch (action.type) {
     case 'SIGNIN':
       localStorage.setItem('AUTH', action?.payload?.token);
@@ -24,14 +24,14 @@ function authReducer(state: IAuth, action: Action): IAuth {
     default:
       return state;
   }
-}
+};
 
 export const AuthContext = createContext<AuthContextType>({
   ...defaultAuth,
   dispatch: () => defaultAuth
 });
 
-export function AuthProvider({ children }: AuthProviderProps) {
+export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, defaultAuth);
 
   useEffect(() => {
@@ -52,4 +52,4 @@ export function AuthProvider({ children }: AuthProviderProps) {
       {children}
     </AuthContext.Provider>
   );
-}
+};

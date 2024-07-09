@@ -1,9 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { ListArtist } from '../../../Types/Artist';
-import { ListAlbum } from '../../../Types/Album';
-import { ListSong } from '../../../Types/Song';
+import { ListArtist, ListAlbum, ListSong } from '../../../Types';
 import Card from './index';
 
 describe('Card', () => {

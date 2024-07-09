@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { ElementType } from 'react';
 
-import { FavoriteFn, UpdateFavsFn } from '../../../Hooks/useFavorite';
+import { FavoriteFn, UpdateFavsFn } from '../../../Hooks/useFavorite/types';
 import { Model } from '../../../Api/types';
 
 import ArtistCard from './Artist';
@@ -18,11 +18,11 @@ export type CardProps<T> = {
 
 export type CardModel = Exclude<Model, 'users'>;
 
-export type CardSwitchProps = CardProps<any> & {
+export type CardSwitchProps<T> = CardProps<T> & {
   model: CardModel;
 };
 
-export const cards: Record<CardModel, FC<CardProps<any>>> = {
+export const cards: Record<CardModel, ElementType> = {
   artists: ArtistCard,
   albums: AlbumCard,
   songs: SongCard

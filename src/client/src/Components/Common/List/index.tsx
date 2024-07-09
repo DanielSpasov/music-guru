@@ -2,8 +2,9 @@ import { memo, useCallback, useContext, useEffect, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 
-import { BaseModel, ListProps, ListState } from './types';
 import { AuthContext } from '../../../Contexts';
+import { ListProps, ListState } from './types';
+import { BaseModel } from '../../../Types';
 import Api from '../../../Api';
 import { Card } from '../../';
 
@@ -94,7 +95,12 @@ const List = <T extends BaseModel>({
           Array(skeletonLength)
             .fill(null)
             .map((_, i) => (
-              <Card key={i} data={state.items} model={model} loading={true} />
+              <Card
+                key={i}
+                data={{ name: '', uid: '' }}
+                model={model}
+                loading={true}
+              />
             ))
         ) : !state.items.length ? (
           <h4 className="font-medium" data-testid="list-no-items-message">

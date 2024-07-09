@@ -1,4 +1,4 @@
-import { Song } from '../../../Types/Song';
+import { Song } from '../../../Types';
 
 export default function About({ song }: { song: Song }) {
   return (

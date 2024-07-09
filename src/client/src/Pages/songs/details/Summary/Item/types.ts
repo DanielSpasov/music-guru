@@ -2,8 +2,6 @@ import { Model } from '../../../../../Api/types';
 
 export type ItemType = 'link' | 'links' | 'date' | 'text';
 
-export type BaseItem = { uid: string; name: string };
-
 export type LinkProps<T> = {
   value: T;
   type: Extract<ItemType, 'link'>;

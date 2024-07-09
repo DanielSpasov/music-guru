@@ -7,7 +7,7 @@ import {
   ITwitter,
   IYoutube
 } from '../../../Components';
-import { Artist } from '../../../Types/Artist';
+import { Artist } from '../../../Types';
 
 const socialsColors: Record<string, string> = {
   instagram: '[&>path]:hover:fill-[#E1306C]',

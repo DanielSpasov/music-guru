@@ -1,15 +1,12 @@
 import { ListArtist } from './Artist';
+import { BaseModel } from './Base';
 import { ListSong } from './Song';
 
-export type AlbumType = {
+export type AlbumType = BaseModel & {
   code: string;
-  name: string;
-  uid: string;
 };
 
-export interface Album {
-  uid: string;
-  name: string;
+export type Album = BaseModel & {
   type: AlbumType;
   image: string;
   created_at: Date;
@@ -18,13 +15,11 @@ export interface Album {
   artist: ListArtist;
   songs: ListSong[];
   favorites: number;
-}
+};
 
-export interface ListAlbum {
-  uid: string;
-  name: string;
+export type ListAlbum = BaseModel & {
   type: AlbumType;
   image: string;
   release_date: string | null;
   favorites: number;
-}
+};

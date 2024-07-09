@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { IPen, ITrashBin, Image, List, PageLayout } from '../../../Components';
 import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
-import { Album } from '../../../Types/Album';
+import { Album } from '../../../Types';
 import Api from '../../../Api';
 
 export const defaultAlbum: Album = {

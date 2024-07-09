@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { darkHoverProps, lightHoverProps } from './helpers';
-import { ListArtist } from '../../../../Types/Artist';
+import { ListArtist } from '../../../../Types';
 import ArtistCard from '.';
-import { MemoryRouter } from 'react-router-dom';
 
 describe('Artist Card', () => {
   const mockData: ListArtist = {

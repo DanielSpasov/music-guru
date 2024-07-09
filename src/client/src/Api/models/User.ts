@@ -1,8 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
 
 import { SignInData, SignUpData } from '../../Validations';
-import { ListUser, User } from '../../Types/User';
 import { get, patch, post } from '../requests';
+import { ListUser, User } from '../../Types';
 import { Body } from '../types';
 import Crud from '../crud';
 

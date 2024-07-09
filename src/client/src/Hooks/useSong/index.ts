@@ -2,30 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { SubmitFn } from '../Components/Forms/Form/types';
-import { defaultArtist } from '../Pages/artists/details';
-import { CreateVerseData } from '../Validations';
-import { Song, Verse } from '../Types/Song';
-import { ListAlbum } from '../Types/Album';
-import Api from '../Api';
+import { SubmitFn } from '../../Components/Forms/Form/types';
+import { Song, Verse, ListAlbum } from '../../Types';
+import { CreateVerseData } from '../../Validations';
+import { defaultSong } from './defaultValues';
+import Api from '../../Api';
 
-const defaultSong: Song = {
-  uid: '',
-  created_at: new Date(),
-  created_by: '',
-  features: [],
-  image: '',
-  name: '',
-  release_date: null,
-  artist: defaultArtist,
-  verses: [],
-  links: [],
-  about: '',
-  editors: [],
-  favorites: 0
-};
-
-export default function useSong(uid: string) {
+export const useSong = (uid: string) => {
   const [song, setSong] = useState<Song>(defaultSong);
 
   const [albums, setAlbums] = useState<ListAlbum[]>([]);
@@ -185,4 +168,4 @@ export default function useSong(uid: string) {
       loading: verseLoading
     }
   };
-}
+};

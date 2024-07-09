@@ -5,7 +5,8 @@ import {
   ReactNode,
   useEffect,
   useRef,
-  useState
+  useState,
+  FC
 } from 'react';
 
 export type Theme = 'light' | 'dark';
@@ -24,7 +25,7 @@ export const ThemeContext = createContext<ThemeContextType>({
   setTheme: () => null
 });
 
-export function ThemeProvider({ children }: ThemeProviderProps) {
+export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     const currentTheme = localStorage.getItem('theme') as Theme;
@@ -50,4 +51,4 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       {children}
     </ThemeContext.Provider>
   );
-}
+};

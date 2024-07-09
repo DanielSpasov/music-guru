@@ -1,10 +1,8 @@
-import { FC } from 'react';
-
 import { IMagnifyingGlass } from '../../../../../Icons';
-import { SearchProps } from '../../types';
+import { Option, SearchProps } from '../../types';
 import { themeProps } from './styles';
 
-const Search: FC<SearchProps> = ({ setSearch, searchRef }) => {
+const Search = <T extends Option>({ setSearch, searchRef }: SearchProps<T>) => {
   return (
     <div className="flex items-center p-0.5">
       <IMagnifyingGlass color="[&>path]:fill-neutral-500" className="w-6 h-6" />

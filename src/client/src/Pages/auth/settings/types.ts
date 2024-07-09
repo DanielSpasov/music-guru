@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { User } from '../../../Types/User';
+import { User } from '../../../Types';
 
 export type MenuOption = {
   label: string;

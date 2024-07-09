@@ -4,7 +4,7 @@ import { UseFormReturn } from 'react-hook-form';
 export type SideEffect = (
   event: BaseSyntheticEvent,
   formProps: Omit<UseFormReturn, 'register'>
-) => any;
+) => Promise<void> | void;
 
 export type InputProps = {
   label: string;

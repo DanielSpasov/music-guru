@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 
-import { ListSong, Song, Verse } from '../../Types/Song';
+import { ListSong, Song, Verse } from '../../Types';
 import { del, patch, post, get } from '../requests';
 import { Body } from '../types';
 import Crud from '../crud';

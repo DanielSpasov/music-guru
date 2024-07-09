@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 
-import { Artist, ListArtist } from '../../Types/Artist';
+import { Artist, ListArtist } from '../../Types';
 import { post } from '../requests';
 import Crud from '../crud';
 

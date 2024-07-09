@@ -1,4 +1,5 @@
 import { ListArtist } from './Artist';
+import { BaseModel } from './Base';
 import { ListUser } from './User';
 
 export type Verse = {
@@ -7,9 +8,7 @@ export type Verse = {
   number: number;
 };
 
-export interface Song {
-  uid: string;
-  name: string;
+export type Song = BaseModel & {
   image: string;
   created_at: Date;
   created_by: string;
@@ -21,12 +20,10 @@ export interface Song {
   about: string;
   editors: ListUser[];
   favorites: number;
-}
+};
 
-export interface ListSong {
-  uid: string;
-  name: string;
+export type ListSong = BaseModel & {
   image: string;
   artist: ListArtist;
   favorites: number;
-}
+};

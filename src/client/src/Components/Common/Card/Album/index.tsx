@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 import moment from 'moment';
 
-import { ListAlbum } from '../../../../Types/Album';
+import { ListAlbum } from '../../../../Types';
 import { defaultProps } from './helpers';
 import { CardProps } from '../helpers';
 import { Link } from '../../../';

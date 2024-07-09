@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { Option, SelectComponentProps } from './types';
 import { themeProps } from './styles';
@@ -7,13 +7,13 @@ import { IX } from '../../../Icons';
 // Composables
 import Dropdown from './composables/Dropdown';
 
-const Single: FC<SelectComponentProps<'single'>> = ({
+const Single = <T extends Option>({
   defaultValue = null,
   placeholder,
   hideSearch,
   onChange,
   fetchFn
-}) => {
+}: SelectComponentProps<'single', T>) => {
   const [selected, setSelected] = useState<Option | null>(defaultValue);
 
   const [open, setOpen] = useState(false);
@@ -58,7 +58,7 @@ const Single: FC<SelectComponentProps<'single'>> = ({
         )}
       </p>
 
-      <Dropdown
+      <Dropdown<T>
         selected={selected ? [selected] : []}
         onOptionClick={onOptionClick}
         hideSearch={hideSearch}

@@ -1,6 +1,6 @@
 import { Dispatch, ReactNode } from 'react';
 
-import { User } from '../../Types/User';
+import { User } from '../../Types';
 
 export const defaultAuth = {
   uid: null,

@@ -1,15 +1,15 @@
-import { Favorites } from './Favorites';
+import { Favorites } from '../Utils';
 
-export interface User {
+export type User = {
   uid: string;
   verified: boolean;
   created_at: string;
   email: string;
   username: string;
   favorites: Favorites;
-}
+};
 
-export interface ListUser {
+export type ListUser = {
   uid: string;
   username: string;
-}
+};
