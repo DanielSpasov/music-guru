@@ -4,4 +4,5 @@ export type SearchProps = {
   models: Model[];
 };
 
-export type Results = Partial<Record<Model, any[]>>;
+type Result = { uid: string; name: string };
+export type Results = Partial<Record<Model, Result[]>>;

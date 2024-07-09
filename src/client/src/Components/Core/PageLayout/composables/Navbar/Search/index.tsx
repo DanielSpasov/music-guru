@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useMemo, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { capitalize } from 'lodash';
 
@@ -7,7 +7,7 @@ import useDebounce from '../../../../../../Hooks/useDebounce';
 import { Results, SearchProps } from './types';
 import Api from '../../../../../../Api';
 
-const Search: FC<SearchProps> = ({ models }) => {
+function Search({ models }: SearchProps) {
   const [value, setValue] = useState('');
   const search = useDebounce({ value, delay: 500 });
 
@@ -113,6 +113,6 @@ const Search: FC<SearchProps> = ({ models }) => {
       </Popover>
     </article>
   );
-};
+}
 
-export default memo(Search);
+export default memo(Search) as typeof Search;
