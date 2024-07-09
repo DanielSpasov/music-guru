@@ -1,9 +1,11 @@
-import { Form, IX, Input, Textarea } from '../../../../../Components';
-import { VerseSchema } from '../../../../../Validations';
-import { NewVerseProps } from '../helpers';
-import { wrapperProps } from './helpers';
+import { FC } from 'react';
 
-export default function NewVerse({ show, setShow, onSubmit }: NewVerseProps) {
+import { CreateVerseData, VerseSchema } from '../../../../../Validations';
+import { Form, IX, Input, Textarea } from '../../../../../Components';
+import { NewVerseProps } from '../types';
+import { wrapperProps } from './styles';
+
+const NewVerse: FC<NewVerseProps> = ({ show, setShow, onSubmit }) => {
   if (!show) return null;
   return (
     <div className={`mt-4 rounded-md ${wrapperProps}`}>
@@ -12,7 +14,7 @@ export default function NewVerse({ show, setShow, onSubmit }: NewVerseProps) {
         <IX onClick={() => setShow(false)} className="w-8 right-0" />
       </div>
 
-      <Form
+      <Form<CreateVerseData>
         validationSchema={VerseSchema}
         className="w-full"
         onSubmit={formData => {
@@ -25,4 +27,6 @@ export default function NewVerse({ show, setShow, onSubmit }: NewVerseProps) {
       </Form>
     </div>
   );
-}
+};
+
+export default NewVerse;

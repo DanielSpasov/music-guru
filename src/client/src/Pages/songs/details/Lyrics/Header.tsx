@@ -1,13 +1,9 @@
-import { useCallback } from 'react';
+import { FC, useCallback } from 'react';
 
 import { Button, IPlus } from '../../../../Components';
-import { HeaderProps } from './helpers';
+import { HeaderProps } from './types';
 
-export default function Header({
-  disableAdd,
-  showAdd,
-  setShowNewVerse
-}: HeaderProps) {
+const Header: FC<HeaderProps> = ({ disableAdd, showAdd, setShowNewVerse }) => {
   const handleAddVerseClick = useCallback(() => {
     setShowNewVerse(true);
     requestAnimationFrame(() => {
@@ -32,4 +28,6 @@ export default function Header({
       )}
     </div>
   );
-}
+};
+
+export default Header;

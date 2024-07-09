@@ -2,6 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useCallback } from 'react';
 
+import { SubmitFn } from '../../../Components/Forms/Form/types';
+import Api from '../../../Api';
+import {
+  ArtistSocialsSchema,
+  CreateArtistSchema,
+  CreateArtistData
+} from '../../../Validations';
 import {
   Fieldset,
   File,
@@ -10,14 +17,12 @@ import {
   PageLayout,
   Textarea
 } from '../../../Components';
-import { ArtistSocialsSchema, CreateArtistSchema } from '../../../Validations';
-import Api from '../../../Api';
 
 export default function CreateArtist() {
   const navigate = useNavigate();
 
-  const onSubmit = useCallback(
-    async (formData: any) => {
+  const onSubmit: SubmitFn<CreateArtistData> = useCallback(
+    async formData => {
       try {
         const socialsKeys = Object.keys(ArtistSocialsSchema.shape);
         const payload = Object.entries(formData).reduce(

@@ -11,8 +11,8 @@ import {
   PageLayout,
   Select
 } from '../../../Components';
-import { EditAlbumSchema } from '../../../Validations';
-import { ListSong } from '../../../Types/Song';
+import { EditAlbumData, EditAlbumSchema } from '../../../Validations';
+import { SubmitFn } from '../../../Components/Forms/Form/types';
 import { defaultAlbum } from '../details';
 import Api from '../../../Api';
 
@@ -20,8 +20,8 @@ export default function EditAlbum() {
   const navigate = useNavigate();
   const { id = '0' } = useParams();
 
-  const onSubmit = useCallback(
-    async (formData: any) => {
+  const onSubmit: SubmitFn<EditAlbumData> = useCallback(
+    async formData => {
       try {
         const payload = {
           ...formData,
@@ -30,7 +30,7 @@ export default function EditAlbum() {
             : null,
           type: formData.type.uid,
           artist: formData.artist.uid,
-          songs: formData.songs?.map((x: ListSong) => x.uid)
+          songs: formData.songs?.map(x => x.uid)
         };
         await Api.albums.patch({
           id,
@@ -45,7 +45,7 @@ export default function EditAlbum() {
     [navigate, id]
   );
 
-  const [defaultData, setDefaultData] = useState<any>(defaultAlbum);
+  const [defaultData, setDefaultData] = useState(defaultAlbum);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

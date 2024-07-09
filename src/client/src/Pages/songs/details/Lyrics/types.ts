@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from 'react';
-import { SubmitHandler } from 'react-hook-form';
 
+import { SubmitFn } from '../../../../Components/Forms/Form/types';
+import { CreateVerseData } from '../../../../Validations';
 import { Song, Verse } from '../../../../Types/Song';
 
 export type DelVerseFn = (number: number) => Promise<void>;
-export type AddVerseFn = SubmitHandler<any>;
 export type EditVerseFn = (number: number, verse: Verse) => Promise<void>;
 
 export type EditVerseProps = {
@@ -16,7 +16,7 @@ export type EditVerseProps = {
 export type NewVerseProps = {
   show: boolean;
   setShow: Dispatch<SetStateAction<boolean>>;
-  onSubmit: AddVerseFn;
+  onSubmit: SubmitFn<CreateVerseData>;
 };
 
 export type HeaderProps = {
@@ -29,7 +29,7 @@ export type LyricsProps = {
   song: Song;
   isEditor: boolean;
   verses: {
-    add: AddVerseFn;
+    add: SubmitFn<CreateVerseData>;
     del: DelVerseFn;
     edit: EditVerseFn;
     loading: number;

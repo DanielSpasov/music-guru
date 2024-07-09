@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { SubmitFn } from '../Components/Forms/Form/types';
 import { defaultArtist } from '../Pages/artists/details';
+import { CreateVerseData } from '../Validations';
 import { Song, Verse } from '../Types/Song';
 import { ListAlbum } from '../Types/Album';
 import Api from '../Api';
@@ -85,7 +86,7 @@ export default function useSong(uid: string) {
     }
   }, [song, navigate]);
 
-  const addVerse = useCallback<SubmitHandler<any>>(
+  const addVerse: SubmitFn<CreateVerseData> = useCallback(
     async formValues => {
       try {
         setVerseLoading(song.verses.length + 1);

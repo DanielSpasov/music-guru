@@ -1,12 +1,14 @@
-import { SubmitHandler } from 'react-hook-form/dist/types';
+import { DeepPartial } from 'react-hook-form/dist/types';
 import { FormHTMLAttributes, ReactNode } from 'react';
 import { ZodSchema } from 'zod';
 
-export type FormProps = {
-  onSubmit: SubmitHandler<any>;
+export type SubmitFn<T> = (formData: T) => Promise<void> | void;
+
+export type FormProps<T> = {
+  onSubmit: SubmitFn<T>;
+  defaultValues?: DeepPartial<T>;
   header?: string;
-  defaultValues?: any;
-  validationSchema?: ZodSchema;
   children?: ReactNode;
+  validationSchema?: ZodSchema;
   additionalContent?: ReactNode;
-} & FormHTMLAttributes<HTMLFormElement>;
+} & Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'>;

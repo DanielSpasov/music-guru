@@ -11,6 +11,7 @@ import {
 import AlbumCard from '.';
 import { ListAlbum } from '../../../../Types/Album';
 import { MemoryRouter } from 'react-router-dom';
+import moment from 'moment';
 
 describe('Album Card', () => {
   const mockData: ListAlbum = {
@@ -22,7 +23,7 @@ describe('Album Card', () => {
       name: 'Mixtape'
     },
     image: 'http://test123',
-    release_date: new Date(),
+    release_date: moment().toISOString(),
     favorites: 0
   };
 
@@ -77,7 +78,7 @@ describe('Album Card', () => {
       );
       const releaseDate = screen.getByTestId('album-card-release-date');
       expect(releaseDate.textContent).toEqual(
-        mockData?.release_date?.getFullYear().toString()
+        moment(mockData?.release_date).year().toString()
       );
     });
 

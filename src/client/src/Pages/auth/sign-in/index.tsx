@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { Form, Input, Link, PageLayout } from '../../../Components';
+import { SubmitFn } from '../../../Components/Forms/Form/types';
+import { SignInData, SignInSchema } from '../../../Validations';
 import { AuthContext } from '../../../Contexts/Auth';
-import { SignInSchema } from '../../../Validations';
 import Api from '../../../Api';
 
 export default function SignIn() {
@@ -12,8 +13,8 @@ export default function SignIn() {
 
   const navigate = useNavigate();
 
-  const onSubmit = useCallback(
-    async (formData: any) => {
+  const onSubmit: SubmitFn<SignInData> = useCallback(
+    async formData => {
       try {
         const { uid, token, data } = await Api.users.signIn({
           email: formData?.email,

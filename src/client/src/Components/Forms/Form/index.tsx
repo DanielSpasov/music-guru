@@ -1,30 +1,30 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FC, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { Button, Loader } from '../../../Components';
-import { FormProps } from './types';
+import { FormProps, SubmitFn } from './types';
 
-const Form: FC<FormProps> = ({
-  onSubmit = () => null,
-  defaultValues = {},
+function Form<T extends FieldValues>({
+  onSubmit,
+  defaultValues,
   validationSchema,
   header,
   children,
   className,
   additionalContent,
   ...props
-}) => {
-  const { handleSubmit, ...formProps } = useForm({
+}: FormProps<T>) {
+  const { handleSubmit, ...formProps } = useForm<T>({
     defaultValues,
     ...(validationSchema ? { resolver: zodResolver(validationSchema) } : {})
   });
 
   const [loading, setLoading] = useState(false);
 
-  const submitFn = useCallback(
-    async (data: any) => {
+  const submitFn: SubmitFn<T> = useCallback(
+    async data => {
       try {
         setLoading(true);
         await onSubmit(data);
@@ -65,6 +65,6 @@ const Form: FC<FormProps> = ({
       </form>
     </FormProvider>
   );
-};
+}
 
 export default Form;

@@ -4,21 +4,22 @@ import { toast } from 'react-toastify';
 
 import { Form, Input, Link, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { SignUpSchema } from '../../../Validations';
+import { SignUpData, SignUpSchema } from '../../../Validations';
 import Api from '../../../Api';
+import { SubmitFn } from '../../../Components/Forms/Form/types';
 
 export default function SignUp() {
   const { dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const onSubmit = useCallback(
-    async (formData: any) => {
+  const onSubmit: SubmitFn<SignUpData> = useCallback(
+    async formData => {
       try {
         const { uid, token, data } = await Api.users.signUp({
-          email: formData?.email,
-          password: formData?.password,
-          repeat_password: formData?.repeat_password,
+          email: formData.email,
+          password: formData.password,
+          repeat_password: formData.repeat_password,
           username: formData?.username
         });
         dispatch({ type: 'SIGNIN', payload: { uid, token, data } });

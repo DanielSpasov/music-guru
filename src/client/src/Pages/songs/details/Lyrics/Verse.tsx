@@ -1,17 +1,11 @@
-import { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 
 import { IPen, ITrashBin } from '../../../../Components';
 import { AuthContext } from '../../../../Contexts';
 import EditVerse from './Forms/EditVerse';
-import { VerseProps } from './helpers';
+import { VerseProps } from './types';
 
-export default function SongVerse({
-  edit,
-  del,
-  loading,
-  isEditor,
-  verse
-}: VerseProps) {
+const SongVerse: FC<VerseProps> = ({ edit, del, loading, isEditor, verse }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const { isAuthenticated } = useContext(AuthContext);
@@ -54,4 +48,6 @@ export default function SongVerse({
       ))}
     </div>
   );
-}
+};
+
+export default SongVerse;

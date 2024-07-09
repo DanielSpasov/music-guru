@@ -14,7 +14,7 @@ export interface Album {
   image: string;
   created_at: Date;
   created_by: string;
-  release_date: Date | null;
+  release_date: string | null;
   artist: ListArtist;
   songs: ListSong[];
   favorites: number;
@@ -25,6 +25,6 @@ export interface ListAlbum {
   name: string;
   type: AlbumType;
   image: string;
-  release_date: Date | null;
+  release_date: string | null;
   favorites: number;
 }

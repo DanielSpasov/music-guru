@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { OptionalFileSchema, SocialsSchema, Require } from '../Utils';
+import { FieldValues } from 'react-hook-form';
 
 export const VerseSchema = z.object({
   title: z.string().min(1, 'Title is required.'),
@@ -20,7 +21,7 @@ const DateSchema = z.union([
   z.literal('')
 ]);
 
-const SelectOptionSchema = z.object({ uid: z.string().uuid() }).nullish();
+const SelectOptionSchema = z.object({ uid: z.string().uuid() });
 
 export const BaseSongSchema = z.object({
   name: z.string().min(1, 'Name is required.').max(128, 'Name is too long.'),
@@ -34,7 +35,11 @@ export const BaseSongSchema = z.object({
 });
 
 export const CreateSongSchema = BaseSongSchema.and(SocialsSchema);
-
 export const EditSongSchema = BaseSongSchema.omit({ image: true }).and(
   SocialsSchema
 );
+
+export type CreateSongData = z.infer<typeof CreateSongSchema> & FieldValues;
+export type EditSongData = z.infer<typeof EditSongSchema> & FieldValues;
+
+export type CreateVerseData = z.infer<typeof VerseSchema> & FieldValues;

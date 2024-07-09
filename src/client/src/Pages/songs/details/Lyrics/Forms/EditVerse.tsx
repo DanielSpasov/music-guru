@@ -1,13 +1,15 @@
+import { FC } from 'react';
+
 import { Form, IX, Input, Textarea } from '../../../../../Components';
 import { VerseSchema } from '../../../../../Validations';
-import { EditVerseProps } from '../helpers';
-import { wrapperProps } from './helpers';
+import { EditVerseProps } from '../types';
+import { wrapperProps } from './styles';
 
-export default function EditVerse({
+const EditVerse: FC<EditVerseProps> = ({
   setShow,
   onSubmit,
   defaultValues
-}: EditVerseProps) {
+}) => {
   return (
     <div className={`mt-4 rounded-md ${wrapperProps}`}>
       <div className="flex justify-between pt-3 px-3">
@@ -29,4 +31,6 @@ export default function EditVerse({
       </Form>
     </div>
   );
-}
+};
+
+export default EditVerse;

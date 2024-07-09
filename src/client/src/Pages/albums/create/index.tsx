@@ -3,6 +3,9 @@ import { toast } from 'react-toastify';
 import { useCallback } from 'react';
 import moment from 'moment';
 
+import { BaseAlbumSchema, CreateAlbumData } from '../../../Validations';
+import { SubmitFn } from '../../../Components/Forms/Form/types';
+import Api from '../../../Api';
 import {
   Fieldset,
   File,
@@ -12,15 +15,12 @@ import {
   Select,
   Mask
 } from '../../../Components';
-import { BaseAlbumSchema } from '../../../Validations';
-import { ListSong } from '../../../Types/Song';
-import Api from '../../../Api';
 
 export default function CreateAlbum() {
   const navigate = useNavigate();
 
-  const onSubmit = useCallback(
-    async (formData: any) => {
+  const onSubmit: SubmitFn<CreateAlbumData> = useCallback(
+    async formData => {
       try {
         const payload = {
           ...formData,
@@ -29,7 +29,7 @@ export default function CreateAlbum() {
             : null,
           type: formData?.type?.uid,
           artist: formData?.artist?.uid,
-          songs: formData?.songs?.map((x: ListSong) => x?.uid)
+          songs: formData?.songs?.map(x => x?.uid)
         };
         const res = await Api.albums.post({
           body: payload,

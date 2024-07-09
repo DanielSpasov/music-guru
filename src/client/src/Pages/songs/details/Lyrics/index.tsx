@@ -1,14 +1,15 @@
-import { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 
 import { AuthContext } from '../../../../Contexts';
 import { Loader } from '../../../../Components';
-import { LyricsProps } from './helpers';
+import { LyricsProps } from './types';
 
+// Composables
 import NewVerse from './Forms/NewVerse';
 import Header from './Header';
 import Verse from './Verse';
 
-export default function Lyrics({ song, verses, isEditor }: LyricsProps) {
+const Lyrics: FC<LyricsProps> = ({ song, verses, isEditor }) => {
   const [showNewVerse, setShowNewVerse] = useState(false);
 
   const { isAuthenticated } = useContext(AuthContext);
@@ -53,4 +54,6 @@ export default function Lyrics({ song, verses, isEditor }: LyricsProps) {
       </div>
     </section>
   );
-}
+};
+
+export default Lyrics;

@@ -2,6 +2,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { SubmitFn } from '../../../Components/Forms/Form/types';
+import { defaultArtist } from '../details';
+import Api from '../../../Api';
 import {
   Fieldset,
   Form,
@@ -9,16 +12,18 @@ import {
   PageLayout,
   Textarea
 } from '../../../Components';
-import { ArtistSocialsSchema, EditArtistSchema } from '../../../Validations';
-import { defaultArtist } from '../details';
-import Api from '../../../Api';
+import {
+  ArtistSocialsSchema,
+  EditArtistData,
+  EditArtistSchema
+} from '../../../Validations';
 
 export default function EditArtist() {
   const navigate = useNavigate();
   const { id = '0' } = useParams();
 
-  const onSubmit = useCallback(
-    async (formData: any) => {
+  const onSubmit: SubmitFn<EditArtistData> = useCallback(
+    async formData => {
       try {
         const socialsKeys = Object.keys(ArtistSocialsSchema.shape);
 

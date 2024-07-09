@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useCallback } from 'react';
 
+import { SubmitFn } from '../../../Components/Forms/Form/types';
+import Api from '../../../Api';
 import {
   Fieldset,
   File,
@@ -12,30 +14,32 @@ import {
   Textarea,
   Mask
 } from '../../../Components';
-import { SocialsSchema, CreateSongSchema } from '../../../Validations';
-import { ListArtist } from '../../../Types/Artist';
-import Api from '../../../Api';
+import {
+  SocialsSchema,
+  CreateSongSchema,
+  CreateSongData
+} from '../../../Validations';
 
 export default function CreateSong() {
   const navigate = useNavigate();
 
-  const onSubmit = useCallback(
-    async (formData: any) => {
+  const onSubmit: SubmitFn<CreateSongData> = useCallback(
+    async formData => {
       try {
         const socialsKeys = Object.keys(SocialsSchema.shape);
-
-        const socialsPayload = {
-          links: [],
-          ...formData
-        };
-        Object.entries(formData).forEach(([key, value]) => {
-          if (!value) return;
-          if (socialsKeys.includes(key)) {
-            socialsPayload.links.push({ name: key, url: value });
-            delete socialsPayload[key];
-          }
-        });
-
+        const socialsPayload = Object.entries(formData).reduce(
+          (data, [key, value]) => {
+            if (!value) return data;
+            if (socialsKeys.includes(key)) {
+              return {
+                ...data,
+                links: [...(data?.links || []), { name: key, url: value }]
+              };
+            }
+            return { ...data, [key]: value };
+          },
+          formData
+        );
         Object.keys(socialsPayload).forEach(
           key => socialsPayload[key] === undefined && delete socialsPayload[key]
         );
@@ -43,7 +47,7 @@ export default function CreateSong() {
         const payload = {
           ...socialsPayload,
           artist: formData.artist?.uid,
-          features: formData?.features?.map((x: ListArtist) => x.uid)
+          features: formData?.features?.map(x => x?.uid)
         };
 
         const res = await Api.songs.post({

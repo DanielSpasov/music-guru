@@ -18,7 +18,7 @@ describe('Card', () => {
           name: 'Mixtape'
         },
         image: 'http://test123',
-        release_date: new Date(),
+        release_date: null,
         favorites: 0
       };
       render(

@@ -1,7 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useCallback } from 'react';
+import moment from 'moment';
 
+import { SubmitFn } from '../../../Components/Forms/Form/types';
+import useSong from '../../../Hooks/useSong';
+import Api from '../../../Api';
 import {
   Fieldset,
   Form,
@@ -11,25 +15,23 @@ import {
   Select,
   Textarea
 } from '../../../Components';
-import { EditSongSchema, SocialsSchema } from '../../../Validations';
-import { ListArtist } from '../../../Types/Artist';
-import useSong from '../../../Hooks/useSong';
-import Api from '../../../Api';
-import moment from 'moment';
+import {
+  EditSongData,
+  EditSongSchema,
+  SocialsSchema
+} from '../../../Validations';
 
 export default function EditSong() {
   const navigate = useNavigate();
   const { id = '0' } = useParams();
 
-  const onSubmit = useCallback(
-    async (formData: any) => {
+  const onSubmit: SubmitFn<EditSongData> = useCallback(
+    async formData => {
       try {
         const socialsKeys = Object.keys(SocialsSchema.shape);
-
         const socialsPayload = Object.entries(formData).reduce(
           (data, [key, value]) => {
             if (!value) return data;
-
             if (socialsKeys.includes(key)) {
               return {
                 ...data,
@@ -40,7 +42,6 @@ export default function EditSong() {
           },
           formData
         );
-
         Object.keys(socialsPayload).forEach(
           key => socialsPayload[key] === undefined && delete socialsPayload[key]
         );
@@ -48,7 +49,7 @@ export default function EditSong() {
         const payload = {
           ...socialsPayload,
           artist: formData.artist.uid,
-          features: formData?.features?.map((x: ListArtist) => x?.uid)
+          features: formData?.features?.map(x => x?.uid)
         };
         await Api.songs.patch({ id, body: payload });
         toast.success('Successfully Edited Song');

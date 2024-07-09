@@ -1,3 +1,4 @@
+import { FieldValues } from 'react-hook-form';
 import { z } from 'zod';
 
 const BaseUserSchema = z.object({
@@ -7,7 +8,7 @@ const BaseUserSchema = z.object({
         .string()
         .min(2, 'Username is too short.')
         .max(30, 'Username is too long.'),
-      z.string().length(0)
+      z.literal('')
     ])
     .optional(),
   email: z
@@ -30,3 +31,6 @@ export const SignInSchema = BaseUserSchema.pick({
   email: true,
   password: true
 });
+
+export type SignInData = z.infer<typeof SignInSchema> & FieldValues;
+export type SignUpData = z.infer<typeof SignUpSchema> & FieldValues;
