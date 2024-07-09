@@ -8,11 +8,11 @@ export const defaultAuth = {
   isAuthenticated: null
 };
 
-export interface IAuth {
+export type IAuth = {
   uid: string | null;
   data: User | null;
   isAuthenticated: boolean | null;
-}
+};
 
 export type ActionType = 'SIGNIN' | 'SIGNOUT';
 
@@ -30,8 +30,8 @@ type SignIn = {
 
 export type Action = SignOut | SignIn;
 
-export interface AuthContextType extends IAuth {
+export type AuthContextType = IAuth & {
   dispatch: Dispatch<Action>;
-}
+};
 
 export type AuthProviderProps = { children: ReactNode };

@@ -11,10 +11,10 @@ import {
 
 export type Theme = 'light' | 'dark';
 
-interface ThemeContextType {
+type ThemeContextType = {
   setTheme: Dispatch<SetStateAction<Theme>>;
   theme: Theme;
-}
+};
 
 type ThemeProviderProps = {
   children: ReactNode;
