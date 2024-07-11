@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 
-import { ChangePassData, ChangePassSchema } from '../../../../Validations';
-import { Form, Input, Link, PageLayout } from '../../../../Components';
-import { SubmitFn } from '../../../../Components/Forms/Form/types';
-import { AuthContext } from '../../../../Contexts';
+import { ChangePassData, ChangePassSchema } from '../../../Validations';
+import { Form, Input, Link, PageLayout } from '../../../Components';
+import { SubmitFn } from '../../../Components/Forms/Form/types';
+import { AuthContext } from '../../../Contexts';
 import { sidebarLinks } from '../links';
-import Api from '../../../../Api';
+import Api from '../../../Api';
 
 const Password = () => {
   const { dispatch, data } = useContext(AuthContext);
@@ -38,6 +38,7 @@ const Password = () => {
       title="Change Password"
       heading="Change Password"
       hideResourses
+      hideRecent
       links={sidebarLinks}
     >
       <Form

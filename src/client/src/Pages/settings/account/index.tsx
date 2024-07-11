@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import { PageLayout } from '../../../../Components';
-import { AuthContext } from '../../../../Contexts';
+import { PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts';
 import { sidebarLinks } from '../links';
 
 // Composables
@@ -16,6 +16,7 @@ const Account = () => {
       title="Accont Settings"
       heading="Account Settings"
       hideResourses
+      hideRecent
       links={sidebarLinks}
     >
       <GeneralInfo data={data} />

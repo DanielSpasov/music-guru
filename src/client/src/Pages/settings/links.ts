@@ -1,5 +1,5 @@
-import { IKey, ILock, IUser } from '../../../Components';
-import { LinkGroup } from '../../../Components/Core/PageLayout/types';
+import { IKey, ILock, IUser } from '../../Components';
+import { LinkGroup } from '../../Components/Core/PageLayout/types';
 
 export const sidebarLinks: LinkGroup[] = [
   {

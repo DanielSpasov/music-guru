@@ -1,8 +1,8 @@
 import { FC, memo } from 'react';
 import moment from 'moment';
 
+import { IUser } from '../../../../../Components';
 import { GeneralInfoProps } from './types';
-import { IUser } from '../../../../../../Components';
 
 const GeneralInfo: FC<GeneralInfoProps> = ({ data }) => {
   return (

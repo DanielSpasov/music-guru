@@ -1,15 +1,12 @@
 import { FC, memo, useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { SideEffect } from '../../../../../../Components/Forms/Fields/Input/types';
-import { SubmitFn } from '../../../../../../Components/Forms/Form/types';
-import { Fieldset, Form, Input } from '../../../../../../Components';
+import { SideEffect } from '../../../../../Components/Forms/Fields/Input/types';
+import { UpdateUserData, UpdateUserSchema } from '../../../../../Validations';
+import { SubmitFn } from '../../../../../Components/Forms/Form/types';
+import { Fieldset, Form, Input } from '../../../../../Components';
 import { UpdateDataProps } from './types';
-import Api from '../../../../../../Api';
-import {
-  UpdateUserData,
-  UpdateUserSchema
-} from '../../../../../../Validations';
+import Api from '../../../../../Api';
 
 const UpdateData: FC<UpdateDataProps> = ({ data: user, dispatch }) => {
   const [disableSubmit, setDisableSubmit] = useState(true);

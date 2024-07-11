@@ -1,13 +1,13 @@
 import { useCallback, useContext, useState } from 'react';
 
-import { IEmail, IGoogle, IPhone, PageLayout } from '../../../../Components';
-import { AuthContext } from '../../../../Contexts';
+import { IEmail, IGoogle, IPhone, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts';
 import { sidebarLinks } from '../links';
 
 // Composables
 import TableRow from './composables/TableRow';
 import { toast } from 'react-toastify';
-import Api from '../../../../Api';
+import Api from '../../../Api';
 
 const MFA = () => {
   const { data } = useContext(AuthContext);
@@ -31,6 +31,7 @@ const MFA = () => {
       title="MFA"
       heading="Multi Factor Authentication"
       hideResourses
+      hideRecent
       links={sidebarLinks}
     >
       <table className="w-full">

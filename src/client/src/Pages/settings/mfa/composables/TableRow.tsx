@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 
+import { Button, ICheck, IX, Loader } from '../../../../Components';
 import { TableRowProps } from './types';
-import { Button, ICheck, IX, Loader } from '../../../../../Components';
 
 const TableRow: FC<TableRowProps> = ({ Icon, value, label, action }) => {
   return (

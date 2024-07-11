@@ -107,6 +107,27 @@
     ]
   },
   {
+    "path": "/settings",
+    "filePath": "/settings/account",
+    "routes": [
+      {
+        "path": "/settings/account",
+        "filePath": "/settings/account",
+        "private": true
+      },
+      {
+        "path": "/settings/password",
+        "filePath": "/settings/password",
+        "private": true
+      },
+      {
+        "path": "/settings/mfa",
+        "filePath": "/settings/mfa",
+        "private": true
+      }
+    ]
+  },
+  {
     "path": "/sign-in",
     "filePath": "/auth/sign-in",
     "private": false
@@ -125,21 +146,6 @@
     "path": "/verify-email",
     "filePath": "/auth/verify-email",
     "private": false
-  },
-  {
-    "path": "/settings/account",
-    "filePath": "/auth/settings/account",
-    "private": true
-  },
-  {
-    "path": "/settings/password",
-    "filePath": "/auth/settings/password",
-    "private": true
-  },
-  {
-    "path": "/settings/mfa",
-    "filePath": "/auth/settings/mfa",
-    "private": true
   },
   {
     "path": "*",
