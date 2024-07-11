@@ -49,7 +49,7 @@ const File: FC<FileProps> = ({
           openUpload();
         }}
         onClick={() => openUpload()}
-        className={`block w-full h-[2.125rem] border-b-2 py-1 cursor-pointer outline-none ${themeProps} ${className}`}
+        className={`block w-full h-[2.125rem] border-b-2 py-1 cursor-pointer outline-none bg-transparent ${themeProps} ${className}`}
       >
         <p className="px-1.5">{watch(name)?.name}</p>
       </div>

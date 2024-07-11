@@ -29,7 +29,7 @@ const Mask: FC<MaskProps> = ({
         placeholder="mm/dd/yyyy"
         defaultValue={defaultValue.current}
         maskChar={null}
-        className={`w-full border-b-2 p-1 outline-none ${themeProps} ${className}`}
+        className={`w-full border-b-2 p-1 outline-none bg-transparent ${themeProps} ${className}`}
         {...props}
       />
 

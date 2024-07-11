@@ -33,7 +33,7 @@ const Input: FC<InputProps> = ({
             if (sideEffect) sideEffect(e, { formState, ...formContextProps });
           }
         })}
-        className={`w-full border-b-2 p-1 outline-none ${themeProps} ${className}`}
+        className={`w-full border-b-2 p-1 outline-none bg-transparent ${themeProps} ${className}`}
         type={type}
         {...props}
       />
