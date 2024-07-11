@@ -14,7 +14,7 @@ export type IAuth = {
   isAuthenticated: boolean | null;
 };
 
-export type ActionType = 'SIGNIN' | 'SIGNOUT';
+export type ActionType = 'SIGNIN' | 'SIGNOUT' | 'UPDATE';
 
 type SignOut = {
   type: Extract<ActionType, 'SIGNOUT'>;
@@ -27,8 +27,14 @@ type SignIn = {
     data: User | null;
   };
 };
+type Update = {
+  type: Extract<ActionType, 'UPDATE'>;
+  payload: {
+    data: User;
+  };
+};
 
-export type Action = SignOut | SignIn;
+export type Action = SignOut | SignIn | Update;
 
 export type AuthContextType = IAuth & {
   dispatch: Dispatch<Action>;

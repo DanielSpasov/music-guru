@@ -32,5 +32,11 @@ export const SignInSchema = BaseUserSchema.pick({
   password: true
 });
 
+export const UpdateUserSchema = BaseUserSchema.pick({
+  username: true,
+  email: true
+});
+
 export type SignInData = z.infer<typeof SignInSchema> & FieldValues;
 export type SignUpData = z.infer<typeof SignUpSchema> & FieldValues;
+export type UpdateUserData = z.infer<typeof UpdateUserSchema> & FieldValues;

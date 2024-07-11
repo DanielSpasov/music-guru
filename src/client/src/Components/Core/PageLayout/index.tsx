@@ -9,14 +9,20 @@ import Navbar from './composables/Navbar';
 import Header from './composables/Header';
 
 const PageLayout: FC<PageLayoutProps> = ({
+  // Page
   title,
   heading,
-  hideNavbar = false,
-  hideHeader = false,
-  hideSidebar = false,
   children,
+  loading = false,
+  // Navbar
+  hideNavbar = false,
+  // Header
+  hideHeader = false,
   actions = [],
-  loading = false
+  // Sidebar
+  hideSidebar = false,
+  hideResourses = false,
+  links = []
 }) => {
   useEffect(() => {
     document.title = loading ? 'Loading...' : title;
@@ -30,7 +36,13 @@ const PageLayout: FC<PageLayoutProps> = ({
         data-testid="page-body"
         className={`flex min-h-screen ${!hideNavbar ? 'pt-16' : ''}`}
       >
-        {!hideSidebar && <Sidebar hideNavbar={hideNavbar} />}
+        {!hideSidebar && (
+          <Sidebar
+            hideResourses={hideResourses}
+            hideNavbar={hideNavbar}
+            links={links}
+          />
+        )}
 
         <main
           data-testid="page-content"
@@ -40,13 +52,13 @@ const PageLayout: FC<PageLayoutProps> = ({
         >
           {!hideHeader && <Header heading={heading} actions={actions} />}
 
-          {loading ? (
-            <div className="pt-4">
+          <div className="p-4">
+            {loading ? (
               <Loader type="vinyl" data-testid="page-loader" />
-            </div>
-          ) : (
-            children
-          )}
+            ) : (
+              children
+            )}
+          </div>
         </main>
       </div>
     </div>

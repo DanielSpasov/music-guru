@@ -3,4 +3,5 @@ const lightProps =
 const darkProps =
   'dark:border-neutral-600 dark:hover:border-neutral-500 dark:focus:border-primary-dark';
 export const themeProps = `${lightProps} ${darkProps}`;
-export const disabledProps = 'border-b-neutral-300 text-neutral-400';
+export const disabledProps =
+  'border-b-neutral-300 dark:border-b-neutral-600 text-neutral-400';

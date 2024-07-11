@@ -3,7 +3,6 @@ import { AxiosRequestConfig } from 'axios';
 import { SignInData, SignUpData } from '../../Validations';
 import { get, patch, post } from '../requests';
 import { ListUser, User } from '../../Types';
-import { Body } from '../types';
 import Crud from '../crud';
 
 export default class UserAPI extends Crud<User, ListUser> {
@@ -13,31 +12,25 @@ export default class UserAPI extends Crud<User, ListUser> {
     super();
   }
 
-  patch(
+  changeUsername(
     {
       id,
-      field,
-      body = {},
-      config = {}
+      body,
+      config
     }: {
       id: string;
-      field: keyof User;
-      body: Body;
+      body: { username?: string };
       config?: AxiosRequestConfig;
     } = {
       id: '',
-      field: 'username',
       body: {},
       config: {}
     }
   ): Promise<{ data: User }> {
     return patch({
-      url: `${this.baseUrl}/${this.model}/${id}/`,
+      url: `${this.baseUrl}/${this.model}/${id}/username`,
       body,
-      config: {
-        params: { field, ...config?.params },
-        ...config
-      }
+      config
     });
   }
 

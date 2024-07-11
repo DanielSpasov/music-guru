@@ -6,7 +6,7 @@ import {
   ValidateToken,
   ValidateEmail,
   ResendValidationEmail,
-  UpdateUser,
+  ChangeUsername,
   GetUser
 } from '../../Services/Auth';
 import { authorization } from '../../Middleware';
@@ -29,6 +29,6 @@ router.post('/sign-up', SignUp);
 router.post('/sign-in', SignIn);
 
 router.get('/:id', authorization, GetUser);
-router.patch('/:id', authorization, UpdateUser);
+router.patch('/:id/username', authorization, ChangeUsername);
 
 export default router;

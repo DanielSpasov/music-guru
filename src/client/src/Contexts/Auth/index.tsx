@@ -11,6 +11,11 @@ import Api from '../../Api';
 
 const authReducer = (state: IAuth, action: Action): IAuth => {
   switch (action.type) {
+    case 'UPDATE':
+      return {
+        ...state,
+        data: { ...state.data, ...action?.payload?.data }
+      };
     case 'SIGNIN':
       localStorage.setItem('AUTH', action?.payload?.token);
       return {

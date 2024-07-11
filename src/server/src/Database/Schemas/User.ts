@@ -1,11 +1,8 @@
 import { z } from 'zod';
 
 export const UsernameSchema = z.union([
-  z
-    .string()
-    .min(2, { message: 'Username is too short.' })
-    .max(30, { message: 'Username is too long.' }),
-  z.string().length(0) // empty string
+  z.string().min(2, 'Username is too short.').max(30, 'Username is too long.'),
+  z.literal('')
 ]);
 
 export const EmailSchema = z.string().email({ message: 'Invalid email.' });

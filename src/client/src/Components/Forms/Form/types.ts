@@ -8,6 +8,8 @@ export type FormProps<T> = {
   onSubmit: SubmitFn<T>;
   defaultValues?: DeepPartial<T>;
   header?: string;
+  submitLabel?: string;
+  disableSubmit?: boolean;
   children?: ReactNode;
   validationSchema?: ZodSchema;
   additionalContent?: ReactNode;

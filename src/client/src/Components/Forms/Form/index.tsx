@@ -14,6 +14,8 @@ const Form = <T extends FieldValues>({
   children,
   className,
   additionalContent,
+  submitLabel = 'Submit',
+  disableSubmit = false,
   ...props
 }: FormProps<T>) => {
   const { handleSubmit, ...formProps } = useForm<T>({
@@ -42,7 +44,7 @@ const Form = <T extends FieldValues>({
       <form
         onSubmit={handleSubmit(submitFn)}
         encType="multipart/form-data"
-        className={`relative bg-white dark:bg-neutral-900 rounded-md w-1/2 shadow-sm ${className}`}
+        className={`relative bg-neutral-50 dark:bg-neutral-900 rounded-md w-1/2 shadow-sm ${className}`}
         {...props}
       >
         {loading && (
@@ -58,7 +60,7 @@ const Form = <T extends FieldValues>({
         </article>
 
         <div className="flex justify-end gap-4 p-4">
-          <Button disabled={loading}>Submit</Button>
+          <Button disabled={loading || disableSubmit}>{submitLabel}</Button>
         </div>
 
         {additionalContent}

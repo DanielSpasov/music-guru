@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, FC, ReactNode } from 'react';
+import { BaseSyntheticEvent, ElementType, FC, ReactNode } from 'react';
 
 import { ButtonVariant } from '../../Common/Button/types';
 import { SVGProps } from '../../Common/SVG/helpers';
@@ -22,19 +22,33 @@ export type ButtonAction = DefaultActionProps & {
 
 export type Action = IconAction | ButtonAction;
 
-export type Tab = {
-  label: string;
-  key: string;
+export type Link = {
   to: string;
+  label: string;
+  Icon: ElementType;
+  iconColor?: string;
+  activeIconColor?: string;
+};
+
+export type LinkGroup = {
+  title?: string;
+  separate?: boolean;
+  links: Link[];
 };
 
 export type PageLayoutProps = {
+  // Page
   title: string;
   heading?: string;
-  hideNavbar?: boolean;
-  hideHeader?: boolean;
-  hideSidebar?: boolean;
-  children?: ReactNode;
-  actions?: Action[];
   loading?: boolean;
+  children?: ReactNode;
+  // Navbar
+  hideNavbar?: boolean;
+  // Header
+  hideHeader?: boolean;
+  actions?: Action[];
+  // Sidebar
+  hideResourses?: boolean;
+  hideSidebar?: boolean;
+  links?: LinkGroup[];
 };
