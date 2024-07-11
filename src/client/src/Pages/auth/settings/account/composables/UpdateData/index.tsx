@@ -20,7 +20,6 @@ const UpdateData: FC<UpdateDataProps> = ({ data: user, dispatch }) => {
       try {
         if (!user?.uid) return;
         const { data } = await Api.users.changeUsername({
-          id: user?.uid,
           body: { username: formData.username }
         });
         dispatch({ type: 'UPDATE', payload: { data } });

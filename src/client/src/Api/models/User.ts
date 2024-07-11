@@ -14,21 +14,18 @@ export default class UserAPI extends Crud<User, ListUser> {
 
   changeUsername(
     {
-      id,
       body,
       config
     }: {
-      id: string;
       body: { username?: string };
       config?: AxiosRequestConfig;
     } = {
-      id: '',
       body: {},
       config: {}
     }
   ): Promise<{ data: User }> {
     return patch({
-      url: `${this.baseUrl}/${this.model}/${id}/username`,
+      url: `${this.baseUrl}/${this.model}/username`,
       body,
       config
     });
