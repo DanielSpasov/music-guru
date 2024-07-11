@@ -41,3 +41,6 @@ export { ISignIn } from './ISignIn';
 export { IArtist } from './IArtist';
 export { IAlbum } from './IAlbum';
 export { ISong } from './ISong';
+export { IGoogle } from './IGoogle';
+export { IEmail } from './IEmail';
+export { IPhone } from './IPhone';

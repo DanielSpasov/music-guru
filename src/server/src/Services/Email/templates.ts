@@ -1,11 +1,22 @@
 import { Template, TemplateData } from './helpers';
 
-const templates: Record<Template, (expToken?: string) => TemplateData> = {
-  VERIFY: expToken => {
+const templates: Record<Template, (data: any) => TemplateData> = {
+  VERIFY: ({ expToken, username }) => {
     const link = `http://localhost:3000/verify-email?token=${expToken}`;
     return {
-      subject: 'Email Verification',
-      text: `Follow this link to verify your email: ${link}`
+      subject: 'Verify Your Email Address',
+      text: `Hi ${username},
+      
+Thank you for signing up with Music Guru!
+
+Please verify your email address to complete your registration. Simply click the link below to confirm your email:
+
+${link}
+
+If you did not sign up for an account with us, please ignore this email.
+
+Thank you,
+The Music Guru Team`
     };
   },
   CODE: () => ({

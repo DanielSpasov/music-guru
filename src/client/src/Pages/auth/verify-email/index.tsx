@@ -17,14 +17,14 @@ const SignUp = () => {
         const token = searchParams.get('token') || '';
         const { id } = await Api.users.validateToken(token);
         if (id) {
-          const response = await Api.users.validateEmail(id);
-          toast.success(response.message);
-          navigate('/me');
+          const res = await Api.users.validateEmail(id);
+          toast.success(res.message);
+          navigate('/settings/mfa');
         }
       } catch (error) {
         toast.info('You can send a new one from your security settings.');
         toast.error('Verification email has expired.');
-        navigate('/me');
+        navigate('/settings/mfa');
       } finally {
         setLoading(false);
       }

@@ -12,6 +12,6 @@ export const sendVerificationEmail = async (user: User) => {
   await SendEmail({
     to: user.email,
     template: 'VERIFY',
-    expToken
+    data: { expToken, username: user.username }
   });
 };
