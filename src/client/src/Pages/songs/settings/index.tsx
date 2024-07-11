@@ -73,8 +73,8 @@ const Settings = () => {
 
   return (
     <PageLayout
-      title={!loading ? `"${song.name}" Settings` : 'Loading...'}
-      heading={`"${song.name}" Settings`}
+      title={!loading ? `${song.name} Settings` : 'Loading...'}
+      heading={`${song.name} Settings`}
       loading={loading}
     >
       <section className="flex justify-evenly w-full">

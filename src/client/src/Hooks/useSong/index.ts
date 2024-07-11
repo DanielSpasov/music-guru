@@ -14,7 +14,7 @@ export const useSong = (uid: string) => {
   const [albums, setAlbums] = useState<ListAlbum[]>([]);
 
   const [verseLoading, setVerseLoading] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 

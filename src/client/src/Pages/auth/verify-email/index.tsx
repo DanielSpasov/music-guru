@@ -36,7 +36,13 @@ const VerifyEmail = () => {
   }, [navigate, searchParams, dispatch]);
 
   return (
-    <PageLayout title="Verifying Email..." hideHeader hideNavbar hideSidebar>
+    <PageLayout
+      title="Verifying Email..."
+      hideHeader
+      hideNavbar
+      hideSidebar
+      dontSaveRecent
+    >
       <header className="h-screen flex flex-col items-center justify-center">
         <h2>{loading ? 'Verifying Email' : 'Redirecting'}...</h2>
         <div className="p-12">

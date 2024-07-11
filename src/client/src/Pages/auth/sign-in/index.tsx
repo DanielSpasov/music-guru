@@ -31,7 +31,7 @@ const SignIn = () => {
   );
 
   return (
-    <PageLayout title="Sign In" hideHeader>
+    <PageLayout title="Sign In" hideHeader dontSaveRecent>
       <Form
         onSubmit={onSubmit}
         validationSchema={SignInSchema}

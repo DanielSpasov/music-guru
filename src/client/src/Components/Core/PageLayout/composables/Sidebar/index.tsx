@@ -1,12 +1,25 @@
+import { FC, memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { FC, memo } from 'react';
 
-import { IArtist, IAlbum, ISong } from '../../../../Icons';
+import { IArtist, IAlbum, ISong, IRight, IHouse } from '../../../../Icons';
+import { activeIconColor, iconColor, icons } from './icons';
 import { Category, Link } from '../../../../Common';
-import { SidebarProps } from './types';
+import { RecentItem, SidebarProps } from './types';
 
-const Sidebar: FC<SidebarProps> = ({ hideResourses, hideNavbar, links }) => {
+const Sidebar: FC<SidebarProps> = ({
+  hideResourses,
+  hideNavbar,
+  hideRecent,
+  links
+}) => {
+  const [recentlyViewed, setRecentlyViewed] = useState<RecentItem[]>([]);
+
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    const recent = localStorage.getItem('recently_viewed') || '[]';
+    setRecentlyViewed(JSON.parse(recent));
+  }, []);
 
   return (
     <aside
@@ -21,8 +34,8 @@ const Sidebar: FC<SidebarProps> = ({ hideResourses, hideNavbar, links }) => {
             isActive={pathname === '/artists'}
             iconColor={
               pathname === '/artists'
-                ? '[&>path]:fill-primary dark:[&>path]:fill-primary-dark'
-                : '[&>path]:fill-black dark:[&>path]:fill-white'
+                ? activeIconColor['artists']
+                : iconColor['artists']
             }
             type="dropdown-link"
             Icon={IArtist}
@@ -32,11 +45,7 @@ const Sidebar: FC<SidebarProps> = ({ hideResourses, hideNavbar, links }) => {
           </Link>
           <Link
             isActive={pathname === '/albums'}
-            iconColor={
-              pathname === '/albums'
-                ? '[&>g]:stroke-primary dark:[&>g]:stroke-primary-dark'
-                : ''
-            }
+            iconColor={pathname === '/albums' ? activeIconColor['albums'] : ''}
             type="dropdown-link"
             Icon={IAlbum}
             to="/albums"
@@ -45,17 +54,42 @@ const Sidebar: FC<SidebarProps> = ({ hideResourses, hideNavbar, links }) => {
           </Link>
           <Link
             isActive={pathname === '/songs'}
-            iconColor={
-              pathname === '/songs'
-                ? '[&>g]:stroke-primary dark:[&>g]:stroke-primary-dark'
-                : ''
-            }
+            iconColor={pathname === '/songs' ? activeIconColor['songs'] : ''}
             type="dropdown-link"
             Icon={ISong}
             to="/songs"
           >
             Songs
           </Link>
+        </Category>
+      )}
+
+      {!hideRecent && (
+        <Category title="Recently Viewed">
+          {recentlyViewed.map(({ to, name }, i) => {
+            const model = to.split('/')[1];
+
+            const Icon = to === '/' ? IHouse : icons[model] || IRight;
+            const color =
+              to === pathname
+                ? to === '/'
+                  ? activeIconColor['artists']
+                  : activeIconColor[model]
+                : iconColor[model];
+
+            return (
+              <Link
+                key={i}
+                type="dropdown-link"
+                to={to}
+                Icon={Icon}
+                isActive={to === pathname}
+                iconColor={color}
+              >
+                {name}
+              </Link>
+            );
+          })}
         </Category>
       )}
 
