@@ -40,8 +40,6 @@ const PageLayout: FC<PageLayoutProps> = ({
     const recent = localStorage.getItem('recently_viewed') || '[]';
     const recently_viewed: RecentItem[] = JSON.parse(recent);
 
-    console.log(loading, title);
-
     if (recently_viewed.find(x => x.to === pathname)) return;
 
     if (recently_viewed.length === 10) recently_viewed.pop();
