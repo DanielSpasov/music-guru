@@ -44,7 +44,7 @@ const Password = () => {
         onSubmit={onSubmit}
         validationSchema={ChangePassSchema}
         className="m-auto"
-        disableSubmit={!data?.verified}
+        submitBtn={{ disabled: !data?.verified, label: 'Submit' }}
         additionalContent={
           !data?.verified && (
             <div className="text-center p-2">
