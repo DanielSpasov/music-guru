@@ -29,7 +29,7 @@ const Sidebar: FC<SidebarProps> = ({
       data-testid="sidebar"
     >
       {!hideResourses && (
-        <Category title="Resources">
+        <Category title="Resources" data-testid="resources">
           <Link
             isActive={pathname === '/artists'}
             iconColor={
@@ -65,7 +65,7 @@ const Sidebar: FC<SidebarProps> = ({
       )}
 
       {!hideRecent && (
-        <Category title="Recently Viewed">
+        <Category title="Recently Viewed" data-testid="recently-viewed">
           {recentlyViewed.map(({ to, name }, i) => {
             const model = to.split('/')[1];
 
@@ -83,6 +83,7 @@ const Sidebar: FC<SidebarProps> = ({
                 type="dropdown-link"
                 to={to}
                 Icon={Icon}
+                data-testid={`recent-${i}`}
                 isActive={to === pathname}
                 iconColor={color}
               >
@@ -98,6 +99,7 @@ const Sidebar: FC<SidebarProps> = ({
           key={groupIndex}
           title={group.title}
           separate={group.separate}
+          data-testid={`links-${groupIndex}`}
         >
           {group.links.map((link, linkIndex) => (
             <Link
