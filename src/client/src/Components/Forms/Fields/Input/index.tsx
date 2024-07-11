@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { FC, useState } from 'react';
 
 import { IEye, IEyeSlash } from '../../../Icons';
-import { themeProps } from './styles';
+import { disabledProps, themeProps } from './styles';
 import { InputProps } from './types';
 
 // Composables
@@ -13,6 +13,7 @@ const Input: FC<InputProps> = ({
   name,
   label,
   required = false,
+  disabled = false,
   className,
   sideEffect,
   type: inputType,
@@ -21,7 +22,6 @@ const Input: FC<InputProps> = ({
   const { register, formState, ...formContextProps } = useFormContext();
 
   const [type, setType] = useState(inputType);
-
   return (
     <div className="relative my-2 w-full">
       <Label label={label} required={required} />
@@ -33,7 +33,10 @@ const Input: FC<InputProps> = ({
             if (sideEffect) sideEffect(e, { formState, ...formContextProps });
           }
         })}
-        className={`w-full border-b-2 p-1 outline-none bg-transparent ${themeProps} ${className}`}
+        disabled={disabled}
+        className={`w-full border-b-2 p-1 outline-none bg-transparent ${
+          disabled ? disabledProps : themeProps
+        } ${className}`}
         type={type}
         {...props}
       />
