@@ -1,11 +1,14 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { Loader, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts';
 import Api from '../../../Api';
 
-const SignUp = () => {
+const VerifyEmail = () => {
+  const { dispatch } = useContext(AuthContext);
+
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -17,8 +20,9 @@ const SignUp = () => {
         const token = searchParams.get('token') || '';
         const { id } = await Api.users.validateToken(token);
         if (id) {
-          const res = await Api.users.validateEmail(id);
-          toast.success(res.message);
+          const { message, data } = await Api.users.validateEmail(id);
+          dispatch({ type: 'UPDATE', payload: { data } });
+          toast.success(message);
           navigate('/settings/mfa');
         }
       } catch (error) {
@@ -29,7 +33,7 @@ const SignUp = () => {
         setLoading(false);
       }
     })();
-  }, [navigate, searchParams]);
+  }, [navigate, searchParams, dispatch]);
 
   return (
     <PageLayout title="Verifying Email..." hideHeader hideNavbar hideSidebar>
@@ -42,4 +46,5 @@ const SignUp = () => {
     </PageLayout>
   );
 };
-export default SignUp;
+
+export default VerifyEmail;

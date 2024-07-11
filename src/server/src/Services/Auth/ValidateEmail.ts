@@ -18,7 +18,13 @@ export async function ValidateEmail(req: Request, res: Response) {
 
     await collection.updateOne({ uid: id }, { $set: { verified: true } });
 
-    res.status(200).json({ message: 'Email Verified.' });
+    const items = collection.aggregate([
+      { $match: { uid: id } },
+      { $project: { _id: 0, password: 0 } }
+    ]);
+    const [data] = await items.toArray();
+
+    res.status(200).json({ message: 'Email Verified.', data });
   } catch (error) {
     errorHandler(req, res, error);
   } finally {
