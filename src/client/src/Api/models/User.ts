@@ -12,6 +12,33 @@ export default class UserAPI extends Crud<User, ListUser> {
     super();
   }
 
+  changePassword(
+    {
+      body,
+      config
+    }: {
+      body: {
+        current_password: string;
+        new_password: string;
+        confirm_new_password: string;
+      };
+      config?: AxiosRequestConfig;
+    } = {
+      body: {
+        current_password: '',
+        new_password: '',
+        confirm_new_password: ''
+      },
+      config: {}
+    }
+  ) {
+    return patch({
+      url: `${this.baseUrl}/${this.model}/password`,
+      body,
+      config
+    });
+  }
+
   changeUsername(
     {
       body,
