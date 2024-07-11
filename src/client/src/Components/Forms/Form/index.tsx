@@ -14,8 +14,11 @@ const Form = <T extends FieldValues>({
   children,
   className,
   additionalContent,
-  submitLabel = 'Submit',
-  disableSubmit = false,
+  submitBtn = {
+    label: 'Submit',
+    disabled: false,
+    variant: 'primary'
+  },
   ...props
 }: FormProps<T>) => {
   const { handleSubmit, ...formProps } = useForm<T>({
@@ -60,7 +63,12 @@ const Form = <T extends FieldValues>({
         </article>
 
         <div className="flex justify-end gap-4 p-4">
-          <Button disabled={loading || disableSubmit}>{submitLabel}</Button>
+          <Button
+            disabled={loading || submitBtn?.disabled}
+            variant={submitBtn?.variant}
+          >
+            {submitBtn?.label}
+          </Button>
         </div>
 
         {additionalContent}
