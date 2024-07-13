@@ -1,10 +1,11 @@
-import { FC, memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { FC, memo } from 'react';
 
 import { IArtist, IAlbum, ISong, IRight, IHouse } from '../../../../Icons';
+import useRecentlyViewed from '../../../../../Hooks/useRecentlyViewed';
 import { activeIconColor, iconColor, icons } from './icons';
 import { Category, Link } from '../../../../Common';
-import { RecentItem, SidebarProps } from './types';
+import { SidebarProps } from './types';
 
 const Sidebar: FC<SidebarProps> = ({
   hideResourses,
@@ -12,14 +13,9 @@ const Sidebar: FC<SidebarProps> = ({
   hideRecent,
   links
 }) => {
-  const [recentlyViewed, setRecentlyViewed] = useState<RecentItem[]>([]);
+  const { recentlyViewed } = useRecentlyViewed();
 
   const { pathname } = useLocation();
-
-  useEffect(() => {
-    const recent = localStorage.getItem('recently_viewed') || '[]';
-    setRecentlyViewed(JSON.parse(recent));
-  }, []);
 
   return (
     <aside
