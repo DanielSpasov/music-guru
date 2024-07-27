@@ -14,10 +14,21 @@ export function fetch({ collectionName, databaseName }: ReqProps) {
 
       const filters = Object.entries(params).map(([name, value]) => {
         const isBool = value === 'true' || value === 'false';
+        const isNegation = name.startsWith('-');
+        const fieldName = isNegation ? name.substring(1) : name;
+
+        if (isBool) {
+          return {
+            $match: {
+              [fieldName]: { [isNegation ? '$ne' : '$eq']: value === 'true' }
+            }
+          };
+        }
+
         return {
           $match: {
-            [name]: isBool
-              ? { $eq: value === 'true' }
+            [fieldName]: isNegation
+              ? { $not: { $regex: value, $options: 'i' } }
               : { $regex: value, $options: 'i' }
           }
         };

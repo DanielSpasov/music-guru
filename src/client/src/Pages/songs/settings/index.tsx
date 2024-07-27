@@ -1,15 +1,12 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { AxiosRequestConfig } from 'axios';
+import { useCallback, useContext } from 'react';
 
-import { IAddUser, IDelUser, PageLayout } from '../../../Components';
-import { AuthContext } from '../../../Contexts';
-import { ListUser } from '../../../Types';
+import { IAddUser, IDelUser, PageLayout, Table } from '../../../Components';
 import { useSong } from '../../../Hooks';
 import Api from '../../../Api';
-
-// Composables
-import UserList from './composables/UserList';
+import { Editor } from './types';
+import { AuthContext } from '../../../Contexts';
 
 const Settings = () => {
   const { id: uid = '0' } = useParams();
@@ -18,57 +15,27 @@ const Settings = () => {
 
   const { song, loading, editors } = useSong(uid);
 
-  const [availableEditors, setAvailableEditors] = useState<ListUser[]>([]);
-  const [loadingEditors, setLoadingEditors] = useState(false);
+  const fetchEditors = useCallback(
+    async (config?: AxiosRequestConfig): Promise<{ data: Editor[] }> => {
+      const { data } = await Api.users.fetch({
+        config: {
+          ...config,
+          params: {
+            '-uid': userUID,
+            ...config?.params
+          }
+        }
+      });
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if (song.created_by !== userUID) return;
-
-        setLoadingEditors(true);
-        const { data } = await Api.songs.fetchAvailableEditors({
-          uid,
-          config: { params: { username: '' } }
-        });
-        setAvailableEditors(data);
-      } catch (err) {
-        toast.error('Failed to fetch users');
-      } finally {
-        setLoadingEditors(false);
-      }
-    })();
-  }, [uid, userUID, song.created_by]);
-
-  const handleAddEditor = useCallback(
-    async (uid: string) => {
-      try {
-        setLoadingEditors(true);
-        await editors.add(uid);
-        setAvailableEditors(prev => prev.filter(user => user.uid !== uid));
-      } catch (err) {
-        toast.error('Failed to add editor');
-      } finally {
-        setLoadingEditors(false);
-      }
+      return {
+        data: data.map(user => ({
+          ...user,
+          isEditor: Boolean(song.editors.includes(user.uid)),
+          name: user.username
+        }))
+      };
     },
-    [editors]
-  );
-
-  const handleDelEditor = useCallback(
-    async (uid: string) => {
-      try {
-        setLoadingEditors(true);
-        await editors.del(uid);
-        const editor = song.editors.find(x => x.uid === uid);
-        if (editor) setAvailableEditors(prev => [...prev, editor]);
-      } catch (err) {
-        toast.error('Failed to remove editor');
-      } finally {
-        setLoadingEditors(false);
-      }
-    },
-    [editors, song.editors]
+    [song.editors, userUID]
   );
 
   return (
@@ -77,31 +44,19 @@ const Settings = () => {
       heading={`${song.name} Settings`}
       loading={loading}
     >
-      <section className="flex justify-evenly w-full">
-        <div className="flex flex-col items-center w-1/2 mx-3">
-          <h2>All Users</h2>
-
-          <UserList
-            items={availableEditors}
-            loading={loadingEditors}
-            action={handleAddEditor}
-            missingMessage="This song has no available editors."
-            Icon={IAddUser}
-          />
-        </div>
-
-        <div className="flex flex-col items-center w-1/2 mx-3">
-          <h2>Authorized Editors</h2>
-
-          <UserList
-            items={song.editors}
-            loading={loadingEditors}
-            action={handleDelEditor}
-            missingMessage="This song has no editors yet."
-            Icon={IDelUser}
-          />
-        </div>
-      </section>
+      <Table<Editor>
+        fetchFn={fetchEditors}
+        actions={[
+          { Icon: IAddUser, onClick: editors.add },
+          { Icon: IDelUser, onClick: editors.del }
+        ]}
+        cols={[
+          { key: 'username', label: 'Username' },
+          { key: 'email', label: 'Email' },
+          { key: 'created_at', label: 'User Since', type: 'date' },
+          { key: 'isEditor', label: 'Editor', type: 'boolean' }
+        ]}
+      />
     </PageLayout>
   );
 };
