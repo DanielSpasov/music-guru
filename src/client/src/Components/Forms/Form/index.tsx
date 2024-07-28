@@ -1,5 +1,6 @@
 import { FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -8,6 +9,7 @@ import { FormProps, SubmitFn } from './types';
 
 const Form = <T extends FieldValues>({
   onSubmit,
+  onClose,
   defaultValues,
   validationSchema,
   header,
@@ -25,6 +27,8 @@ const Form = <T extends FieldValues>({
     defaultValues,
     ...(validationSchema ? { resolver: zodResolver(validationSchema) } : {})
   });
+
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -63,6 +67,13 @@ const Form = <T extends FieldValues>({
         </article>
 
         <div className="flex justify-end gap-4 p-4">
+          <Button
+            variant="secondary"
+            onClick={() => (onClose ? onClose() : navigate(-1))}
+            type="button"
+          >
+            Close
+          </Button>
           <Button
             disabled={loading || submitBtn?.disabled}
             variant={submitBtn?.variant}

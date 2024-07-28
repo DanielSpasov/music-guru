@@ -24,10 +24,6 @@
     @apply fill-secondary dark:fill-primary-dark;
   }
 
-  button {
-    @apply font-semibold;
-  }
-
   h1 {
     @apply font-bold text-3xl;
   }

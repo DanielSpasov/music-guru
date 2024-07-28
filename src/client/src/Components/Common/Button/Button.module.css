@@ -1,0 +1,62 @@
+@tailwind components;
+
+@layer components {
+  .btn {
+    @apply font-semibold flex items-center outline-none focus:opacity-60;
+  }
+
+  .outline {
+    @apply dark:shadow-md dark:bg-transparent dark:border-neutral-900 border-2 rounded-full py-1 px-3 border-primary;
+
+    &:hover {
+      @apply bg-primary dark:bg-neutral-900;
+    }
+    &:hover * {
+      @apply text-white;
+    }
+    &:hover svg path {
+      @apply fill-white;
+    }
+
+    &:disabled {
+      @apply opacity-60 bg-transparent dark:bg-transparent;
+    }
+    &:disabled * {
+      @apply text-primary;
+    }
+    &:disabled svg path {
+      @apply fill-primary;
+    }
+
+    & * {
+      @apply text-primary dark:text-white;
+    }
+
+    & svg path {
+      @apply fill-primary dark:fill-white;
+    }
+  }
+
+  .primary {
+    @apply dark:bg-primary-dark bg-primary px-3 py-2 rounded-lg text-white w-full justify-center;
+
+    &:hover {
+      @apply opacity-70;
+    }
+
+    &:disabled {
+      @apply opacity-60;
+    }
+  }
+
+  .secondary {
+    @apply dark:bg-secondary-dark bg-secondary px-3 py-1.5 rounded-lg text-white w-full justify-center;
+
+    &:hover {
+      @apply opacity-70;
+    }
+    &:disabled {
+      @apply opacity-60;
+    }
+  }
+}

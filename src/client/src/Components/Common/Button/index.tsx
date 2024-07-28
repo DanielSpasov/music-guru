@@ -1,6 +1,8 @@
 import { FC } from 'react';
+
 import { ButtonProps } from './types';
-import { variants } from './variants';
+
+import css from './Button.module.css';
 
 const Button: FC<ButtonProps> = ({
   children,
@@ -10,7 +12,7 @@ const Button: FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`${variants[variant]} ${className}`}
+      className={`${css.btn} ${css[variant]} ${className}`}
       data-testid="button"
       {...HTMLButtonProps}
     >

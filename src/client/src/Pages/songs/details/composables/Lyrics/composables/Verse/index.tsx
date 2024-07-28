@@ -1,11 +1,15 @@
 import { FC, useContext, useState } from 'react';
 
-import { IPen, ITrashBin } from '../../../../../../../Components';
+import {
+  Form,
+  Input,
+  IPen,
+  ITrashBin,
+  Textarea
+} from '../../../../../../../Components';
+import { VerseSchema } from '../../../../../../../Validations';
 import { AuthContext } from '../../../../../../../Contexts';
 import { VerseProps } from './types';
-
-// Composables
-import EditVerse from '../EditVerse';
 
 const SongVerse: FC<VerseProps> = ({ edit, del, loading, isEditor, verse }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -14,7 +18,20 @@ const SongVerse: FC<VerseProps> = ({ edit, del, loading, isEditor, verse }) => {
 
   if (isEditing) {
     return (
-      <EditVerse defaultValues={verse} onSubmit={edit} setShow={setIsEditing} />
+      <Form
+        className="w-full"
+        validationSchema={VerseSchema}
+        defaultValues={verse}
+        header="Edit Verse"
+        onSubmit={async formData => {
+          await edit(verse.number, formData);
+          setIsEditing(false);
+        }}
+        onClose={() => setIsEditing(false)}
+      >
+        <Input name="title" label="Title" required />
+        <Textarea name="lyrics" label="Lyrics" required />
+      </Form>
     );
   }
 

@@ -1,11 +1,11 @@
 import { FC, useContext, useState } from 'react';
 
+import { Form, Input, Loader, Textarea } from '../../../../../Components';
+import { CreateVerseData, VerseSchema } from '../../../../../Validations';
 import { AuthContext } from '../../../../../Contexts';
-import { Loader } from '../../../../../Components';
 import { LyricsProps } from './types';
 
 // Composables
-import NewVerse from './composables/NewVerse';
 import Header from './composables/Header';
 import Verse from './composables/Verse';
 
@@ -46,11 +46,21 @@ const Lyrics: FC<LyricsProps> = ({ song, verses, isEditor }) => {
           </div>
         ) : null}
 
-        <NewVerse
-          show={showNewVerse}
-          setShow={setShowNewVerse}
-          onSubmit={verses.add}
-        />
+        {showNewVerse && (
+          <Form<CreateVerseData>
+            validationSchema={VerseSchema}
+            className="w-full"
+            header="New Verse"
+            onSubmit={async formData => {
+              await verses.add(formData);
+              setShowNewVerse(false);
+            }}
+            onClose={() => setShowNewVerse(false)}
+          >
+            <Input name="title" label="Title" required />
+            <Textarea name="lyrics" label="Lyrics" required />
+          </Form>
+        )}
       </div>
     </section>
   );
