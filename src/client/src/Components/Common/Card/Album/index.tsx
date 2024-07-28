@@ -2,9 +2,10 @@ import { FC, memo } from 'react';
 import moment from 'moment';
 
 import { ListAlbum } from '../../../../Types';
-import { defaultProps } from './helpers';
-import { CardProps } from '../helpers';
+import { CardProps } from '../types';
 import { Link } from '../../../';
+
+import css from './Album.module.css';
 
 // Composables
 import FavoritesCounter from '../composables/FavoritesConuter';
@@ -19,40 +20,30 @@ const AlbumCard: FC<CardProps<ListAlbum>> = ({
 }) => {
   if (loading) return <Skeleton />;
   return (
-    <article
-      data-testid="album-card"
-      className={`flex flex-col m-3 p-2 shadow-md rounded-md ${defaultProps}`}
-    >
-      <img
-        alt={data.name}
-        src={data.image}
-        data-testid="album-card-image"
-        className="w-40 h-40 rounded-md"
-      />
+    <article data-testid="album-card" className={css.albumCard}>
+      <img alt={data.name} src={data.image} data-testid="album-card-image" />
 
-      <section className="flex flex-col pt-1">
+      <section>
         <Link
           type="link"
           to={`/albums/${data.uid}`}
           data-testid="album-card-link"
-          className="text-base w-40 whitespace-nowrap overflow-hidden text-ellipsis"
         >
           {data.name}
         </Link>
 
-        <div className="flex justify-between items-center text-md truncate w-40">
+        <article>
           <div>
             <span
-              className="text-neutral-500"
               data-testid="album-card-release-date"
+              className={css.grayText}
             >
               {data?.release_date ? moment(data?.release_date).year() : 'TBA'}
             </span>
-            <span className="text-neutral-500 px-1">•</span>
-            <span
-              className="text-neutral-500 pr-1"
-              data-testid="album-card-type"
-            >
+
+            <span className={css.grayText}>•</span>
+
+            <span className={css.grayText} data-testid="album-card-type">
               {data.type.name}
             </span>
           </div>
@@ -66,7 +57,7 @@ const AlbumCard: FC<CardProps<ListAlbum>> = ({
             updateFavs={updateFavs}
             uid={data.uid}
           />
-        </div>
+        </article>
       </section>
     </article>
   );

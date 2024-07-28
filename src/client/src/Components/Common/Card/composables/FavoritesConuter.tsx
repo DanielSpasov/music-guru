@@ -2,8 +2,8 @@ import { FC } from 'react';
 
 import { UseFavoriteHookProps } from '../../../../Hooks/useFavorite/types';
 import { IHeart, IHeartOutline, Loader } from '../../../';
-import { CardModel, favoriteIconProps } from '../helpers';
 import { useFavorite } from '../../../../Hooks';
+import { CardModel } from '../types';
 
 export type FavoritesCounterProps = {
   model: CardModel;
@@ -43,14 +43,14 @@ const FavoritesCounter: FC<FavoritesCounterProps> = ({
       ) : isFavorite ? (
         <IHeart
           data-testid={`${model}-card-heart-svg`}
-          className={favoriteIconProps}
+          className="w-4 h-4 [&>path]:fill-red-500"
           disabled={!hookProps?.favoriteFn || !canFavorite}
           onClick={() => onFavorite()}
         />
       ) : (
         <IHeartOutline
           data-testid={`${model}-card-heart-outline-svg`}
-          className={favoriteIconProps}
+          className="w-4 h-4 [&>path]:fill-red-500"
           disabled={!hookProps?.favoriteFn || !canFavorite}
           onClick={() => onFavorite()}
         />

@@ -1,9 +1,10 @@
 import { FC, memo } from 'react';
 
 import { ListSong } from '../../../../Types';
-import { defaultProps } from './helpers';
-import { CardProps } from '../helpers';
+import { CardProps } from '../types';
 import { Link } from '../..';
+
+import css from './Song.module.css';
 
 // Composables
 import FavoritesCounter from '../composables/FavoritesConuter';
@@ -18,23 +19,19 @@ const SongCard: FC<CardProps<ListSong>> = ({
 }) => {
   if (loading) return <Skeleton />;
   return (
-    <div
-      data-testid="song-card"
-      className={`flex w-52 h-16  m-3 rounded-md shadow-md ${defaultProps}`}
-    >
+    <article data-testid="song-card" className={css.songCard}>
       <img
         alt={data.name}
         src={data?.image || '/images/logo/blue-logo-square512.png'}
-        className="w-12 h-12 m-2 rounded-sm"
         data-testid="song-card-image"
       />
 
-      <div className="flex flex-col justify-between w-full">
+      <section>
         <Link
           type="link"
           to={`/songs/${data.uid}`}
           data-testid="song-card-name"
-          className="w-32 whitespace-nowrap overflow-hidden text-ellipsis"
+          className={css.songLink}
         >
           {data.name}
         </Link>
@@ -42,14 +39,12 @@ const SongCard: FC<CardProps<ListSong>> = ({
           type="link"
           to={`/artists/${data.artist.uid}`}
           data-testid="song-card-artist"
-          className="w-28 text-sm text-neutral-500 whitespace-nowrap overflow-hidden text-ellipsis"
+          className={css.aritstLink}
         >
           {data.artist.name}
         </Link>
 
-        <div className="flex justify-between pr-1">
-          <span className="text-sm text-neutral-500"></span>
-
+        <div>
           <FavoritesCounter
             model="songs"
             defaultCount={data.favorites}
@@ -60,8 +55,8 @@ const SongCard: FC<CardProps<ListSong>> = ({
             uid={data.uid}
           />
         </div>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 };
 

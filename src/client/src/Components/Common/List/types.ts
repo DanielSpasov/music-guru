@@ -1,8 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
 
 import { FavoriteFn } from '../../../Hooks/useFavorite/types';
-import { CardModel } from '../Card/helpers';
 import { Model } from '../../../Api/types';
+import { CardModel } from '../Card/types';
 
 export type ListState<T> = {
   items: T[];

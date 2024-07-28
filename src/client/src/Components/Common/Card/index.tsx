@@ -1,7 +1,8 @@
 import { memo, useMemo } from 'react';
 
-import { CardSwitchProps, cards } from './helpers';
 import { BaseModel } from '../../../Types';
+import { CardSwitchProps } from './types';
+import { cards } from './cards';
 
 const Card = <T extends BaseModel>({ model, ...props }: CardSwitchProps<T>) => {
   const Component = useMemo(() => cards[model], [model]);

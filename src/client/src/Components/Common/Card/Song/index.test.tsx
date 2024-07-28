@@ -1,14 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import {
-  darkHoverProps,
-  darkHoverTextProps,
-  darkProps,
-  lightHoverProps,
-  lightHoverTextProps,
-  lightProps
-} from './helpers';
 import SongCard from '.';
 import { ListSong } from '../../../../Types';
 
@@ -90,68 +82,6 @@ describe('Song Card', () => {
       );
       const artist = screen.getByTestId('song-card-artist');
       expect(artist.textContent).toEqual(mockData.artist.name);
-    });
-  });
-
-  describe('CSS', () => {
-    test('renders dark mode', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass(darkProps);
-    });
-
-    test('renders light mode', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass(lightProps);
-    });
-
-    test('renders dark mode hover', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass(darkHoverProps);
-    });
-
-    test('renders light mode hover', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass(lightHoverProps);
-    });
-
-    test('renders dark mode text', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass(darkHoverTextProps);
-    });
-
-    test('renders light mode text', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('song-card');
-      expect(card).toHaveClass(lightHoverTextProps);
     });
   });
 });

@@ -1,4 +1,4 @@
-import { CardModel } from '../../Components/Common/Card/helpers';
+import { CardModel } from '../../Components/Common/Card/types';
 import { Favorites } from '../../Types';
 
 export type FavoriteFn = (uid: string) => Promise<{ favorites: Favorites }>;

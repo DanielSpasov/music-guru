@@ -2,14 +2,6 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import moment from 'moment';
 
-import {
-  darkProps,
-  lightProps,
-  darkHoverProps,
-  lightHoverProps,
-  darkHoverTextProps,
-  lightHoverTextProps
-} from './helpers';
 import AlbumCard from '.';
 import { ListAlbum } from '../../../../Types';
 
@@ -101,68 +93,6 @@ describe('Album Card', () => {
       );
       const type = screen.getByTestId('album-card-type');
       expect(type.textContent).toEqual(mockData.type.name);
-    });
-  });
-
-  describe('CSS', () => {
-    test('renders dark mode', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass(darkProps);
-    });
-
-    test('renders light mode', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass(lightProps);
-    });
-
-    test('renders dark mode hover', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass(darkHoverProps);
-    });
-
-    test('renders light mode hover', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass(lightHoverProps);
-    });
-
-    test('renders dark mode hover text', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass(darkHoverTextProps);
-    });
-
-    test('renders light mode hover text', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('album-card');
-      expect(card).toHaveClass(lightHoverTextProps);
     });
   });
 });

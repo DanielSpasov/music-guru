@@ -1,0 +1,35 @@
+@tailwind components;
+
+@layer components {
+  .albumCard {
+    @apply flex flex-col m-3 p-2 shadow-md rounded-md bg-neutral-200 dark:bg-neutral-900;
+
+    &:hover {
+      @apply hover:shadow-neutral-400 dark:hover:shadow-neutral-900;
+    }
+
+    & img {
+      @apply w-40 h-40 rounded-md;
+    }
+
+    & section {
+      @apply flex flex-col pt-1;
+
+      & a {
+        @apply text-base w-40 whitespace-nowrap overflow-hidden text-ellipsis;
+      }
+
+      & article {
+        @apply flex justify-between items-center truncate w-40;
+
+        & div {
+          @apply flex gap-1;
+        }
+      }
+    }
+  }
+
+  .grayText {
+    @apply text-neutral-500 !important;
+  }
+}

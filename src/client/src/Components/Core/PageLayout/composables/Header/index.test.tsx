@@ -57,8 +57,9 @@ describe('Header', () => {
     const headerEl = screen.getByTestId('header');
     expect(headerEl).toBeInTheDocument();
 
-    const headingEl = screen.queryByTestId('header-heading');
-    expect(headingEl).not.toBeInTheDocument();
+    const headingEl = screen.getByTestId('header-heading');
+    expect(headingEl).toBeInTheDocument();
+    expect(headingEl.textContent).toEqual('');
 
     const actionsEl = screen.getByTestId('header-actions');
     expect(actionsEl.children.length).toEqual(0);

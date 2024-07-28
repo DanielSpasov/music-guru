@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { darkHoverProps, lightHoverProps } from './helpers';
 import { ListArtist } from '../../../../Types';
 import ArtistCard from '.';
 
@@ -54,28 +53,6 @@ describe('Artist Card', () => {
       );
       const image = screen.getByTestId('artist-card-image');
       expect(image).toHaveAttribute('src', mockData.image);
-    });
-  });
-
-  describe('CSS', () => {
-    test('renders dark mode hover', () => {
-      render(
-        <MemoryRouter>
-          <ArtistCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass(darkHoverProps);
-    });
-
-    test('renders light mode hover', () => {
-      render(
-        <MemoryRouter>
-          <ArtistCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('artist-card');
-      expect(card).toHaveClass(lightHoverProps);
     });
   });
 });

@@ -1,9 +1,10 @@
 import { FC, memo } from 'react';
 
 import { ListArtist } from '../../../../Types';
-import { CardProps } from '../helpers';
-import { hoverProps } from './helpers';
+import { CardProps } from '../types';
 import { Link } from '../../../';
+
+import css from './Artist.module.css';
 
 // Composables
 import FavoritesCounter from '../composables/FavoritesConuter';
@@ -18,23 +19,14 @@ const ArtistCard: FC<CardProps<ListArtist>> = ({
 }) => {
   if (loading) return <Skeleton />;
   return (
-    <article
-      data-testid="artist-card"
-      className={`flex flex-col m-3 p-2 pb-1 rounded-md ${hoverProps}`}
-    >
-      <img
-        alt={data.name}
-        src={data.image}
-        data-testid="artist-card-image"
-        className="w-40 h-40 rounded-md"
-      />
+    <article data-testid="artist-card" className={css.artistCard}>
+      <img alt={data.name} src={data.image} data-testid="artist-card-image" />
 
-      <section className="flex justify-between items-center mt-1">
+      <section>
         <Link
           type="link"
           to={`/artists/${data.uid}`}
           data-testid="artist-card-name"
-          className="w-32 whitespace-nowrap overflow-hidden text-ellipsis"
         >
           {data.name}
         </Link>
