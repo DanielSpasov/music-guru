@@ -15,7 +15,7 @@ export type IConfigRoute = {
   routes?: IConfigRoute[];
 };
 
-const lazyLoad = (path: string) => lazy(() => import(path));
+const lazyLoad = (path: string) => lazy(() => import(/* @vite-ignore */ path));
 
 export const attachComponents = (routes: IConfigRoute[]): IRoute[] => {
   return routes.map(route => {
