@@ -1,15 +1,33 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Suspense, useContext, useMemo } from 'react';
 
-import { attachComponents, IRoute } from './helpers';
 import { AuthContext } from '../Contexts/Auth';
+import { IConfigRoute, IRoute } from './types';
+import { Components } from './components';
 import { Loader } from '../Components';
 
 import routesConfig from './routes.json';
 
 const Router = () => {
   const { isAuthenticated } = useContext(AuthContext);
-  const routes = useMemo(() => attachComponents(routesConfig), []);
+  const routes = useMemo(() => {
+    const attachComponents = (routes: IConfigRoute[]): IRoute[] => {
+      return routes.map(route => {
+        const attachedRoute: IRoute = {
+          path: route.path,
+          private: route.private,
+          Component: Components[route.componentName as keyof typeof Components]
+        };
+
+        if (route?.routes)
+          attachedRoute.routes = attachComponents(route.routes);
+
+        return attachedRoute;
+      });
+    };
+
+    return attachComponents(routesConfig as IConfigRoute[]);
+  }, []);
 
   if (isAuthenticated === null) {
     return (

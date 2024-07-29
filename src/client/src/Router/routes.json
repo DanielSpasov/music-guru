@@ -1,35 +1,35 @@
 [
   {
     "path": "index",
-    "filePath": "/home",
+    "componentName": "Home",
     "private": false
   },
   {
     "path": "/artists",
-    "filePath": "/artists/list",
+    "componentName": "ArtistsList",
     "routes": [
       {
         "path": "index",
-        "filePath": "/artists/list",
+        "componentName": "ArtistsList",
         "private": false
       },
       {
         "path": "create",
-        "filePath": "/artists/create",
+        "componentName": "ArtistsCreate",
         "private": true
       },
       {
         "path": ":id",
-        "filePath": "/artists/details",
+        "componentName": "ArtistsDetails",
         "routes": [
           {
             "path": "index",
-            "filePath": "/artists/details",
+            "componentName": "ArtistsDetails",
             "private": false
           },
           {
             "path": "edit",
-            "filePath": "/artists/edit",
+            "componentName": "ArtistsEdit",
             "private": true
           }
         ]
@@ -38,30 +38,30 @@
   },
   {
     "path": "/albums",
-    "filePath": "/albums/list",
+    "componentName": "AlbumsList",
     "routes": [
       {
         "path": "index",
-        "filePath": "/albums/list",
+        "componentName": "AlbumsList",
         "private": false
       },
       {
         "path": "create",
-        "filePath": "/albums/create",
+        "componentName": "AlbumsCreate",
         "private": true
       },
       {
         "path": ":id",
-        "filePath": "/albums/details",
+        "componentName": "AlbumsDetails",
         "routes": [
           {
             "path": "index",
-            "filePath": "/albums/details",
+            "componentName": "AlbumsDetails",
             "private": false
           },
           {
             "path": "edit",
-            "filePath": "/albums/edit",
+            "componentName": "AlbumsEdit",
             "private": true
           }
         ]
@@ -70,36 +70,36 @@
   },
   {
     "path": "/songs",
-    "filePath": "/songs/list",
+    "componentName": "SongsList",
     "routes": [
       {
         "path": "index",
-        "filePath": "/songs/list",
+        "componentName": "SongsList",
         "private": false
       },
       {
         "path": "create",
-        "filePath": "/songs/create",
+        "componentName": "SongsCreate",
         "private": true
       },
       {
         "path": ":id",
-        "filePath": "/songs/details",
+        "componentName": "SongsDetails",
         "private": false,
         "routes": [
           {
             "path": "index",
-            "filePath": "/songs/details",
+            "componentName": "SongsDetails",
             "private": false
           },
           {
             "path": "edit",
-            "filePath": "/songs/edit",
+            "componentName": "SongsEdit",
             "private": true
           },
           {
             "path": "settings",
-            "filePath": "/songs/settings",
+            "componentName": "SongSettings",
             "private": true
           }
         ]
@@ -108,48 +108,48 @@
   },
   {
     "path": "/settings",
-    "filePath": "/settings/account",
+    "componentName": "SettingsAccount",
     "routes": [
       {
         "path": "/settings/account",
-        "filePath": "/settings/account",
+        "componentName": "SettingsAccount",
         "private": true
       },
       {
         "path": "/settings/password",
-        "filePath": "/settings/password",
+        "componentName": "SettingsPassword",
         "private": true
       },
       {
         "path": "/settings/mfa",
-        "filePath": "/settings/mfa",
+        "componentName": "SettingsMFA",
         "private": true
       }
     ]
   },
   {
     "path": "/sign-in",
-    "filePath": "/auth/sign-in",
+    "componentName": "SignIn",
     "private": false
   },
   {
     "path": "/sign-up",
-    "filePath": "/auth/sign-up",
+    "componentName": "SignUp",
     "private": false
   },
   {
     "path": "/sign-out",
-    "filePath": "/auth/sign-out",
+    "componentName": "SignOut",
     "private": false
   },
   {
     "path": "/verify-email",
-    "filePath": "/auth/verify-email",
+    "componentName": "VerifyEmail",
     "private": false
   },
   {
     "path": "*",
-    "filePath": "/not-found",
+    "componentName": "NotFound",
     "private": false
   }
 ]
