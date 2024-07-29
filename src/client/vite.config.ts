@@ -15,6 +15,7 @@ const hash = (str: string) => {
 };
 
 const viteConfig = defineViteConfig({
+  base: '/',
   plugins: [
     react(),
     { ...eslint({ include: 'src/**/*.+(js|jsx|ts|tsx)' }), enforce: 'pre' }
