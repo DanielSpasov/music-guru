@@ -5,3 +5,5 @@ import './index.css';
 
 const appRoot = createRoot(document.getElementById('root') as HTMLElement);
 appRoot.render(<App />);
+
+window.addEventListener('vite:preloadError', () => window.location.reload());
