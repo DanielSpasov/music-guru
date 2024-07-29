@@ -1,44 +1,78 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 
-import { PageLayoutProps } from './helpers';
-import { Loader, Navbar } from '../../';
-import Action from './Action';
+import useRecentlyViewed from '../../../Hooks/useRecentlyViewed';
+import { PageLayoutProps } from './types';
+import { Loader } from '../../';
 
-export default function PageLayout({
+// Composables
+import Sidebar from './composables/Sidebar';
+import Navbar from './composables/Navbar';
+import Header from './composables/Header';
+
+const PageLayout: FC<PageLayoutProps> = ({
+  // Page
   title,
-  showNavbar = true,
-  showHeader = true,
+  heading,
   children,
+  loading = false,
+  dontSaveRecent = false,
+  // Navbar
+  hideNavbar = false,
+  // Header
+  hideHeader = false,
   actions = [],
-  loading = false
-}: PageLayoutProps) {
+  // Sidebar
+  hideRecent = false,
+  hideSidebar = false,
+  hideResourses = false,
+  links = []
+}) => {
+  const { addCurrent } = useRecentlyViewed();
+
   useEffect(() => {
     document.title = loading ? 'Loading...' : title;
   }, [title, loading]);
 
-  return (
-    <>
-      {showNavbar && <Navbar />}
-      <main className="min-h-screen pt-20">
-        {showHeader && <h1 className="text-center p-4">{title}</h1>}
+  useEffect(() => {
+    if (!loading && title && !dontSaveRecent) addCurrent();
+  }, [title, loading, dontSaveRecent, addCurrent]);
 
-        {loading ? (
-          <Loader size="sm" />
-        ) : (
-          <>
-            <article>
-              {children}
-              <div className="fixed z-0 bottom-0 right-0">
-                {actions
-                  .filter(x => !x?.hidden)
-                  .map((action, i) => (
-                    <Action action={action} key={i} />
-                  ))}
-              </div>
-            </article>
-          </>
+  return (
+    <div data-testid="page" className="h-screen grid grid-rows-[auto_1fr]">
+      {!hideNavbar && <Navbar />}
+
+      <div
+        data-testid="page-body"
+        className={`flex min-h-screen ${!hideNavbar ? 'pt-16' : ''}`}
+      >
+        {!hideSidebar && (
+          <Sidebar
+            hideResourses={hideResourses}
+            hideNavbar={hideNavbar}
+            hideRecent={hideRecent}
+            links={links}
+          />
         )}
-      </main>
-    </>
+
+        <main
+          data-testid="page-content"
+          className={`flex-1 overflow-auto bg-neutral-100 dark:bg-neutral-800 ${
+            !hideSidebar ? 'ml-64' : ''
+          }`}
+        >
+          {!hideHeader && <Header heading={heading} actions={actions} />}
+
+          <div className="p-4">
+            {loading ? (
+              <Loader type="vinyl" data-testid="page-loader" />
+            ) : (
+              children
+            )}
+          </div>
+        </main>
+      </div>
+    </div>
   );
-}
+};
+
+export default PageLayout;

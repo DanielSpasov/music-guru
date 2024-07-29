@@ -1,130 +1,91 @@
-import { useEffect, useState, useCallback, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import moment from 'moment';
+import { useContext, useMemo } from 'react';
 
-import { List, PageLayout } from '../../../Components';
+import {
+  IPen,
+  ISettings,
+  ITrashBin,
+  Image,
+  PageLayout
+} from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
-import { errorHandler } from '../../../Handlers';
-import { Config } from '../../../Api/helpers';
-import { Song } from '../helpers';
-import Api from '../../../Api';
+import { useSong } from '../../../Hooks';
 
-export default function SongDetails() {
-  const [loading, setLoading] = useState(true);
-  const [song, setSong] = useState<Song>();
+// Composables
+import Summary from './composables/Summary';
+import Socials from './composables/Socials';
+import Lyrics from './composables/Lyrics';
+import About from './composables/About';
 
+const SongDetails = () => {
   const { uid, isAuthenticated } = useContext(AuthContext);
+
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
-  const deleteSong = useCallback(async () => {
-    try {
-      setLoading(true);
-      if (!song?.uid) return;
-      await Api.songs.del({ id: song.uid });
-      navigate('/songs');
-      toast.success(`Successfully deleted song: ${song?.name}`);
-    } catch (error) {
-      errorHandler(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [song, navigate]);
+  const { song, albums, loading, del, updateImage, verses } = useSong(id);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { data } = await Api.songs.get({
-          id,
-          config: { params: { serializer: 'detailed' } }
-        });
-        setSong(data);
-      } catch (error) {
-        errorHandler(error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [id]);
-
-  const fetchFeatures = useCallback(() => {
-    if (!song) return Promise.resolve({ data: [] });
-    return Promise.resolve({ data: song.features });
-  }, [song]);
-
-  const fetchAlbums = useCallback(
-    (config?: Config) => {
-      if (!song) return Promise.resolve({ data: [] });
-      return Api.albums.fetch({
-        config: { params: { 'songs.uid': song.uid, ...config?.params } }
-      });
-    },
-    [song]
+  const isOwner = useMemo(
+    () => song.created_by === uid,
+    [song.created_by, uid]
   );
 
-  const fetchArtist = useCallback(async () => {
-    if (!song) return Promise.resolve({ data: [] });
-    return Promise.resolve({ data: [song.artist] });
-  }, [song]);
+  const isEditor = useMemo(
+    () => Boolean(song.editors.find(user => user.uid === uid)) || isOwner,
+    [song.editors, uid, isOwner]
+  );
 
   return (
     <PageLayout
-      title={song?.name || 'Loading...'}
+      title={song.name}
+      heading={song.name}
       loading={loading}
       actions={[
         {
-          icon: 'edit',
-          onClick: () => navigate('edit'),
-          hidden: !isAuthenticated,
-          disabled: uid !== song?.created_by
+          type: 'icon',
+          Icon: ISettings,
+          onClick: () => navigate('settings'),
+          hidden: !isOwner,
+          disabled: !isOwner
         },
         {
-          icon: 'trash',
-          onClick: deleteSong,
+          type: 'icon',
+          Icon: IPen,
+          onClick: () => navigate('edit'),
           hidden: !isAuthenticated,
-          disabled: uid !== song?.created_by
+          disabled: !isEditor
+        },
+        {
+          type: 'icon',
+          Icon: ITrashBin,
+          onClick: del,
+          hidden: !isOwner,
+          disabled: !isOwner
         }
       ]}
     >
-      <section className="flex flex-col items-center text-white">
-        <div className="flex mb-10">
-          {song?.image && (
-            <img
+      <section className="flex h-[calc(100vh-250px)]">
+        <div className="flex flex-col items-start w-1/2 px-4 text-white">
+          <div className="flex mb-10">
+            <Image
               src={song?.image || ''}
-              alt={song?.name}
-              className="w-64 h-64 rounded-lg"
-              loading="lazy"
+              alt={song.name}
+              editable={song.created_by === uid}
+              updateFn={updateImage}
+              className="w-64 h-64"
             />
-          )}
-          <div className="px-4">
-            {song?.release_date && (
-              <div>
-                <span className="font-bold">Release Date: </span>
-                <span>{moment(song.release_date).format('MMMM Do YYYY')}</span>
-              </div>
-            )}
+
+            <Summary song={song} albums={albums} />
           </div>
+
+          <About song={song} />
+          <Socials song={song} />
         </div>
 
-        <div className="flex flex-wrap">
-          <div>
-            <h3 className="text-center">Artist</h3>
-            <List fetchFn={fetchArtist} skeletonLength={1} model="artists" />
-          </div>
-
-          <div>
-            <h3 className="text-center">Featured Artists</h3>
-            <List fetchFn={fetchFeatures} skeletonLength={2} model="artists" />
-          </div>
-
-          <div>
-            <h3 className="text-center">In Albums</h3>
-            <List fetchFn={fetchAlbums} skeletonLength={1} model="albums" />
-          </div>
-        </div>
+        <Lyrics song={song} verses={verses} isEditor={isEditor} />
       </section>
     </PageLayout>
   );
-}
+};
+
+export default SongDetails;

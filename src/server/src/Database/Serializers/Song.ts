@@ -1,17 +1,22 @@
 import { serializers } from '.';
 import { Artist, Song } from '../Types';
+import { Verse } from '../Types/Song';
+import { ListArtist } from './Artist';
+import { ListUser } from './User';
 
 export class ListSong {
   uid: string;
   name: string;
   image: string;
-  artist: string;
+  artist: ListArtist;
+  favorites: number;
 
   constructor(song: Song) {
     this.uid = song.uid;
     this.name = song.name;
     this.image = song.image || '';
-    this.artist = song.artist.name;
+    this.artist = new ListArtist(song.artist);
+    this.favorites = song.favorites;
   }
 }
 
@@ -24,6 +29,11 @@ export class DetailedSong {
   release_date: Date | null;
   artist: Artist;
   features: Artist[];
+  verses: Verse[];
+  about: string;
+  links: { name: string; url: string }[];
+  editors: ListUser[];
+  favorites: number;
 
   constructor(song: Song) {
     this.uid = song.uid;
@@ -34,5 +44,10 @@ export class DetailedSong {
     this.release_date = song.release_date;
     this.artist = serializers.artists.list(song.artist);
     this.features = song.features.map(serializers.artists.list);
+    this.verses = song.verses;
+    this.links = song.links;
+    this.about = song.about;
+    this.editors = song.editors.map(serializers.users.list);
+    this.favorites = song.favorites;
   }
 }

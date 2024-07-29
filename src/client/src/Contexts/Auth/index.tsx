@@ -1,36 +1,51 @@
-import { createContext, useReducer, useEffect } from 'react';
+import { createContext, useReducer, useEffect, FC } from 'react';
 
-import { Action, AuthContextType, defaultAuth, IAuth } from './helpers';
+import {
+  Action,
+  AuthContextType,
+  AuthProviderProps,
+  defaultAuth,
+  IAuth
+} from './helpers';
 import Api from '../../Api';
 
-function authReducer(state: IAuth, action: Action): IAuth {
+const authReducer = (state: IAuth, action: Action): IAuth => {
   switch (action.type) {
-    case 'SIGNUP':
+    case 'UPDATE':
+      return {
+        ...state,
+        data: { ...state.data, ...action?.payload?.data }
+      };
     case 'SIGNIN':
       localStorage.setItem('AUTH', action?.payload?.token);
-      return { uid: action?.payload?.uid, isAuthenticated: true };
+      return {
+        uid: action?.payload?.uid,
+        data: action?.payload?.data,
+        isAuthenticated: true
+      };
     case 'SIGNOUT':
       localStorage.removeItem('AUTH');
-      return { uid: null, isAuthenticated: false };
+      return { uid: null, isAuthenticated: false, data: null };
     default:
       return state;
   }
-}
+};
 
 export const AuthContext = createContext<AuthContextType>({
   ...defaultAuth,
-  dispatch: () => ({ uid: null, isAuthenticated: null })
+  dispatch: () => defaultAuth
 });
 
-export function AuthProvider({ children }: any) {
+export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, defaultAuth);
 
   useEffect(() => {
     (async () => {
       try {
         const token = localStorage.getItem('AUTH') || '';
-        const { uid } = await Api.user.validateToken(token);
-        dispatch({ type: 'SIGNIN', payload: { uid, token } });
+        const { uid } = await Api.users.validateToken(token);
+        const { data } = await Api.users.get({ id: uid });
+        dispatch({ type: 'SIGNIN', payload: { uid, token, data } });
       } catch (error) {
         dispatch({ type: 'SIGNOUT' });
       }
@@ -42,4 +57,4 @@ export function AuthProvider({ children }: any) {
       {children}
     </AuthContext.Provider>
   );
-}
+};

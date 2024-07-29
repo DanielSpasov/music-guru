@@ -6,12 +6,20 @@ import {
   ValidateToken,
   ValidateEmail,
   ResendValidationEmail,
-  UpdateUser,
+  ChangeUsername,
+  ChangePassword,
   GetUser
 } from '../../Services/Auth';
 import { authorization } from '../../Middleware';
+import { fetch } from '../helpers/requests';
 
 const router = Router();
+
+router.get(
+  '/',
+  authorization,
+  fetch({ collectionName: 'users', databaseName: 'models' })
+);
 
 router.get('/validate-jwt', ValidateToken);
 
@@ -21,7 +29,9 @@ router.post('/validate-email', authorization, ValidateEmail);
 router.post('/sign-up', SignUp);
 router.post('/sign-in', SignIn);
 
-router.get('/:id', GetUser);
-router.patch('/:id', authorization, UpdateUser);
+router.get('/:id', authorization, GetUser);
+
+router.patch('/username', authorization, ChangeUsername);
+router.patch('/password', authorization, ChangePassword);
 
 export default router;

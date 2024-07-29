@@ -28,6 +28,41 @@ const artist: AggregationStage[] = [
   }
 ];
 
+const verses: AggregationStage[] = [
+  {
+    $unwind: {
+      path: '$verses',
+      preserveNullAndEmptyArrays: true
+    }
+  }
+];
+
+const socials: AggregationStage[] = [
+  {
+    $unwind: {
+      path: '$links',
+      preserveNullAndEmptyArrays: true
+    }
+  }
+];
+
+const editors: AggregationStage[] = [
+  {
+    $lookup: {
+      from: 'users',
+      localField: 'editors',
+      foreignField: 'uid',
+      as: 'editors'
+    }
+  },
+  {
+    $unwind: {
+      path: '$editors',
+      preserveNullAndEmptyArrays: true
+    }
+  }
+];
+
 const features: AggregationStage[] = [
   {
     $lookup: {
@@ -53,7 +88,12 @@ const features: AggregationStage[] = [
       release_date: { $first: '$release_date' },
       created_at: { $first: '$created_at' },
       created_by: { $first: '$created_by' },
-      features: { $push: '$features' }
+      features: { $addToSet: '$features' },
+      verses: { $addToSet: '$verses' },
+      links: { $addToSet: '$links' },
+      about: { $first: '$about' },
+      editors: { $addToSet: '$editors' },
+      favorites: { $first: '$favorites' }
     }
   },
   {
@@ -72,5 +112,8 @@ const features: AggregationStage[] = [
 export const songAggregators: AggregationStage[] = [
   ...created_by,
   ...artist,
+  ...verses,
+  ...socials,
+  ...editors,
   ...features
 ];

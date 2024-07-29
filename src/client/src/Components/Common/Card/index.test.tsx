@@ -1,72 +1,69 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
+import { ListArtist, ListAlbum, ListSong } from '../../../Types';
 import Card from './index';
 
 describe('Card', () => {
-  describe('Business Logic', () => {
-    it('renders Album Card without crashing', () => {
-      const mockData = {
+  describe('Models Logic', () => {
+    test('renders Album Card without crashing', () => {
+      const mockData: ListAlbum = {
         name: 'Test Album Name',
         uid: 'test-album-uuid',
         type: {
-          code: 'A',
-          name: 'Album'
+          uid: 'test-type-uid',
+          code: 'M',
+          name: 'Mixtape'
         },
         image: 'http://test123',
-        created_at: new Date(),
-        release_date: new Date(),
-        created_by: 'test-user-uuid',
-        artist: 'test-artist-uuid',
-        songs: ['test-song-uuid', 'test-song-uuid-2']
+        release_date: null,
+        favorites: 0
       };
-      render(<Card model="albums" data={mockData} />);
+      render(
+        <MemoryRouter>
+          <Card model="albums" data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('album-card');
       expect(card).toBeInTheDocument();
     });
 
-    it('renders Song Card without crashing', () => {
-      const mockData = {
+    test('renders Song Card without crashing', () => {
+      const mockData: ListSong = {
         name: 'Test Song Name',
         uid: 'test-song-uuid',
         image: 'http://test123',
-        created_at: new Date(),
-        created_by: 'test-user-uuid',
-        artist: 'Test Artist Name',
-        features: []
+        artist: {
+          uid: 'testuid',
+          image: 'http://test',
+          name: 'Test Artist Name',
+          favorites: 0
+        },
+        favorites: 0
       };
-      render(<Card model="songs" data={mockData} />);
+      render(
+        <MemoryRouter>
+          <Card model="songs" data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('song-card');
       expect(card).toBeInTheDocument();
     });
 
-    it('renders Artist Card without crashing', () => {
-      const mockData = {
+    test('renders Artist Card without crashing', () => {
+      const mockData: ListArtist = {
         name: 'Test Artist Name',
-        uid: 'test-artist-uuid',
+        uid: 'test-artist-uid',
         image: 'http://test123',
-        created_at: new Date(),
-        created_by: 'test-user-uuid',
-        features: [],
-        albums: [],
-        songs: [],
-        bio: 'Test Bio'
+        favorites: 0
       };
-      render(<Card model="artists" data={mockData} />);
+      render(
+        <MemoryRouter>
+          <Card model="artists" data={mockData} />
+        </MemoryRouter>
+      );
       const card = screen.getByTestId('artist-card');
       expect(card).toBeInTheDocument();
-    });
-
-    it('renders none if model is not provided', () => {
-      render(<Card data={{}} />);
-
-      const albumCard = screen.queryByTestId('album-card');
-      expect(albumCard).not.toBeInTheDocument();
-
-      const songCard = screen.queryByTestId('song-card');
-      expect(songCard).not.toBeInTheDocument();
-
-      const artistCard = screen.queryByTestId('artist-card');
-      expect(artistCard).not.toBeInTheDocument();
     });
   });
 });

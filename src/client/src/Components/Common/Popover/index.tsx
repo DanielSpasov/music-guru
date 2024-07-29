@@ -1,23 +1,25 @@
-import { PopoverProps } from './helpers';
+import { FC } from 'react';
 
-const darkProps = 'dark:bg-neutral-900 dark:shadow-black';
+import { PopoverProps } from './types';
 
-export default function Popover({
-  open,
-  label,
-  children,
-  className
-}: PopoverProps) {
+const Popover: FC<PopoverProps> = ({ open, label, children, className }) => {
   return (
-    <div className="relative z-50">
-      {label && <div className="p-2">{label}</div>}
+    <div className="relative z-50" data-testid="popover">
+      {label && (
+        <div className="p-2" data-testid="popover-label">
+          {label}
+        </div>
+      )}
       {open && (
         <div
-          className={`absolute bg-neutral-100 right-0 shadow-md p-2 rounded-md ${darkProps} ${className}`}
+          className={`absolute right-0 shadow-md p-2 rounded-md bg-neutral-100 dark:bg-neutral-900 dark:shadow-black ${className}`}
+          data-testid="popover-content"
         >
           {children}
         </div>
       )}
     </div>
   );
-}
+};
+
+export default Popover;

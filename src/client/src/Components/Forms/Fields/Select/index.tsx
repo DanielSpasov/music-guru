@@ -1,79 +1,68 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import makeAnimated from 'react-select/animated';
-import ReactSelect from 'react-select';
+import { useCallback, useMemo, useRef } from 'react';
+import { useFormContext } from 'react-hook-form';
 
-import { ThemeContext } from '../../../../Contexts';
-import { SelectProps, styles } from './helpers';
-import { FieldProps } from '../helpers';
+import { Option, SelectProps } from './types';
 
-export default function Select({
-  value = [],
+import Single from './SingleSelect';
+import Multi from './MultiSelect';
+
+// Composables
+import Label from '../composables/Label';
+import Error from '../composables/Error';
+
+const Select = <T extends Option>({
+  multiple = false,
   label,
+  required,
   name,
-  onChange,
-  props
-}: FieldProps<any[], SelectProps>) {
-  const { theme } = useContext(ThemeContext);
+  fetchFn,
+  hideSearch,
+  placeholder,
+  ...props
+}: SelectProps<T>) => {
+  const { register, formState, setValue, trigger, getValues } =
+    useFormContext();
 
-  const [selected, setSelected] = useState<any[]>(value);
-  const [options, setOptions] = useState<any[]>([]);
+  const defaultValue = useRef(getValues()[name]);
 
-  const id = useMemo(() => `${name}-select-menu`, [name]);
-
-  useEffect(() => {
-    (async () => {
-      if (!props?.fetchFn) return;
-      const { data } = await props.fetchFn({});
-      setOptions(data);
-    })();
-  }, [props]);
-
-  const _onChange = useCallback(
-    (option: any, settings: any) => {
-      if (settings?.action === 'clear') {
-        onChange({ target: { value: null } });
-        setSelected([]);
-        return;
-      }
-      const value = props?.multiple ? option : [option];
-      onChange({ target: { value } });
-      setSelected(value);
-    },
-    [onChange, props?.multiple]
+  const SelectComponent = useMemo(
+    () => (multiple ? Multi : Single),
+    [multiple]
   );
 
-  const getOptValue = useCallback(
-    (opt: any) => {
-      if (!props?.getOptionValue) return opt?.uid;
-      return props?.getOptionValue(opt);
+  const onChange = useCallback(
+    async (value: Option | Option[] | null) => {
+      setValue(name, value);
+      if (formState.isSubmitted) trigger(name);
     },
-    [props]
+    [name, setValue, formState, trigger]
   );
 
   return (
     <div className="relative my-2 w-full">
-      <ReactSelect
-        id={id}
-        components={{ ...makeAnimated() }}
-        options={options}
-        onChange={_onChange}
-        isMulti={props?.multiple}
-        defaultValue={value}
-        formatOptionLabel={option => option?.name}
-        getOptionValue={getOptValue}
-        styles={styles(theme)}
-        isSearchable
-        placeholder=""
-        isClearable
+      <Label label={label} required={required} />
+
+      <SelectComponent<T>
+        defaultValue={defaultValue.current}
+        placeholder={placeholder}
+        hideSearch={hideSearch}
+        onChange={onChange}
+        fetchFn={fetchFn}
       />
 
-      <label
-        className={`absolute ${
-          !selected.length ? 'top-2.5 left-3' : '-top-7 left-1'
-        }`}
-      >
-        {label}
-      </label>
+      <select
+        {...register(name, {
+          required,
+          value: multiple ? [] : null
+        })}
+        {...props}
+        multiple={multiple}
+        className="hidden"
+      />
+
+      <Error message={formState.errors[name]?.message} />
     </div>
   );
-}
+};
+
+export default Select;

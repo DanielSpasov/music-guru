@@ -28,6 +28,20 @@ const artist: AggregationStage[] = [
   }
 ];
 
+const type: AggregationStage[] = [
+  {
+    $lookup: {
+      from: 'album_types',
+      localField: 'type',
+      foreignField: 'uid',
+      as: 'type'
+    }
+  },
+  {
+    $unwind: '$type'
+  }
+];
+
 const songs: AggregationStage[] = [
   {
     $lookup: {
@@ -69,7 +83,8 @@ const songs: AggregationStage[] = [
       created_at: { $first: '$created_at' },
       created_by: { $first: '$created_by' },
       type: { $first: '$type' },
-      songs: { $push: '$songs' }
+      songs: { $push: '$songs' },
+      favorites: { $first: '$favorites' }
     }
   },
   {
@@ -88,5 +103,6 @@ const songs: AggregationStage[] = [
 export const albumAggregators: AggregationStage[] = [
   ...created_by,
   ...artist,
+  ...type,
   ...songs
 ];

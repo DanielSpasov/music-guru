@@ -96,8 +96,34 @@
             "path": "edit",
             "filePath": "/songs/edit",
             "private": true
+          },
+          {
+            "path": "settings",
+            "filePath": "/songs/settings",
+            "private": true
           }
         ]
+      }
+    ]
+  },
+  {
+    "path": "/settings",
+    "filePath": "/settings/account",
+    "routes": [
+      {
+        "path": "/settings/account",
+        "filePath": "/settings/account",
+        "private": true
+      },
+      {
+        "path": "/settings/password",
+        "filePath": "/settings/password",
+        "private": true
+      },
+      {
+        "path": "/settings/mfa",
+        "filePath": "/settings/mfa",
+        "private": true
       }
     ]
   },
@@ -119,11 +145,6 @@
   {
     "path": "/verify-email",
     "filePath": "/auth/verify-email",
-    "private": false
-  },
-  {
-    "path": "/me",
-    "filePath": "/auth/me",
     "private": false
   },
   {

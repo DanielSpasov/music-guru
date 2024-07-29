@@ -16,15 +16,12 @@
     @apply bg-neutral-50 dark:bg-neutral-800;
   }
 
-  svg {
+  svg,
+  g {
     @apply h-9 w-9 duration-0;
   }
   svg:hover {
     @apply fill-secondary dark:fill-primary-dark;
-  }
-
-  button {
-    @apply bg-primary dark:bg-primary-dark text-white rounded-md py-3 px-4 font-bold hover:opacity-70 disabled:opacity-50;
   }
 
   h1 {
@@ -58,15 +55,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply rounded-md;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-neutral-700;
+    @apply rounded-md bg-neutral-400 dark:bg-neutral-700;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-neutral-500;
+    @apply bg-neutral-500 dark:hover:bg-neutral-600;
   }
+
   ::-webkit-scrollbar-corner {
     @apply bg-transparent;
   }

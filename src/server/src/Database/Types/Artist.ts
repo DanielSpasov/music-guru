@@ -17,4 +17,5 @@ export interface DBArtist {
   bio: string;
   created_at: Date;
   created_by: string;
+  favorites: number;
 }

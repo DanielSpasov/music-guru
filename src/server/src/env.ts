@@ -19,7 +19,8 @@ type Environment = {
     APP_ID: string;
   };
   MONGO: {
-    DB_URI: string;
+    USER: string;
+    PASS: string;
   };
 };
 
@@ -35,7 +36,8 @@ const env = {
     STORAGE_BUCKET: config?.FIREBASE_STORAGE_BUCKET
   },
   MONGO: {
-    DB_URI: config?.MONGO_DB_URI
+    USER: config?.MONGO_DB_USER,
+    PASS: config?.MONGO_DB_PASS
   },
   EMAIL: {
     SERVICE_PASS: config?.EMAIL_SERVICE_PASS,

@@ -1,84 +1,127 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { memo, useCallback, useContext, useEffect, useState } from 'react';
+import { AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 
-import { ListProps, Model } from './helpers';
-import Filters from './Filters';
+import { AuthContext } from '../../../Contexts';
+import { ListProps, ListState } from './types';
+import { BaseModel } from '../../../Types';
+import Api from '../../../Api';
 import { Card } from '../../';
 
-export default function List({
+// Composables
+import Filters from './composables/Filters';
+
+const List = <T extends BaseModel>({
   model,
   fetchFn,
+  favoriteFn,
   filtersConfig = [],
-  skeletonLength = 18,
-  center = true
-}: ListProps) {
-  const [filters, setFilters] = useState({});
-  const [data, setData] = useState<Model[]>([]);
+  skeletonLength = 18
+}: ListProps<T>) => {
+  const { uid, isAuthenticated } = useContext(AuthContext);
+
+  const [state, setState] = useState<ListState<T>>({ items: [], favs: [] });
   const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate();
-
-  const fetchList = useCallback(async () => {
-    try {
-      setLoading(true);
-      const { data } = await fetchFn({ params: filters });
-      setData(data);
-    } catch (err) {
-      toast.error(`Failed to fetch ${model}.`);
-    } finally {
-      setLoading(false);
-    }
-  }, [fetchFn, model, filters]);
-
-  useEffect(() => {
-    (async () => await fetchList())();
-    // This is supposed to be run only once
-    // eslint-disable-next-line
-  }, []);
-
-  const onClick = useCallback(
-    (option: Model) => navigate(`/${model}/${option?.uid}/`),
-    [model, navigate]
+  const fetchList = useCallback(
+    async (config: AxiosRequestConfig = {}) => {
+      try {
+        const { data } = await fetchFn(config);
+        return data;
+      } catch (err) {
+        toast.error('Failed to fetch items.');
+      }
+    },
+    [fetchFn]
   );
 
+  const fetchFavs = useCallback(async () => {
+    try {
+      if (!uid) return [];
+      const { data } = await Api.users.get({ id: uid });
+      return data.favorites?.[model] || [];
+    } catch (err) {
+      toast.error('Failed to fetch favorites.');
+    }
+  }, [uid, model]);
+
+  const onApplyFilters = useCallback(
+    async (config: AxiosRequestConfig = {}) => {
+      try {
+        setLoading(true);
+
+        const items = await fetchList(config);
+        if (items) setState(prev => ({ ...prev, items }));
+      } catch (err) {
+        toast.error('Failed to apply filters.');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchList]
+  );
+
+  const updateFavs = useCallback(
+    (newFavs: string[]) => setState(prev => ({ ...prev, favs: newFavs })),
+    []
+  );
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+
+        const [items, favs] = await Promise.all([fetchList(), fetchFavs()]);
+        if (items && favs) setState({ items, favs });
+      } catch (err) {
+        toast.error('Failed to fetch data.');
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [fetchList, fetchFavs]);
+
   return (
-    <section
-      className={`flex flex-col ${
-        center ? 'items-center mx-10' : 'items-start mx-0'
-      }`}
-    >
-      <Filters
-        config={filtersConfig}
-        setFilters={setFilters}
-        onSubmit={fetchList}
-      />
+    <section className="flex flex-col items-center" data-testid="list">
+      {Boolean(filtersConfig.length) && (
+        <Filters config={filtersConfig} onApplyFilters={onApplyFilters} />
+      )}
 
       <div
-        className={`flex flex-wrap ${
-          !data.length && !loading ? 'justify-center' : 'justify-start'
-        }`}
+        className="flex flex-wrap w-full items-start justify-start"
+        data-testid="list-content"
       >
         {loading ? (
           Array(skeletonLength)
             .fill(null)
             .map((_, i) => (
-              <Card key={i} data={data} model={model} loading={true} />
+              <Card
+                key={i}
+                data={{ name: '', uid: '' }}
+                model={model}
+                loading={true}
+              />
             ))
-        ) : !data.length ? (
-          <h4 className="text-center">No {model} available.</h4>
+        ) : !state.items.length ? (
+          <h4 className="font-medium" data-testid="list-no-items-message">
+            No items available.
+          </h4>
         ) : (
-          data.map(x => (
+          state.items.map(item => (
             <Card
-              data={x}
-              key={x?.uid}
+              data={item}
+              key={item.uid}
               model={model}
-              onClick={() => onClick(x)}
-              loading={loading}
+              favoriteFn={favoriteFn}
+              updateFavs={updateFavs}
+              canFavorite={Boolean(isAuthenticated)}
+              isFavorite={state.favs.includes(item.uid)}
             />
           ))
         )}
       </div>
     </section>
   );
-}
+};
+
+export default memo(List);

@@ -1,22 +1,12 @@
-import { NextFunction, Request, Response } from 'express';
 import { initializeApp } from 'firebase/app';
 import { MongoClient } from 'mongodb';
 
 import env from '../env';
 
-export interface ExtendedRequest extends Request {
-  mongo: MongoClient;
-}
-
-export const mongo = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const request = req as ExtendedRequest;
-  request.mongo = await MongoClient.connect(env.MONGO.DB_URI || '');
-  next();
-};
+export const connect = () =>
+  MongoClient.connect(
+    `mongodb+srv://${env.MONGO.USER}:${env.MONGO.PASS}@main-cluster.i7ggact.mongodb.net/`
+  );
 
 export const initFirestoreBucket = () => {
   initializeApp({

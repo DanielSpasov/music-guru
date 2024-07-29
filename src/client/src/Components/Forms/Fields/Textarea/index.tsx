@@ -1,47 +1,35 @@
-import { useRef } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { FC } from 'react';
 
-import { FieldProps } from '../helpers';
-import Controls from '../Controls';
-import { TextareaProps } from './helpers';
+import { TextareaProps } from './types';
+import { themeProps } from './styles';
 
-const hoverProps = 'hover:border-neutral-300';
-const focusProps =
-  'focus:border-primary [&~label]:focus:-top-7 [&~label]:focus:left-1';
-const darkProps =
-  'dark:bg-neutral-800 dark:border-neutral-600 dark:hover:border-neutral-500 dark:focus:border-primary-dark';
+// Composables
+import Label from '../composables/Label';
+import Error from '../composables/Error';
 
-export default function Textarea({
+const Textarea: FC<TextareaProps> = ({
+  name,
   label,
-  value,
-  props,
-  onChange
-}: FieldProps<string, TextareaProps>) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  required = false,
+  className,
+  ...props
+}) => {
+  const { register, formState } = useFormContext();
 
   return (
     <div className="relative my-2 w-full">
+      <Label label={label} required={required} />
+
       <textarea
+        {...register(name, { required })}
+        className={`w-full min-h-[80px] border-b-2 p-1 pr-16 outline-none resize-y bg-transparent ${themeProps} ${className}`}
         {...props}
-        value={value}
-        ref={textareaRef}
-        onChange={onChange}
-        className={`w-full min-h-[80px] border-2 p-2 pr-16 bg-neutral-100 transition-colors border-neutral-200 outline-none rounded-md resize-y ${hoverProps} ${focusProps} ${darkProps}`}
-      >
-        {value}
-      </textarea>
+      ></textarea>
 
-      <label
-        className={`absolute ${!value ? 'top-2.5 left-3' : '-top-7 left-1'}`}
-      >
-        {label}
-      </label>
-
-      <Controls
-        value={value}
-        iconModel="textarea"
-        onClear={() => onChange('')}
-        onClick={() => textareaRef.current?.focus()}
-      />
+      <Error message={formState.errors[name]?.message} />
     </div>
   );
-}
+};
+
+export default Textarea;

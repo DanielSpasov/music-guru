@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
-import { List, PageLayout } from '../../../Components';
+import { IPlus, List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import Api from '../../../Api';
 
-export default function Songs() {
+const Songs = () => {
   const { isAuthenticated } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -13,20 +13,30 @@ export default function Songs() {
   return (
     <PageLayout
       title="Songs"
-      showHeader={false}
+      heading="Songs"
       actions={[
         {
-          icon: 'add',
+          type: 'button',
+          children: (
+            <>
+              <IPlus />
+              <p>New</p>
+            </>
+          ),
+          variant: 'outline',
           onClick: () => navigate('create'),
           hidden: !isAuthenticated
         }
       ]}
     >
       <List
-        fetchFn={config => Api.songs.fetch({ config })}
         model="songs"
+        fetchFn={config => Api.songs.fetch({ config })}
+        favoriteFn={uid => Api.songs.favorite({ uid })}
         skeletonLength={54}
       />
     </PageLayout>
   );
-}
+};
+
+export default Songs;

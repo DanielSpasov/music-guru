@@ -1,11 +1,14 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { Loader, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts';
 import Api from '../../../Api';
 
-export default function SignUp() {
+const VerifyEmail = () => {
+  const { dispatch } = useContext(AuthContext);
+
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -15,34 +18,39 @@ export default function SignUp() {
     (async () => {
       try {
         const token = searchParams.get('token') || '';
-        const { id } = await Api.user.validateToken(token);
+        const { id } = await Api.users.validateToken(token);
         if (id) {
-          const response = await Api.user.validateEmail(id);
-          toast.success(response.message);
-          navigate('/me');
+          const { message, data } = await Api.users.validateEmail(id);
+          dispatch({ type: 'UPDATE', payload: { data } });
+          toast.success(message);
+          navigate('/settings/mfa');
         }
       } catch (error) {
         toast.info('You can send a new one from your security settings.');
         toast.error('Verification email has expired.');
-        navigate('/me');
+        navigate('/settings/mfa');
       } finally {
         setLoading(false);
       }
     })();
-  }, [navigate, searchParams]);
+  }, [navigate, searchParams, dispatch]);
 
   return (
     <PageLayout
       title="Verifying Email..."
-      showHeader={false}
-      showNavbar={false}
+      hideHeader
+      hideNavbar
+      hideSidebar
+      dontSaveRecent
     >
       <header className="h-screen flex flex-col items-center justify-center">
         <h2>{loading ? 'Verifying Email' : 'Redirecting'}...</h2>
         <div className="p-12">
-          <Loader />
+          <Loader type="player" />
         </div>
       </header>
     </PageLayout>
   );
-}
+};
+
+export default VerifyEmail;

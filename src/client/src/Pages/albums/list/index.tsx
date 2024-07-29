@@ -1,21 +1,29 @@
-import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 
-import { List, PageLayout } from '../../../Components';
-import { AuthContext } from '../../../Contexts/Auth';
+import { IPlus, List, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts';
 import Api from '../../../Api';
 
-export default function Albums() {
+const Albums = () => {
   const { isAuthenticated } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   return (
     <PageLayout
       title="Albums"
-      showHeader={false}
+      heading="Albums"
       actions={[
         {
-          icon: 'add',
+          type: 'button',
+          children: (
+            <>
+              <IPlus />
+              <p>New</p>
+            </>
+          ),
+          variant: 'outline',
           onClick: () => navigate('create'),
           hidden: !isAuthenticated
         }
@@ -33,8 +41,11 @@ export default function Albums() {
           }
         ]}
         fetchFn={config => Api.albums.fetch({ config })}
+        favoriteFn={uid => Api.albums.favorite({ uid })}
         model="albums"
       />
     </PageLayout>
   );
-}
+};
+
+export default Albums;

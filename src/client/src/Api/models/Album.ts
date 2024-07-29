@@ -1,26 +1,54 @@
-import { Album } from '../../Pages/albums/helpers';
-import { Config, applyPrefix } from '../helpers';
-import { get } from '../requests';
+import { AxiosRequestConfig } from 'axios';
+
+import { Album, ListAlbum } from '../../Types';
+import { get, post } from '../requests';
 import Crud from '../crud';
 
-export default class AlbumsAPI extends Crud<Album> {
+export default class AlbumsAPI extends Crud<Album, ListAlbum> {
   model = 'album';
 
-  constructor(props: any) {
+  constructor() {
     super();
-    applyPrefix(this, props);
   }
 
-  async fetchTypes({ config }: { config?: Config }) {
+  fetchTypes({ config }: { config?: AxiosRequestConfig } = { config: {} }) {
     return get({
       url: `${this.baseUrl}/${this.model}/types/`,
       config
     });
   }
 
-  test(config?: Config) {
-    return get({
-      url: `${this.baseUrl}/test123/`,
+  favorite(
+    { uid, config }: { uid: string; config?: AxiosRequestConfig } = {
+      uid: '',
+      config: {}
+    }
+  ) {
+    return post({
+      url: `${this.baseUrl}/${this.model}/favorite/`,
+      body: { uid },
+      config
+    });
+  }
+
+  updateImage(
+    {
+      uid,
+      image,
+      config
+    }: {
+      uid: string;
+      image: File;
+      config?: AxiosRequestConfig;
+    } = {
+      uid: '',
+      image: new File(['image.jpg'], 'image.jpg'),
+      config: {}
+    }
+  ) {
+    return post({
+      url: `${this.baseUrl}/${this.model}/${uid}/image/`,
+      body: { image },
       config
     });
   }

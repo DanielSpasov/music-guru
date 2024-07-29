@@ -1,17 +1,27 @@
-import { z } from 'zod';
-
-import { BaseSongSchema } from '../Schemas';
+import { ListArtist } from '../Serializers/Artist';
+import { ListUser } from '../Serializers/User';
 import { Artist } from './Artist';
-import { User } from './User';
 
-export interface Song extends z.infer<typeof BaseSongSchema> {
+export interface Verse {
+  title: string;
+  lyrics: string;
+  number: number;
+}
+
+export interface Song {
   uid: string;
+  name: string;
   image: string;
   created_at: Date;
   release_date: Date | null;
-  created_by: User;
+  created_by: ListUser;
   artist: Artist;
-  features: Artist[];
+  features: ListArtist[];
+  verses: Verse[];
+  links: { name: string; url: string }[];
+  about: string;
+  editors: ListUser[];
+  favorites: number;
 }
 
 export interface DBSong {
@@ -22,4 +32,9 @@ export interface DBSong {
   created_by: string;
   artist: string;
   features: string[];
+  verses: Verse[];
+  links: { name: string; url: string }[];
+  about: string;
+  editors: string[];
+  favorites: number;
 }

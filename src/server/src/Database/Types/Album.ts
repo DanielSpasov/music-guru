@@ -26,4 +26,5 @@ export interface DBAlbum {
   songs: string[];
   release_date: Date | null;
   created_at: Date;
+  favorites: number;
 }

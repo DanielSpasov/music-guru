@@ -1,18 +1,16 @@
-import { CardProps } from './helpers';
+import { memo, useMemo } from 'react';
 
-import ArtistCard from './Artist';
-import AlbumCard from './Album';
-import SongCard from './Song';
+import { BaseModel } from '../../../Types';
+import { CardSwitchProps } from './types';
+import { cards } from './cards';
 
-export default function Card({ model, ...cardProps }: CardProps<any>) {
-  switch (model) {
-    case 'songs':
-      return <SongCard {...cardProps} />;
-    case 'albums':
-      return <AlbumCard {...cardProps} />;
-    case 'artists':
-      return <ArtistCard {...cardProps} />;
-    default:
-      return <></>;
-  }
-}
+const Card = <T extends BaseModel>({ model, ...props }: CardSwitchProps<T>) => {
+  const Component = useMemo(() => cards[model], [model]);
+  return Component ? (
+    <Component {...props} />
+  ) : (
+    <div data-testid="card-not-found">Card not found.</div>
+  );
+};
+
+export default memo(Card) as typeof Card;

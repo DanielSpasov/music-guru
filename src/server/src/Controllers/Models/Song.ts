@@ -1,23 +1,90 @@
 import { Router } from 'express';
-import multer from 'multer';
 
-import { fetch, get, del, post, patch } from '../helpers/requests';
-import { authorization } from '../../Middleware';
+import { song, verses } from '../../Services/Songs';
+import {
+  authorization,
+  ownership,
+  upload,
+  get,
+  editorship
+} from '../../Middleware';
+import { fetch, post } from '../helpers/requests';
+import { editors } from '../../Services/Editors';
+import updateImage from '../../Services/Image';
+import favorite from '../../Services/Favorites';
 
-const upload = <any>multer({ storage: multer.memoryStorage() });
 const router = Router();
 
+// Songs
 router.get('/', fetch({ databaseName: 'models', collectionName: 'songs' }));
-router.get('/:id', get({ databaseName: 'models', collectionName: 'songs' }));
-
-router.delete('/:id', authorization, del({ collectionName: 'songs' }));
-
 router.post(
   '/',
-  [authorization, upload.any('image')],
+  [authorization, upload('image')],
   post({ collectionName: 'songs' })
 );
 
-router.patch('/:id', authorization, patch({ collectionName: 'songs' }));
+// Song
+router.get(
+  '/:id',
+  [get({ database: 'models', collection: 'songs' })],
+  song.get
+);
+router.patch(
+  '/:id',
+  [get({ database: 'models', collection: 'songs' }), authorization, editorship],
+  song.patch
+);
+router.delete(
+  '/:id',
+  [get({ database: 'models', collection: 'songs' }), authorization, ownership],
+  song.del
+);
+
+router.post(
+  '/:id/image',
+  [
+    upload('image'),
+    get({ database: 'models', collection: 'songs' }),
+    authorization,
+    editorship
+  ],
+  updateImage({ model: 'songs' })
+);
+
+router.post('/favorite', [authorization], favorite({ model: 'songs' }));
+
+// Verses
+router.post(
+  '/:id/verse',
+  [get({ database: 'models', collection: 'songs' }), authorization, editorship],
+  verses.post
+);
+router.delete(
+  '/:id/verse/:number',
+  [get({ database: 'models', collection: 'songs' }), authorization, editorship],
+  verses.del
+);
+router.patch(
+  '/:id/verse/:number',
+  [get({ database: 'models', collection: 'songs' }), authorization, editorship],
+  verses.patch
+);
+
+// Editors
+router.get(
+  '/:id/editors/available',
+  [get({ database: 'models', collection: 'songs' }), authorization, ownership],
+  editors.fetch
+);
+router.post(
+  '/:id/editor',
+  [get({ database: 'models', collection: 'songs' }), authorization, ownership],
+  editors.post
+);
+router.delete(
+  '/:id/editor/:editor',
+  [get({ database: 'models', collection: 'songs' }), authorization, ownership],
+  editors.del
+);
 
 export default router;

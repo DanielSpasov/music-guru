@@ -5,7 +5,7 @@ import { AuthContext } from '../../../Contexts/Auth';
 import { PageLayout } from '../../../Components';
 import { toast } from 'react-toastify';
 
-export default function SignOut() {
+const SignOut = () => {
   const navigate = useNavigate();
   const { dispatch } = useContext(AuthContext);
 
@@ -15,5 +15,7 @@ export default function SignOut() {
     navigate('/');
   }, [navigate, dispatch]);
 
-  return <PageLayout title=""></PageLayout>;
-}
+  return <PageLayout title="Signing Out..." dontSaveRecent></PageLayout>;
+};
+
+export default SignOut;

@@ -3,7 +3,7 @@ import { ComponentType, lazy, LazyExoticComponent } from 'react';
 export type IRoute = {
   path: string;
   filePath: string;
-  Component: LazyExoticComponent<ComponentType<any>>;
+  Component: LazyExoticComponent<ComponentType>;
   private?: boolean;
   routes?: IRoute[];
 };

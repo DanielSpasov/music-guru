@@ -1,34 +1,60 @@
-import { SignInData, SignUpData, User } from '../../Pages/auth/helpers';
-import { applyPrefix } from '../helpers';
+import { AxiosRequestConfig } from 'axios';
+
+import { SignInData, SignUpData } from '../../Validations';
 import { get, patch, post } from '../requests';
+import { ListUser, User } from '../../Types';
 import Crud from '../crud';
 
-export default class UserAPI extends Crud<User> {
+export default class UserAPI extends Crud<User, ListUser> {
   model = 'user';
 
-  constructor(props: any) {
+  constructor() {
     super();
-    applyPrefix(this, props);
   }
 
-  patch({
-    id,
-    field,
-    body = {},
-    config = {}
-  }: {
-    id: string;
-    field: keyof User;
-    body: any;
-    config?: any;
-  }): Promise<{ data: User }> {
-    return patch({
-      url: `${this.baseUrl}/${this.model}/${id}/`,
+  changePassword(
+    {
       body,
-      config: {
-        params: { field, ...config?.params },
-        ...config
-      }
+      config
+    }: {
+      body: {
+        current_password: string;
+        new_password: string;
+        confirm_new_password: string;
+      };
+      config?: AxiosRequestConfig;
+    } = {
+      body: {
+        current_password: '',
+        new_password: '',
+        confirm_new_password: ''
+      },
+      config: {}
+    }
+  ) {
+    return patch({
+      url: `${this.baseUrl}/${this.model}/password`,
+      body,
+      config
+    });
+  }
+
+  changeUsername(
+    {
+      body,
+      config
+    }: {
+      body: { username?: string };
+      config?: AxiosRequestConfig;
+    } = {
+      body: {},
+      config: {}
+    }
+  ): Promise<{ data: User }> {
+    return patch({
+      url: `${this.baseUrl}/${this.model}/username`,
+      body,
+      config
     });
   }
 

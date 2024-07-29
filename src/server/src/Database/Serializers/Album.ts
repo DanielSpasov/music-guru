@@ -8,12 +8,14 @@ export class ListAlbum {
   image: string;
   release_date: Date | null;
   type: AlbumType;
+  favorites: number;
 
   constructor(album: Album) {
     this.uid = album.uid;
     this.name = album.name;
     this.type = album.type;
     this.image = album.image;
+    this.favorites = album.favorites;
     this.release_date = album.release_date;
   }
 }
@@ -28,11 +30,13 @@ export class DetailedAlbum {
   artist: Artist;
   songs: Song[];
   type: AlbumType;
+  favorites: number;
 
   constructor(album: Album) {
     this.uid = album.uid;
     this.name = album.name;
     this.image = album.image;
+    this.favorites = album.favorites;
     this.created_at = album.created_at;
     this.release_date = album.release_date;
     this.created_by = album.created_by.uid;

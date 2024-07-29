@@ -1,6 +1,9 @@
 {
   "name": "music-guru",
   "version": "1.0.0",
+  "engines": {
+    "node": "21.7.3"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DanielSpasov/music-guru.git"

@@ -3,7 +3,12 @@ import { Request, Response } from 'express';
 
 import { ZodError } from 'zod';
 
-export function errorHandler(req: Request, res: Response, error: unknown) {
+export function errorHandler<T>(
+  req: Request<object, object, object, T>,
+  res: Response,
+  error: unknown
+) {
+  console.log(error);
   try {
     if (error instanceof ZodError) {
       res

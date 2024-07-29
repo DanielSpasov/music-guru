@@ -1,10 +1,11 @@
 import { Router } from 'express';
-import multer from 'multer';
 
-import { fetch, get, post, patch } from '../helpers/requests';
-import { authorization } from '../../Middleware';
+import { fetch, get, post } from '../helpers/requests';
+import { authorization, upload } from '../../Middleware';
+import favorite from '../../Services/Favorites';
+import patch from '../../Services/Artists/patch';
+import updateImage from '../../Services/Image';
 
-const upload = <any>multer({ storage: multer.memoryStorage() });
 const router = Router();
 
 router.get('/', fetch({ databaseName: 'models', collectionName: 'artists' }));
@@ -12,10 +13,16 @@ router.get('/:id', get({ databaseName: 'models', collectionName: 'artists' }));
 
 router.post(
   '/',
-  [authorization, upload.any('image')],
+  [authorization, upload('image')],
   post({ collectionName: 'artists' })
 );
+router.post('/favorite', [authorization], favorite({ model: 'artists' }));
+router.post(
+  '/:id/image',
+  [authorization, upload('image')],
+  updateImage({ model: 'artists' })
+);
 
-router.patch('/:id', authorization, patch({ collectionName: 'artists' }));
+router.patch('/:id', authorization, patch);
 
 export default router;

@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
-import { List, PageLayout } from '../../../Components';
-import { AuthContext } from '../../../Contexts/Auth';
+import { IPlus, List, PageLayout } from '../../../Components';
+import { AuthContext } from '../../../Contexts';
 import Api from '../../../Api';
 
-export default function Artists() {
+const Artists = () => {
   const { isAuthenticated } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -13,16 +13,29 @@ export default function Artists() {
   return (
     <PageLayout
       title="Artists"
-      showHeader={false}
+      heading="Artists"
       actions={[
         {
-          icon: 'add',
+          type: 'button',
+          children: (
+            <>
+              <IPlus />
+              <p>New</p>
+            </>
+          ),
+          variant: 'outline',
           onClick: () => navigate('create'),
           hidden: !isAuthenticated
         }
       ]}
     >
-      <List fetchFn={config => Api.artists.fetch({ config })} model="artists" />
+      <List
+        fetchFn={config => Api.artists.fetch({ config })}
+        favoriteFn={uid => Api.artists.favorite({ uid })}
+        model="artists"
+      />
     </PageLayout>
   );
-}
+};
+
+export default Artists;

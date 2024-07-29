@@ -5,12 +5,12 @@ import crypto from 'crypto';
 
 import { SignUpSchema } from '../../Database/Schemas';
 import { sendVerificationEmail } from './helpers';
-import { ExtendedRequest } from '../../Database';
 import { errorHandler } from '../../Error';
+import { connect } from '../../Database';
 import env from '../../env';
 
-export async function SignUp(request: Request, res: Response) {
-  const req = request as ExtendedRequest;
+export async function SignUp(req: Request, res: Response) {
+  const mongo = await connect();
   try {
     // VALIDATE WITH ZOD
     const defaultUsername = req.body?.email?.split('@')[0];
@@ -22,7 +22,7 @@ export async function SignUp(request: Request, res: Response) {
     });
 
     // CHECK IF THE EMAIL IS ALREADY SIGNED UP
-    const db = req.mongo.db('models');
+    const db = mongo.db('models');
     const collection = db.collection('users');
     const isUsed = await collection.findOne({ email });
     if (isUsed) {
@@ -43,7 +43,8 @@ export async function SignUp(request: Request, res: Response) {
       email,
       password: passwordHash,
       verified: false,
-      created_at: new Date()
+      created_at: new Date(),
+      favorites: {}
     };
     await collection.insertOne(data);
 
@@ -52,8 +53,21 @@ export async function SignUp(request: Request, res: Response) {
 
     await sendVerificationEmail(data);
 
-    res.status(200).json({ token: authToken, uid });
+    res.status(200).json({
+      token: authToken,
+      uid,
+      data: {
+        username: data.username,
+        email: data.email,
+        verified: data.verified,
+        created_at: data.created_at,
+        favorites: data.favorites,
+        uid: data.uid
+      }
+    });
   } catch (error) {
     errorHandler(req, res, error);
+  } finally {
+    mongo.close();
   }
 }

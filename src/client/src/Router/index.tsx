@@ -3,17 +3,18 @@ import { Suspense, useContext, useMemo } from 'react';
 
 import { attachComponents, IRoute } from './helpers';
 import { AuthContext } from '../Contexts/Auth';
-import routesConfig from './routes.json';
 import { Loader } from '../Components';
 
-export default function Router() {
+import routesConfig from './routes.json';
+
+const Router = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const routes = useMemo(() => attachComponents(routesConfig), []);
 
   if (isAuthenticated === null) {
     return (
-      <div className="h-screen">
-        <Loader type="vinyl" />
+      <div className="h-screen flex align-center">
+        <Loader type="vinyl" size="lg" />
       </div>
     );
   }
@@ -21,8 +22,8 @@ export default function Router() {
   return (
     <Suspense
       fallback={
-        <div className="h-screen">
-          <Loader type="vinyl" />
+        <div className="h-screen flex align-center">
+          <Loader type="vinyl" size="lg" />
         </div>
       }
     >
@@ -31,7 +32,7 @@ export default function Router() {
       </Routes>
     </Suspense>
   );
-}
+};
 
 const setupRoute = (route: IRoute, isAuthenticated: boolean) => {
   if (route?.routes) {
@@ -57,3 +58,5 @@ const setupRoute = (route: IRoute, isAuthenticated: boolean) => {
     />
   );
 };
+
+export default Router;

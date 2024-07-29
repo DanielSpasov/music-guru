@@ -1,0 +1,23 @@
+@tailwind components;
+
+@layer components {
+  .artistCard {
+    @apply flex flex-col m-3 p-2 pb-1 rounded-md;
+
+    &:hover {
+      @apply bg-neutral-200 dark:hover:bg-neutral-700;
+    }
+
+    & img {
+      @apply w-40 h-40 rounded-md;
+    }
+
+    & section {
+      @apply flex justify-between items-center mt-1;
+    }
+
+    & section a {
+      @apply w-32 whitespace-nowrap overflow-hidden text-ellipsis;
+    }
+  }
+}

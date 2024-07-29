@@ -1,27 +1,23 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-import { ExtendedRequest } from '../../Database';
 import { errorHandler } from '../../Error';
-import env from '../../env';
+import { connect } from '../../Database';
 
-export async function GetUser(request: Request, res: Response) {
-  const req = request as ExtendedRequest;
+export async function GetUser(req: Request, res: Response) {
+  const mongo = await connect();
   try {
-    const token = req.headers.authorization;
-    if (!token) {
-      res.status(401).json({ message: 'Unauthorized.' });
-      return;
-    }
-
-    const { uid } = jwt.verify(token, env.SECURITY.JWT_SECRET) as JwtPayload;
-
-    const db = req.mongo.db('models');
+    const db = mongo.db('models');
     const collection = db.collection('users');
-    const data = await collection.findOne({ uid });
+    const docs = collection.aggregate([
+      { $match: { uid: req.params.id } },
+      { $project: { _id: 0, password: 0 } }
+    ]);
+    const [data] = await docs.toArray();
 
-    res.status(200).json({ message: `User updated.`, data });
+    res.status(200).json({ data });
   } catch (error) {
     errorHandler(req, res, error);
+  } finally {
+    mongo.close();
   }
 }
