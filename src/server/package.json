@@ -6,7 +6,7 @@
   "author": "ShadyGotRabies|Daniel Spasov",
   "license": "MIT",
   "engines": {
-    "node": "21.7.3"
+    "node": "20.x"
   },
   "scripts": {
     "build": "tsc -p .",
