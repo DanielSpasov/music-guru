@@ -15,7 +15,7 @@ export type IConfigRoute = {
   routes?: IConfigRoute[];
 };
 
-const lazyLoad = (path: string) => lazy(() => import(/* @vite-ignore */ path));
+// const lazyLoad = (path: string) => lazy(() => import(path));
 
 export const attachComponents = (routes: IConfigRoute[]): IRoute[] => {
   return routes.map(route => {
@@ -23,9 +23,10 @@ export const attachComponents = (routes: IConfigRoute[]): IRoute[] => {
       path: route.path,
       filePath: route.filePath,
       private: route.private,
-      Component: lazyLoad(
-        '../Pages'.concat(route.filePath).concat('/index.tsx')
-      )
+      Component: lazy(() => import('../Pages/home/index'))
+      // Component: lazyLoad(
+      //   '../Pages'.concat(route.filePath).concat('/index.tsx')
+      // )
     };
 
     if (route?.routes) {
