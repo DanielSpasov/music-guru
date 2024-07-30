@@ -43,7 +43,7 @@ export default function favorite({ model }: { model: Models }) {
     } catch (err) {
       errorHandler(req, res, err);
     } finally {
-      mongo.close();
+      await mongo.close();
     }
   };
 }

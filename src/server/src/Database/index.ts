@@ -5,7 +5,7 @@ import env from '../env';
 
 export const connect = () =>
   MongoClient.connect(
-    `mongodb+srv://${env.MONGO.USER}:${env.MONGO.PASS}@main-cluster.i7ggact.mongodb.net/`
+    `mongodb+srv://${env.MONGO.USER}:${env.MONGO.PASS}@main-cluster.i7ggact.mongodb.net/?retryWrites=true&w=majority`
   );
 
 export const initFirestoreBucket = () => {

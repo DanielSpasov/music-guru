@@ -19,6 +19,6 @@ export default async function patch(req: Request, res: Response) {
   } catch (err) {
     errorHandler(req, res, err);
   } finally {
-    mongo.close();
+    await mongo.close();
   }
 }

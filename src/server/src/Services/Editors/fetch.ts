@@ -42,6 +42,6 @@ export default async function (
   } catch (err) {
     errorHandler<Query>(req, res, err);
   } finally {
-    mongo.close();
+    await mongo.close();
   }
 }

@@ -34,7 +34,7 @@ export default function get({ database, collection }: GetProps) {
     } catch (err) {
       res.status(500).json({ message: 'Internal server error.' });
     } finally {
-      mongo.close();
+      await mongo.close();
     }
   };
 }
