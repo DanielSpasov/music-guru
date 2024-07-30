@@ -7,6 +7,7 @@ import Router from './Router';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
+  console.log('test deployment');
   return (
     <BrowserRouter>
       <ThemeProvider>
