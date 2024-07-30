@@ -32,7 +32,7 @@ export function get({ collectionName, databaseName }: ReqProps) {
     } catch (error) {
       errorHandler(req, res, error);
     } finally {
-      mongo.close();
+      await mongo.close();
     }
   };
 }

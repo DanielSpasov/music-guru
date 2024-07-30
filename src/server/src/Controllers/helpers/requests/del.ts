@@ -34,7 +34,7 @@ export function del({ collectionName }: SimpleReqProps) {
     } catch (error) {
       errorHandler(req, res, error);
     } finally {
-      mongo.close();
+      await mongo.close();
     }
   };
 }

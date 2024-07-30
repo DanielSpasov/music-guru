@@ -71,7 +71,7 @@ export default function update({ model }: { model: Exclude<Models, 'users'> }) {
     } catch (err) {
       errorHandler(req, res, err);
     } finally {
-      mongo.close();
+      await mongo.close();
     }
   };
 }

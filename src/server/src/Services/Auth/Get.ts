@@ -18,6 +18,6 @@ export async function GetUser(req: Request, res: Response) {
   } catch (error) {
     errorHandler(req, res, error);
   } finally {
-    mongo.close();
+    await mongo.close();
   }
 }
