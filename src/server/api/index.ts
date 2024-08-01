@@ -1,10 +1,11 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import env from './env';
 
-import router from './Router';
+import env from '../src/env';
 
-import { initFirestoreBucket } from './Database';
+import router from '../src/Router';
+
+import { initFirestoreBucket } from '../src/Database';
 initFirestoreBucket();
 
 const PORT = env.PORT || 8000;
