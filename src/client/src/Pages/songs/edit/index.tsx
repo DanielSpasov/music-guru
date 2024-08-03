@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import moment from 'moment';
 
 import { SubmitFn } from '../../../Components/Forms/Form/types';
-import { useSong } from '../../../Hooks';
+import { EditSongProps } from './types';
 import Api from '../../../Api';
 import {
   Fieldset,
@@ -21,7 +21,7 @@ import {
   SocialsSchema
 } from '../../../Validations';
 
-const EditSong = () => {
+const EditSong: FC<EditSongProps> = ({ data }) => {
   const navigate = useNavigate();
   const { id = '0' } = useParams();
 
@@ -61,21 +61,19 @@ const EditSong = () => {
     [navigate, id]
   );
 
-  const { song, loading } = useSong(id);
-
   return (
-    <PageLayout title="Edit Song" hideHeader loading={loading}>
+    <PageLayout title="Edit Song" hideHeader>
       <Form
         onSubmit={onSubmit}
         validationSchema={EditSongSchema}
         className="m-auto"
         header="Edit Song"
         defaultValues={{
-          ...song,
-          release_date: song.release_date
-            ? moment(song.release_date).format('MM/DD/yyyy')
+          ...data,
+          release_date: data.release_date
+            ? moment(data.release_date).format('MM/DD/yyyy')
             : '',
-          ...song.links.reduce(
+          ...data.links.reduce(
             (acc, { name, url }) => ({ ...acc, [name]: url }),
             {}
           )
