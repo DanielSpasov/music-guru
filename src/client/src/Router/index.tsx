@@ -1,26 +1,28 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { Suspense, useContext, useMemo } from 'react';
+import { ComponentType, Suspense, useContext, useMemo } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
+import { Loader, AsAuthenticated, AsOwner, AsEditor } from '../Components';
+import { IConfigRoute, IRoute, ProtectionLevel } from './types';
 import { AuthContext } from '../Contexts/Auth';
-import { IConfigRoute, IRoute } from './types';
 import { Components } from './components';
-import { Loader } from '../Components';
 
 import routesConfig from './routes.json';
 
 const Router = () => {
   const { isAuthenticated } = useContext(AuthContext);
+
   const routes = useMemo(() => {
     const attachComponents = (routes: IConfigRoute[]): IRoute[] => {
       return routes.map(route => {
         const attachedRoute: IRoute = {
           path: route.path,
-          private: route.private,
+          protection: route.protection,
           Component: Components[route.componentName as keyof typeof Components]
         };
 
-        if (route?.routes)
+        if (route?.routes) {
           attachedRoute.routes = attachComponents(route.routes);
+        }
 
         return attachedRoute;
       });
@@ -45,34 +47,40 @@ const Router = () => {
         </div>
       }
     >
-      <Routes>
-        {routes.map(x => setupRoute(x, Boolean(isAuthenticated)))}
-      </Routes>
+      <Routes>{routes.map(setupRoute)}</Routes>
     </Suspense>
   );
 };
 
-const setupRoute = (route: IRoute, isAuthenticated: boolean) => {
+const protectionLevel: Record<
+  Exclude<ProtectionLevel, 'none'>,
+  (Component: ComponentType) => ComponentType
+> = {
+  auth: AsAuthenticated,
+  editor: AsEditor,
+  owner: AsOwner
+};
+
+const setupRoute = (route: IRoute) => {
   if (route?.routes) {
     return (
       <Route key={route.path} path={route.path}>
-        {route.routes.map(x => setupRoute(x, isAuthenticated))}
+        {route.routes.map(x => setupRoute(x))}
       </Route>
     );
   }
+
+  const Element =
+    route.protection === 'none'
+      ? route.Component
+      : protectionLevel[route.protection](route.Component);
 
   return (
     <Route
       key={route.path}
       index={route.path === 'index'}
       path={route.path !== 'index' ? route.path : undefined}
-      element={
-        route.private && !isAuthenticated ? (
-          <Navigate to="/sign-in" replace />
-        ) : (
-          <route.Component />
-        )
-      }
+      element={<Element />}
     />
   );
 };

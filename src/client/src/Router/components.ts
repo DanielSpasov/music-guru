@@ -22,5 +22,6 @@ export const Components = {
   SignUp: lazy(() => import('../Pages/auth/sign-up')),
   SignOut: lazy(() => import('../Pages/auth/sign-out')),
   VerifyEmail: lazy(() => import('../Pages/auth/verify-email')),
+  AccessDenied: lazy(() => import('../Pages/access-denied')),
   NotFound: lazy(() => import('../Pages/not-found'))
 };

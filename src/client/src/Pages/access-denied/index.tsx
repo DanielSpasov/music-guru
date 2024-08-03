@@ -1,13 +1,13 @@
-import { Link, Loader, PageLayout } from '../../Components';
+import { Link, PageLayout } from '../../Components';
 
-const NotFound = () => {
+const NotOwner = () => {
   return (
-    <PageLayout title="Page not Found" heading="Page not found">
+    <PageLayout title="Access Denied" heading="Access Denied">
       <article className="flex flex-col items-center p-4">
-        <Loader type="player" />
+        <h2 className="text-red-400">Error Code: 403</h2>
 
         <p className="text-lg p-2">
-          No page here, back to{' '}
+          Access denied, go back to{' '}
           <Link to="/" type="link" className="underline">
             Home
           </Link>
@@ -18,4 +18,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotOwner;
