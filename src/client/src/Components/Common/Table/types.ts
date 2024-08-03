@@ -34,4 +34,6 @@ export type TableProps<T> = {
   cols: Col<T>[];
   fetchFn: (config?: AxiosRequestConfig) => Promise<{ data: T[] }>;
   actions?: TableAction<T>[];
+  hideSearch?: boolean;
+  searchKey?: string;
 };

@@ -3,17 +3,21 @@ import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 
 import { Col, Sorting, TableProps } from './types';
+import { useDebounce } from '../../../Hooks';
 import { BaseModel } from '../../../Types';
 import Loader from '../../Core/Loader';
 import { IDown, IUp } from '../..';
 
 // Composables
+import Search from './composables/Search';
 import Row from './composables/Row';
 
 const Table = <T extends BaseModel>({
   cols,
   fetchFn,
-  actions = []
+  actions = [],
+  hideSearch = false,
+  searchKey = 'name'
 }: TableProps<T>) => {
   const [sorting, setSorting] = useState<Sorting<T>>({
     key: null,
@@ -22,6 +26,9 @@ const Table = <T extends BaseModel>({
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState<T[]>([]);
 
+  const [value, setValue] = useState('');
+  const search = useDebounce({ value, delay: 500 });
+
   const unsortedItems = useRef<T[]>([]);
 
   useEffect(() => {
@@ -29,7 +36,7 @@ const Table = <T extends BaseModel>({
       try {
         setLoading(true);
 
-        const { data } = await fetchFn();
+        const { data } = await fetchFn({ params: { [searchKey]: search } });
         setItems(data);
         unsortedItems.current = data;
       } catch (err) {
@@ -41,7 +48,7 @@ const Table = <T extends BaseModel>({
         setLoading(false);
       }
     })();
-  }, [fetchFn]);
+  }, [fetchFn, search, searchKey]);
 
   const toggleSorting = useCallback(
     (col: Col<T>) => {
@@ -96,46 +103,56 @@ const Table = <T extends BaseModel>({
     [sorting, items]
   );
 
-  if (loading) return <Loader type="spinner" className="w-full m-auto" />;
   return (
-    <table className="w-full">
-      <thead className="border-b-[1px] border-b-neutral-200 dark:border-b-neutral-700">
-        <tr>
-          {cols.map((col, i) => (
-            <th
-              key={i}
-              className="font-semibold text-start p-2 cursor-pointer"
-              onClick={() => toggleSorting(col)}
-            >
-              <div className="flex">
-                {sorting.key === col.key ? (
-                  sorting.direction === 'asc' ? (
-                    <IDown className="w-6 h-6" />
-                  ) : (
-                    <IUp className="w-6 h-6" />
-                  )
-                ) : null}
+    <>
+      {!hideSearch && <Search setValue={setValue} />}
+      <table className="relative w-full">
+        <thead className="border-b-[1px] border-b-neutral-200 dark:border-b-neutral-700">
+          <tr>
+            {cols.map((col, i) => (
+              <th
+                key={i}
+                className="font-semibold text-start p-2 cursor-pointer"
+                onClick={() => toggleSorting(col)}
+              >
+                <div className="flex">
+                  {sorting.key === col.key ? (
+                    sorting.direction === 'asc' ? (
+                      <IDown className="w-6 h-6" />
+                    ) : (
+                      <IUp className="w-6 h-6" />
+                    )
+                  ) : null}
 
-                {col.label}
-              </div>
-            </th>
-          ))}
-          {actions.length ? <th /> : null}
-        </tr>
-      </thead>
+                  {col.label}
+                </div>
+              </th>
+            ))}
+            {actions.length ? <th /> : null}
+          </tr>
+        </thead>
 
-      <tbody>
-        {items.map((item, i) => (
-          <Row<T>
-            key={`row-${i}`}
-            cols={cols}
-            item={item}
-            actions={actions}
-            index={i}
-          />
-        ))}
-      </tbody>
-    </table>
+        <tbody>
+          {loading ? (
+            <tr>
+              <td>
+                <Loader type="spinner" className="absolute m-auto w-full" />
+              </td>
+            </tr>
+          ) : (
+            items.map((item, i) => (
+              <Row<T>
+                key={`row-${i}`}
+                cols={cols}
+                item={item}
+                actions={actions}
+                index={i}
+              />
+            ))
+          )}
+        </tbody>
+      </table>
+    </>
   );
 };
 

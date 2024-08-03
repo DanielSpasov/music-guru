@@ -46,6 +46,7 @@ const Settings = () => {
     >
       <Table<Editor>
         fetchFn={fetchEditors}
+        searchKey="username"
         actions={[
           {
             Icon: IPlus,
