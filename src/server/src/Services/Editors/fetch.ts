@@ -5,6 +5,7 @@ import { DBUser, User } from '../../Database/Types';
 import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
 import { useFilters } from '../../Utils';
+import { Collection } from 'mongodb';
 
 interface Query {
   limit?: string;
@@ -24,7 +25,7 @@ export default async function (
     const item = res.locals.item;
 
     const db = mongo.db('models');
-    const userCollection = db.collection<DBUser>('users');
+    const userCollection: Collection<DBUser> = db.collection('users');
 
     const editorUIDs = item.editors.map((x: User) => x.uid);
     const availableEditors = await userCollection
