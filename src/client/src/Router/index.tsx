@@ -1,8 +1,14 @@
-import { ComponentType, Suspense, useContext, useMemo } from 'react';
+import {
+  ComponentType,
+  LazyExoticComponent,
+  Suspense,
+  useContext,
+  useMemo
+} from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { Loader, AsAuthenticated, AsOwner, AsEditor } from '../Components';
-import { IConfigRoute, IRoute, ProtectionLevel } from './types';
+import { HOC, IConfigRoute, IRoute, ProtectionLevel } from './types';
 import { AuthContext } from '../Contexts/Auth';
 import { Components } from './components';
 
@@ -17,7 +23,9 @@ const Router = () => {
         const attachedRoute: IRoute = {
           path: route.path,
           protection: route.protection,
-          Component: Components[route.componentName as keyof typeof Components]
+          Component: Components[
+            route.componentName
+          ] as LazyExoticComponent<ComponentType>
         };
 
         if (route?.routes) {
@@ -52,10 +60,7 @@ const Router = () => {
   );
 };
 
-const protectionLevel: Record<
-  Exclude<ProtectionLevel, 'none'>,
-  (Component: ComponentType) => ComponentType
-> = {
+const protectionLevel: Record<Exclude<ProtectionLevel, 'none'>, HOC> = {
   auth: AsAuthenticated,
   editor: AsEditor,
   owner: AsOwner

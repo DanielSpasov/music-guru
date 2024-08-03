@@ -8,8 +8,8 @@ import { Model } from '../../Api/types';
 import Loader from '../Core/Loader';
 import Api from '../../Api';
 
-const AsOwner = (Component: ComponentType<{ data: BaseDetailedModel }>) => {
-  const WrappedComponent: FC = props => {
+const AsOwner = <T extends object>(Component: ComponentType<T>) => {
+  const WrappedComponent: FC<T> = props => {
     const { uid, isAuthenticated } = useContext(AuthContext);
 
     const { id = '0' } = useParams();
