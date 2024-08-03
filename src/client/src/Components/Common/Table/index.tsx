@@ -4,6 +4,7 @@ import { AxiosError } from 'axios';
 
 import { Col, Sorting, TableProps } from './types';
 import { BaseModel } from '../../../Types';
+import Loader from '../../Core/Loader';
 import { IDown, IUp } from '../..';
 
 // Composables
@@ -12,8 +13,7 @@ import Row from './composables/Row';
 const Table = <T extends BaseModel>({
   cols,
   fetchFn,
-  actions = [],
-  skeletonLength = 16
+  actions = []
 }: TableProps<T>) => {
   const [sorting, setSorting] = useState<Sorting<T>>({
     key: null,
@@ -96,6 +96,7 @@ const Table = <T extends BaseModel>({
     [sorting, items]
   );
 
+  if (loading) return <Loader type="spinner" className="w-full m-auto" />;
   return (
     <table className="w-full">
       <thead className="border-b-[1px] border-b-neutral-200 dark:border-b-neutral-700">
@@ -124,27 +125,15 @@ const Table = <T extends BaseModel>({
       </thead>
 
       <tbody>
-        {loading
-          ? Array(skeletonLength)
-              .fill(null)
-              .map((_, i) => (
-                <Row<T>
-                  key={`row-${i}`}
-                  cols={cols}
-                  item={{ name: '', uid: '' } as T}
-                  index={i}
-                  loading
-                />
-              ))
-          : items.map((item, i) => (
-              <Row<T>
-                key={`row-${i}`}
-                cols={cols}
-                item={item}
-                actions={actions}
-                index={i}
-              />
-            ))}
+        {items.map((item, i) => (
+          <Row<T>
+            key={`row-${i}`}
+            cols={cols}
+            item={item}
+            actions={actions}
+            index={i}
+          />
+        ))}
       </tbody>
     </table>
   );

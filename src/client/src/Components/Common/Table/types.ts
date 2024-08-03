@@ -23,15 +23,15 @@ export type DataCol<T> = {
 
 export type Col<T> = DataCol<T>;
 
-export type TableAction = {
+export type TableAction<T> = {
   onClick: (uid: string) => Promise<void> | void;
   Icon: ElementType;
   label?: string;
+  disableFn?: (item: T) => Promise<boolean> | boolean;
 };
 
 export type TableProps<T> = {
   cols: Col<T>[];
   fetchFn: (config?: AxiosRequestConfig) => Promise<{ data: T[] }>;
-  actions?: TableAction[];
-  skeletonLength?: number;
+  actions?: TableAction<T>[];
 };

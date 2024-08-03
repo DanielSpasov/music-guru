@@ -126,7 +126,7 @@ export const useSong = (uid: string) => {
     async (userUID: string) => {
       try {
         const { data } = await Api.songs.addEditor({ uid, userUID });
-        setSong(prev => ({ ...prev, editors: [...prev.editors, data] }));
+        setSong(prev => ({ ...prev, editors: [...prev.editors, data.uid] }));
         toast.success('Editor added sucessfully');
       } catch (err) {
         toast.error('Failed to add editor');
@@ -141,7 +141,7 @@ export const useSong = (uid: string) => {
         await Api.songs.delEditor({ uid, userUID });
         setSong(prev => ({
           ...prev,
-          editors: prev.editors.filter(x => x.uid !== userUID)
+          editors: prev.editors.filter(x => x !== userUID)
         }));
         toast.success('Editor removed sucessfully');
       } catch (err) {

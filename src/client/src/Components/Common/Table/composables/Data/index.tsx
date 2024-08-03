@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react';
 import moment from 'moment';
 
 import { BaseModel } from '../../../../../Types';
-import { ICheck, IX } from '../../../..';
+import { Button, ICheck, IX } from '../../../..';
 import { DataProps } from './types';
 
 const Data = <T extends BaseModel>({
@@ -15,9 +15,17 @@ const Data = <T extends BaseModel>({
     switch (col.type) {
       case 'actions':
         return (
-          <div className="flex">
+          <div className="flex gap-1">
             {actions?.map((action, i) => (
-              <action.Icon key={i} onClick={() => action.onClick(item.uid)} />
+              <Button
+                disabled={Boolean(action?.disableFn?.(item))}
+                onClick={() => action.onClick(item.uid)}
+                variant="outline"
+                key={i}
+              >
+                <action.Icon className="w-6 h-6" key={i} />
+                {action?.label}
+              </Button>
             ))}
           </div>
         );
@@ -37,8 +45,9 @@ const Data = <T extends BaseModel>({
     }
   }, [col, item, actions]);
 
-  if (loading) return <td className="h-11 p-2" />;
-  return <td className="p-2">{Data}</td>;
+  return (
+    <td className={`p-2 ${loading ? 'opacity-50' : 'opacity-100'}`}>{Data}</td>
+  );
 };
 
 export default memo(Data) as typeof Data;

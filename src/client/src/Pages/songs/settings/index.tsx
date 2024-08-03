@@ -1,12 +1,12 @@
+import { useCallback, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { AxiosRequestConfig } from 'axios';
-import { useCallback, useContext } from 'react';
 
-import { IAddUser, IDelUser, PageLayout, Table } from '../../../Components';
-import { useSong } from '../../../Hooks';
-import Api from '../../../Api';
-import { Editor } from './types';
+import { IPlus, IX, PageLayout, Table } from '../../../Components';
 import { AuthContext } from '../../../Contexts';
+import { useSong } from '../../../Hooks';
+import { Editor } from './types';
+import Api from '../../../Api';
 
 const Settings = () => {
   const { id: uid = '0' } = useParams();
@@ -47,8 +47,18 @@ const Settings = () => {
       <Table<Editor>
         fetchFn={fetchEditors}
         actions={[
-          { Icon: IAddUser, onClick: editors.add },
-          { Icon: IDelUser, onClick: editors.del }
+          {
+            Icon: IPlus,
+            label: 'Add',
+            onClick: editors.add,
+            disableFn: item => song.editors.includes(item.uid)
+          },
+          {
+            Icon: IX,
+            label: 'Remove',
+            onClick: editors.del,
+            disableFn: item => !song.editors.includes(item.uid)
+          }
         ]}
         cols={[
           { key: 'username', label: 'Username' },
