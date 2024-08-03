@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
+import { FC, useCallback } from 'react';
 import { toast } from 'react-toastify';
 
 import { SubmitFn } from '../../../Components/Forms/Form/types';
-import { defaultArtist } from '../details';
+import { EditArtistProps } from './types';
 import Api from '../../../Api';
 import {
   Fieldset,
@@ -18,7 +18,7 @@ import {
   EditArtistSchema
 } from '../../../Validations';
 
-const EditArtist = () => {
+const EditArtist: FC<EditArtistProps> = ({ data }) => {
   const navigate = useNavigate();
   const { id = '0' } = useParams();
 
@@ -56,41 +56,20 @@ const EditArtist = () => {
     [navigate, id]
   );
 
-  const [defaultData, setDefaultData] = useState(defaultArtist);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { data } = await Api.artists.get({
-          id,
-          config: { params: { serializer: 'detailed' } }
-        });
-
-        setDefaultData({
-          ...data,
-          ...data.links.reduce(
-            (acc, { name, url }) => ({ ...acc, [name]: url }),
-            {}
-          )
-        });
-      } catch (err) {
-        toast.error('Failed to fetch default data');
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [id]);
-
   return (
-    <PageLayout title="Edit Artist" hideHeader loading={loading}>
+    <PageLayout title="Edit Artist" hideHeader>
       <Form
         onSubmit={onSubmit}
         validationSchema={EditArtistSchema}
         className="m-auto"
         header="Edit Artist"
-        defaultValues={defaultData}
+        defaultValues={{
+          ...data,
+          ...data.links.reduce(
+            (acc, { name, url }) => ({ ...acc, [name]: url }),
+            {}
+          )
+        }}
       >
         <Fieldset title="Details" foldable>
           <Input label="Name" name="name" required />

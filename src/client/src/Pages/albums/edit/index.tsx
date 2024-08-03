@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
+import { FC, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
@@ -13,10 +13,10 @@ import {
 } from '../../../Components';
 import { EditAlbumData, EditAlbumSchema } from '../../../Validations';
 import { SubmitFn } from '../../../Components/Forms/Form/types';
-import { defaultAlbum } from '../details';
+import { EditAlbumProps } from './types';
 import Api from '../../../Api';
 
-const EditAlbum = () => {
+const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
   const navigate = useNavigate();
   const { id = '0' } = useParams();
 
@@ -45,40 +45,19 @@ const EditAlbum = () => {
     [navigate, id]
   );
 
-  const [defaultData, setDefaultData] = useState(defaultAlbum);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { data } = await Api.albums.get({
-          id,
-          config: { params: { serializer: 'detailed' } }
-        });
-
-        setDefaultData({
-          ...data,
-          release_date: data?.release_date
-            ? moment(data?.release_date).format('MM/DD/yyyy')
-            : ''
-        });
-      } catch (err) {
-        toast.error('Failed to fetch default data');
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [id]);
-
   return (
-    <PageLayout title="Edit Album" hideHeader loading={loading}>
+    <PageLayout title="Edit Album" hideHeader>
       <Form
         onSubmit={onSubmit}
         header="Edit Album"
         className="m-auto"
         validationSchema={EditAlbumSchema}
-        defaultValues={defaultData}
+        defaultValues={{
+          ...data,
+          release_date: data?.release_date
+            ? moment(data?.release_date).format('MM/DD/yyyy')
+            : ''
+        }}
       >
         <Fieldset title="Details" foldable>
           <Fieldset className="flex gap-2">

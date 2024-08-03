@@ -2,21 +2,22 @@
   {
     "path": "index",
     "componentName": "Home",
-    "private": false
+    "protection": "none"
   },
   {
     "path": "/artists",
     "componentName": "ArtistsList",
+    "protection": "none",
     "routes": [
       {
         "path": "index",
         "componentName": "ArtistsList",
-        "private": false
+        "protection": "none"
       },
       {
         "path": "create",
         "componentName": "ArtistsCreate",
-        "private": true
+        "protection": "auth"
       },
       {
         "path": ":id",
@@ -25,12 +26,12 @@
           {
             "path": "index",
             "componentName": "ArtistsDetails",
-            "private": false
+            "protection": "none"
           },
           {
             "path": "edit",
             "componentName": "ArtistsEdit",
-            "private": true
+            "protection": "editor"
           }
         ]
       }
@@ -39,30 +40,32 @@
   {
     "path": "/albums",
     "componentName": "AlbumsList",
+    "protection": "none",
     "routes": [
       {
         "path": "index",
         "componentName": "AlbumsList",
-        "private": false
+        "protection": "none"
       },
       {
         "path": "create",
         "componentName": "AlbumsCreate",
-        "private": true
+        "protection": "auth"
       },
       {
         "path": ":id",
         "componentName": "AlbumsDetails",
+        "protection": "none",
         "routes": [
           {
             "path": "index",
             "componentName": "AlbumsDetails",
-            "private": false
+            "protection": "none"
           },
           {
             "path": "edit",
             "componentName": "AlbumsEdit",
-            "private": true
+            "protection": "editor"
           }
         ]
       }
@@ -71,36 +74,37 @@
   {
     "path": "/songs",
     "componentName": "SongsList",
+    "protection": "none",
     "routes": [
       {
         "path": "index",
         "componentName": "SongsList",
-        "private": false
+        "protection": "none"
       },
       {
         "path": "create",
         "componentName": "SongsCreate",
-        "private": true
+        "protection": "auth"
       },
       {
         "path": ":id",
         "componentName": "SongsDetails",
-        "private": false,
+        "protection": "none",
         "routes": [
           {
             "path": "index",
             "componentName": "SongsDetails",
-            "private": false
+            "protection": "none"
           },
           {
             "path": "edit",
             "componentName": "SongsEdit",
-            "private": true
+            "protection": "editor"
           },
           {
             "path": "settings",
             "componentName": "SongSettings",
-            "private": true
+            "protection": "owner"
           }
         ]
       }
@@ -109,47 +113,53 @@
   {
     "path": "/settings",
     "componentName": "SettingsAccount",
+    "protection": "auth",
     "routes": [
       {
         "path": "/settings/account",
         "componentName": "SettingsAccount",
-        "private": true
+        "protection": "auth"
       },
       {
         "path": "/settings/password",
         "componentName": "SettingsPassword",
-        "private": true
+        "protection": "auth"
       },
       {
         "path": "/settings/mfa",
         "componentName": "SettingsMFA",
-        "private": true
+        "protection": "auth"
       }
     ]
   },
   {
     "path": "/sign-in",
     "componentName": "SignIn",
-    "private": false
+    "protection": "none"
   },
   {
     "path": "/sign-up",
     "componentName": "SignUp",
-    "private": false
+    "protection": "none"
   },
   {
     "path": "/sign-out",
     "componentName": "SignOut",
-    "private": false
+    "protection": "none"
   },
   {
     "path": "/verify-email",
     "componentName": "VerifyEmail",
-    "private": false
+    "protection": "none"
+  },
+  {
+    "path": "/access-denied",
+    "componentName": "AccessDenied",
+    "protection": "none"
   },
   {
     "path": "*",
     "componentName": "NotFound",
-    "private": false
+    "protection": "none"
   }
 ]
