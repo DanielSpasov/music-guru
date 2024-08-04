@@ -9,7 +9,7 @@
     "node": "20.x"
   },
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc -p . --noEmit",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "type-check": "tsc --project tsconfig.json --noEmit",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
