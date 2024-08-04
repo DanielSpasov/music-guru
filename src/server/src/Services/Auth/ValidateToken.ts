@@ -17,7 +17,7 @@ export function ValidateToken(req: Request, res: Response) {
 
     const payload = jwt.verify(
       token,
-      process.env.SECURITY_JWT_SECRET || ''
+      process.env.JWT_SECRET || ''
     ) as JwtPayload;
 
     res.status(200).json(payload);

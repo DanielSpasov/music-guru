@@ -30,7 +30,7 @@ export async function SignUp(req: Request, res: Response) {
     }
 
     // HASHING THE PASSWORD
-    const saltRounds = Number(process.env.SECURITY_SALT_ROUNDS);
+    const saltRounds = Number(process.env.SALT_ROUNDS);
     const salt = await bcrypt.genSalt(saltRounds);
     const passwordHash = await bcrypt.hash(password, salt);
 
@@ -48,7 +48,7 @@ export async function SignUp(req: Request, res: Response) {
     await collection.insertOne(data);
 
     // SIGN THE JSON WEB TOKEN
-    const authToken = jwt.sign({ uid }, process.env.SECURITY_JWT_SECRET || '');
+    const authToken = jwt.sign({ uid }, process.env.JWT_SECRET || '');
 
     await sendVerificationEmail(data);
 
