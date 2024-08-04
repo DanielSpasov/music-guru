@@ -7,7 +7,6 @@ import { SignInSchema } from '../../Database/Schemas';
 import { DBUser } from '../../Database/Types';
 import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
-import env from '../../env';
 
 export async function SignIn(req: Request, res: Response) {
   const mongo = await connect();
@@ -35,7 +34,12 @@ export async function SignIn(req: Request, res: Response) {
     }
 
     // SIGN THE JSON WEB TOKEN
-    const token = jwt.sign({ uid: user.uid }, env.SECURITY.JWT_SECRET);
+    const secret = process.env.SECURITY_JWT_SECRET;
+    if (!secret) {
+      res.status(500).json({ message: 'Internal server error.' });
+      return;
+    }
+    const token = jwt.sign({ uid: user.uid }, secret);
 
     res.status(200).json({
       token,

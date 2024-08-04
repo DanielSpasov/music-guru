@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { errorHandler } from '../../Error';
-import env from '../../env';
 
 interface JwtPayload {
   uid: string;
@@ -16,7 +15,12 @@ export function ValidateToken(req: Request, res: Response) {
       return;
     }
 
-    const payload = jwt.verify(token, env.SECURITY.JWT_SECRET) as JwtPayload;
+    const secret = process.env.SECURITY_JWT_SECRET;
+    if (!secret) {
+      res.status(500).json({ message: 'Internal server error.' });
+      return;
+    }
+    const payload = jwt.verify(token, secret) as JwtPayload;
 
     res.status(200).json(payload);
   } catch (error) {
