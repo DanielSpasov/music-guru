@@ -13,7 +13,8 @@
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "type-check": "tsc --project tsconfig.json --noEmit",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "start": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "start": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "vercel-build": "echo VercelBuild"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
