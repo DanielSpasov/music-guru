@@ -34,10 +34,7 @@ export async function SignIn(req: Request, res: Response) {
     }
 
     // SIGN THE JSON WEB TOKEN
-    const token = jwt.sign(
-      { uid: user.uid },
-      process.env.SECURITY_JWT_SECRET || ''
-    );
+    const token = jwt.sign({ uid: user.uid }, process.env.JWT_SECRET || '');
 
     res.status(200).json({
       token,

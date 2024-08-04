@@ -50,7 +50,7 @@ export async function ChangePassword(req: Request, res: Response) {
         .json({ message: 'New Password cannot be your old password.' });
     }
 
-    const saltRounds = Number(process.env.SECURITY_SALT_ROUNDS);
+    const saltRounds = Number(process.env.SALT_ROUNDS);
     const salt = await bcrypt.genSalt(saltRounds);
     const newPasswordHash = await bcrypt.hash(validated.new_password, salt);
 
