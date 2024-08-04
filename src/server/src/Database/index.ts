@@ -5,8 +5,10 @@ import env from '../env';
 
 export const connect = async () => {
   console.log(env);
+  console.log(process.env.MONGO_DB_USER);
+  console.log(process.env.MONGO_DB_PASS);
   return await MongoClient.connect(
-    `mongodb+srv://${env.MONGO.USER}:${env.MONGO.PASS}@main-cluster.i7ggact.mongodb.net/?retryWrites=true&w=majority`
+    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@main-cluster.i7ggact.mongodb.net/?retryWrites=true&w=majority`
   );
 };
 
