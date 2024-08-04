@@ -21,3 +21,5 @@ app.use(router);
 app.listen(PORT, () =>
   console.log('\u001b[1;32m' + `Server running on PORT: ${PORT}` + '\u001b[0m')
 );
+
+export default app;

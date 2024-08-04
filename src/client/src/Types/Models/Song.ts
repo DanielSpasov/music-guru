@@ -1,7 +1,6 @@
+import { BaseDetailedModel, BaseModel } from './Base';
 import { Socials } from '../../Validations';
 import { ListArtist } from './Artist';
-import { BaseModel } from './Base';
-import { ListUser } from './User';
 
 export type Verse = {
   title: string;
@@ -9,17 +8,16 @@ export type Verse = {
   number: number;
 };
 
-export type Song = BaseModel & {
+export type Song = BaseDetailedModel & {
   image: string;
   created_at: Date;
-  created_by: string;
   release_date: Date | null;
   artist: ListArtist;
   features: ListArtist[];
   verses: Verse[];
   links: { name: keyof Socials; url: string }[];
   about: string;
-  editors: ListUser[];
+  editors: string[]; // Overwrites BaseDetailedModel's editors bcs they are optional
   favorites: number;
 };
 

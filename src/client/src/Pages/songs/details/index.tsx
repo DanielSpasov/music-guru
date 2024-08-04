@@ -30,10 +30,10 @@ const SongDetails = () => {
     [song.created_by, uid]
   );
 
-  const isEditor = useMemo(
-    () => Boolean(song.editors.find(user => user.uid === uid)) || isOwner,
-    [song.editors, uid, isOwner]
-  );
+  const isEditor = useMemo(() => {
+    if (!uid) return false;
+    return Boolean(song.editors.includes(uid)) || isOwner;
+  }, [song.editors, uid, isOwner]);
 
   return (
     <PageLayout

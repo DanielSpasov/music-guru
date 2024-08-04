@@ -25,6 +25,7 @@ export interface Song {
 }
 
 export interface DBSong {
+  uid: string;
   name: string;
   image: string;
   created_at: Date;

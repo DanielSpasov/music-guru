@@ -43,7 +43,7 @@ const AsEditor = <T extends object>(Component: ComponentType<T>) => {
       })();
     }, [location, id]);
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !uid) {
       return <Navigate to="/sign-in" replace />;
     }
 
@@ -59,7 +59,7 @@ const AsEditor = <T extends object>(Component: ComponentType<T>) => {
       return <Component {...props} data={data} />;
     }
 
-    if (data?.editors?.find(user => user.uid === uid)) {
+    if (data?.editors?.includes(uid)) {
       return <Component {...props} data={data} />;
     }
 

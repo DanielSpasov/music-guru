@@ -8,8 +8,8 @@ import { CreateVerseData } from '../../Validations';
 import { defaultSong } from './defaultValues';
 import Api from '../../Api';
 
-export const useSong = (uid: string) => {
-  const [song, setSong] = useState<Song>(defaultSong);
+export const useSong = (uid: string, inherit?: Song) => {
+  const [song, setSong] = useState<Song>(inherit || defaultSong);
 
   const [albums, setAlbums] = useState<ListAlbum[]>([]);
 
@@ -21,6 +21,8 @@ export const useSong = (uid: string) => {
   useEffect(() => {
     (async () => {
       try {
+        if (inherit) return;
+
         setLoading(true);
         const { data } = await Api.songs.get({
           id: uid,
@@ -38,7 +40,7 @@ export const useSong = (uid: string) => {
         setLoading(false);
       }
     })();
-  }, [uid]);
+  }, [uid, inherit]);
 
   const updateImage = useCallback(
     async (file: File) => {
@@ -126,7 +128,7 @@ export const useSong = (uid: string) => {
     async (userUID: string) => {
       try {
         const { data } = await Api.songs.addEditor({ uid, userUID });
-        setSong(prev => ({ ...prev, editors: [...prev.editors, data] }));
+        setSong(prev => ({ ...prev, editors: [...prev.editors, data.uid] }));
         toast.success('Editor added sucessfully');
       } catch (err) {
         toast.error('Failed to add editor');
@@ -141,7 +143,7 @@ export const useSong = (uid: string) => {
         await Api.songs.delEditor({ uid, userUID });
         setSong(prev => ({
           ...prev,
-          editors: prev.editors.filter(x => x.uid !== userUID)
+          editors: prev.editors.filter(x => x !== userUID)
         }));
         toast.success('Editor removed sucessfully');
       } catch (err) {
