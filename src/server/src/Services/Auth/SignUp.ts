@@ -7,7 +7,6 @@ import { SignUpSchema } from '../../Database/Schemas';
 import { sendVerificationEmail } from './helpers';
 import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
-import env from '../../env';
 
 export async function SignUp(req: Request, res: Response) {
   const mongo = await connect();
@@ -31,7 +30,7 @@ export async function SignUp(req: Request, res: Response) {
     }
 
     // HASHING THE PASSWORD
-    const saltRounds = Number(env.SECURITY.SALT_ROUNDS);
+    const saltRounds = Number(process.env.SECURITY_SALT_ROUNDS);
     const salt = await bcrypt.genSalt(saltRounds);
     const passwordHash = await bcrypt.hash(password, salt);
 
@@ -49,7 +48,12 @@ export async function SignUp(req: Request, res: Response) {
     await collection.insertOne(data);
 
     // SIGN THE JSON WEB TOKEN
-    const authToken = jwt.sign({ uid }, env.SECURITY.JWT_SECRET);
+    const secret = process.env.SECURITY_JWT_SECRET;
+    if (!secret) {
+      res.status(500).json({ message: 'Internal server error.' });
+      return;
+    }
+    const authToken = jwt.sign({ uid }, secret);
 
     await sendVerificationEmail(data);
 
