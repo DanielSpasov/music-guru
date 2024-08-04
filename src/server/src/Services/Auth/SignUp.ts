@@ -48,12 +48,7 @@ export async function SignUp(req: Request, res: Response) {
     await collection.insertOne(data);
 
     // SIGN THE JSON WEB TOKEN
-    const secret = process.env.SECURITY_JWT_SECRET;
-    if (!secret) {
-      res.status(500).json({ message: 'Internal server error.' });
-      return;
-    }
-    const authToken = jwt.sign({ uid }, secret);
+    const authToken = jwt.sign({ uid }, process.env.SECURITY_JWT_SECRET || '');
 
     await sendVerificationEmail(data);
 

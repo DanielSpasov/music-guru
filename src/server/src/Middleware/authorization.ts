@@ -13,8 +13,10 @@ export default async function authorization(
       return;
     }
 
-    const secret = process.env.SECURITY_JWT_SECRET || '';
-    const { uid } = jwt.verify(token, secret) as JwtPayload;
+    const { uid } = jwt.verify(
+      token,
+      process.env.SECURITY_JWT_SECRET || ''
+    ) as JwtPayload;
 
     res.locals.user = { uid };
 
