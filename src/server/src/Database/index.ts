@@ -3,10 +3,12 @@ import { MongoClient } from 'mongodb';
 
 import env from '../env';
 
-export const connect = () =>
-  MongoClient.connect(
+export const connect = async () => {
+  console.log(env);
+  return await MongoClient.connect(
     `mongodb+srv://${env.MONGO.USER}:${env.MONGO.PASS}@main-cluster.i7ggact.mongodb.net/?retryWrites=true&w=majority`
   );
+};
 
 export const initFirestoreBucket = () => {
   initializeApp({
