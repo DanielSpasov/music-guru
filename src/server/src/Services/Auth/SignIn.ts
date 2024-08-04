@@ -34,12 +34,10 @@ export async function SignIn(req: Request, res: Response) {
     }
 
     // SIGN THE JSON WEB TOKEN
-    const secret = process.env.SECURITY_JWT_SECRET;
-    if (!secret) {
-      res.status(500).json({ message: 'Internal server error.' });
-      return;
-    }
-    const token = jwt.sign({ uid: user.uid }, secret);
+    const token = jwt.sign(
+      { uid: user.uid },
+      process.env.SECURITY_JWT_SECRET || ''
+    );
 
     res.status(200).json({
       token,

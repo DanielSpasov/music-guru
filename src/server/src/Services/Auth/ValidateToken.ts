@@ -15,12 +15,10 @@ export function ValidateToken(req: Request, res: Response) {
       return;
     }
 
-    const secret = process.env.SECURITY_JWT_SECRET;
-    if (!secret) {
-      res.status(500).json({ message: 'Internal server error.' });
-      return;
-    }
-    const payload = jwt.verify(token, secret) as JwtPayload;
+    const payload = jwt.verify(
+      token,
+      process.env.SECURITY_JWT_SECRET || ''
+    ) as JwtPayload;
 
     res.status(200).json(payload);
   } catch (error) {
