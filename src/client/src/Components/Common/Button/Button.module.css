@@ -8,7 +8,7 @@
 
   & [type='button'].outline,
   .outline {
-    @apply border-2 rounded-full py-1 px-3 w-full justify-center;
+    @apply border-2 rounded-full py-1 px-3;
     @apply border-primary text-primary;
     @apply dark:shadow-md dark:bg-transparent dark:border-neutral-900 dark:text-white;
 
