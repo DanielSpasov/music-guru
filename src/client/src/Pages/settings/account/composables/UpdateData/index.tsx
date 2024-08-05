@@ -49,10 +49,12 @@ const UpdateData: FC<UpdateDataProps> = ({ data: user, dispatch }) => {
     <Form
       onSubmit={onSubmit}
       validationSchema={UpdateUserSchema}
+      hideClose
       submitBtn={{
         disabled: disableSubmit,
         label: 'Save Changes',
-        variant: 'outline'
+        variant: 'outline',
+        className: 'w-min whitespace-nowrap'
       }}
       defaultValues={{ username: user?.username, email: user?.email }}
       className="w-full mt-4 bg-transparent dark:bg-transparent"

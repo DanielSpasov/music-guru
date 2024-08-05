@@ -101,6 +101,7 @@ const ArtistDetails = () => {
                   config: { params: { 'artist.uid': artist.uid } }
                 })
               }
+              favoriteFn={uid => Api.albums.favorite({ uid })}
               model="albums"
             />
           </div>
@@ -113,6 +114,7 @@ const ArtistDetails = () => {
                   config: { params: { 'artist.uid': artist.uid } }
                 })
               }
+              favoriteFn={uid => Api.songs.favorite({ uid })}
               model="songs"
             />
           </div>

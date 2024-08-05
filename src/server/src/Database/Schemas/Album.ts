@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const DateSchema = z.union([z.string(), z.null()]).transform(x => {
-  if (x === null) return null;
+  if (x === null || x === '') return null;
   return new Date(x);
 });
 

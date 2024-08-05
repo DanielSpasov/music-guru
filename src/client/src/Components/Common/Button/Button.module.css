@@ -1,35 +1,31 @@
 @tailwind components;
 
 @layer components {
+  & [type='button'].btn,
   .btn {
     @apply font-semibold flex items-center outline-none focus:opacity-60;
   }
 
+  & [type='button'].outline,
   .outline {
-    @apply dark:shadow-md dark:bg-transparent dark:border-neutral-900 border-2 rounded-full py-1 px-3 border-primary;
+    @apply border-2 rounded-full py-1 px-3;
+    @apply border-primary text-primary;
+    @apply dark:shadow-md dark:bg-transparent dark:border-neutral-900 dark:text-white;
 
     &:hover {
-      @apply bg-primary dark:bg-neutral-900;
-    }
-    &:hover * {
-      @apply text-white;
+      @apply bg-primary text-white;
+      @apply dark:bg-neutral-900;
     }
     &:hover svg path {
       @apply fill-white;
     }
 
     &:disabled {
-      @apply opacity-60 bg-transparent dark:bg-transparent;
-    }
-    &:disabled * {
-      @apply text-primary;
+      @apply opacity-60 bg-transparent text-primary;
+      @apply dark:bg-transparent dark:text-white;
     }
     &:disabled svg path {
       @apply fill-primary;
-    }
-
-    & * {
-      @apply text-primary dark:text-white;
     }
 
     & svg path {
@@ -37,6 +33,7 @@
     }
   }
 
+  & [type='button'].primary,
   .primary {
     @apply dark:bg-primary-dark bg-primary px-3 py-2 rounded-lg text-white w-full justify-center;
 
@@ -49,8 +46,11 @@
     }
   }
 
+  & [type='button'].secondary,
   .secondary {
-    @apply dark:bg-secondary-dark bg-secondary px-3 py-1.5 rounded-lg text-white w-full justify-center;
+    @apply px-3 py-1.5 rounded-lg text-white w-full justify-center;
+    @apply bg-secondary text-white;
+    @apply dark:bg-secondary-dark;
 
     &:hover {
       @apply opacity-70;
