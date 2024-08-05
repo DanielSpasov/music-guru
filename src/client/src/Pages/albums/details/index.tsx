@@ -119,11 +119,21 @@ const AlbumDetails = () => {
         <div className="flex justify-between w-full">
           <div>
             <h3 className="text-center">Artist</h3>
-            <List fetchFn={fetchArtist} model="artists" skeletonLength={1} />
+            <List
+              fetchFn={fetchArtist}
+              favoriteFn={uid => Api.artists.favorite({ uid })}
+              model="artists"
+              skeletonLength={1}
+            />
           </div>
           <div>
             <h3 className="text-center">Songs</h3>
-            <List fetchFn={fetchSongs} model="songs" skeletonLength={3} />
+            <List
+              fetchFn={fetchSongs}
+              model="songs"
+              skeletonLength={3}
+              favoriteFn={uid => Api.songs.favorite({ uid })}
+            />
           </div>
         </div>
       </section>
