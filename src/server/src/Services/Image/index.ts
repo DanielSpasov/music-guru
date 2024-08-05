@@ -24,11 +24,6 @@ export default function update({ model }: { model: Exclude<Models, 'users'> }) {
         return;
       }
 
-      if (item.created_by !== res.locals.user.uid) {
-        res.status(403).json({ message: 'Permission denied.' });
-        return;
-      }
-
       if (req?.file) {
         const validatedFile = FileSchema.parse(req?.file);
         const name = validatedFile.originalname;

@@ -67,13 +67,15 @@ const SongDetails = () => {
       <section className="flex h-[calc(100vh-250px)]">
         <div className="flex flex-col items-start w-1/2 px-4 text-white">
           <div className="flex mb-10">
-            <Image
-              src={song?.image || ''}
-              alt={song.name}
-              editable={song.created_by === uid}
-              updateFn={updateImage}
-              className="w-64 h-64"
-            />
+            {uid ? (
+              <Image
+                src={song?.image || ''}
+                alt={song.name}
+                editable={song.created_by === uid || song.editors.includes(uid)}
+                updateFn={updateImage}
+                className="w-64 h-64"
+              />
+            ) : null}
 
             <Summary song={song} albums={albums} />
           </div>
