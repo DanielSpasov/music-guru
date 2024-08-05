@@ -16,11 +16,8 @@ const Form = <T extends FieldValues>({
   children,
   className,
   additionalContent,
-  submitBtn = {
-    label: 'Submit',
-    disabled: false,
-    variant: 'primary'
-  },
+  hideClose = false,
+  submitBtn,
   ...props
 }: FormProps<T>) => {
   const { handleSubmit, ...formProps } = useForm<T>({
@@ -67,18 +64,21 @@ const Form = <T extends FieldValues>({
         </article>
 
         <div className="flex justify-end gap-4 p-4">
-          <Button
-            variant="secondary"
-            onClick={() => (onClose ? onClose() : navigate(-1))}
-            type="button"
-          >
-            Close
-          </Button>
+          {!hideClose && (
+            <Button
+              variant="secondary"
+              onClick={() => (onClose ? onClose() : navigate(-1))}
+              type="button"
+            >
+              Close
+            </Button>
+          )}
           <Button
             disabled={loading || submitBtn?.disabled}
-            variant={submitBtn?.variant}
+            variant={submitBtn?.variant || 'primary'}
+            {...submitBtn}
           >
-            {submitBtn?.label}
+            {submitBtn?.label || 'Submit'}
           </Button>
         </div>
 

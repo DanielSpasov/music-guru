@@ -20,7 +20,7 @@ const Artists = () => {
           children: (
             <>
               <IPlus />
-              <p>New</p>
+              New
             </>
           ),
           variant: 'outline',
