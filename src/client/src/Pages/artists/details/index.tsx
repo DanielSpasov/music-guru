@@ -118,6 +118,19 @@ const ArtistDetails = () => {
               model="songs"
             />
           </div>
+
+          <div>
+            <h2>Features</h2>
+            <List
+              fetchFn={() =>
+                Api.songs.fetch({
+                  config: { params: { 'features.uid': artist.uid } }
+                })
+              }
+              favoriteFn={uid => Api.songs.favorite({ uid })}
+              model="songs"
+            />
+          </div>
         </div>
       </section>
     </PageLayout>
