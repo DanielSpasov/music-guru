@@ -15,7 +15,6 @@ const Account = () => {
     <PageLayout
       title="Accont Settings"
       heading="Account Settings"
-      hideResourses
       hideRecent
       links={sidebarLinks}
     >

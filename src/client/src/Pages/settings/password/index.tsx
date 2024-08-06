@@ -37,7 +37,6 @@ const Password = () => {
     <PageLayout
       title="Change Password"
       heading="Change Password"
-      hideResourses
       hideRecent
       links={sidebarLinks}
     >
