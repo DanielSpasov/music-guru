@@ -2,7 +2,7 @@ import { Template, TemplateData } from './helpers';
 
 const templates: Record<Template, (data: any) => TemplateData> = {
   VERIFY: ({ expToken, username }) => {
-    const link = `http://localhost:3000/verify-email?token=${expToken}`;
+    const link = `${process.env.WEBAPP_URL}/verify-email?token=${expToken}`;
     return {
       subject: 'Verify Your Email Address',
       text: `Hi ${username},
