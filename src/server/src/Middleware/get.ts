@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { aggregators } from '../Database/Aggregators';
-import { Models } from '../Database/Types';
+import { aggregators } from '../Aggregators';
 import { connect } from '../Database';
 import { APIError } from '../Error';
+import { Models } from '../Types';
 
 export type GetProps = { database: 'models'; collection: Models };
 

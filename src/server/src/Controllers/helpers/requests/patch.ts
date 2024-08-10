@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { validationSchemas } from '../../../Database/Schemas';
+import { validationSchemas } from '../../../Validations';
 import { connect } from '../../../Database';
 import { APIError } from '../../../Error';
 import { SimpleReqProps } from '../types';

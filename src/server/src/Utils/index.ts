@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { Models, Serializer } from '../Database/Types';
-import { serializers } from '../Database/Serializers';
+import { serializers } from '../Serializers';
+import { Models, Serializer } from '../Types';
 
 export type QueryProps = { serializer?: Serializer };
 

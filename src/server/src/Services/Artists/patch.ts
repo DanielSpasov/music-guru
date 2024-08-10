@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { ArtistSchema } from '../../Database/Schemas';
+import { ArtistSchema } from '../../Validations';
 import { connect } from '../../Database';
 import { APIError } from '../../Error';
 

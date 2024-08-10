@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { EditorSchema } from '../../Database/Schemas';
-import { DBUser, User } from '../../Database/Types';
+import { EditorSchema } from '../../Validations';
+import { DBUser, User } from '../../Types';
 import { connect } from '../../Database';
 import { BaseObject } from './helpers';
 import { APIError } from '../../Error';

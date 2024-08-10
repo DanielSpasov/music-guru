@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { ListUser } from '../Database/Serializers/User';
+import { ListUser } from '../Serializers/User';
 import { APIError } from '../Error';
 
 export default async function editorship(

@@ -3,10 +3,10 @@ import { Collection } from 'mongodb';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-import { SignInSchema } from '../../Database/Schemas';
-import { DBUser } from '../../Database/Types';
+import { SignInSchema } from '../../Validations';
 import { connect } from '../../Database';
 import { APIError } from '../../Error';
+import { DBUser } from '../../Types';
 
 export const SignIn = async (
   req: Request,

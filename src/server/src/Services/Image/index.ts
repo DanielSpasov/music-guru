@@ -7,10 +7,10 @@ import {
 } from 'firebase/storage';
 import { NextFunction, Request, Response } from 'express';
 
-import { FileSchema } from '../../Database/Schemas';
-import { Models } from '../../Database/Types';
+import { FileSchema } from '../../Validations';
 import { connect } from '../../Database';
 import { APIError } from '../../Error';
+import { Models } from '../../Types';
 
 export default ({ model }: { model: Exclude<Models, 'users'> }) =>
   async (req: Request, res: Response, next: NextFunction) => {

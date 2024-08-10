@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { User } from '../../Database/Types';
+import { User } from '../../Types';
 import SendEmail from '../Email';
 
 export const sendVerificationEmail = async (user: User) => {

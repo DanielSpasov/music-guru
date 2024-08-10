@@ -4,9 +4,8 @@ import {
   getDownloadURL
 } from 'firebase/storage';
 
-import { Models, Serializer } from '../../Database/Types';
-import { serializers } from '../../Database/Serializers';
-import { File } from '../../Database/Types/File';
+import { Models, Serializer, File } from '../../Types';
+import { serializers } from '../../Serializers';
 
 export async function getUploadLink(
   file: File,

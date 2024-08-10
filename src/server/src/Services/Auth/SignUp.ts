@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
-import { SignUpSchema } from '../../Database/Schemas';
+import { SignUpSchema } from '../../Validations';
 import { sendVerificationEmail } from './helpers';
 import { connect } from '../../Database';
 import { APIError } from '../../Error';

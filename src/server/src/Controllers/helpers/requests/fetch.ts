@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { aggregators } from '../../../Database/Aggregators';
+import { aggregators } from '../../../Aggregators';
 import { QueryProps, ReqProps } from '../types';
 import { connect } from '../../../Database';
 import { serializeObj } from '../helpers';

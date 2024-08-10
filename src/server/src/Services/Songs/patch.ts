@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { PatchSongSchema } from '../../Database/Schemas';
+import { PatchSongSchema } from '../../Validations';
 import { connect } from '../../Database';
 
 export default async (req: Request, res: Response, next: NextFunction) => {

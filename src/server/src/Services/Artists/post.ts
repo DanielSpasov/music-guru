@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { getUploadLink } from '../../Controllers/helpers/helpers';
-import { ArtistSchema, FileSchema } from '../../Database/Schemas';
+import { ArtistSchema, FileSchema } from '../../Validations';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { connect } from '../../Database';
 import { APIError } from '../../Error';

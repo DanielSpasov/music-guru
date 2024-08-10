@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { Models } from '../../Database/Types';
+import { Models } from '../../Types';
 import { connect } from '../../Database';
 import { APIError } from '../../Error';
 

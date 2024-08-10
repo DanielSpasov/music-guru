@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { sendVerificationEmail } from './helpers';
-import { User } from '../../Database/Types';
 import { connect } from '../../Database';
 import { APIError } from '../../Error';
+import { User } from '../../Types';
 
 export const ResendValidationEmail = async (
   req: Request,

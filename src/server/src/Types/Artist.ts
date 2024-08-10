@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { ArtistSchema } from '../Schemas';
+import { ArtistSchema } from '../Validations';
 import { User } from './User';
 
 export interface Artist extends z.infer<typeof ArtistSchema> {

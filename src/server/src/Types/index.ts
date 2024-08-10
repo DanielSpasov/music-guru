@@ -4,6 +4,7 @@ import { Song, DBSong } from './Song';
 import { User, DBUser } from './User';
 
 export { SignInData, SignUpData } from './User';
+export { File } from './File';
 
 export type Databases = 'models';
 

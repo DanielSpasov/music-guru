@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { VerseSchema } from '../../../Database/Schemas/Song';
-import { DBSong } from '../../../Database/Types';
+import { VerseSchema } from '../../../Validations/Song';
 import { connect } from '../../../Database';
+import { DBSong } from '../../../Types';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   const mongo = await connect();

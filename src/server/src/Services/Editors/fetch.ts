@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { Collection } from 'mongodb';
 
-import { serializers } from '../../Database/Serializers';
-import { DBUser, User } from '../../Database/Types';
+import { serializers } from '../../Serializers';
+import { DBUser, User } from '../../Types';
 import { connect } from '../../Database';
 import { useFilters } from '../../Utils';
 

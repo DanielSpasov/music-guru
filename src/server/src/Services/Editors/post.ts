@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { ListUser } from '../../Database/Serializers/User';
-import { EditorSchema } from '../../Database/Schemas';
-import { DBUser } from '../../Database/Types/User';
+import { ListUser } from '../../Serializers/User';
+import { EditorSchema } from '../../Validations';
+import { DBUser } from '../../Types/User';
 import { connect } from '../../Database';
 import { BaseObject } from './helpers';
 import { APIError } from '../../Error';

@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from 'express';
 import { Collection } from 'mongodb';
 import bcrypt from 'bcrypt';
 
-import { ChangePassSchema } from '../../Database/Schemas/User';
-import { DBUser } from '../../Database/Types';
+import { ChangePassSchema } from '../../Validations/User';
 import { connect } from '../../Database';
 import { APIError } from '../../Error';
+import { DBUser } from '../../Types';
 import SendEmail from '../Email';
 
 export const ChangePassword = async (

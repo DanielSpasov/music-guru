@@ -1,4 +1,4 @@
-import { Models, Serializer } from '../../Database/Types';
+import { Models, Serializer } from '../../Types';
 
 export type QueryProps = { serializer?: Serializer };
 

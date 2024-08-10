@@ -1,7 +1,7 @@
 import { deleteObject, getStorage, ref } from 'firebase/storage';
 import { NextFunction, Request, Response } from 'express';
 
-import { DBAlbum, DBSong } from '../../Database/Types';
+import { DBAlbum, DBSong } from '../../Types';
 import { connect } from '../../Database';
 
 export default async (req: Request, res: Response, next: NextFunction) => {

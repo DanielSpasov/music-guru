@@ -2,10 +2,10 @@ import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { NextFunction, Request, Response } from 'express';
 import crypto from 'crypto';
 
-import { FileSchema, validationSchemas } from '../../../Database/Schemas';
-import { APIError } from '../../../Error';
+import { FileSchema, validationSchemas } from '../../../Validations';
 import { connect } from '../../../Database';
 import { getUploadLink } from '../helpers';
+import { APIError } from '../../../Error';
 import { SimpleReqProps } from '../types';
 
 export const post =

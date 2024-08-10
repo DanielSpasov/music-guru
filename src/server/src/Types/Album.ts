@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { BaseAlbumSchema } from '../Schemas';
+import { BaseAlbumSchema } from '../Validations';
 import { AlbumType } from './AlbumType';
 import { Artist } from './Artist';
 import { Song } from './Song';
