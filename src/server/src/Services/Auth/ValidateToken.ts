@@ -1,19 +1,20 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { errorHandler } from '../../Error';
+import { APIError } from '../../Error';
 
 interface JwtPayload {
   uid: string;
 }
 
-export function ValidateToken(req: Request, res: Response) {
+export const ValidateToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const token = req.query?.token as string;
-    if (!token) {
-      res.status(400).json({ message: 'No Token was found.' });
-      return;
-    }
+    if (!token) throw new APIError(400, 'No Token was found.');
 
     const payload = jwt.verify(
       token,
@@ -21,7 +22,7 @@ export function ValidateToken(req: Request, res: Response) {
     ) as JwtPayload;
 
     res.status(200).json(payload);
-  } catch (error) {
-    errorHandler(req, res, error);
+  } catch (err) {
+    next(err);
   }
-}
+};

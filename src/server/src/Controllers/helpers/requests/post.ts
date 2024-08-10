@@ -1,15 +1,16 @@
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import crypto from 'crypto';
 
 import { FileSchema, validationSchemas } from '../../../Database/Schemas';
-import { errorHandler } from '../../../Error';
+import { APIError } from '../../../Error';
 import { connect } from '../../../Database';
 import { getUploadLink } from '../helpers';
 import { SimpleReqProps } from '../types';
 
-export function post({ collectionName }: SimpleReqProps) {
-  return async function (req: Request, res: Response) {
+export const post =
+  ({ collectionName }: SimpleReqProps) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mongo = await connect();
     try {
       const uid = crypto.randomUUID();
@@ -34,10 +35,7 @@ export function post({ collectionName }: SimpleReqProps) {
       const db = mongo.db('models');
       const users = db.collection('users');
       const user = await users.findOne({ uid: res.locals.user.uid });
-      if (!user) {
-        res.status(400).json({ message: 'Invalid User UID.' });
-        return;
-      }
+      if (!user) throw new APIError(400, 'Invalid User UID.');
 
       const data = {
         ...validatedData,
@@ -51,10 +49,9 @@ export function post({ collectionName }: SimpleReqProps) {
       await collection.insertOne(data);
 
       res.status(200).json({ message: 'Success', uid, name: data.name });
-    } catch (error) {
-      errorHandler(req, res, error);
+    } catch (err) {
+      next(err);
     } finally {
       await mongo.close();
     }
   };
-}

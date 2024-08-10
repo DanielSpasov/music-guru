@@ -1,12 +1,12 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { EditorSchema } from '../../Database/Schemas';
 import { DBUser, User } from '../../Database/Types';
-import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
 import { BaseObject } from './helpers';
+import { APIError } from '../../Error';
 
-export default async function (req: Request, res: Response) {
+export default async (req: Request, res: Response, next: NextFunction) => {
   const mongo = await connect();
   try {
     const item = res.locals.item;
@@ -18,15 +18,11 @@ export default async function (req: Request, res: Response) {
     const userCollection = db.collection<DBUser>('users');
 
     const editor = await userCollection.findOne({ uid: editorUID });
-    if (!editor) {
-      res.status(404).json({ message: 'User not found.' });
-      return;
-    }
+    if (!editor) throw new APIError(404, 'User not found.');
 
     const editorUIDs = item.editors.map((x: User) => x.uid);
     if (!editorUIDs.includes(editorUID)) {
-      res.status(400).json({ message: 'User is not an editor.' });
-      return;
+      throw new APIError(400, 'User is not an editor.');
     }
 
     await collection.updateOne(
@@ -36,8 +32,8 @@ export default async function (req: Request, res: Response) {
 
     res.status(200).json({ message: 'Editor removed.' });
   } catch (err) {
-    errorHandler(req, res, err);
+    next(err);
   } finally {
     await mongo.close();
   }
-}
+};

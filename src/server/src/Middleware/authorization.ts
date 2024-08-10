@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
+import { APIError } from '../Error';
+
 export default async function authorization(
   req: Request,
   res: Response,
@@ -8,10 +10,7 @@ export default async function authorization(
 ) {
   try {
     const token = req.headers?.authorization || '';
-    if (!token) {
-      res.status(401).json({ message: 'Unauthorized.' });
-      return;
-    }
+    if (!token) throw new APIError(401, 'Unauthorized.');
 
     const { uid } = jwt.verify(
       token,
@@ -22,6 +21,6 @@ export default async function authorization(
 
     next();
   } catch (err) {
-    res.status(401).json({ message: 'Unauthorized.' });
+    next(err);
   }
 }

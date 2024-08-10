@@ -1,12 +1,16 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { Collection } from 'mongodb';
 
 import { UsernameSchema } from '../../Database/Schemas';
-import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
-import { Collection } from 'mongodb';
 import { DBUser } from '../../Database/Types';
+import { connect } from '../../Database';
+import { APIError } from '../../Error';
 
-export async function ChangeUsername(req: Request, res: Response) {
+export const ChangeUsername = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const mongo = await connect();
   try {
     const validUsername = UsernameSchema.parse(req.body.username);
@@ -18,7 +22,7 @@ export async function ChangeUsername(req: Request, res: Response) {
 
     if (!validUsername) {
       const user = await collection.findOne({ uid: res.locals.user.uid });
-      if (!user) return res.status(404).json({ message: 'Invalid User UID.' });
+      if (!user) throw new APIError(404, 'Invalid User UID.');
       username = user.email.split('@')[0];
     }
 
@@ -34,9 +38,9 @@ export async function ChangeUsername(req: Request, res: Response) {
     const [data] = await items.toArray();
 
     res.status(200).json({ data });
-  } catch (error) {
-    errorHandler(req, res, error);
+  } catch (err) {
+    next(err);
   } finally {
     await mongo.close();
   }
-}
+};

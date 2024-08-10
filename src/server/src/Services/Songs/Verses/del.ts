@@ -1,19 +1,18 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import { DBSong } from '../../../Database/Types';
-import { errorHandler } from '../../../Error';
-import { connect } from '../../../Database';
 import { Verse } from '../../../Database/Types/Song';
+import { DBSong } from '../../../Database/Types';
+import { connect } from '../../../Database';
+import { APIError } from '../../../Error';
 
-export default async function (req: Request, res: Response) {
+export default async (req: Request, res: Response, next: NextFunction) => {
   const mongo = await connect();
   try {
     const db = mongo.db('models');
     const collection = db.collection<DBSong>('songs');
 
     if (!req.params.number) {
-      res.status(400).json({ message: 'Verse number is required.' });
-      return;
+      throw new APIError(400, 'Verse number is required.');
     }
 
     const updatedVerses = res.locals.item.verses
@@ -32,8 +31,8 @@ export default async function (req: Request, res: Response) {
       .status(200)
       .json({ data: updatedVerses, message: 'Verse deleted succesfully.' });
   } catch (err) {
-    errorHandler(req, res, err);
+    next(err);
   } finally {
     await mongo.close();
   }
-}
+};

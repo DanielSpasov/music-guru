@@ -1,18 +1,17 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { ArtistSchema } from '../../Database/Schemas';
-import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
+import { APIError } from '../../Error';
 
-export default async function patch(req: Request, res: Response) {
+export default async (req: Request, res: Response, next: NextFunction) => {
   const mongo = await connect();
   try {
     const collection = mongo.db('models').collection('artists');
     const doc = collection.aggregate([{ $match: { uid: req.params.id } }]);
     const [item] = await doc.toArray();
     if (item.created_by !== res.locals.user.uid) {
-      res.status(403).json({ message: 'Permission denied.' });
-      return;
+      throw new APIError(403, 'Permission denied.');
     }
 
     const updated = await collection.findOneAndUpdate(
@@ -33,9 +32,9 @@ export default async function patch(req: Request, res: Response) {
       message: 'Success',
       data: { uid: req.params.id, name: updated?.name }
     });
-  } catch (error) {
-    errorHandler(req, res, error);
+  } catch (err) {
+    next(err);
   } finally {
     await mongo.close();
   }
-}
+};

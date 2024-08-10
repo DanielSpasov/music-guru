@@ -1,11 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { VerseSchema } from '../../../Database/Schemas/Song';
 import { DBSong } from '../../../Database/Types';
-import { errorHandler } from '../../../Error';
 import { connect } from '../../../Database';
 
-export default async function (req: Request, res: Response) {
+export default async (req: Request, res: Response, next: NextFunction) => {
   const mongo = await connect();
   try {
     const db = mongo.db('models');
@@ -23,8 +22,8 @@ export default async function (req: Request, res: Response) {
 
     res.status(200).send({ data: verse, message: 'Verse added successfully.' });
   } catch (err) {
-    errorHandler(req, res, err);
+    next(err);
   } finally {
     await mongo.close();
   }
-}
+};

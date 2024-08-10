@@ -1,16 +1,15 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { Models } from '../../Database/Types';
-import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
+import { APIError } from '../../Error';
 
-export default function favorite({ model }: { model: Models }) {
-  return async function (req: Request, res: Response) {
+export default ({ model }: { model: Models }) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mongo = await connect();
     try {
       if (!req?.body?.uid) {
-        res.status(400).json({ message: 'Please provide object UID.' });
-        return;
+        throw new APIError(400, 'Please provide object UID.');
       }
 
       const db = mongo.db('models');
@@ -41,9 +40,8 @@ export default function favorite({ model }: { model: Models }) {
 
       res.status(200).json({ favorites: updatedUser?.favorites });
     } catch (err) {
-      errorHandler(req, res, err);
+      next(err);
     } finally {
       await mongo.close();
     }
   };
-}

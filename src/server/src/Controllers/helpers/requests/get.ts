@@ -1,13 +1,14 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { aggregators } from '../../../Database/Aggregators';
 import { ReqProps, QueryProps } from '../types';
-import { errorHandler } from '../../../Error';
 import { connect } from '../../../Database';
+import { APIError } from '../../../Error';
 import { serializeObj } from '../helpers';
 
-export function get({ collectionName, databaseName }: ReqProps) {
-  return async function (req: Request, res: Response) {
+export const get =
+  ({ collectionName, databaseName }: ReqProps) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mongo = await connect();
     try {
       const { serializer = 'list' }: QueryProps = req.query;
@@ -21,18 +22,14 @@ export function get({ collectionName, databaseName }: ReqProps) {
           : [];
       const items = collection.aggregate([...stages, { $project: { _id: 0 } }]);
       const [item] = await items.toArray();
-      if (!item) {
-        res.status(404).json({ message: 'Document not found.' });
-        return;
-      }
+      if (!item) throw new APIError(404, 'Document not found.');
 
       const data = serializeObj(item, collectionName, serializer);
 
       res.status(200).json({ data });
-    } catch (error) {
-      errorHandler(req, res, error);
+    } catch (err) {
+      next(err);
     } finally {
       await mongo.close();
     }
   };
-}

@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
+
 import { ListUser } from '../Database/Serializers/User';
+import { APIError } from '../Error';
 
 export default async function editorship(
   req: Request,
@@ -15,15 +17,14 @@ export default async function editorship(
     );
 
     if (!isEditor && !isOwner) {
-      res.status(403).json({
-        message:
-          'Permission denied. Only the editors of this item can access this resource.'
-      });
-      return;
+      throw new APIError(
+        403,
+        'Permission denied. Only the editors of this item can access this resource.'
+      );
     }
 
     next();
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error.' });
+    next(err);
   }
 }

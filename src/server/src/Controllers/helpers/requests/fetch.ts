@@ -1,13 +1,13 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { aggregators } from '../../../Database/Aggregators';
 import { QueryProps, ReqProps } from '../types';
-import { errorHandler } from '../../../Error';
 import { connect } from '../../../Database';
 import { serializeObj } from '../helpers';
 
-export function fetch({ collectionName, databaseName }: ReqProps) {
-  return async function (req: Request, res: Response) {
+export const fetch =
+  ({ collectionName, databaseName }: ReqProps) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mongo = await connect();
     try {
       const { serializer = 'list', ...params }: QueryProps = req.query;
@@ -53,10 +53,9 @@ export function fetch({ collectionName, databaseName }: ReqProps) {
       });
 
       res.status(200).json({ data });
-    } catch (error) {
-      errorHandler(req, res, error);
+    } catch (err) {
+      next(err);
     } finally {
       await mongo.close();
     }
   };
-}

@@ -1,21 +1,21 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { Collection } from 'mongodb';
 
 import { serializers } from '../../Database/Serializers';
 import { DBUser, User } from '../../Database/Types';
-import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
 import { useFilters } from '../../Utils';
-import { Collection } from 'mongodb';
 
 interface Query {
   limit?: string;
   [key: string]: string | undefined;
 }
 
-export default async function (
+export default async (
   req: Request<object, object, object, Query>,
-  res: Response
-) {
+  res: Response,
+  next: NextFunction
+) => {
   const mongo = await connect();
   try {
     const { limit = 25, ...params } = req.query;
@@ -41,8 +41,8 @@ export default async function (
 
     res.status(200).json({ data });
   } catch (err) {
-    errorHandler<Query>(req, res, err);
+    next(err);
   } finally {
     await mongo.close();
   }
-}
+};

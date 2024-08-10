@@ -1,12 +1,13 @@
 import { deleteObject, getStorage, ref } from 'firebase/storage';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import { errorHandler } from '../../../Error';
 import { connect } from '../../../Database';
+import { APIError } from '../../../Error';
 import { SimpleReqProps } from '../types';
 
-export function del({ collectionName }: SimpleReqProps) {
-  return async function (req: Request, res: Response) {
+export const del =
+  ({ collectionName }: SimpleReqProps) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mongo = await connect();
     try {
       const db = mongo.db('models');
@@ -15,8 +16,7 @@ export function del({ collectionName }: SimpleReqProps) {
       const [item] = await docs.toArray();
 
       if (item?.created_by !== res.locals.user.uid) {
-        res.status(403).json({ message: 'Permission denied.' });
-        return;
+        throw new APIError(403, 'Permission denied.');
       }
 
       if (item?.image) {
@@ -31,10 +31,9 @@ export function del({ collectionName }: SimpleReqProps) {
       await collection.deleteOne({ uid: req.params.id });
 
       res.status(200).json({ message: 'Success' });
-    } catch (error) {
-      errorHandler(req, res, error);
+    } catch (err) {
+      next(err);
     } finally {
       await mongo.close();
     }
   };
-}

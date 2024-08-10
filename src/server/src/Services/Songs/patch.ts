@@ -1,10 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { PatchSongSchema } from '../../Database/Schemas';
-import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
 
-export default async function patch(req: Request, res: Response) {
+export default async (req: Request, res: Response, next: NextFunction) => {
   const mongo = await connect();
   try {
     const db = mongo.db('models');
@@ -17,8 +16,8 @@ export default async function patch(req: Request, res: Response) {
 
     res.status(200).json();
   } catch (err) {
-    errorHandler(req, res, err);
+    next(err);
   } finally {
     await mongo.close();
   }
-}
+};

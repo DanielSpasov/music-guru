@@ -5,24 +5,21 @@ import {
   ref,
   uploadBytes
 } from 'firebase/storage';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { FileSchema } from '../../Database/Schemas';
 import { Models } from '../../Database/Types';
-import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
+import { APIError } from '../../Error';
 
-export default function update({ model }: { model: Exclude<Models, 'users'> }) {
-  return async function (req: Request, res: Response) {
+export default ({ model }: { model: Exclude<Models, 'users'> }) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mongo = await connect();
     try {
       const db = mongo.db('models');
       const collection = db.collection(model);
       const item = await collection.findOne({ uid: req.params.id });
-      if (!item) {
-        res.status(400).json({ message: 'Invalid UID.' });
-        return;
-      }
+      if (!item) throw new APIError(400, 'Invalid UID.');
 
       if (req?.file) {
         const validatedFile = FileSchema.parse(req?.file);
@@ -31,10 +28,7 @@ export default function update({ model }: { model: Exclude<Models, 'users'> }) {
 
         const regex = /\/([^/]+\.([^/?#]+))(?:\?|$)/;
         const match = item.image.match(regex);
-        if (!match) {
-          res.status(400).json({ message: 'Failed to update Image.' });
-          return;
-        }
+        if (!match) throw new APIError(400, 'Failed to update Image.');
 
         const oldImageRef = ref(getStorage(), decodeURIComponent(match[1]));
         await deleteObject(oldImageRef);
@@ -50,10 +44,7 @@ export default function update({ model }: { model: Exclude<Models, 'users'> }) {
           { $set: { image: newImageURL } },
           { returnDocument: 'after' }
         );
-        if (!updatedItem) {
-          res.status(400).json({ message: 'Failed to update Image.' });
-          return;
-        }
+        if (!updatedItem) throw new APIError(400, 'Failed to update Image.');
 
         res.status(200).json({
           image: updatedItem.image,
@@ -62,11 +53,10 @@ export default function update({ model }: { model: Exclude<Models, 'users'> }) {
         return;
       }
 
-      res.status(400).json({ message: 'No image provided.' });
+      throw new APIError(400, 'No image provided.');
     } catch (err) {
-      errorHandler(req, res, err);
+      next(err);
     } finally {
       await mongo.close();
     }
   };
-}

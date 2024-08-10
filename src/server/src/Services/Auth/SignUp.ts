@@ -1,14 +1,18 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
 import { SignUpSchema } from '../../Database/Schemas';
 import { sendVerificationEmail } from './helpers';
-import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
+import { APIError } from '../../Error';
 
-export async function SignUp(req: Request, res: Response) {
+export const SignUp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const mongo = await connect();
   try {
     // VALIDATE WITH ZOD
@@ -24,10 +28,7 @@ export async function SignUp(req: Request, res: Response) {
     const db = mongo.db('models');
     const collection = db.collection('users');
     const isUsed = await collection.findOne({ email });
-    if (isUsed) {
-      res.status(400).json({ message: 'This email is alredy signed up.' });
-      return;
-    }
+    if (isUsed) throw new APIError(400, 'This email is alredy signed up.');
 
     // HASHING THE PASSWORD
     const saltRounds = Number(process.env.SALT_ROUNDS);
@@ -64,9 +65,9 @@ export async function SignUp(req: Request, res: Response) {
         uid: data.uid
       }
     });
-  } catch (error) {
-    errorHandler(req, res, error);
+  } catch (err) {
+    next(err);
   } finally {
     await mongo.close();
   }
-}
+};

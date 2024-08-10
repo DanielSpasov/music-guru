@@ -1,9 +1,13 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
+import { APIError } from '../../Error';
 
-export async function ValidateEmail(req: Request, res: Response) {
+export const ValidateEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const mongo = await connect();
   try {
     const { id } = req.body;
@@ -11,10 +15,7 @@ export async function ValidateEmail(req: Request, res: Response) {
     const db = mongo.db('models');
     const collection = db.collection('users');
     const user = await collection.findOne({ uid: id });
-    if (!user) {
-      res.status(400).json({ message: 'Failed to validate Email.' });
-      return;
-    }
+    if (!user) throw new APIError(400, 'Failed to validate Email.');
 
     await collection.updateOne({ uid: id }, { $set: { verified: true } });
 
@@ -25,9 +26,9 @@ export async function ValidateEmail(req: Request, res: Response) {
     const [data] = await items.toArray();
 
     res.status(200).json({ message: 'Email Verified.', data });
-  } catch (error) {
-    errorHandler(req, res, error);
+  } catch (err) {
+    next(err);
   } finally {
     await mongo.close();
   }
-}
+};

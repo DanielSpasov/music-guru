@@ -7,6 +7,8 @@ dotenv.config();
 import router from '../src/Router';
 
 import { initFirestoreBucket } from '../src/Database';
+import { errorHandlerr } from './Middleware';
+
 initFirestoreBucket();
 
 const app: Application = express();
@@ -16,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 app.use(router);
+app.use(errorHandlerr);
 
 const PORT = process.env.PORT || 8000;
 

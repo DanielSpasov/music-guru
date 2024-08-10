@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
+import { APIError } from '../Error';
+
 export default async function ownership(
   req: Request,
   res: Response,
@@ -7,15 +9,14 @@ export default async function ownership(
 ) {
   try {
     if (res.locals?.item?.created_by?.uid !== res.locals.user.uid) {
-      res.status(403).json({
-        message:
-          'Permission denied. Only the creator of this item can access this resource.'
-      });
-      return;
+      throw new APIError(
+        403,
+        'Permission denied. Only the creator of this item can access this resource.'
+      );
     }
 
     next();
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error.' });
+    next(err);
   }
 }

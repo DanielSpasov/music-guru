@@ -1,12 +1,13 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { validationSchemas } from '../../../Database/Schemas';
-import { errorHandler } from '../../../Error';
 import { connect } from '../../../Database';
+import { APIError } from '../../../Error';
 import { SimpleReqProps } from '../types';
 
-export function patch({ collectionName }: SimpleReqProps) {
-  return async function (req: Request, res: Response) {
+export const patch =
+  ({ collectionName }: SimpleReqProps) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mongo = await connect();
     try {
       const db = mongo.db('models');
@@ -14,8 +15,7 @@ export function patch({ collectionName }: SimpleReqProps) {
       const doc = collection.aggregate([{ $match: { uid: req.params.id } }]);
       const [item] = await doc.toArray();
       if (item.created_by !== res.locals.user.uid) {
-        res.status(403).json({ message: 'Permission denied.' });
-        return;
+        throw new APIError(403, 'Permission denied.');
       }
 
       const validationSchema = validationSchemas[collectionName];
@@ -36,10 +36,9 @@ export function patch({ collectionName }: SimpleReqProps) {
         message: 'Success',
         data: { uid: req.params.id, name: validatedData.name }
       });
-    } catch (error) {
-      errorHandler(req, res, error);
+    } catch (err) {
+      next(err);
     } finally {
       await mongo.close();
     }
   };
-}

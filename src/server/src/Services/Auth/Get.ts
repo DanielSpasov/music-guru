@@ -1,9 +1,12 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import { errorHandler } from '../../Error';
 import { connect } from '../../Database';
 
-export async function GetUser(req: Request, res: Response) {
+export const GetUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const mongo = await connect();
   try {
     const db = mongo.db('models');
@@ -15,9 +18,9 @@ export async function GetUser(req: Request, res: Response) {
     const [data] = await docs.toArray();
 
     res.status(200).json({ data });
-  } catch (error) {
-    errorHandler(req, res, error);
+  } catch (err) {
+    next(err);
   } finally {
     await mongo.close();
   }
-}
+};

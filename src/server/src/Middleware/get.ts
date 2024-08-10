@@ -3,11 +3,12 @@ import { NextFunction, Request, Response } from 'express';
 import { aggregators } from '../Database/Aggregators';
 import { Models } from '../Database/Types';
 import { connect } from '../Database';
+import { APIError } from '../Error';
 
 export type GetProps = { database: 'models'; collection: Models };
 
-export default function get({ database, collection }: GetProps) {
-  return async function get(req: Request, res: Response, next: NextFunction) {
+export default ({ database, collection }: GetProps) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const mongo = await connect();
     try {
       const db = mongo.db(database);
@@ -21,10 +22,7 @@ export default function get({ database, collection }: GetProps) {
         ])
         .next();
 
-      if (!item) {
-        res.status(404).json({ message: 'Item not found.' });
-        return;
-      }
+      if (!item) throw new APIError(404, 'Item not found.');
 
       res.locals.item = item;
       res.locals.collection = collection;
@@ -32,9 +30,8 @@ export default function get({ database, collection }: GetProps) {
 
       next();
     } catch (err) {
-      res.status(500).json({ message: 'Internal server error.' });
+      next(err);
     } finally {
       await mongo.close();
     }
   };
-}
