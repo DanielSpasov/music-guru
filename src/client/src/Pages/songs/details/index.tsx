@@ -15,7 +15,6 @@ import { useSong } from '../../../Hooks';
 // Composables
 import Summary from './composables/Summary';
 import Lyrics from './composables/Lyrics';
-import About from './composables/About';
 
 const SongDetails = () => {
   const { uid, isAuthenticated } = useContext(AuthContext);
@@ -81,7 +80,9 @@ const SongDetails = () => {
             <Summary song={song} albums={albums} />
           </div>
 
-          <About song={song} />
+          <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
+            {song.about}
+          </span>
         </div>
 
         <Lyrics song={song} verses={verses} isEditor={isEditor} />
