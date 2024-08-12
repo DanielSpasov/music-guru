@@ -31,6 +31,7 @@ const MFA = () => {
       title="MFA"
       heading="Multi Factor Authentication"
       hideRecent
+      hideFooter
       links={sidebarLinks}
     >
       <table className="w-full">

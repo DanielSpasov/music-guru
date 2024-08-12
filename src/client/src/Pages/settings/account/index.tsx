@@ -16,6 +16,7 @@ const Account = () => {
       title="Accont Settings"
       heading="Account Settings"
       hideRecent
+      hideFooter
       links={sidebarLinks}
     >
       <GeneralInfo data={data} />

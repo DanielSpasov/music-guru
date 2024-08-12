@@ -42,6 +42,7 @@ const Settings: FC<SettingsProps> = ({ data }) => {
     <PageLayout
       title={`${data.name} Settings`}
       heading={`${data.name} Settings`}
+      hideFooter
     >
       <Table<Editor>
         fetchFn={fetchEditors}

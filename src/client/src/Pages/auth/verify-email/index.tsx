@@ -42,6 +42,7 @@ const VerifyEmail = () => {
       hideNavbar
       hideSidebar
       dontSaveRecent
+      hideFooter
     >
       <header className="h-screen flex flex-col items-center justify-center">
         <h2>{loading ? 'Verifying Email' : 'Redirecting'}...</h2>

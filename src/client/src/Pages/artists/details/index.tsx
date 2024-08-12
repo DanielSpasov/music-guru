@@ -2,13 +2,12 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { List, PageLayout, Image, IPen } from '../../../Components';
+import { List, PageLayout, Image, IPen, Socials } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { Artist } from '../../../Types';
 import Api from '../../../Api';
 
 // Composables
-import Socials from './composables/Socials';
 import About from './composables/About';
 
 export const defaultArtist: Artist = {
@@ -64,6 +63,7 @@ const ArtistDetails = () => {
       title={artist.name}
       heading={artist.name}
       loading={loading}
+      footerContent={<Socials links={artist.links} />}
       actions={[
         {
           type: 'icon',
@@ -89,7 +89,6 @@ const ArtistDetails = () => {
           </div>
 
           <About artist={artist} />
-          <Socials artist={artist} />
         </div>
 
         <div className="flex flex-col w-2/3 gap-5">

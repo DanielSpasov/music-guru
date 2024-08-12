@@ -14,6 +14,7 @@ const Artists = () => {
     <PageLayout
       title="Artists"
       heading="Artists"
+      hideFooter
       actions={[
         {
           type: 'button',

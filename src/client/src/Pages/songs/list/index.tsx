@@ -14,6 +14,7 @@ const Songs = () => {
     <PageLayout
       title="Songs"
       heading="Songs"
+      hideFooter
       actions={[
         {
           type: 'button',

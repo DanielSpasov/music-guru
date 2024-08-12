@@ -46,7 +46,7 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
   );
 
   return (
-    <PageLayout title="Edit Album" hideHeader>
+    <PageLayout title="Edit Album" hideHeader hideFooter>
       <Form
         onSubmit={onSubmit}
         header="Edit Album"

@@ -38,6 +38,7 @@ const Password = () => {
       title="Change Password"
       heading="Change Password"
       hideRecent
+      hideFooter
       links={sidebarLinks}
     >
       <Form

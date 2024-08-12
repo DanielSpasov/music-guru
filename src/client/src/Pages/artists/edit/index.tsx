@@ -57,7 +57,7 @@ const EditArtist: FC<EditArtistProps> = ({ data }) => {
   );
 
   return (
-    <PageLayout title="Edit Artist" hideHeader>
+    <PageLayout title="Edit Artist" hideHeader hideFooter>
       <Form
         onSubmit={onSubmit}
         validationSchema={EditArtistSchema}

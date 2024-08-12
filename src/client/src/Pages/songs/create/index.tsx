@@ -64,7 +64,7 @@ const CreateSong = () => {
   );
 
   return (
-    <PageLayout title="Create Song" hideHeader>
+    <PageLayout title="Create Song" hideHeader hideFooter>
       <Form
         onSubmit={onSubmit}
         validationSchema={CreateSongSchema}

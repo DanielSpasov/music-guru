@@ -53,4 +53,7 @@ export type PageLayoutProps = {
   hideSidebar?: boolean;
   hideRecent?: boolean;
   links?: LinkGroup[];
+  // Footer
+  hideFooter?: boolean;
+  footerContent?: ReactNode;
 };

@@ -6,14 +6,14 @@ import {
   ISettings,
   ITrashBin,
   Image,
-  PageLayout
+  PageLayout,
+  Socials
 } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { useSong } from '../../../Hooks';
 
 // Composables
 import Summary from './composables/Summary';
-import Socials from './composables/Socials';
 import Lyrics from './composables/Lyrics';
 import About from './composables/About';
 
@@ -40,6 +40,7 @@ const SongDetails = () => {
       title={song.name}
       heading={song.name}
       loading={loading}
+      footerContent={<Socials links={song.links} />}
       actions={[
         {
           type: 'icon',
@@ -81,7 +82,6 @@ const SongDetails = () => {
           </div>
 
           <About song={song} />
-          <Socials song={song} />
         </div>
 
         <Lyrics song={song} verses={verses} isEditor={isEditor} />

@@ -2,7 +2,7 @@ import { Link, Loader, PageLayout } from '../../Components';
 
 const NotFound = () => {
   return (
-    <PageLayout title="Page not Found" heading="Page not found">
+    <PageLayout title="Page not Found" heading="Page not found" hideFooter>
       <article className="flex flex-col items-center p-4">
         <Loader type="player" />
 
