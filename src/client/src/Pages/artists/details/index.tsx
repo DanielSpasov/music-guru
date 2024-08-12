@@ -7,9 +7,6 @@ import { AuthContext } from '../../../Contexts/Auth';
 import { Artist } from '../../../Types';
 import Api from '../../../Api';
 
-// Composables
-import About from './composables/About';
-
 export const defaultArtist: Artist = {
   created_at: new Date(),
   created_by: '',
@@ -75,7 +72,7 @@ const ArtistDetails = () => {
       ]}
     >
       <section className="flex mt-5">
-        <div className="flex flex-col items-center w-1/3 px-4">
+        <article className="flex flex-col items-center w-1/3 px-4">
           <div className="flex flex-col items-center">
             <Image
               src={artist.image}
@@ -88,11 +85,13 @@ const ArtistDetails = () => {
             <h2 className="py-2">{artist.name}</h2>
           </div>
 
-          <About artist={artist} />
-        </div>
+          <span className="mt-3 p-3 w-full border-[1px] border-neutral-300 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
+            {artist.about}
+          </span>
+        </article>
 
-        <div className="flex flex-col w-2/3 gap-5">
-          <div>
+        <section className="flex flex-col w-2/3 gap-5">
+          <article>
             <h2>Albums</h2>
             <List
               fetchFn={() =>
@@ -103,9 +102,9 @@ const ArtistDetails = () => {
               favoriteFn={uid => Api.albums.favorite({ uid })}
               model="albums"
             />
-          </div>
+          </article>
 
-          <div>
+          <article>
             <h2>Songs</h2>
             <List
               fetchFn={() =>
@@ -116,9 +115,9 @@ const ArtistDetails = () => {
               favoriteFn={uid => Api.songs.favorite({ uid })}
               model="songs"
             />
-          </div>
+          </article>
 
-          <div>
+          <article>
             <h2>Features</h2>
             <List
               fetchFn={() =>
@@ -129,8 +128,8 @@ const ArtistDetails = () => {
               favoriteFn={uid => Api.songs.favorite({ uid })}
               model="songs"
             />
-          </div>
-        </div>
+          </article>
+        </section>
       </section>
     </PageLayout>
   );
