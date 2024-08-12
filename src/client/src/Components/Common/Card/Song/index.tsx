@@ -1,8 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { FC, memo } from 'react';
 
 import { ListSong } from '../../../../Types';
 import { CardProps } from '../types';
-import { Link } from '../..';
 
 import css from './Song.module.css';
 
@@ -17,9 +17,15 @@ const SongCard: FC<CardProps<ListSong>> = ({
   loading = false,
   isFavorite = false
 }) => {
+  const navigate = useNavigate();
+
   if (loading) return <Skeleton />;
   return (
-    <article data-testid="song-card" className={css.songCard}>
+    <article
+      data-testid="song-card"
+      className={css.songCard}
+      onClick={() => navigate(`/songs/${data.uid}`)}
+    >
       <img
         alt={data.name}
         src={data?.image || '/images/logo/blue-logo-square512.png'}
@@ -27,24 +33,14 @@ const SongCard: FC<CardProps<ListSong>> = ({
       />
 
       <section>
-        <Link
-          type="link"
-          to={`/songs/${data.uid}`}
-          data-testid="song-card-name"
-          className={css.songLink}
-        >
+        <p className={css.songName} data-testid="song-card-name">
           {data.name}
-        </Link>
-        <Link
-          type="link"
-          to={`/artists/${data.artist.uid}`}
-          data-testid="song-card-artist"
-          className={css.aritstLink}
-        >
+        </p>
+        <p className={css.artistName} data-testid="song-card-artist">
           {data.artist.name}
-        </Link>
+        </p>
 
-        <div>
+        <div onClick={e => e.stopPropagation()}>
           <FavoritesCounter
             model="songs"
             defaultCount={data.favorites}

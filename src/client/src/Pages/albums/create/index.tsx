@@ -45,7 +45,7 @@ const CreateAlbum = () => {
   );
 
   return (
-    <PageLayout title="Create Album" hideHeader>
+    <PageLayout title="Create Album" hideHeader hideFooter>
       <Form
         onSubmit={onSubmit}
         className="m-auto"

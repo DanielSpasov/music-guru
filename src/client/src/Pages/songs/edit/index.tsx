@@ -62,7 +62,7 @@ const EditSong: FC<EditSongProps> = ({ data }) => {
   );
 
   return (
-    <PageLayout title="Edit Song" hideHeader>
+    <PageLayout title="Edit Song" hideHeader hideFooter>
       <Form
         onSubmit={onSubmit}
         validationSchema={EditSongSchema}

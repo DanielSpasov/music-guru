@@ -90,6 +90,7 @@ const AlbumDetails = () => {
       title={album.name}
       heading={album.name}
       loading={loading}
+      hideFooter
       actions={[
         {
           type: 'icon',

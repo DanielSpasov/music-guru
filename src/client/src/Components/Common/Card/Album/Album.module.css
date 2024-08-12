@@ -2,10 +2,14 @@
 
 @layer components {
   .albumCard {
-    @apply flex flex-col m-3 p-2 shadow-md rounded-md bg-neutral-200 dark:bg-neutral-900;
+    @apply flex flex-col m-3 p-2 shadow-md rounded-md cursor-pointer bg-neutral-200 dark:bg-neutral-900;
 
     &:hover {
       @apply hover:shadow-neutral-400 dark:hover:shadow-neutral-900;
+
+      & section p {
+        @apply text-primary dark:text-primary-dark;
+      }
     }
 
     & img {
@@ -15,7 +19,7 @@
     & section {
       @apply flex flex-col pt-1;
 
-      & a {
+      & p {
         @apply text-base w-40 whitespace-nowrap overflow-hidden text-ellipsis;
       }
 

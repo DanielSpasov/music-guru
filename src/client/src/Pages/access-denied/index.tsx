@@ -2,7 +2,7 @@ import { Link, PageLayout } from '../../Components';
 
 const NotOwner = () => {
   return (
-    <PageLayout title="Access Denied" heading="Access Denied">
+    <PageLayout title="Access Denied" heading="Access Denied" hideFooter>
       <article className="flex flex-col items-center p-4">
         <h2 className="text-red-400">Error Code: 403</h2>
 

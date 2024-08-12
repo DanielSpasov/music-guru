@@ -19,80 +19,54 @@ describe('Album Card', () => {
     favorites: 0
   };
 
-  describe('Rendering', () => {
-    test('renders without crashing', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('album-card');
-      expect(card).toBeInTheDocument();
-    });
+  test('renders without crashing', () => {
+    render(
+      <MemoryRouter>
+        <AlbumCard data={mockData} />
+      </MemoryRouter>
+    );
+
+    const card = screen.getByTestId('album-card');
+    expect(card).toBeInTheDocument();
+
+    const name = screen.getByTestId('album-card-name');
+    expect(name.textContent).toEqual(mockData.name);
+
+    const image = screen.getByTestId('album-card-image');
+    expect(image).toHaveAttribute('src', mockData.image);
+
+    const releaseDate = screen.getByTestId('album-card-release-date');
+    expect(releaseDate.textContent).toEqual(
+      moment(mockData?.release_date).year().toString()
+    );
+
+    const type = screen.getByTestId('album-card-type');
+    expect(type.textContent).toEqual(mockData.type.name);
   });
 
-  describe('Component props', () => {
-    test('renders skeleton when loading', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} loading />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('album-card-skeleton');
-      expect(card).toBeInTheDocument();
-    });
+  test('renders skeleton when loading', () => {
+    render(
+      <MemoryRouter>
+        <AlbumCard data={mockData} loading />
+      </MemoryRouter>
+    );
 
-    test('renders correct name', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const name = screen.getByTestId('album-card-link');
-      expect(name.textContent).toEqual(mockData.name);
-    });
+    const skeletonCard = screen.getByTestId('album-card-skeleton');
+    expect(skeletonCard).toBeInTheDocument();
 
-    test('renders correct image', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const image = screen.getByTestId('album-card-image');
-      expect(image).toHaveAttribute('src', mockData.image);
-    });
+    const card = screen.queryByTestId('album-card');
+    expect(card).not.toBeInTheDocument();
+  });
 
-    test('renders correct release date', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const releaseDate = screen.getByTestId('album-card-release-date');
-      expect(releaseDate.textContent).toEqual(
-        moment(mockData?.release_date).year().toString()
-      );
-    });
+  test('renders TBA if release date is not available', () => {
+    const data = { ...mockData, release_date: null };
+    render(
+      <MemoryRouter>
+        <AlbumCard data={data} />
+      </MemoryRouter>
+    );
 
-    test('renders TBA if release date is not available', () => {
-      const data = { ...mockData, release_date: null };
-      render(
-        <MemoryRouter>
-          <AlbumCard data={data} />
-        </MemoryRouter>
-      );
-      const releaseDate = screen.getByTestId('album-card-release-date');
-      expect(releaseDate.textContent).toEqual('TBA');
-    });
-
-    test('renders correct type', () => {
-      render(
-        <MemoryRouter>
-          <AlbumCard data={mockData} />
-        </MemoryRouter>
-      );
-      const type = screen.getByTestId('album-card-type');
-      expect(type.textContent).toEqual(mockData.type.name);
-    });
+    const releaseDate = screen.getByTestId('album-card-release-date');
+    expect(releaseDate.textContent).toEqual('TBA');
   });
 });

@@ -4,8 +4,10 @@ import { capitalize } from 'lodash';
 
 import { IMagnifyingGlass, Link, Popover, Loader } from '../../../../../';
 import { useDebounce } from '../../../../../../Hooks';
+import { Model } from '../../../../../../Api/types';
 import { Results, SearchProps } from './types';
 import Api from '../../../../../../Api';
+import { iconMap } from './icons';
 
 const Search: FC<SearchProps> = ({ models }) => {
   const [value, setValue] = useState('');
@@ -89,9 +91,20 @@ const Search: FC<SearchProps> = ({ models }) => {
 
           {Object.entries(results).map(([model, results]) => {
             if (!results.length) return;
+
+            const Icon = iconMap[model as Model];
             return (
-              <section key={model} data-testid={`results-${model}`}>
-                <h3>{capitalize(model)}</h3>
+              <section
+                key={model}
+                data-testid={`results-${model}`}
+                className="w-full"
+              >
+                <header className="flex items-center gap-2">
+                  <Icon className="w-6 h-6" />
+                  <h3 className="font-semibold">{capitalize(model)}</h3>
+                  <div className="bg-neutral-700 h-[1px] w-full" />
+                </header>
+
                 <article>
                   {results.map(result => (
                     <Link

@@ -28,7 +28,7 @@ describe('PageLayout', () => {
   test('renders without crashing', async () => {
     render(
       <MemoryRouter>
-        <PageLayout title="Test">
+        <PageLayout title="Test" footerContent={<div>test123</div>}>
           <span>test</span>
         </PageLayout>
       </MemoryRouter>
@@ -57,6 +57,10 @@ describe('PageLayout', () => {
     const headerEl = screen.getByTestId('header');
     expect(headerEl).toBeInTheDocument();
 
+    const footerEl = screen.getByTestId('footer');
+    expect(footerEl).toBeInTheDocument();
+    expect(footerEl).toContainHTML('<div>test123</div>');
+
     const loaderEl = screen.queryByTestId('page-loader');
     expect(loaderEl).not.toBeInTheDocument();
 
@@ -66,7 +70,14 @@ describe('PageLayout', () => {
   test('renders with additional props', () => {
     render(
       <MemoryRouter>
-        <PageLayout title="Test" hideNavbar hideSidebar hideHeader loading />
+        <PageLayout
+          title="Test"
+          hideNavbar
+          hideSidebar
+          hideHeader
+          hideFooter
+          loading
+        />
       </MemoryRouter>
     );
 
@@ -89,6 +100,9 @@ describe('PageLayout', () => {
 
     const headerEl = screen.queryByTestId('header');
     expect(headerEl).not.toBeInTheDocument();
+
+    const footerEl = screen.queryByTestId('footer');
+    expect(footerEl).not.toBeInTheDocument();
 
     const loaderEl = screen.queryByTestId('page-loader');
     expect(loaderEl).toBeInTheDocument();

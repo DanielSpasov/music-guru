@@ -18,70 +18,51 @@ describe('Song Card', () => {
     favorites: 0
   };
 
-  describe('Rendering', () => {
-    test('renders without crashing', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('song-card');
-      expect(card).toBeInTheDocument();
-    });
+  test('renders without crashing', () => {
+    render(
+      <MemoryRouter>
+        <SongCard data={mockData} />
+      </MemoryRouter>
+    );
+
+    const card = screen.getByTestId('song-card');
+    expect(card).toBeInTheDocument();
+
+    const name = screen.getByTestId('song-card-name');
+    expect(name.textContent).toEqual(mockData.name);
+
+    const image = screen.getByTestId('song-card-image');
+    expect(image).toHaveAttribute('src', mockData.image);
+
+    const artist = screen.getByTestId('song-card-artist');
+    expect(artist.textContent).toEqual(mockData.artist.name);
   });
 
-  describe('Component props', () => {
-    test('renders skeleton when loading', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} loading />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('song-card-skeleton');
-      expect(card).toBeInTheDocument();
-    });
+  test('renders skeleton when loading', () => {
+    render(
+      <MemoryRouter>
+        <SongCard data={mockData} loading />
+      </MemoryRouter>
+    );
 
-    test('renders correct name', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} />
-        </MemoryRouter>
-      );
-      const name = screen.getByTestId('song-card-name');
-      expect(name.textContent).toEqual(mockData.name);
-    });
+    const skeletonCard = screen.getByTestId('song-card-skeleton');
+    expect(skeletonCard).toBeInTheDocument();
 
-    test('renders correct image', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} />
-        </MemoryRouter>
-      );
-      const image = screen.getByTestId('song-card-image');
-      expect(image).toHaveAttribute('src', mockData.image);
-    });
+    const card = screen.queryByTestId('song-card');
+    expect(card).not.toBeInTheDocument();
+  });
 
-    test('renders default image if no image is provided', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={{ ...mockData, image: '' }} />
-        </MemoryRouter>
-      );
-      const image = screen.getByTestId('song-card-image');
-      expect(image).toHaveAttribute(
-        'src',
-        '/images/logo/blue-logo-square512.png'
-      );
-    });
+  test('renders default image if no image is provided', () => {
+    render(
+      <MemoryRouter>
+        <SongCard data={{ ...mockData, image: '' }} />
+      </MemoryRouter>
+    );
 
-    test('renders correct artist', () => {
-      render(
-        <MemoryRouter>
-          <SongCard data={mockData} />
-        </MemoryRouter>
-      );
-      const artist = screen.getByTestId('song-card-artist');
-      expect(artist.textContent).toEqual(mockData.artist.name);
-    });
+    const image = screen.getByTestId('song-card-image');
+    expect(image).toHaveAttribute(
+      'src',
+      '/images/logo/blue-logo-square512.png'
+    );
   });
 });

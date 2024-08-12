@@ -33,7 +33,7 @@ const SignUp = () => {
   );
 
   return (
-    <PageLayout title="Sign Up" hideHeader dontSaveRecent>
+    <PageLayout title="Sign Up" hideHeader dontSaveRecent hideFooter>
       <Form
         onSubmit={onSubmit}
         validationSchema={SignUpSchema}

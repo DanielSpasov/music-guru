@@ -7,7 +7,11 @@ import List from '.';
 describe('List', () => {
   describe('Rendering', () => {
     test('renders without crashing', () => {
-      render(<List fetchFn={vi.fn()} model="albums" />);
+      render(
+        <MemoryRouter>
+          <List fetchFn={vi.fn()} model="albums" />
+        </MemoryRouter>
+      );
       const element = screen.getByTestId('list');
       expect(element).toBeInTheDocument();
     });
@@ -16,24 +20,34 @@ describe('List', () => {
   describe('Component props', () => {
     test('renders filters if filtersConfig is provided', () => {
       render(
-        <List
-          fetchFn={vi.fn()}
-          model="albums"
-          filtersConfig={[{ key: 'test-filter', label: 'Test Filter' }]}
-        />
+        <MemoryRouter>
+          <List
+            fetchFn={vi.fn()}
+            model="albums"
+            filtersConfig={[{ key: 'test-filter', label: 'Test Filter' }]}
+          />
+        </MemoryRouter>
       );
       const element = screen.queryByTestId('list-filters');
       expect(element).toBeInTheDocument();
     });
 
     test("doesn't render filters if filtersConfig is not provided", () => {
-      render(<List fetchFn={vi.fn()} model="albums" />);
+      render(
+        <MemoryRouter>
+          <List fetchFn={vi.fn()} model="albums" />
+        </MemoryRouter>
+      );
       const element = screen.queryByTestId('list-filters');
       expect(element).not.toBeInTheDocument();
     });
 
     test('renders default number of loading cards if no skeletonLength is provided', () => {
-      render(<List fetchFn={vi.fn()} model="albums" />);
+      render(
+        <MemoryRouter>
+          <List fetchFn={vi.fn()} model="albums" />
+        </MemoryRouter>
+      );
       const element = screen.getByTestId('list-content');
       expect(element.children.length).toEqual(18);
     });
@@ -41,11 +55,13 @@ describe('List', () => {
     test('renders a number of loading cards if skeletonLength is provided', () => {
       const skeletonLength = 9;
       render(
-        <List
-          fetchFn={vi.fn()}
-          model="albums"
-          skeletonLength={skeletonLength}
-        />
+        <MemoryRouter>
+          <List
+            fetchFn={vi.fn()}
+            model="albums"
+            skeletonLength={skeletonLength}
+          />
+        </MemoryRouter>
       );
       const element = screen.getByTestId('list-content');
       expect(element.children.length).toEqual(skeletonLength);
@@ -53,7 +69,11 @@ describe('List', () => {
 
     test('calls fetchFn exactly 1 time', async () => {
       const fetchFn = vi.fn();
-      render(<List fetchFn={fetchFn} model="albums" />);
+      render(
+        <MemoryRouter>
+          <List fetchFn={fetchFn} model="albums" />
+        </MemoryRouter>
+      );
 
       await waitFor(() => {
         const skeleton = screen.queryByTestId('album-card-skeleton');
@@ -66,14 +86,22 @@ describe('List', () => {
 
   describe('Loading state', () => {
     test('renders skeleton cards if loading is true', () => {
-      render(<List fetchFn={vi.fn()} model="songs" />);
+      render(
+        <MemoryRouter>
+          <List fetchFn={vi.fn()} model="songs" />
+        </MemoryRouter>
+      );
       const elements = screen.queryAllByTestId('song-card-skeleton');
       expect(elements.length).toEqual(18);
     });
 
     test('renders no items message if the fetched data is an empty array', async () => {
       const fetchFn = vi.fn().mockResolvedValue({ data: [] });
-      render(<List fetchFn={fetchFn} model="songs" />);
+      render(
+        <MemoryRouter>
+          <List fetchFn={fetchFn} model="songs" />
+        </MemoryRouter>
+      );
 
       await waitFor(() => {
         const element = screen.queryByTestId('song-card-skeleton');

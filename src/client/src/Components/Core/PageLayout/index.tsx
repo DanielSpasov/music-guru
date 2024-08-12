@@ -8,6 +8,7 @@ import { Loader } from '../../';
 import Sidebar from './composables/Sidebar';
 import Navbar from './composables/Navbar';
 import Header from './composables/Header';
+import Footer from './composables/Footer';
 
 const PageLayout: FC<PageLayoutProps> = ({
   // Page
@@ -25,7 +26,10 @@ const PageLayout: FC<PageLayoutProps> = ({
   hideRecent = false,
   hideSidebar = false,
   hideResourses = false,
-  links = []
+  links = [],
+  // Footer
+  hideFooter = false,
+  footerContent
 }) => {
   const { addCurrent } = useRecentlyViewed();
 
@@ -54,22 +58,26 @@ const PageLayout: FC<PageLayoutProps> = ({
           />
         )}
 
-        <main
+        <div
           data-testid="page-content"
-          className={`flex-1 overflow-auto bg-neutral-100 dark:bg-neutral-800 ${
+          className={`flex flex-col justify-between flex-1 overflow-auto bg-neutral-100 dark:bg-neutral-800 ${
             !hideSidebar ? 'ml-64' : ''
           }`}
         >
-          {!hideHeader && <Header heading={heading} actions={actions} />}
+          <main>
+            {!hideHeader && <Header heading={heading} actions={actions} />}
 
-          <div className="p-4">
-            {loading ? (
-              <Loader type="vinyl" data-testid="page-loader" />
-            ) : (
-              children
-            )}
-          </div>
-        </main>
+            <div className="p-4">
+              {loading ? (
+                <Loader type="vinyl" data-testid="page-loader" />
+              ) : (
+                children
+              )}
+            </div>
+          </main>
+
+          {!hideFooter && <Footer>{footerContent}</Footer>}
+        </div>
       </div>
     </div>
   );

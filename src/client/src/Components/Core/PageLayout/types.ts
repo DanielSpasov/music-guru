@@ -4,7 +4,7 @@ import { ButtonVariant } from '../../Common/Button/types';
 import { SVGProps } from '../../Common/SVG/helpers';
 
 export type DefaultActionProps = {
-  onClick: (e: BaseSyntheticEvent) => void;
+  onClick: (e: BaseSyntheticEvent) => Promise<void> | void;
   disabled?: boolean;
   hidden?: boolean;
 };
@@ -53,4 +53,7 @@ export type PageLayoutProps = {
   hideSidebar?: boolean;
   hideRecent?: boolean;
   links?: LinkGroup[];
+  // Footer
+  hideFooter?: boolean;
+  footerContent?: ReactNode;
 };

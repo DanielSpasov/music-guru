@@ -2,10 +2,14 @@
 
 @layer components {
   .songCard {
-    @apply flex w-52 h-16  m-3 rounded-md shadow-md bg-neutral-200 dark:bg-neutral-900;
+    @apply flex w-52 h-16  m-3 rounded-md shadow-md cursor-pointer bg-neutral-200 dark:bg-neutral-900;
 
     &:hover {
       @apply hover:shadow-neutral-400 dark:hover:shadow-neutral-900;
+
+      & .songName {
+        @apply text-primary dark:text-primary-dark;
+      }
     }
 
     & img {
@@ -14,6 +18,10 @@
 
     & section {
       @apply flex flex-col justify-between w-full;
+
+      & p {
+        @apply text-base whitespace-nowrap overflow-hidden text-ellipsis;
+      }
     }
 
     & div {
@@ -21,16 +29,10 @@
     }
   }
 
-  .songLink {
-    @apply w-32 whitespace-nowrap overflow-hidden text-ellipsis;
+  .artistName {
+    @apply w-28 text-neutral-500 !important;
   }
-
-  .aritstLink {
-    @apply w-28 whitespace-nowrap overflow-hidden text-ellipsis;
-    @apply text-sm text-neutral-500 !important;
-
-    &:hover {
-      @apply text-primary dark:text-primary-dark !important;
-    }
+  .songName {
+    @apply w-32;
   }
 }

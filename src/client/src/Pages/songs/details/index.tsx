@@ -6,16 +6,15 @@ import {
   ISettings,
   ITrashBin,
   Image,
-  PageLayout
+  PageLayout,
+  Socials
 } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { useSong } from '../../../Hooks';
 
 // Composables
 import Summary from './composables/Summary';
-import Socials from './composables/Socials';
 import Lyrics from './composables/Lyrics';
-import About from './composables/About';
 
 const SongDetails = () => {
   const { uid, isAuthenticated } = useContext(AuthContext);
@@ -40,6 +39,7 @@ const SongDetails = () => {
       title={song.name}
       heading={song.name}
       loading={loading}
+      footerContent={<Socials links={song.links} />}
       actions={[
         {
           type: 'icon',
@@ -64,7 +64,7 @@ const SongDetails = () => {
         }
       ]}
     >
-      <section className="flex h-[calc(100vh-250px)]">
+      <section className="flex h-[calc(100vh-260px)]">
         <div className="flex flex-col items-start w-1/2 px-4 text-white">
           <div className="flex mb-10">
             {uid ? (
@@ -80,8 +80,11 @@ const SongDetails = () => {
             <Summary song={song} albums={albums} />
           </div>
 
-          <About song={song} />
-          <Socials song={song} />
+          {song.about && (
+            <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
+              {song.about}
+            </span>
+          )}
         </div>
 
         <Lyrics song={song} verses={verses} isEditor={isEditor} />

@@ -56,7 +56,7 @@ const CreateArtist = () => {
   );
 
   return (
-    <PageLayout title="Create Artist" hideHeader>
+    <PageLayout title="Create Artist" hideHeader hideFooter>
       <Form
         onSubmit={onSubmit}
         header="New Artist"
