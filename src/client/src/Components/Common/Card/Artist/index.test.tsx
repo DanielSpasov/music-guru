@@ -12,47 +12,34 @@ describe('Artist Card', () => {
     favorites: 0
   };
 
-  describe('Rendering', () => {
-    test('renders without crashing', () => {
-      render(
-        <MemoryRouter>
-          <ArtistCard data={mockData} />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('artist-card');
-      expect(card).toBeInTheDocument();
-    });
+  test('renders without crashing', () => {
+    render(
+      <MemoryRouter>
+        <ArtistCard data={mockData} />
+      </MemoryRouter>
+    );
+
+    const card = screen.getByTestId('artist-card');
+    expect(card).toBeInTheDocument();
+
+    const name = screen.getByTestId('artist-card-name');
+    expect(name.textContent).toEqual(mockData.name);
+
+    const image = screen.getByTestId('artist-card-image');
+    expect(image).toHaveAttribute('src', mockData.image);
   });
 
-  describe('Component props', () => {
-    test('renders skeleton when loading', () => {
-      render(
-        <MemoryRouter>
-          <ArtistCard data={mockData} loading />
-        </MemoryRouter>
-      );
-      const card = screen.getByTestId('artist-card-skeleton');
-      expect(card).toBeInTheDocument();
-    });
+  test('renders skeleton when loading', () => {
+    render(
+      <MemoryRouter>
+        <ArtistCard data={mockData} loading />
+      </MemoryRouter>
+    );
 
-    test('renders correct name', () => {
-      render(
-        <MemoryRouter>
-          <ArtistCard data={mockData} />
-        </MemoryRouter>
-      );
-      const name = screen.getByTestId('artist-card-name');
-      expect(name.textContent).toEqual(mockData.name);
-    });
+    const skeletonCard = screen.getByTestId('artist-card-skeleton');
+    expect(skeletonCard).toBeInTheDocument();
 
-    test('renders correct image', () => {
-      render(
-        <MemoryRouter>
-          <ArtistCard data={mockData} />
-        </MemoryRouter>
-      );
-      const image = screen.getByTestId('artist-card-image');
-      expect(image).toHaveAttribute('src', mockData.image);
-    });
+    const card = screen.queryByTestId('artist-card');
+    expect(card).not.toBeInTheDocument();
   });
 });

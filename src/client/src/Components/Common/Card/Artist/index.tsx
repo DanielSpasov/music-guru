@@ -1,8 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { FC, memo } from 'react';
 
 import { ListArtist } from '../../../../Types';
 import { CardProps } from '../types';
-import { Link } from '../../../';
 
 import css from './Artist.module.css';
 
@@ -17,29 +17,31 @@ const ArtistCard: FC<CardProps<ListArtist>> = ({
   loading = false,
   isFavorite = false
 }) => {
+  const navigate = useNavigate();
+
   if (loading) return <Skeleton />;
   return (
-    <article data-testid="artist-card" className={css.artistCard}>
+    <article
+      data-testid="artist-card"
+      className={css.artistCard}
+      onClick={() => navigate(`/artists/${data.uid}`)}
+    >
       <img alt={data.name} src={data.image} data-testid="artist-card-image" />
 
       <section>
-        <Link
-          type="link"
-          to={`/artists/${data.uid}`}
-          data-testid="artist-card-name"
-        >
-          {data.name}
-        </Link>
+        <p data-testid="artist-card-name">{data.name}</p>
 
-        <FavoritesCounter
-          model="artists"
-          defaultCount={data.favorites}
-          canFavorite={canFavorite}
-          isFavorite={isFavorite}
-          favoriteFn={favoriteFn}
-          updateFavs={updateFavs}
-          uid={data.uid}
-        />
+        <div onClick={e => e.stopPropagation()}>
+          <FavoritesCounter
+            model="artists"
+            defaultCount={data.favorites}
+            canFavorite={canFavorite}
+            isFavorite={isFavorite}
+            favoriteFn={favoriteFn}
+            updateFavs={updateFavs}
+            uid={data.uid}
+          />
+        </div>
       </section>
     </article>
   );
