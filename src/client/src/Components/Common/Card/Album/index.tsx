@@ -1,9 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import { FC, memo } from 'react';
 import moment from 'moment';
 
 import { ListAlbum } from '../../../../Types';
 import { CardProps } from '../types';
-import { Link } from '../../../';
 
 import css from './Album.module.css';
 
@@ -18,19 +18,19 @@ const AlbumCard: FC<CardProps<ListAlbum>> = ({
   loading = false,
   isFavorite = false
 }) => {
+  const navigate = useNavigate();
+
   if (loading) return <Skeleton />;
   return (
-    <article data-testid="album-card" className={css.albumCard}>
+    <article
+      data-testid="album-card"
+      className={css.albumCard}
+      onClick={() => navigate(`/albums/${data.uid}`)}
+    >
       <img alt={data.name} src={data.image} data-testid="album-card-image" />
 
       <section>
-        <Link
-          type="link"
-          to={`/albums/${data.uid}`}
-          data-testid="album-card-link"
-        >
-          {data.name}
-        </Link>
+        <p data-testid="album-card-name">{data.name}</p>
 
         <article>
           <div>
@@ -48,15 +48,17 @@ const AlbumCard: FC<CardProps<ListAlbum>> = ({
             </span>
           </div>
 
-          <FavoritesCounter
-            model="albums"
-            defaultCount={data.favorites}
-            canFavorite={canFavorite}
-            isFavorite={isFavorite}
-            favoriteFn={favoriteFn}
-            updateFavs={updateFavs}
-            uid={data.uid}
-          />
+          <div onClick={e => e.stopPropagation()}>
+            <FavoritesCounter
+              model="albums"
+              defaultCount={data.favorites}
+              canFavorite={canFavorite}
+              isFavorite={isFavorite}
+              favoriteFn={favoriteFn}
+              updateFavs={updateFavs}
+              uid={data.uid}
+            />
+          </div>
         </article>
       </section>
     </article>
