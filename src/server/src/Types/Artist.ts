@@ -1,21 +1,13 @@
-import { z } from 'zod';
+import { BaseDBModel } from './Base';
+import { DBUser } from './User';
 
-import { ArtistSchema } from '../Validations';
-import { User } from './User';
-
-export interface Artist extends z.infer<typeof ArtistSchema> {
-  uid: string;
-  image: string;
-  bio: string;
-  created_at: Date;
-  created_by: User;
-}
-
-export interface DBArtist {
+export type DBArtist = BaseDBModel & {
   name: string;
-  image: string;
-  bio: string;
-  created_at: Date;
-  created_by: string;
+  about: string;
   favorites: number;
-}
+  links: { name: string; url: string }[];
+  image: string;
+  uid: string;
+  created_by: DBUser;
+  created_at: Date;
+};

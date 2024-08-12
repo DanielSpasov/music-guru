@@ -7,13 +7,10 @@ import updateImage from '../../Services/Image';
 
 const router = Router();
 
-router.get('/', fetch({ databaseName: 'models', collectionName: 'albums' }));
-router.get(
-  '/types',
-  fetch({ databaseName: 'models', collectionName: 'album_types' })
-);
+router.get('/', fetch({ collectionName: 'albums' }));
+router.get('/types', fetch({ collectionName: 'album_types' }));
 
-router.get('/:id', get({ databaseName: 'models', collectionName: 'albums' }));
+router.get('/:id', get({ collectionName: 'albums' }));
 
 router.delete('/:id', authorization, del({ collectionName: 'albums' }));
 

@@ -1,30 +1,18 @@
-import { z } from 'zod';
-
-import { BaseAlbumSchema } from '../Validations';
 import { AlbumType } from './AlbumType';
-import { Artist } from './Artist';
-import { Song } from './Song';
-import { User } from './User';
+import { BaseDBModel } from './Base';
+import { DBArtist } from './Artist';
+import { DBSong } from './Song';
+import { DBUser } from './User';
 
-export interface Album extends z.infer<typeof BaseAlbumSchema> {
+export type DBAlbum = BaseDBModel & {
   uid: string;
-  image: string;
-  type: AlbumType;
-  created_at: Date;
-  created_by: User;
-  artist: Artist;
-  songs: Song[];
-  release_date: Date | null;
-}
-
-export interface DBAlbum {
   name: string;
   image: string;
   type: AlbumType;
-  created_by: string;
-  artist: string;
-  songs: string[];
+  created_by: DBUser;
+  artist: DBArtist;
+  songs: DBSong[];
   release_date: Date | null;
   created_at: Date;
   favorites: number;
-}
+};

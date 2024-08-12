@@ -1,4 +1,4 @@
-import { Artist } from '../Types';
+import { DBArtist } from '../Types';
 
 export class ListArtist {
   uid: string;
@@ -6,7 +6,7 @@ export class ListArtist {
   image: string;
   favorites: number;
 
-  constructor(artist: Artist) {
+  constructor(artist: DBArtist) {
     this.uid = artist.uid;
     this.name = artist.name;
     this.image = artist.image;
@@ -24,7 +24,7 @@ export class DetailedArtist {
   favorites: number;
   links: { name: string; url: string }[];
 
-  constructor(artist: Artist) {
+  constructor(artist: DBArtist) {
     this.uid = artist.uid;
     this.name = artist.name;
     this.about = artist.about;

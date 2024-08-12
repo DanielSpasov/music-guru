@@ -1,12 +1,13 @@
-import { Models } from '../Types';
-import { albumAggregators } from './Album';
-import { artistAggregators } from './Artist';
-import { songAggregators } from './Song';
 import { AggregationStage } from './types';
+import { Model } from '../Types';
 
-export const aggregators: Record<Models, AggregationStage[]> = {
+import { artistAggregators } from './Artist';
+import { albumAggregators } from './Album';
+import { songAggregators } from './Song';
+
+export const aggregators: Record<Model, AggregationStage[]> = {
   albums: albumAggregators,
-  artists: artistAggregators,
+  artists: artistAggregators.detailed,
   songs: songAggregators,
   album_types: [],
   users: []

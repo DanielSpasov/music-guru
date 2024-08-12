@@ -1,6 +1,8 @@
 import { serializers } from '.';
-import { Album, Artist, Song } from '../Types';
-import { AlbumType } from '../Types/AlbumType';
+
+import { DBAlbum, AlbumType } from '../Types';
+import { ListArtist } from './Artist';
+import { ListSong } from './Song';
 
 export class ListAlbum {
   uid: string;
@@ -10,7 +12,7 @@ export class ListAlbum {
   type: AlbumType;
   favorites: number;
 
-  constructor(album: Album) {
+  constructor(album: DBAlbum) {
     this.uid = album.uid;
     this.name = album.name;
     this.type = album.type;
@@ -27,12 +29,12 @@ export class DetailedAlbum {
   created_at: Date;
   release_date: Date | null;
   created_by: string;
-  artist: Artist;
-  songs: Song[];
+  artist: ListArtist;
+  songs: ListSong[];
   type: AlbumType;
   favorites: number;
 
-  constructor(album: Album) {
+  constructor(album: DBAlbum) {
     this.uid = album.uid;
     this.name = album.name;
     this.image = album.image;

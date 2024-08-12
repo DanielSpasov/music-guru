@@ -1,6 +1,6 @@
 import { serializers } from '.';
-import { Artist, Song } from '../Types';
-import { Verse } from '../Types/Song';
+
+import { DBSong, Verse } from '../Types/Song';
 import { ListArtist } from './Artist';
 
 export class ListSong {
@@ -10,7 +10,7 @@ export class ListSong {
   artist: ListArtist;
   favorites: number;
 
-  constructor(song: Song) {
+  constructor(song: DBSong) {
     this.uid = song.uid;
     this.name = song.name;
     this.image = song.image || '';
@@ -26,15 +26,15 @@ export class DetailedSong {
   created_at: Date;
   created_by: string;
   release_date: Date | null;
-  artist: Artist;
-  features: Artist[];
+  artist: ListArtist;
+  features: ListArtist[];
   verses: Verse[];
   about: string;
   links: { name: string; url: string }[];
   editors: string[];
   favorites: number;
 
-  constructor(song: Song) {
+  constructor(song: DBSong) {
     this.uid = song.uid;
     this.name = song.name;
     this.image = song.image || '';

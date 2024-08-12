@@ -15,11 +15,7 @@ import { fetch } from '../helpers/requests';
 
 const router = Router();
 
-router.get(
-  '/',
-  authorization,
-  fetch({ collectionName: 'users', databaseName: 'models' })
-);
+router.get('/', authorization, fetch({ collectionName: 'users' }));
 
 router.get('/validate-jwt', ValidateToken);
 

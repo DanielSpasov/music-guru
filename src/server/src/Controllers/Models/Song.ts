@@ -16,7 +16,7 @@ import favorite from '../../Services/Favorites';
 const router = Router();
 
 // Songs
-router.get('/', fetch({ databaseName: 'models', collectionName: 'songs' }));
+router.get('/', fetch({ collectionName: 'songs' }));
 router.post(
   '/',
   [authorization, upload('image')],

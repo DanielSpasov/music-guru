@@ -1,41 +1,25 @@
-import { ListArtist } from '../Serializers/Artist';
-import { ListUser } from '../Serializers/User';
-import { Artist } from './Artist';
+import { BaseDBModel } from './Base';
+import { DBArtist } from './Artist';
+import { DBUser } from './User';
 
-export interface Verse {
+export type Verse = {
   title: string;
   lyrics: string;
   number: number;
-}
+};
 
-export interface Song {
+export type DBSong = BaseDBModel & {
   uid: string;
   name: string;
   image: string;
   created_at: Date;
   release_date: Date | null;
-  created_by: ListUser;
-  artist: Artist;
-  features: ListArtist[];
+  created_by: DBUser;
+  artist: DBArtist;
+  features: DBArtist[];
   verses: Verse[];
   links: { name: string; url: string }[];
   about: string;
-  editors: ListUser[];
+  editors: DBUser[];
   favorites: number;
-}
-
-export interface DBSong {
-  uid: string;
-  name: string;
-  image: string;
-  created_at: Date;
-  release_date: Date | null;
-  created_by: string;
-  artist: string;
-  features: string[];
-  verses: Verse[];
-  links: { name: string; url: string }[];
-  about: string;
-  editors: string[];
-  favorites: number;
-}
+};

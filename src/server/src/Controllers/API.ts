@@ -1,9 +1,10 @@
 import { Router } from 'express';
 
 import UserController from './Models/User';
-import ArtistController from './Models/Artist';
 import SongController from './Models/Song';
 import AlbumController from './Models/Album';
+
+import ArtistController from './Artist';
 
 const router = Router();
 
