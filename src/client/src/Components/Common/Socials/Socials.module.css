@@ -2,10 +2,14 @@
 
 @layer components {
   .link {
-    @apply relative cursor-pointer h-16 w-16 rounded-lg bg-neutral-800;
+    @apply relative cursor-pointer h-16 w-16 rounded-lg bg-neutral-300 dark:bg-neutral-700;
 
-    & > div {
+    & div {
       @apply absolute flex justify-center items-center w-full h-full rounded-lg;
+
+      & svg path {
+        @apply fill-white;
+      }
     }
 
     &:hover div:nth-child(1) {
