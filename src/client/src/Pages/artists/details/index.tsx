@@ -85,9 +85,11 @@ const ArtistDetails = () => {
             <h2 className="py-2">{artist.name}</h2>
           </div>
 
-          <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
-            {artist.about}
-          </span>
+          {artist.about && (
+            <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
+              {artist.about}
+            </span>
+          )}
         </article>
 
         <section className="flex flex-col w-2/3 gap-5">

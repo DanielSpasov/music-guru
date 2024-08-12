@@ -80,9 +80,11 @@ const SongDetails = () => {
             <Summary song={song} albums={albums} />
           </div>
 
-          <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
-            {song.about}
-          </span>
+          {song.about && (
+            <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
+              {song.about}
+            </span>
+          )}
         </div>
 
         <Lyrics song={song} verses={verses} isEditor={isEditor} />
