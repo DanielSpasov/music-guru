@@ -1,7 +1,10 @@
-import { FC, memo } from 'react';
+import { BaseSyntheticEvent, FC, memo, useCallback, useState } from 'react';
+import { toast } from 'react-toastify';
 
+import { Action as IAction } from '../../types';
 import { Button } from '../../../../Common';
 import { HeaderProps } from './types';
+import Loader from '../../../Loader';
 
 const Header: FC<HeaderProps> = ({ heading, actions = [] }) => {
   return (
@@ -19,34 +22,53 @@ const Header: FC<HeaderProps> = ({ heading, actions = [] }) => {
       >
         {actions
           .filter(x => !x?.hidden)
-          .map((action, i) => {
-            switch (action.type) {
-              case 'button':
-                return (
-                  <Button
-                    key={i}
-                    data-testid={`header-actions-${i}`}
-                    onClick={action.onClick}
-                    variant={action.variant}
-                    disabled={action?.disabled}
-                  >
-                    {action.children}
-                  </Button>
-                );
-              default:
-                return (
-                  <action.Icon
-                    key={i}
-                    data-testid={`header-actions-${i}`}
-                    disabled={action?.disabled}
-                    onClick={action.onClick}
-                  />
-                );
-            }
-          })}
+          .map((action, i) => (
+            <Action action={action} key={i} i={i} />
+          ))}
       </section>
     </header>
   );
 };
 
 export default memo(Header);
+
+const Action: FC<{ action: IAction; i: number }> = ({ action, i }) => {
+  const [loading, setLoading] = useState(false);
+
+  const onActionClick = useCallback(
+    (onClick: IAction['onClick']) => async (e: BaseSyntheticEvent) => {
+      try {
+        setLoading(true);
+        await onClick(e);
+      } catch (err) {
+        toast.error('Failed to perform action.');
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
+  if (loading) return <Loader type="spinner" />;
+
+  if (action.type === 'button') {
+    return (
+      <Button
+        data-testid={`header-actions-${i}`}
+        onClick={onActionClick(action.onClick)}
+        variant={action.variant}
+        disabled={action?.disabled}
+      >
+        {action.children}
+      </Button>
+    );
+  }
+
+  return (
+    <action.Icon
+      data-testid={`header-actions-${i}`}
+      disabled={action?.disabled}
+      onClick={onActionClick(action.onClick)}
+    />
+  );
+};

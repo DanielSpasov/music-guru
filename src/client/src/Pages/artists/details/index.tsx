@@ -2,10 +2,18 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { List, PageLayout, Image, IPen, Socials } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { Artist } from '../../../Types';
 import Api from '../../../Api';
+import {
+  List,
+  PageLayout,
+  Image,
+  IPen,
+  Socials,
+  IHeartOutline,
+  IHeart
+} from '../../../Components';
 
 export const defaultArtist: Artist = {
   created_at: new Date(),
@@ -19,13 +27,19 @@ export const defaultArtist: Artist = {
 };
 
 const ArtistDetails = () => {
-  const { uid, isAuthenticated } = useContext(AuthContext);
+  const { uid, isAuthenticated, data } = useContext(AuthContext);
 
   const { id = '0' } = useParams();
   const navigate = useNavigate();
 
   const [artist, setArtist] = useState<Artist>(defaultArtist);
   const [loading, setLoading] = useState(true);
+  const [isFav, setIsFav] = useState(false);
+
+  useEffect(
+    () => setIsFav(Boolean(data?.favorites.artists?.includes(artist.uid))),
+    [artist.uid, data]
+  );
 
   useEffect(() => {
     (async () => {
@@ -55,6 +69,30 @@ const ArtistDetails = () => {
     [artist.uid]
   );
 
+  const onFavorite = useCallback(async () => {
+    try {
+      await Api.artists.favorite({ uid: artist.uid });
+      setIsFav(prev => !prev);
+    } catch (err) {
+      toast.error('Failed to favorite Artist.');
+    }
+  }, [artist.uid]);
+
+  const fetchAlbums = useCallback(
+    () =>
+      Api.albums.fetch({ config: { params: { 'artist.uid': artist.uid } } }),
+    [artist.uid]
+  );
+  const fetchSongs = useCallback(
+    () => Api.songs.fetch({ config: { params: { 'artist.uid': artist.uid } } }),
+    [artist.uid]
+  );
+  const fetchFeatures = useCallback(
+    () =>
+      Api.songs.fetch({ config: { params: { 'features.uid': artist.uid } } }),
+    [artist.uid]
+  );
+
   return (
     <PageLayout
       title={artist.name}
@@ -62,6 +100,12 @@ const ArtistDetails = () => {
       loading={loading}
       footerContent={<Socials links={artist.links} />}
       actions={[
+        {
+          type: 'icon',
+          Icon: isFav ? IHeart : IHeartOutline,
+          onClick: onFavorite,
+          disabled: !isAuthenticated || loading
+        },
         {
           type: 'icon',
           Icon: IPen,
@@ -96,12 +140,8 @@ const ArtistDetails = () => {
           <article>
             <h2>Albums</h2>
             <List
-              fetchFn={() =>
-                Api.albums.fetch({
-                  config: { params: { 'artist.uid': artist.uid } }
-                })
-              }
               favoriteFn={uid => Api.albums.favorite({ uid })}
+              fetchFn={fetchAlbums}
               model="albums"
             />
           </article>
@@ -109,12 +149,8 @@ const ArtistDetails = () => {
           <article>
             <h2>Songs</h2>
             <List
-              fetchFn={() =>
-                Api.songs.fetch({
-                  config: { params: { 'artist.uid': artist.uid } }
-                })
-              }
               favoriteFn={uid => Api.songs.favorite({ uid })}
+              fetchFn={fetchSongs}
               model="songs"
             />
           </article>
@@ -122,12 +158,8 @@ const ArtistDetails = () => {
           <article>
             <h2>Features</h2>
             <List
-              fetchFn={() =>
-                Api.songs.fetch({
-                  config: { params: { 'features.uid': artist.uid } }
-                })
-              }
               favoriteFn={uid => Api.songs.favorite({ uid })}
+              fetchFn={fetchFeatures}
               model="songs"
             />
           </article>
