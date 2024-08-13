@@ -14,15 +14,15 @@
   },
   "scripts": {
     "dev": "yarn client",
-    "client": "cd src/client && yarn start",
-    "server": "cd src/server && yarn start",
-    "client-lint": "cd src/client && yarn lint",
-    "server-lint": "cd src/server && yarn lint",
+    "client": "cd packages/client && yarn start",
+    "server": "cd packages/server && yarn start",
+    "client-lint": "cd packages/client && yarn lint",
+    "server-lint": "cd packages/server && yarn lint",
     "lint": "yarn client-lint && yarn server-lint",
-    "client-tsc": "cd src/client && yarn tsc",
-    "server-tsc": "cd src/server && yarn tsc",
+    "client-tsc": "cd packages/client && yarn tsc",
+    "server-tsc": "cd packages/server && yarn tsc",
     "tsc": "yarn client-tsc && yarn server-tsc",
-    "client-test": "cd src/client && yarn test",
+    "client-test": "cd packages/client && yarn test",
     "test": "yarn client-test"
   },
   "homepage": "https://github.com/DanielSpasov/music-guru#readme"
