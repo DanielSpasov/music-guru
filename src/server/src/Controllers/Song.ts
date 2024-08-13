@@ -7,7 +7,7 @@ import {
   upload,
   get,
   editorship
-} from '../Middleware';
+} from '../Middlewares';
 
 const router = Router();
 

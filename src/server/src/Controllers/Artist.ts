@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { authorization, editorship, get, upload } from '../Middleware';
+import { authorization, editorship, get, upload } from '../Middlewares';
 import { methods, favorite, updateImage } from '../Services';
 
 const router = Router();

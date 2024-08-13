@@ -8,7 +8,7 @@ dotenv.config();
 
 import router from '../src/Router';
 
-import { errorHandler } from './Middleware';
+import { errorHandler } from './Middlewares';
 
 const connectMongoDB = async () => {
   await mongoose.connect(
