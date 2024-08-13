@@ -1,4 +1,5 @@
 import { artistSerializers } from './Artist';
+import { songSerializers } from './Song';
 
 const typeSerializer = { uid: 1, name: 1, code: 1 };
 
@@ -20,6 +21,7 @@ export const albumSerializers = {
     favorites: 1,
     release_date: 1,
     created_at: 1,
-    created_by: 1
+    created_by: 1,
+    songs: songSerializers.list
   }
 };

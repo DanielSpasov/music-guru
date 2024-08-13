@@ -25,7 +25,7 @@ export default ({ model }: { model: Model }) =>
         await deleteObject(imageRef);
       }
 
-      await schemas[model].deleteOne({ uid: req.params.id });
+      await schemas[model].findOneAndDelete({ uid: req.params.id });
 
       res.status(200).json({ message: 'Success' });
     } catch (err) {

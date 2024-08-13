@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose';
 
 import { Song } from '../Types';
+import Album from './Album';
 
 const songSchema = new Schema<Song>({
   uid: { type: String, required: true, unique: true },
@@ -37,6 +38,19 @@ const songSchema = new Schema<Song>({
   editors: [{ type: String, required: true }],
   release_date: { type: Date, default: null },
   created_at: { type: Date, default: Date.now }
+});
+
+songSchema.post('findOneAndDelete', async (item, next) => {
+  try {
+    await Album.updateMany(
+      { songs: { $in: [item.uid] } },
+      { $pull: { songs: item.uid } }
+    );
+
+    next();
+  } catch (err) {
+    console.error('Failed to execute pre findOneAndDelete event.');
+  }
 });
 
 export default model<Song>('Song', songSchema);
