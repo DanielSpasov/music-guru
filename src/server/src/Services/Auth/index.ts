@@ -1,10 +1,10 @@
-import resendValidationEmail from './ResendValidationEmail';
-import validateEmail from './ValidateEmail';
-import validateToken from './ValidateToken';
-import changeUsername from './ChangeUsername';
-import changePassword from './ChangePassword';
-import signUp from './SignUp';
-import signIn from './SignIn';
+import resendValidationEmail from './resendValidationEmail';
+import validateEmail from './validateEmail';
+import validateToken from './validateToken';
+import changeUsername from './changeUsername';
+import changePassword from './changePassword';
+import signUp from './signUp';
+import signIn from './signIn';
 
 export const auth = {
   resendValidationEmail,

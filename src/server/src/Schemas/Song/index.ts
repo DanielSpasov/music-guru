@@ -8,11 +8,7 @@ const songSchema = new Schema<Song>({
   about: { type: String, default: '' },
   image: { type: String, default: '' },
   favorites: { type: Number, required: true, default: 0 },
-  created_by: {
-    type: String,
-    ref: 'User',
-    required: true
-  },
+  created_by: { type: String, required: true },
   artist: {
     type: String,
     ref: 'Artist',
@@ -32,13 +28,7 @@ const songSchema = new Schema<Song>({
       number: { type: String, required: true }
     }
   ],
-  editors: [
-    {
-      type: String,
-      ref: 'User',
-      required: true
-    }
-  ],
+  editors: [{ type: String, required: true }],
   release_date: { type: Date, default: null },
   created_at: { type: Date, default: Date.now }
 });

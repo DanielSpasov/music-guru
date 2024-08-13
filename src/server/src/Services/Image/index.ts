@@ -8,9 +8,9 @@ import {
 import { NextFunction, Request, Response } from 'express';
 
 import { FileSchema } from '../../Validations';
+import { BaseModel, Model } from '../../Types';
 import { schemas } from '../../Schemas';
 import { APIError } from '../../Error';
-import { Model } from '../../Types';
 
 export default ({ model }: { model: Model }) =>
   async (req: Request, res: Response, next: NextFunction) => {
@@ -39,18 +39,17 @@ export default ({ model }: { model: Model }) =>
         );
         await uploadBytes(imageRef, validatedFile.buffer);
         const newImageURL = await getDownloadURL(imageRef);
-        const updatedItem = await schemas[model].findOneAndUpdate(
+        const updatedItem = await schemas[model].findOneAndUpdate<BaseModel>(
           { uid: req.params.id },
           { $set: { image: newImageURL } },
           { returnDocument: 'after' }
         );
         if (!updatedItem) throw new APIError(400, 'Failed to update Image.');
 
-        res.status(200).json({
+        return res.status(200).json({
           image: updatedItem.image,
           message: 'Image updated successfully'
         });
-        return;
       }
 
       throw new APIError(400, 'No image provided.');

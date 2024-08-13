@@ -12,11 +12,7 @@ const albumSchema = new Schema<Album>({
     ref: 'Album_Types',
     required: true
   },
-  created_by: {
-    type: String,
-    ref: 'User',
-    required: true
-  },
+  created_by: { type: String, required: true },
   artist: {
     type: String,
     ref: 'Artist',

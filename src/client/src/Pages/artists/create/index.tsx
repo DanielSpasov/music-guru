@@ -42,12 +42,12 @@ const CreateArtist = () => {
           key => payload[key] === undefined && delete payload[key]
         );
 
-        const res = await Api.artists.post({
+        const { data } = await Api.artists.post({
           body: payload,
           config: { headers: { 'Content-Type': 'multipart/form-data' } }
         });
         toast.success('Successfully Created Artist');
-        navigate(`/artists/${res.uid}`);
+        navigate(`/artists/${data.uid}`);
       } catch (err) {
         toast.error('Failed to Create Artist');
       }
@@ -75,7 +75,7 @@ const CreateArtist = () => {
         </Fieldset>
 
         <Fieldset title="Socials" foldable>
-          <Input label="Instagram" name="intagram" />
+          <Input label="Instagram" name="instagram" />
           <Input label="X" name="x" />
           <Input label="Facebook" name="facebook" />
           <Input label="Spotify" name="spotify" />

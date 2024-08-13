@@ -58,20 +58,15 @@ router.patch(
 );
 
 // Editors
-router.get(
-  '/:id/editors/available',
-  [get({ model: 'songs' }), authorization, ownership],
-  editors.fetch
-);
 router.post(
   '/:id/editor',
   [get({ model: 'songs' }), authorization, ownership],
-  editors.post
+  editors.post({ model: 'songs' })
 );
 router.delete(
   '/:id/editor/:editor',
   [get({ model: 'songs' }), authorization, ownership],
-  editors.del
+  editors.del({ model: 'songs' })
 );
 
 export default router;

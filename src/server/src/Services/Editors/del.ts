@@ -1,22 +1,20 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { EditorSchema } from '../../Validations';
+import { BaseModel, Model } from '../../Types';
 import { schemas } from '../../Schemas';
 import { APIError } from '../../Error';
-import User from '../../Schemas/User';
-import { Model } from '../../Types';
 
 export default ({ model }: { model: Model }) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const item = res.locals.item;
+      const item = res.locals.item as BaseModel;
       const editorUID = EditorSchema.parse(req.params.editor);
 
-      const editor = await User.findOne({ uid: editorUID });
+      const editor = await schemas.users.findOne({ uid: editorUID });
       if (!editor) throw new APIError(404, 'User not found.');
 
-      const editorUIDs = item.editors.map(x => x.uid);
-      if (!editorUIDs.includes(editorUID)) {
+      if (!item.editors.includes(editorUID)) {
         throw new APIError(400, 'User is not an editor.');
       }
 

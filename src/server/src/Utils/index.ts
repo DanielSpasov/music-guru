@@ -1,9 +1,7 @@
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { SortOrder } from 'mongoose';
 
-import { File, Model, Serializer } from '../Types';
-
-export type QueryProps = { serializer?: Serializer } & Record<string, string>;
+import { File, Model, QueryProps } from '../Types';
 
 export async function getUploadLink(
   file: File,

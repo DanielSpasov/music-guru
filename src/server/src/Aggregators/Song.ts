@@ -32,23 +32,6 @@ const socials: PipelineStage[] = [
   }
 ];
 
-const editors: PipelineStage[] = [
-  {
-    $lookup: {
-      from: 'users',
-      localField: 'editors',
-      foreignField: 'uid',
-      as: 'editors'
-    }
-  },
-  {
-    $unwind: {
-      path: '$editors',
-      preserveNullAndEmptyArrays: true
-    }
-  }
-];
-
 const features: PipelineStage[] = [
   {
     $lookup: {
@@ -78,7 +61,7 @@ const features: PipelineStage[] = [
       verses: { $addToSet: '$verses' },
       links: { $addToSet: '$links' },
       about: { $first: '$about' },
-      editors: { $addToSet: '$editors' },
+      editors: { $first: '$editors' },
       favorites: { $first: '$favorites' }
     }
   },
@@ -99,6 +82,5 @@ export const aggregators: PipelineStage[] = [
   ...artist,
   ...verses,
   ...socials,
-  ...editors,
   ...features
 ];

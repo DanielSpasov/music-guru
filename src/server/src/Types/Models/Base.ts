@@ -1,11 +1,9 @@
-import { User } from './User';
-
 export type BaseModel = {
   uid: string;
   name: string;
   image: string;
-  editors: User[];
+  editors: string[];
   favorites: number;
   created_at: Date;
-  created_by: User;
+  created_by: string;
 };
