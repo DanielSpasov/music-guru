@@ -12,18 +12,15 @@ export default ({ model }: { model: Model }) =>
       const {
         serializer = 'list',
         limit = '25',
-        sort = '-created_at',
+        sort = 'created_at',
         ...query
       } = req.query as QueryProps;
 
       const data = await schemas[model]
         .aggregate(pipelines[model])
         .match(useFilters(query))
-        .project({
-          ...serializers?.[model]?.[serializer],
-          _id: 0
-        })
         .sort(useSorting(sort))
+        .project({ ...serializers?.[model]?.[serializer], _id: 0 })
         .limit(Number(limit));
 
       res.status(200).json({ data });
