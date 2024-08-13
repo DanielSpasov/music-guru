@@ -4,7 +4,8 @@ import { schemas } from '../Schemas';
 import { APIError } from '../Error';
 import { Model } from '../Types';
 
-export default ({ model }: { model: Model }) =>
+const get =
+  ({ model }: { model: Model }) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const [item] = await schemas[model]
@@ -21,3 +22,5 @@ export default ({ model }: { model: Model }) =>
       next(err);
     }
   };
+
+export default get;

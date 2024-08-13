@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-import { AlbumType } from '../../Types';
+import { AlbumType } from '../Types';
 
 const albumTypeSchema = new Schema<AlbumType>({
   uid: { type: String, required: true, unique: true },

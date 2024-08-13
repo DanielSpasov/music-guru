@@ -1,28 +1,31 @@
 import { model, Schema } from 'mongoose';
 
-import { Album } from '../../Types';
+import { Song } from '../Types';
 
-const albumSchema = new Schema<Album>({
+const songSchema = new Schema<Song>({
   uid: { type: String, required: true, unique: true },
   name: { type: String, required: true },
-  image: { type: String, required: true },
+  about: { type: String, default: '' },
+  image: { type: String, default: '' },
   favorites: { type: Number, required: true, default: 0 },
-  type: {
-    type: String,
-    ref: 'Album_Types',
-    required: true
-  },
   created_by: { type: String, required: true },
   artist: {
     type: String,
     ref: 'Artist',
     required: true
   },
-  songs: [
+  features: [
     {
       type: String,
-      ref: 'Song',
+      ref: 'Artist',
       required: true
+    }
+  ],
+  verses: [
+    {
+      title: { type: String, required: true },
+      lyrics: { type: String, required: true },
+      number: { type: Number, required: true }
     }
   ],
   links: [
@@ -36,4 +39,4 @@ const albumSchema = new Schema<Album>({
   created_at: { type: Date, default: Date.now }
 });
 
-export default model<Album>('Album', albumSchema);
+export default model<Song>('Song', songSchema);

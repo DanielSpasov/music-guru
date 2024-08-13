@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-import { Artist } from '../../Types';
+import { Artist } from '../Types';
 
 const artistSchema = new Schema<Artist>({
   uid: { type: String, required: true, unique: true },
