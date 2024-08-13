@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 
 import { useFilters, useSorting } from '../../Utils';
 import { Model, QueryProps } from '../../Types';
-import { aggregators } from '../../Aggregators';
 import { serializers } from '../../Serializers';
+import { pipelines } from '../../Pipes';
 import { schemas } from '../../Schemas';
 
 export default ({ model }: { model: Model }) =>
@@ -17,7 +17,7 @@ export default ({ model }: { model: Model }) =>
       } = req.query as QueryProps;
 
       const data = await schemas[model]
-        .aggregate(aggregators[model])
+        .aggregate(pipelines[model])
         .match(useFilters(query))
         .project({
           ...serializers?.[model]?.[serializer],

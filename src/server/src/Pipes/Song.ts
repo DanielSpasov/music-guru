@@ -78,7 +78,7 @@ const features: PipelineStage[] = [
   }
 ];
 
-export const aggregators: PipelineStage[] = [
+export const songPipelines: PipelineStage[] = [
   ...artist,
   ...verses,
   ...socials,

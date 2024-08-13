@@ -16,4 +16,4 @@ const group: PipelineStage[] = [
   }
 ];
 
-export const aggregators: PipelineStage[] = [...group];
+export const artistPipelines: PipelineStage[] = [...group];

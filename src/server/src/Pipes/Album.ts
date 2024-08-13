@@ -86,4 +86,4 @@ const songs: PipelineStage[] = [
   }
 ];
 
-export const aggregators: PipelineStage[] = [...artist, ...type, ...songs];
+export const albumPipelines: PipelineStage[] = [...artist, ...type, ...songs];
