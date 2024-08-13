@@ -1,15 +1,16 @@
-import { User } from '../Types';
-
-export class ListUser {
-  uid: string;
-  username: string;
-  email: string;
-  created_at: Date;
-
-  constructor(user: User) {
-    this.uid = user.uid;
-    this.username = user.username;
-    this.email = user.email;
-    this.created_at = user.created_at;
+export const serializers = {
+  list: {
+    uid: 1,
+    username: 1,
+    email: 1,
+    created_at: 1
+  },
+  detailed: {
+    uid: 1,
+    username: 1,
+    email: 1,
+    created_at: 1,
+    favorites: 1,
+    verified: 1
   }
-}
+};

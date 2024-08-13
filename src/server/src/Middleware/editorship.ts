@@ -1,19 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { ListUser } from '../Serializers/User';
 import { APIError } from '../Error';
+import { BaseModel } from '../Types';
 
-export default async function editorship(
+const editorship = async <T extends BaseModel>(
   req: Request,
   res: Response,
   next: NextFunction
-) {
+) => {
   try {
-    const isOwner = res.locals?.item?.created_by?.uid === res.locals.user.uid;
+    const item = res.locals?.item as T;
+    const isOwner = item.created_by === res.locals.user.uid;
     const isEditor = Boolean(
-      res.locals?.item?.editors?.find(
-        (user: ListUser) => user.uid === res.locals.user.uid
-      )
+      item.editors?.find(user => user === res.locals.user.uid)
     );
 
     if (!isEditor && !isOwner) {
@@ -27,4 +26,6 @@ export default async function editorship(
   } catch (err) {
     next(err);
   }
-}
+};
+
+export default editorship;

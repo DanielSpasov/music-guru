@@ -1,9 +1,9 @@
-import { default as addEditor } from './post';
-import { default as delEditor } from './del';
 import { default as fetch } from './fetch';
+import { default as post } from './post';
+import { default as del } from './del';
 
 export const editors = {
-  post: addEditor,
-  del: delEditor,
-  fetch
+  fetch,
+  post,
+  del
 };

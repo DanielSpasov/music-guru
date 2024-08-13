@@ -1,19 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { Collection } from 'mongodb';
 import bcrypt from 'bcrypt';
 
 import { ChangePassSchema } from '../../Validations/User';
-import { connect } from '../../Database';
+import { serializers } from '../../Serializers';
 import { APIError } from '../../Error';
-import { DBUser } from '../../Types';
+import User from '../../Schemas/User';
 import SendEmail from '../Email';
 
-export const ChangePassword = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const mongo = await connect();
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const validated = ChangePassSchema.parse(req.body);
 
@@ -21,10 +15,7 @@ export const ChangePassword = async (
       throw new APIError(400, "Passwords doesn't match.");
     }
 
-    const db = mongo.db('models');
-    const collection: Collection<DBUser> = db.collection('users');
-
-    const user = await collection.findOne({ uid: res.locals.user.uid });
+    const [user] = await User.aggregate().match({ uid: res.locals.user.uid });
     if (!user) throw new APIError(404, 'Invalid User UID.');
 
     if (!user.verified) {
@@ -52,16 +43,14 @@ export const ChangePassword = async (
     const salt = await bcrypt.genSalt(saltRounds);
     const newPasswordHash = await bcrypt.hash(validated.new_password, salt);
 
-    await collection.updateOne(
+    await User.updateOne(
       { uid: res.locals.user.uid },
       { $set: { password: newPasswordHash } }
     );
 
-    const items = collection.aggregate([
-      { $match: { uid: res.locals.user.uid } },
-      { $project: { _id: 0, password: 0 } }
-    ]);
-    const [data] = await items.toArray();
+    const [data] = await User.aggregate([{ $project: { _id: 0, password: 0 } }])
+      .match({ uid: res.locals.user.uid })
+      .project({ ...serializers.users?.detailed, _id: 0 });
 
     await SendEmail({
       to: user.email,
@@ -72,7 +61,5 @@ export const ChangePassword = async (
     res.status(200).json({ data });
   } catch (err) {
     next(err);
-  } finally {
-    await mongo.close();
   }
 };

@@ -8,17 +8,17 @@ import {
 import { NextFunction, Request, Response } from 'express';
 
 import { FileSchema } from '../../Validations';
-import { connect } from '../../Database';
+import { schemas } from '../../Schemas';
 import { APIError } from '../../Error';
-import { Models } from '../../Types';
+import { Model } from '../../Types';
 
-export default ({ model }: { model: Exclude<Models, 'users'> }) =>
+export default ({ model }: { model: Model }) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    const mongo = await connect();
     try {
-      const db = mongo.db('models');
-      const collection = db.collection(model);
-      const item = await collection.findOne({ uid: req.params.id });
+      const [item] = await schemas[model]
+        .aggregate()
+        .match({ uid: req.params.id });
+
       if (!item) throw new APIError(400, 'Invalid UID.');
 
       if (req?.file) {
@@ -39,7 +39,7 @@ export default ({ model }: { model: Exclude<Models, 'users'> }) =>
         );
         await uploadBytes(imageRef, validatedFile.buffer);
         const newImageURL = await getDownloadURL(imageRef);
-        const updatedItem = await collection.findOneAndUpdate(
+        const updatedItem = await schemas[model].findOneAndUpdate(
           { uid: req.params.id },
           { $set: { image: newImageURL } },
           { returnDocument: 'after' }
@@ -56,7 +56,5 @@ export default ({ model }: { model: Exclude<Models, 'users'> }) =>
       throw new APIError(400, 'No image provided.');
     } catch (err) {
       next(err);
-    } finally {
-      await mongo.close();
     }
   };

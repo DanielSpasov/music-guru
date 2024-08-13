@@ -1,49 +1,22 @@
-import { serializers } from '.';
+const typeSerializer = { uid: 1, name: 1, code: 1 };
 
-import { DBAlbum, AlbumType } from '../Types';
-import { ListArtist } from './Artist';
-import { ListSong } from './Song';
-
-export class ListAlbum {
-  uid: string;
-  name: string;
-  image: string;
-  release_date: Date | null;
-  type: AlbumType;
-  favorites: number;
-
-  constructor(album: DBAlbum) {
-    this.uid = album.uid;
-    this.name = album.name;
-    this.type = album.type;
-    this.image = album.image;
-    this.favorites = album.favorites;
-    this.release_date = album.release_date;
+export const serializers = {
+  list: {
+    uid: 1,
+    name: 1,
+    type: typeSerializer,
+    image: 1,
+    favorites: 1,
+    release_date: 1
+  },
+  detailed: {
+    uid: 1,
+    name: 1,
+    type: typeSerializer,
+    image: 1,
+    favorites: 1,
+    release_date: 1,
+    created_at: 1,
+    created_by: 1
   }
-}
-
-export class DetailedAlbum {
-  uid: string;
-  name: string;
-  image: string;
-  created_at: Date;
-  release_date: Date | null;
-  created_by: string;
-  artist: ListArtist;
-  songs: ListSong[];
-  type: AlbumType;
-  favorites: number;
-
-  constructor(album: DBAlbum) {
-    this.uid = album.uid;
-    this.name = album.name;
-    this.image = album.image;
-    this.favorites = album.favorites;
-    this.created_at = album.created_at;
-    this.release_date = album.release_date;
-    this.created_by = album.created_by.uid;
-    this.artist = serializers.artists.list(album.artist);
-    this.songs = album.songs.map(serializers.songs.list);
-    this.type = album.type;
-  }
-}
+};

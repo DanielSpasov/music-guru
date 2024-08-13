@@ -1,14 +1,15 @@
-import { AggregationStage } from './types';
+import { PipelineStage } from 'mongoose';
+
 import { Model } from '../Types';
 
-import { artistAggregators } from './Artist';
-import { albumAggregators } from './Album';
-import { songAggregators } from './Song';
+import { aggregators as artists } from './Artist';
+import { aggregators as albums } from './Album';
+import { aggregators as songs } from './Song';
 
-export const aggregators: Record<Model, AggregationStage[]> = {
-  albums: albumAggregators,
-  artists: artistAggregators.detailed,
-  songs: songAggregators,
+export const aggregators: Record<Model, PipelineStage[]> = {
+  artists,
+  albums,
+  songs,
   album_types: [],
   users: []
 };

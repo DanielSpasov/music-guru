@@ -6,10 +6,8 @@ dotenv.config();
 
 import router from '../src/Router';
 
-import { initFirestoreBucket } from '../src/Database';
-import { errorHandlerr } from './Middleware';
-
-initFirestoreBucket();
+import { connectFirestoreBucket, connectMongoDB } from '../src/Database';
+import { errorHandler } from './Middleware';
 
 const app: Application = express();
 
@@ -18,12 +16,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 app.use(router);
-app.use(errorHandlerr);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 8000;
 
-app.listen(PORT, () =>
-  console.log('\u001b[1;32m' + `Server running on PORT: ${PORT}` + '\u001b[0m')
-);
+app.listen(PORT, async () => {
+  await connectMongoDB();
+  connectFirestoreBucket();
+  console.log('\u001b[1;32m' + `Server running on PORT: ${PORT}` + '\u001b[0m');
+});
 
 export default app;

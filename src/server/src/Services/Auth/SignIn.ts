@@ -1,19 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
-import { Collection } from 'mongodb';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { SignInSchema } from '../../Validations';
-import { connect } from '../../Database';
 import { APIError } from '../../Error';
-import { DBUser } from '../../Types';
+import User from '../../Schemas/User';
 
-export const SignIn = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const mongo = await connect();
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     // VALIDATE WITH ZOD
     const { email, password } = SignInSchema.parse({
@@ -22,9 +15,7 @@ export const SignIn = async (
     });
 
     // CHECK IF THE EMAIL IS REGISTERED
-    const db = mongo.db('models');
-    const collection: Collection<DBUser> = db.collection('users');
-    const user = await collection.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) throw new APIError(400, 'Wrong Email address or Password.');
 
     // CHECK IF THE PASSWORD IS VALID
@@ -48,7 +39,5 @@ export const SignIn = async (
     });
   } catch (err) {
     next(err);
-  } finally {
-    await mongo.close();
   }
 };

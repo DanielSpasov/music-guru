@@ -1,20 +1,6 @@
-import { AggregationStage } from './types';
+import { PipelineStage } from 'mongoose';
 
-const created_by: AggregationStage[] = [
-  {
-    $lookup: {
-      from: 'users',
-      localField: 'created_by',
-      foreignField: 'uid',
-      as: 'created_by'
-    }
-  },
-  {
-    $unwind: '$created_by'
-  }
-];
-
-const artist: AggregationStage[] = [
+const artist: PipelineStage[] = [
   {
     $lookup: {
       from: 'artists',
@@ -28,7 +14,7 @@ const artist: AggregationStage[] = [
   }
 ];
 
-const verses: AggregationStage[] = [
+const verses: PipelineStage[] = [
   {
     $unwind: {
       path: '$verses',
@@ -37,7 +23,7 @@ const verses: AggregationStage[] = [
   }
 ];
 
-const socials: AggregationStage[] = [
+const socials: PipelineStage[] = [
   {
     $unwind: {
       path: '$links',
@@ -46,7 +32,7 @@ const socials: AggregationStage[] = [
   }
 ];
 
-const editors: AggregationStage[] = [
+const editors: PipelineStage[] = [
   {
     $lookup: {
       from: 'users',
@@ -63,7 +49,7 @@ const editors: AggregationStage[] = [
   }
 ];
 
-const features: AggregationStage[] = [
+const features: PipelineStage[] = [
   {
     $lookup: {
       from: 'artists',
@@ -109,8 +95,7 @@ const features: AggregationStage[] = [
   }
 ];
 
-export const songAggregators: AggregationStage[] = [
-  ...created_by,
+export const aggregators: PipelineStage[] = [
   ...artist,
   ...verses,
   ...socials,

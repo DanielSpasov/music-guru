@@ -3,11 +3,11 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { APIError } from '../Error';
 
-export default async function authorization(
+const authorization = async (
   req: Request,
   res: Response,
   next: NextFunction
-) {
+) => {
   try {
     const token = req.headers?.authorization || '';
     if (!token) throw new APIError(401, 'Unauthorized.');
@@ -23,4 +23,6 @@ export default async function authorization(
   } catch (err) {
     next(err);
   }
-}
+};
+
+export default authorization;

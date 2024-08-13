@@ -1,13 +1,13 @@
 import { initializeApp } from 'firebase/app';
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 
-export const connect = async () => {
-  return await MongoClient.connect(
-    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@main-cluster.i7ggact.mongodb.net/?retryWrites=true&w=majority`
+export const connectMongoDB = async () => {
+  return await mongoose.connect(
+    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@main-cluster.i7ggact.mongodb.net/models?retryWrites=true&w=majority`
   );
 };
 
-export const initFirestoreBucket = () => {
+export const connectFirestoreBucket = () => {
   initializeApp({
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,

@@ -1,35 +1,27 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { Models } from '../../Types';
-import { connect } from '../../Database';
+import { schemas } from '../../Schemas';
 import { APIError } from '../../Error';
+import User from '../../Schemas/User';
+import { Model } from '../../Types';
 
-export default ({ model }: { model: Models }) =>
+export default ({ model }: { model: Model }) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    const mongo = await connect();
     try {
       if (!req?.body?.uid) {
         throw new APIError(400, 'Please provide object UID.');
       }
 
-      const db = mongo.db('models');
-
-      const usersCollection = db.collection('users');
-      const modelCollection = db.collection(model);
-
-      const usersDocs = usersCollection.aggregate([
-        { $match: { uid: res.locals.user.uid } }
-      ]);
-      const [user] = await usersDocs.toArray();
+      const [user] = await User.aggregate().match({ uid: res.locals.user.uid });
 
       const isFavorite = user?.favorites?.[model]?.includes(req.body.uid);
 
       const [, updatedUser] = await Promise.all([
-        modelCollection.updateOne(
+        schemas[model].updateOne(
           { uid: req.body.uid },
           { $inc: { favorites: isFavorite ? -1 : 1 } }
         ),
-        usersCollection.findOneAndUpdate(
+        User.findOneAndUpdate(
           { uid: res.locals.user.uid },
           isFavorite
             ? { $pull: { [`favorites.${model}`]: req.body.uid } }
@@ -41,7 +33,5 @@ export default ({ model }: { model: Models }) =>
       res.status(200).json({ favorites: updatedUser?.favorites });
     } catch (err) {
       next(err);
-    } finally {
-      await mongo.close();
     }
   };

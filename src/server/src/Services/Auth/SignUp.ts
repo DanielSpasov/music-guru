@@ -4,16 +4,11 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
 import { SignUpSchema } from '../../Validations';
-import { sendVerificationEmail } from './helpers';
-import { connect } from '../../Database';
 import { APIError } from '../../Error';
+import User from '../../Schemas/User';
+import SendEmail from '../Email';
 
-export const SignUp = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const mongo = await connect();
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     // VALIDATE WITH ZOD
     const defaultUsername = req.body?.email?.split('@')[0];
@@ -25,9 +20,7 @@ export const SignUp = async (
     });
 
     // CHECK IF THE EMAIL IS ALREADY SIGNED UP
-    const db = mongo.db('models');
-    const collection = db.collection('users');
-    const isUsed = await collection.findOne({ email });
+    const isUsed = await User.findOne({ email });
     if (isUsed) throw new APIError(400, 'This email is alredy signed up.');
 
     // HASHING THE PASSWORD
@@ -46,12 +39,20 @@ export const SignUp = async (
       created_at: new Date(),
       favorites: {}
     };
-    await collection.insertOne(data);
+    await User.create(data);
 
     // SIGN THE JSON WEB TOKEN
     const authToken = jwt.sign({ uid }, process.env.JWT_SECRET || '');
 
-    await sendVerificationEmail(data);
+    const expToken = jwt.sign({ id: data.uid }, process.env.JWT_SECRET || '', {
+      expiresIn: '10m'
+    });
+
+    await SendEmail({
+      to: data.email,
+      template: 'VERIFY',
+      data: { expToken, username: data.username }
+    });
 
     res.status(200).json({
       token: authToken,
@@ -67,7 +68,5 @@ export const SignUp = async (
     });
   } catch (err) {
     next(err);
-  } finally {
-    await mongo.close();
   }
 };

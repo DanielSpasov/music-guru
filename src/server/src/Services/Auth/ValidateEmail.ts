@@ -1,34 +1,24 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { connect } from '../../Database';
+import { serializers } from '../../Serializers';
 import { APIError } from '../../Error';
+import User from '../../Schemas/User';
 
-export const ValidateEmail = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const mongo = await connect();
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.body;
 
-    const db = mongo.db('models');
-    const collection = db.collection('users');
-    const user = await collection.findOne({ uid: id });
+    const user = await User.findOne({ uid: id });
     if (!user) throw new APIError(400, 'Failed to validate Email.');
 
-    await collection.updateOne({ uid: id }, { $set: { verified: true } });
+    await User.updateOne({ uid: id }, { $set: { verified: true } });
 
-    const items = collection.aggregate([
-      { $match: { uid: id } },
-      { $project: { _id: 0, password: 0 } }
-    ]);
-    const [data] = await items.toArray();
+    const [data] = await User.aggregate()
+      .match({ uid: id })
+      .project({ ...serializers.users?.detailed, _id: 0 });
 
     res.status(200).json({ message: 'Email Verified.', data });
   } catch (err) {
     next(err);
-  } finally {
-    await mongo.close();
   }
 };
