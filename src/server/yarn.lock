@@ -478,13 +478,6 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@mongodb-js/saslprep@^1.1.0":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@mongodb-js/saslprep/-/saslprep-1.1.5.tgz#0c48a96c8d799e81fae311b7251aa5c1dc7c6e95"
-  integrity sha512-XLNOMH66KhJzUJNwT/qlMnS4WsNDWD5ASdyaSH3EtK+F4r/CFGa3jT4GNi4mfOitGvWXtdLgQJkQjxSVrio+jA==
-  dependencies:
-    sparse-bitfield "^3.0.3"
-
 "@mongodb-js/saslprep@^1.1.5":
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/@mongodb-js/saslprep/-/saslprep-1.1.8.tgz#d39744540be8800d17749990b0da95b4271840d1"
@@ -1040,11 +1033,6 @@ braces@^3.0.2, braces@~3.0.2:
   integrity sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==
   dependencies:
     fill-range "^7.1.1"
-
-bson@^6.4.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/bson/-/bson-6.4.0.tgz#99c2e37b515e6766ce8b5929e01fa79de5767d50"
-  integrity sha512-6/gSSEdbkuFlSb+ufj5jUSU4+wo8xQOwm2bDSqwmxiPE17JTpsP63eAwoN8iF8Oy4gJYj+PAL3zdRCTdaw5Y1g==
 
 bson@^6.7.0:
   version "6.8.0"
@@ -2381,15 +2369,6 @@ mongodb@6.7.0:
   dependencies:
     "@mongodb-js/saslprep" "^1.1.5"
     bson "^6.7.0"
-    mongodb-connection-string-url "^3.0.0"
-
-mongodb@^6.4.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-6.4.0.tgz#37d634ad8333caa327987be2887e583696bb9720"
-  integrity sha512-MdFHsyb1a/Ee0H3NmzWTSLqchacDV/APF0H6BNQvraWrOiIocys2EmTFZPgHxWhcfO94c1F34I9MACU7x0hHKA==
-  dependencies:
-    "@mongodb-js/saslprep" "^1.1.0"
-    bson "^6.4.0"
     mongodb-connection-string-url "^3.0.0"
 
 mongoose@^8.5.2:

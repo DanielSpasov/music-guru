@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc -p . --noEmit",
     "lint": "eslint \"**/*.{ts,tsx}\"",
-    "ts.check": "tsc --project tsconfig.json --noEmit",
+    "tsc": "tsc --project tsconfig.json --noEmit",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "start": "ts-node-dev --respawn --transpile-only src/index.ts",
     "vercel-build": "echo VercelBuild"
@@ -38,7 +38,6 @@
     "express": "4.19.2",
     "firebase": "^10.3.0",
     "jsonwebtoken": "^9.0.0",
-    "mongodb": "^6.4.0",
     "mongoose": "^8.5.2",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.9",
