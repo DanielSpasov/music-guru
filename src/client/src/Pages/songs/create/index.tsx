@@ -50,12 +50,12 @@ const CreateSong = () => {
           features: formData?.features?.map(x => x?.uid)
         };
 
-        const res = await Api.songs.post({
+        const { data } = await Api.songs.post({
           body: payload,
           config: { headers: { 'Content-Type': 'multipart/form-data' } }
         });
         toast.success('Successfully Created Song');
-        navigate(`/songs/${res.uid}`);
+        navigate(`/songs/${data.uid}`);
       } catch (error) {
         toast.success('Failed to Created Song');
       }

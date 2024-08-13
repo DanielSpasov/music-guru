@@ -17,6 +17,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         return { ...verse, number: verse.number - 1 };
       });
 
+    console.log(updatedVerses);
+
     await Song.updateOne(
       { uid: req.params.id },
       { $set: { verses: updatedVerses } }

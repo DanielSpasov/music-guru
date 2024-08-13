@@ -25,7 +25,13 @@ const songSchema = new Schema<Song>({
     {
       title: { type: String, required: true },
       lyrics: { type: String, required: true },
-      number: { type: String, required: true }
+      number: { type: Number, required: true }
+    }
+  ],
+  links: [
+    {
+      name: { type: String, required: true },
+      url: { type: String, required: true }
     }
   ],
   editors: [{ type: String, required: true }],

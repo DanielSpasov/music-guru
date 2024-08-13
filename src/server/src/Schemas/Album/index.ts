@@ -25,6 +25,13 @@ const albumSchema = new Schema<Album>({
       required: true
     }
   ],
+  links: [
+    {
+      name: { type: String, required: true },
+      url: { type: String, required: true }
+    }
+  ],
+  editors: [{ type: String, required: true }],
   release_date: { type: Date, default: null },
   created_at: { type: Date, default: Date.now }
 });
