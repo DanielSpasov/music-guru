@@ -1,4 +1,4 @@
-export const serializers = {
+export const artistSerializers = {
   list: {
     uid: 1,
     name: 1,

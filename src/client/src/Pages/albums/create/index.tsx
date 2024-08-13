@@ -31,12 +31,12 @@ const CreateAlbum = () => {
           artist: formData?.artist?.uid,
           songs: formData?.songs?.map(x => x?.uid)
         };
-        const res = await Api.albums.post({
+        const { data } = await Api.albums.post({
           body: payload,
           config: { headers: { 'Content-Type': 'multipart/form-data' } }
         });
         toast.success('Successfully Created Album');
-        navigate(`/albums/${res.uid}`);
+        navigate(`/albums/${data.uid}`);
       } catch (err) {
         toast.error('Failed to Create Album');
       }

@@ -1,4 +1,4 @@
-export const serializers = {
+export const userSerializers = {
   list: {
     uid: 1,
     username: 1,

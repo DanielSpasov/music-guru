@@ -1,11 +1,11 @@
-import { serializers as artist } from './Artist';
+import { artistSerializers } from './Artist';
 
-export const serializers = {
+export const songSerializers = {
   list: {
     uid: 1,
     name: 1,
     image: 1,
-    artist: artist.list,
+    artist: artistSerializers.list,
     favorites: 1
   },
   detailed: {
@@ -16,8 +16,8 @@ export const serializers = {
     created_at: 1,
     created_by: 1,
     release_date: 1,
-    artist: artist.list,
-    features: artist.list,
+    artist: artistSerializers.list,
+    features: artistSerializers.list,
     verses: 1,
     links: 1,
     editors: 1,
