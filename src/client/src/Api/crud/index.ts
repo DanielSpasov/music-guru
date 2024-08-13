@@ -34,7 +34,7 @@ export default class Crud<T, K> extends CrudBase {
     return get({ url: `${this.baseUrl}/${this.model}/`, config });
   }
 
-  post({ body, config }: PostProps = postValues): Promise<T> {
+  post({ body, config }: PostProps = postValues): Promise<{ data: T }> {
     return post({ url: `${this.baseUrl}/${this.model}/`, body, config });
   }
 

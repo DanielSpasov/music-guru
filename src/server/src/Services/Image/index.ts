@@ -5,24 +5,21 @@ import {
   ref,
   uploadBytes
 } from 'firebase/storage';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import { FileSchema } from '../../Database/Schemas';
-import { Models } from '../../Database/Types';
-import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
+import { FileSchema } from '../../Validations';
+import { BaseModel, Model } from '../../Types';
+import { schemas } from '../../Schemas';
+import { APIError } from '../../Error';
 
-export default function update({ model }: { model: Exclude<Models, 'users'> }) {
-  return async function (req: Request, res: Response) {
-    const mongo = await connect();
+export default ({ model }: { model: Model }) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const db = mongo.db('models');
-      const collection = db.collection(model);
-      const item = await collection.findOne({ uid: req.params.id });
-      if (!item) {
-        res.status(400).json({ message: 'Invalid UID.' });
-        return;
-      }
+      const [item] = await schemas[model]
+        .aggregate()
+        .match({ uid: req.params.id });
+
+      if (!item) throw new APIError(400, 'Invalid UID.');
 
       if (req?.file) {
         const validatedFile = FileSchema.parse(req?.file);
@@ -31,10 +28,7 @@ export default function update({ model }: { model: Exclude<Models, 'users'> }) {
 
         const regex = /\/([^/]+\.([^/?#]+))(?:\?|$)/;
         const match = item.image.match(regex);
-        if (!match) {
-          res.status(400).json({ message: 'Failed to update Image.' });
-          return;
-        }
+        if (!match) throw new APIError(400, 'Failed to update Image.');
 
         const oldImageRef = ref(getStorage(), decodeURIComponent(match[1]));
         await deleteObject(oldImageRef);
@@ -45,28 +39,21 @@ export default function update({ model }: { model: Exclude<Models, 'users'> }) {
         );
         await uploadBytes(imageRef, validatedFile.buffer);
         const newImageURL = await getDownloadURL(imageRef);
-        const updatedItem = await collection.findOneAndUpdate(
+        const updatedItem = await schemas[model].findOneAndUpdate<BaseModel>(
           { uid: req.params.id },
           { $set: { image: newImageURL } },
           { returnDocument: 'after' }
         );
-        if (!updatedItem) {
-          res.status(400).json({ message: 'Failed to update Image.' });
-          return;
-        }
+        if (!updatedItem) throw new APIError(400, 'Failed to update Image.');
 
-        res.status(200).json({
+        return res.status(200).json({
           image: updatedItem.image,
           message: 'Image updated successfully'
         });
-        return;
       }
 
-      res.status(400).json({ message: 'No image provided.' });
+      throw new APIError(400, 'No image provided.');
     } catch (err) {
-      errorHandler(req, res, err);
-    } finally {
-      await mongo.close();
+      next(err);
     }
   };
-}

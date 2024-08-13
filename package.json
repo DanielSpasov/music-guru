@@ -19,12 +19,11 @@
     "client-lint": "cd src/client && yarn lint",
     "server-lint": "cd src/server && yarn lint",
     "lint": "yarn client-lint && yarn server-lint",
-    "client-tsc": "cd src/client && yarn type-check",
-    "server-tsc": "cd src/server && yarn type-check",
+    "client-tsc": "cd src/client && yarn tsc",
+    "server-tsc": "cd src/server && yarn tsc",
     "tsc": "yarn client-tsc && yarn server-tsc",
     "client-test": "cd src/client && yarn test",
-    "test": "yarn client-test",
-    "pre-commit": "yarn lint && yarn tsc && yarn test"
+    "test": "yarn client-test"
   },
   "homepage": "https://github.com/DanielSpasov/music-guru#readme"
 }

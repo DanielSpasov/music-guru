@@ -1,69 +1,56 @@
-import { Request, Response } from 'express';
-import { Collection } from 'mongodb';
+import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 
-import { ChangePassSchema } from '../../Database/Schemas/User';
-import { DBUser } from '../../Database/Types';
-import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
+import { ChangePassSchema } from '../../Validations/User';
+import { serializers } from '../../Serializers';
+import { APIError } from '../../Error';
+import User from '../../Schemas/User';
 import SendEmail from '../Email';
 
-export async function ChangePassword(req: Request, res: Response) {
-  const mongo = await connect();
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const validated = ChangePassSchema.parse(req.body);
 
     if (validated.new_password !== validated.confirm_new_password) {
-      return res.status(400).json({ message: "Passwords doesn't match." });
+      throw new APIError(400, "Passwords doesn't match.");
     }
 
-    const db = mongo.db('models');
-    const collection: Collection<DBUser> = db.collection('users');
-
-    const user = await collection.findOne({ uid: res.locals.user.uid });
-    if (!user) {
-      return res.status(404).json({ message: 'Invalid User UID.' });
-    }
+    const [user] = await User.aggregate().match({ uid: res.locals.user.uid });
+    if (!user) throw new APIError(404, 'Invalid User UID.');
 
     if (!user.verified) {
-      return res.status(400).json({
-        message:
-          'You need to verify your email before you can change your password.'
-      });
+      throw new APIError(
+        400,
+        'You need to verify your email before you can change your password.'
+      );
     }
 
     const currentPassMatch = await bcrypt.compare(
       validated.current_password,
       user.password
     );
-    if (!currentPassMatch) {
-      return res.status(400).json({ message: 'Wrong password.' });
-    }
+    if (!currentPassMatch) throw new APIError(400, 'Wrong password.');
 
     const newPassMatch = await bcrypt.compare(
       validated.new_password,
       user.password
     );
     if (newPassMatch) {
-      return res
-        .status(400)
-        .json({ message: 'New Password cannot be your old password.' });
+      throw new APIError(400, 'New Password cannot be your old password.');
     }
 
     const saltRounds = Number(process.env.SALT_ROUNDS);
     const salt = await bcrypt.genSalt(saltRounds);
     const newPasswordHash = await bcrypt.hash(validated.new_password, salt);
 
-    await collection.updateOne(
+    await User.updateOne(
       { uid: res.locals.user.uid },
       { $set: { password: newPasswordHash } }
     );
 
-    const items = collection.aggregate([
-      { $match: { uid: res.locals.user.uid } },
-      { $project: { _id: 0, password: 0 } }
-    ]);
-    const [data] = await items.toArray();
+    const [data] = await User.aggregate([{ $project: { _id: 0, password: 0 } }])
+      .match({ uid: res.locals.user.uid })
+      .project({ ...serializers.users?.detailed, _id: 0 });
 
     await SendEmail({
       to: user.email,
@@ -72,9 +59,7 @@ export async function ChangePassword(req: Request, res: Response) {
     });
 
     res.status(200).json({ data });
-  } catch (error) {
-    errorHandler(req, res, error);
-  } finally {
-    await mongo.close();
+  } catch (err) {
+    next(err);
   }
-}
+};

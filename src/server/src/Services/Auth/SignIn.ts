@@ -1,15 +1,12 @@
-import { Request, Response } from 'express';
-import { Collection } from 'mongodb';
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-import { SignInSchema } from '../../Database/Schemas';
-import { DBUser } from '../../Database/Types';
-import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
+import { SignInSchema } from '../../Validations';
+import { APIError } from '../../Error';
+import User from '../../Schemas/User';
 
-export async function SignIn(req: Request, res: Response) {
-  const mongo = await connect();
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     // VALIDATE WITH ZOD
     const { email, password } = SignInSchema.parse({
@@ -18,20 +15,12 @@ export async function SignIn(req: Request, res: Response) {
     });
 
     // CHECK IF THE EMAIL IS REGISTERED
-    const db = mongo.db('models');
-    const collection: Collection<DBUser> = db.collection('users');
-    const user = await collection.findOne({ email });
-    if (!user) {
-      res.status(400).json({ message: 'Wrong Email address or Password.' });
-      return;
-    }
+    const user = await User.findOne({ email });
+    if (!user) throw new APIError(400, 'Wrong Email address or Password.');
 
     // CHECK IF THE PASSWORD IS VALID
     const passMatch = await bcrypt.compare(password, user.password);
-    if (!passMatch) {
-      res.status(400).json({ message: 'Wrong Email address or Password.' });
-      return;
-    }
+    if (!passMatch) throw new APIError(400, 'Wrong Email address or Password.');
 
     // SIGN THE JSON WEB TOKEN
     const token = jwt.sign({ uid: user.uid }, process.env.JWT_SECRET || '');
@@ -48,9 +37,7 @@ export async function SignIn(req: Request, res: Response) {
         uid: user.uid
       }
     });
-  } catch (error) {
-    errorHandler(req, res, error);
-  } finally {
-    await mongo.close();
+  } catch (err) {
+    next(err);
   }
-}
+};

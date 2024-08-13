@@ -1,44 +1,37 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import { ListUser } from '../../Database/Serializers/User';
-import { EditorSchema } from '../../Database/Schemas';
-import { DBUser } from '../../Database/Types/User';
-import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
-import { BaseObject } from './helpers';
+import { EditorSchema } from '../../Validations';
+import { serializers } from '../../Serializers';
+import { BaseModel, Model } from '../../Types';
+import { APIError } from '../../Error';
+import { schemas } from '../../Schemas';
 
-export default async function (req: Request, res: Response) {
-  const mongo = await connect();
-  try {
-    const item = res.locals.item;
-    const editorUID = EditorSchema.parse(req.body.userUID);
+export default ({ model }: { model: Model }) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const item = res.locals.item as BaseModel;
+      const editorUID = EditorSchema.parse(req.body.userUID);
 
-    const db = mongo.db('models');
+      const [data] = await schemas.users
+        .aggregate()
+        .match({ uid: editorUID })
+        .project({ ...serializers.users?.list, _id: 0 });
 
-    const modelCollection = db.collection<BaseObject>(res.locals.collection);
-    const userCollection = db.collection<DBUser>('users');
+      if (!data) {
+        throw new APIError(404, 'User not found.');
+      }
 
-    const editor = await userCollection.findOne({ uid: editorUID });
+      if (item.editors.includes(editorUID)) {
+        throw new APIError(400, 'User is already an editor.');
+      }
 
-    if (!editor) {
-      res.status(404).json({ message: 'User not found.' });
-      return;
+      await schemas[model].updateOne(
+        { uid: item.uid },
+        { $push: { editors: editorUID } }
+      );
+
+      res.status(200).json({ data });
+    } catch (err) {
+      next(err);
     }
-
-    if (item.editors.includes(editorUID)) {
-      res.status(400).json({ message: 'User is already an editor.' });
-      return;
-    }
-
-    await modelCollection.updateOne(
-      { uid: item.uid },
-      { $push: { editors: editorUID } }
-    );
-
-    res.status(200).json({ data: new ListUser(editor) });
-  } catch (err) {
-    errorHandler(req, res, err);
-  } finally {
-    await mongo.close();
-  }
-}
+  };

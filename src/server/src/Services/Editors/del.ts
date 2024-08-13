@@ -1,43 +1,30 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import { EditorSchema } from '../../Database/Schemas';
-import { DBUser, User } from '../../Database/Types';
-import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
-import { BaseObject } from './helpers';
+import { EditorSchema } from '../../Validations';
+import { BaseModel, Model } from '../../Types';
+import { schemas } from '../../Schemas';
+import { APIError } from '../../Error';
 
-export default async function (req: Request, res: Response) {
-  const mongo = await connect();
-  try {
-    const item = res.locals.item;
-    const editorUID = EditorSchema.parse(req.params.editor);
+export default ({ model }: { model: Model }) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const item = res.locals.item as BaseModel;
+      const editorUID = EditorSchema.parse(req.params.editor);
 
-    const db = mongo.db('models');
+      const editor = await schemas.users.findOne({ uid: editorUID });
+      if (!editor) throw new APIError(404, 'User not found.');
 
-    const collection = db.collection<BaseObject>(res.locals.collection);
-    const userCollection = db.collection<DBUser>('users');
+      if (!item.editors.includes(editorUID)) {
+        throw new APIError(400, 'User is not an editor.');
+      }
 
-    const editor = await userCollection.findOne({ uid: editorUID });
-    if (!editor) {
-      res.status(404).json({ message: 'User not found.' });
-      return;
+      await schemas[model].updateOne(
+        { uid: req.params.id },
+        { $pull: { editors: editorUID } }
+      );
+
+      res.status(200).json({ message: 'Editor removed.' });
+    } catch (err) {
+      next(err);
     }
-
-    const editorUIDs = item.editors.map((x: User) => x.uid);
-    if (!editorUIDs.includes(editorUID)) {
-      res.status(400).json({ message: 'User is not an editor.' });
-      return;
-    }
-
-    await collection.updateOne(
-      { uid: req.params.id },
-      { $pull: { editors: editorUID } }
-    );
-
-    res.status(200).json({ message: 'Editor removed.' });
-  } catch (err) {
-    errorHandler(req, res, err);
-  } finally {
-    await mongo.close();
-  }
-}
+  };

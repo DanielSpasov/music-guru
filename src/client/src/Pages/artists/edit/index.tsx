@@ -77,7 +77,7 @@ const EditArtist: FC<EditArtistProps> = ({ data }) => {
         </Fieldset>
 
         <Fieldset title="Socials" foldable>
-          <Input label="Instagram" name="intagram" />
+          <Input label="Instagram" name="instagram" />
           <Input label="X" name="x" />
           <Input label="Facebook" name="facebook" />
           <Input label="Spotify" name="spotify" />

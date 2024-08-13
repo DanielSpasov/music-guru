@@ -1,15 +1,14 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
-import { SignUpSchema } from '../../Database/Schemas';
-import { sendVerificationEmail } from './helpers';
-import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
+import { SignUpSchema } from '../../Validations';
+import { APIError } from '../../Error';
+import User from '../../Schemas/User';
+import SendEmail from '../Email';
 
-export async function SignUp(req: Request, res: Response) {
-  const mongo = await connect();
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     // VALIDATE WITH ZOD
     const defaultUsername = req.body?.email?.split('@')[0];
@@ -21,13 +20,8 @@ export async function SignUp(req: Request, res: Response) {
     });
 
     // CHECK IF THE EMAIL IS ALREADY SIGNED UP
-    const db = mongo.db('models');
-    const collection = db.collection('users');
-    const isUsed = await collection.findOne({ email });
-    if (isUsed) {
-      res.status(400).json({ message: 'This email is alredy signed up.' });
-      return;
-    }
+    const isUsed = await User.findOne({ email });
+    if (isUsed) throw new APIError(400, 'This email is alredy signed up.');
 
     // HASHING THE PASSWORD
     const saltRounds = Number(process.env.SALT_ROUNDS);
@@ -45,12 +39,20 @@ export async function SignUp(req: Request, res: Response) {
       created_at: new Date(),
       favorites: {}
     };
-    await collection.insertOne(data);
+    await User.create(data);
 
     // SIGN THE JSON WEB TOKEN
     const authToken = jwt.sign({ uid }, process.env.JWT_SECRET || '');
 
-    await sendVerificationEmail(data);
+    const expToken = jwt.sign({ id: data.uid }, process.env.JWT_SECRET || '', {
+      expiresIn: '10m'
+    });
+
+    await SendEmail({
+      to: data.email,
+      template: 'VERIFY',
+      data: { expToken, username: data.username }
+    });
 
     res.status(200).json({
       token: authToken,
@@ -64,9 +66,7 @@ export async function SignUp(req: Request, res: Response) {
         uid: data.uid
       }
     });
-  } catch (error) {
-    errorHandler(req, res, error);
-  } finally {
-    await mongo.close();
+  } catch (err) {
+    next(err);
   }
-}
+};

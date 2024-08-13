@@ -1,8 +1,17 @@
-export * from './ResendValidationEmail';
-export * from './ValidateEmail';
-export * from './ValidateToken';
-export * from './ChangeUsername';
-export * from './ChangePassword';
-export * from './SignUp';
-export * from './SignIn';
-export * from './Get';
+import resendValidationEmail from './resendValidationEmail';
+import validateEmail from './validateEmail';
+import validateToken from './validateToken';
+import changeUsername from './changeUsername';
+import changePassword from './changePassword';
+import signUp from './signUp';
+import signIn from './signIn';
+
+export const auth = {
+  resendValidationEmail,
+  validateEmail,
+  validateToken,
+  changeUsername,
+  changePassword,
+  signUp,
+  signIn
+};

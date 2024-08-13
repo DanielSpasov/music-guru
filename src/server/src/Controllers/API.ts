@@ -1,15 +1,15 @@
 import { Router } from 'express';
 
-import UserController from './Models/User';
-import ArtistController from './Models/Artist';
-import SongController from './Models/Song';
-import AlbumController from './Models/Album';
+import ArtistController from './Artist';
+import AlbumController from './Album';
+import SongController from './Song';
+import UserController from './User';
 
 const router = Router();
 
-router.use('/user', UserController);
 router.use('/artist', ArtistController);
-router.use('/song', SongController);
 router.use('/album', AlbumController);
+router.use('/song', SongController);
+router.use('/user', UserController);
 
 export default router;

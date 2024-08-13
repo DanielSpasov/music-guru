@@ -1,28 +1,27 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
-import { sendVerificationEmail } from './helpers';
-import { User } from '../../Database/Types';
-import { errorHandler } from '../../Error';
-import { connect } from '../../Database';
+import { APIError } from '../../Error';
+import User from '../../Schemas/User';
+import SendEmail from '../Email';
 
-export async function ResendValidationEmail(req: Request, res: Response) {
-  const mongo = await connect();
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = mongo.db('models');
-    const collection = db.collection('users');
-    const user = await collection.findOne<User>({ uid: res.locals.user.uid });
+    const [user] = await User.aggregate().match({ uid: res.locals.user.uid });
+    if (!user) throw new APIError(404, 'User not found.');
 
-    if (!user) {
-      res.status(404).json({ message: 'User not found.' });
-      return;
-    }
+    const expToken = jwt.sign({ id: user.uid }, process.env.JWT_SECRET || '', {
+      expiresIn: '10m'
+    });
 
-    await sendVerificationEmail(user);
+    await SendEmail({
+      to: user.email,
+      template: 'VERIFY',
+      data: { expToken, username: user.username }
+    });
 
     res.status(200).json({ message: 'Verification Email Sent.' });
-  } catch (error) {
-    errorHandler(req, res, error);
-  } finally {
-    await mongo.close();
+  } catch (err) {
+    next(err);
   }
-}
+};

@@ -10,7 +10,7 @@
     "dev": "vite",
     "start": "vite",
     "lint": "eslint \"**/*.{ts,tsx}\"",
-    "type-check": "tsc --project tsconfig.json --noEmit",
+    "tsc": "tsc --project tsconfig.json --noEmit",
     "test": "vitest",
     "build": "tsc && vite build",
     "preview": "vite preview"
