@@ -12,7 +12,7 @@ const Header: FC<HeaderProps> = ({ heading, actions = [] }) => {
       data-testid="header"
       className="relative flex justify-between items-center h-16 border-b-[1px] dark:border-b-neutral-700"
     >
-      <h1 className="pl-4" data-testid="header-heading">
+      <h1 className="pl-4 whitespace-nowrap" data-testid="header-heading">
         {heading}
       </h1>
 
