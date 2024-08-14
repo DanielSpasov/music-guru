@@ -40,16 +40,20 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 8000;
 
-app.listen(PORT, async () => {
+(async () => {
   try {
     await connectMongoDB();
+
     connectFirestoreBucket();
-    console.log(
-      '\u001b[1;32m' + `Server running on PORT: ${PORT}` + '\u001b[0m'
+
+    app.listen(PORT, () =>
+      console.log(
+        '\u001b[1;32m' + `Server running on PORT: ${PORT}` + '\u001b[0m'
+      )
     );
   } catch (err) {
     console.error('Failed to start server.');
   }
-});
+})();
 
 export default app;
