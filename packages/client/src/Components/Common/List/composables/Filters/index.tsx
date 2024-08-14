@@ -30,7 +30,7 @@ const Filters: FC<FiltersProps> = ({ config = [], onApply }) => {
   );
 
   return (
-    <div className="flex w-full h-full px-2">
+    <div className="flex w-full h-full px-2" data-testid="list-filters">
       {config.map(filter => (
         <div
           key={filter.key}

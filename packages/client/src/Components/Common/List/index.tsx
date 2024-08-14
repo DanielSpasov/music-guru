@@ -1,5 +1,4 @@
-import { memo, useCallback, useContext, useEffect, useState } from 'react';
-import { AxiosRequestConfig } from 'axios';
+import { memo, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { AuthContext } from '../../../Contexts';
@@ -26,61 +25,38 @@ const List = <T extends BaseModel>({
   const [loading, setLoading] = useState(true);
   const [params, setPrams] = useState({});
 
-  const fetchList = useCallback(
-    async (config: AxiosRequestConfig = {}) => {
+  useEffect(() => {
+    (async () => {
       try {
-        const { data } = await fetchFn(config);
-        return data;
+        if (!uid) return [];
+
+        setLoading(true);
+        const { data } = await Api.users.get({ id: uid });
+
+        if (!data) return;
+        setState(prev => ({ ...prev, favs: data.favorites?.[model] || [] }));
       } catch (err) {
-        toast.error('Failed to fetch items.');
+        toast.error('Failed to fetch favorites.');
+      } finally {
+        setLoading(false);
       }
-    },
-    [fetchFn]
-  );
-
-  const fetchFavs = useCallback(async () => {
-    try {
-      if (!uid) return [];
-      const { data } = await Api.users.get({ id: uid });
-      return data.favorites?.[model] || [];
-    } catch (err) {
-      toast.error('Failed to fetch favorites.');
-    }
-  }, [uid, model]);
-
-  const updateFavs = useCallback(
-    (newFavs: string[]) => setState(prev => ({ ...prev, favs: newFavs })),
-    []
-  );
+    })();
+  }, [model, uid]);
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-
-        const [items, favs] = await Promise.all([fetchList(), fetchFavs()]);
-        if (items && favs) setState({ items, favs });
+        const { data } = await fetchFn({ params });
+        if (!data) return;
+        setState(prev => ({ ...prev, items: data }));
       } catch (err) {
         toast.error('Failed to fetch data.');
       } finally {
         setLoading(false);
       }
     })();
-  }, [fetchList, fetchFavs]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const items = await fetchList({ params });
-        if (items) setState(prev => ({ ...prev, items }));
-      } catch (err) {
-        toast.error('Failed to fetch data.');
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [params, fetchList]);
+  }, [params, fetchFn]);
 
   return (
     <section className="flex flex-col items-center" data-testid="list">
@@ -126,7 +102,9 @@ const List = <T extends BaseModel>({
               key={item.uid}
               model={model}
               favoriteFn={favoriteFn}
-              updateFavs={updateFavs}
+              updateFavs={(newFavs: string[]) => {
+                setState(prev => ({ ...prev, favs: newFavs }));
+              }}
               canFavorite={Boolean(isAuthenticated)}
               isFavorite={state.favs.includes(item.uid)}
             />

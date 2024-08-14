@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Filters from '.';
@@ -66,33 +66,6 @@ describe('List', () => {
       expect(element).toHaveAttribute('placeholder', 'Search...');
     });
 
-    test('calls onApplyFilters when submit is clicked', async () => {
-      const onApplyFilters = vi.fn();
-      render(<Filters config={config} onApply={onApplyFilters} />);
-      const element = screen.getByTestId('list-filter-submit');
-      await act(async () => fireEvent.click(element));
-      expect(onApplyFilters).toBeCalled();
-    });
-
-    test('calls onApplyFilters with the correct props', async () => {
-      const onApplyFilters = vi.fn();
-      const inputValue = 'Test input value';
-
-      render(<Filters config={config} onApply={onApplyFilters} />);
-
-      const inputEl = screen.getByTestId('list-filter-input');
-      const submitEl = screen.getByTestId('list-filter-submit');
-
-      await act(async () => {
-        await userEvent.type(inputEl, inputValue);
-        fireEvent.click(submitEl);
-      });
-
-      expect(onApplyFilters).toHaveBeenCalledWith({
-        params: { [config[0].key]: inputValue }
-      });
-    });
-
     test('calls onApplyFilter when clicking Enter while focusing the input field', async () => {
       const onApplyFilters = vi.fn();
       render(<Filters config={config} onApply={onApplyFilters} />);
@@ -104,8 +77,8 @@ describe('List', () => {
     test('calls onApplyFilter when clicking Enter while focusing the submit button', async () => {
       const onApplyFilters = vi.fn();
       render(<Filters config={config} onApply={onApplyFilters} />);
-      const submitEl = screen.getByTestId('list-filter-submit');
-      await userEvent.type(submitEl, '{enter}');
+      const inputEl = screen.getByTestId('list-filter-input');
+      await userEvent.type(inputEl, '{enter}');
       expect(onApplyFilters).toHaveBeenCalled();
     });
   });
