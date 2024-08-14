@@ -15,9 +15,7 @@ const SignOut = () => {
     navigate('/');
   }, [navigate, dispatch]);
 
-  return (
-    <PageLayout title="Signing Out..." dontSaveRecent hideFooter></PageLayout>
-  );
+  return <PageLayout title="Signing Out..." hideFooter></PageLayout>;
 };
 
 export default SignOut;

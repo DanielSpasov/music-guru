@@ -1,20 +1,12 @@
 import { useLocation } from 'react-router-dom';
 import { FC, memo } from 'react';
 
-import { IArtist, IAlbum, ISong, IRight, IHouse } from '../../../../Icons';
-import useRecentlyViewed from '../../../../../Hooks/useRecentlyViewed';
-import { activeIconColor, iconColor, icons } from './icons';
+import { IArtist, IAlbum, ISong } from '../../../../Icons';
+import { activeIconColor, iconColor } from './icons';
 import { Category, Link } from '../../../../Common';
 import { SidebarProps } from './types';
 
-const Sidebar: FC<SidebarProps> = ({
-  hideResourses,
-  hideNavbar,
-  hideRecent,
-  links
-}) => {
-  const { recentlyViewed } = useRecentlyViewed();
-
+const Sidebar: FC<SidebarProps> = ({ hideResourses, hideNavbar, links }) => {
   const { pathname } = useLocation();
 
   return (
@@ -57,36 +49,6 @@ const Sidebar: FC<SidebarProps> = ({
           >
             Songs
           </Link>
-        </Category>
-      )}
-
-      {!hideRecent && (
-        <Category title="Recently Viewed" data-testid="recently-viewed">
-          {recentlyViewed.map(({ to, name }, i) => {
-            const model = to.split('/')[1];
-
-            const Icon = to === '/' ? IHouse : icons[model] || IRight;
-            const color =
-              to === pathname
-                ? to === '/'
-                  ? activeIconColor['artists']
-                  : activeIconColor[model]
-                : iconColor[model];
-
-            return (
-              <Link
-                key={i}
-                type="dropdown-link"
-                to={to}
-                Icon={Icon}
-                data-testid={`recent-${i}`}
-                isActive={to === pathname}
-                iconColor={color}
-              >
-                {name}
-              </Link>
-            );
-          })}
         </Category>
       )}
 

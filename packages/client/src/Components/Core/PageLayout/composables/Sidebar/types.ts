@@ -2,10 +2,5 @@ import { PageLayoutProps } from '../../types';
 
 export type SidebarProps = Pick<
   PageLayoutProps,
-  'hideNavbar' | 'links' | 'hideResourses' | 'hideRecent'
+  'hideNavbar' | 'links' | 'hideResourses'
 >;
-
-export type RecentItem = {
-  to: string;
-  name: string;
-};
