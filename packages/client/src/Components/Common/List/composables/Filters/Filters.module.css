@@ -1,0 +1,28 @@
+@tailwind components;
+
+@layer components {
+  .filterWrapper {
+    @apply relative flex flex-col justify-center mr-2 h-full;
+
+    & input {
+      @apply outline-none bg-transparent p-2 border-2 rounded-lg truncate;
+      @apply border-neutral-200 dark:border-neutral-700;
+
+      &:hover {
+        @apply border-neutral-300 dark:border-neutral-600;
+      }
+
+      &:focus {
+        @apply border-primary dark:border-primary-dark;
+      }
+
+      &:focus ~ p {
+        @apply text-primary dark:text-primary-dark;
+      }
+    }
+
+    & p {
+      @apply absolute -top-2.5 left-2 px-1 text-neutral-400 bg-neutral-100 dark:bg-neutral-800 font-bold text-sm;
+    }
+  }
+}

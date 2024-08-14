@@ -15,6 +15,10 @@ export type Filter = {
   label: string;
   placeholder?: string;
 };
+export type Sorting = {
+  key: string;
+  label: string;
+};
 
 export type ListProps<T> = {
   fetchFn: (
@@ -23,6 +27,7 @@ export type ListProps<T> = {
   favoriteFn?: FavoriteFn;
   model: CardModel;
   filtersConfig?: Filter[];
+  sortingConfig?: Sorting[];
   skeletonLength?: number;
 };
 

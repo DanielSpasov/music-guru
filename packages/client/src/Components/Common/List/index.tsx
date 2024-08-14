@@ -10,18 +10,21 @@ import { Card } from '../../';
 
 // Composables
 import Filters from './composables/Filters';
+import Sorting from './composables/Sorting';
 
 const List = <T extends BaseModel>({
   model,
   fetchFn,
   favoriteFn,
   filtersConfig = [],
+  sortingConfig = [],
   skeletonLength = 18
 }: ListProps<T>) => {
   const { uid, isAuthenticated } = useContext(AuthContext);
 
   const [state, setState] = useState<ListState<T>>({ items: [], favs: [] });
   const [loading, setLoading] = useState(true);
+  const [params, setPrams] = useState({});
 
   const fetchList = useCallback(
     async (config: AxiosRequestConfig = {}) => {
@@ -45,22 +48,6 @@ const List = <T extends BaseModel>({
     }
   }, [uid, model]);
 
-  const onApplyFilters = useCallback(
-    async (config: AxiosRequestConfig = {}) => {
-      try {
-        setLoading(true);
-
-        const items = await fetchList(config);
-        if (items) setState(prev => ({ ...prev, items }));
-      } catch (err) {
-        toast.error('Failed to apply filters.');
-      } finally {
-        setLoading(false);
-      }
-    },
-    [fetchList]
-  );
-
   const updateFavs = useCallback(
     (newFavs: string[]) => setState(prev => ({ ...prev, favs: newFavs })),
     []
@@ -81,11 +68,37 @@ const List = <T extends BaseModel>({
     })();
   }, [fetchList, fetchFavs]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const items = await fetchList({ params });
+        if (items) setState(prev => ({ ...prev, items }));
+      } catch (err) {
+        toast.error('Failed to fetch data.');
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [params, fetchList]);
+
   return (
     <section className="flex flex-col items-center" data-testid="list">
-      {Boolean(filtersConfig.length) && (
-        <Filters config={filtersConfig} onApplyFilters={onApplyFilters} />
-      )}
+      <article className="flex justify-between items-center w-full mb-4">
+        {Boolean(filtersConfig.length) && (
+          <Filters
+            config={filtersConfig}
+            onApply={({ params }) => setPrams(prev => ({ ...prev, ...params }))}
+          />
+        )}
+
+        {Boolean(sortingConfig.length) && (
+          <Sorting
+            config={sortingConfig}
+            onApply={({ params }) => setPrams(prev => ({ ...prev, ...params }))}
+          />
+        )}
+      </article>
 
       <div
         className="flex flex-wrap w-full items-start justify-start"

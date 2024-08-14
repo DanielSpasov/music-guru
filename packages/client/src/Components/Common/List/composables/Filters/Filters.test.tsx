@@ -1,12 +1,12 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import Filters from './Filters';
+import Filters from '.';
 
 describe('List', () => {
   describe('Rendering', () => {
     test('renders without crashing', () => {
-      render(<Filters config={[]} onApplyFilters={vi.fn()} />);
+      render(<Filters config={[]} onApply={vi.fn()} />);
       const element = screen.getByTestId('list-filters');
       expect(element).toBeInTheDocument();
     });
@@ -23,7 +23,7 @@ describe('List', () => {
         }
       ];
 
-      render(<Filters config={config} onApplyFilters={vi.fn()} />);
+      render(<Filters config={config} onApply={vi.fn()} />);
       const elements = screen.queryAllByTestId('list-filter');
       expect(elements.length).toEqual(config.length);
     });
@@ -38,13 +38,13 @@ describe('List', () => {
     ];
 
     test('renders correct filter label', () => {
-      render(<Filters config={config} onApplyFilters={vi.fn()} />);
+      render(<Filters config={config} onApply={vi.fn()} />);
       const element = screen.getByTestId('list-filter-label');
       expect(element.textContent).toEqual(config[0].label);
     });
 
     test('renders correct input name', () => {
-      render(<Filters config={config} onApplyFilters={vi.fn()} />);
+      render(<Filters config={config} onApply={vi.fn()} />);
       const element = screen.getByTestId('list-filter-input');
       expect(element).toHaveAttribute('name', config[0].key);
     });
@@ -55,20 +55,20 @@ describe('List', () => {
         label: 'Test',
         placeholder: 'Test Placeholder'
       };
-      render(<Filters config={[filter]} onApplyFilters={vi.fn()} />);
+      render(<Filters config={[filter]} onApply={vi.fn()} />);
       const element = screen.getByTestId('list-filter-input');
       expect(element).toHaveAttribute('placeholder', filter.placeholder);
     });
 
     test('renders default input placeholder if no placeholder is provided', () => {
-      render(<Filters config={config} onApplyFilters={vi.fn()} />);
+      render(<Filters config={config} onApply={vi.fn()} />);
       const element = screen.getByTestId('list-filter-input');
       expect(element).toHaveAttribute('placeholder', 'Search...');
     });
 
     test('calls onApplyFilters when submit is clicked', async () => {
       const onApplyFilters = vi.fn();
-      render(<Filters config={config} onApplyFilters={onApplyFilters} />);
+      render(<Filters config={config} onApply={onApplyFilters} />);
       const element = screen.getByTestId('list-filter-submit');
       await act(async () => fireEvent.click(element));
       expect(onApplyFilters).toBeCalled();
@@ -78,7 +78,7 @@ describe('List', () => {
       const onApplyFilters = vi.fn();
       const inputValue = 'Test input value';
 
-      render(<Filters config={config} onApplyFilters={onApplyFilters} />);
+      render(<Filters config={config} onApply={onApplyFilters} />);
 
       const inputEl = screen.getByTestId('list-filter-input');
       const submitEl = screen.getByTestId('list-filter-submit');
@@ -95,7 +95,7 @@ describe('List', () => {
 
     test('calls onApplyFilter when clicking Enter while focusing the input field', async () => {
       const onApplyFilters = vi.fn();
-      render(<Filters config={config} onApplyFilters={onApplyFilters} />);
+      render(<Filters config={config} onApply={onApplyFilters} />);
       const inputEl = screen.getByTestId('list-filter-input');
       await userEvent.type(inputEl, '{enter}');
       expect(onApplyFilters).toHaveBeenCalled();
@@ -103,7 +103,7 @@ describe('List', () => {
 
     test('calls onApplyFilter when clicking Enter while focusing the submit button', async () => {
       const onApplyFilters = vi.fn();
-      render(<Filters config={config} onApplyFilters={onApplyFilters} />);
+      render(<Filters config={config} onApply={onApplyFilters} />);
       const submitEl = screen.getByTestId('list-filter-submit');
       await userEvent.type(submitEl, '{enter}');
       expect(onApplyFilters).toHaveBeenCalled();

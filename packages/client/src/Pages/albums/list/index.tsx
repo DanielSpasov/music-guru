@@ -34,12 +34,19 @@ const Albums = () => {
         filtersConfig={[
           {
             key: 'name',
-            label: 'Name'
+            label: 'Name',
+            placeholder: 'Album name...'
           },
           {
             key: 'artist.name',
-            label: 'Artist'
+            label: 'Artist',
+            placeholder: 'Artist name...'
           }
+        ]}
+        sortingConfig={[
+          { key: 'created_at', label: 'Latest' },
+          { key: 'name', label: 'Name' },
+          { key: 'release_date', label: 'Release Date' }
         ]}
         fetchFn={config => Api.albums.fetch({ config })}
         favoriteFn={uid => Api.albums.favorite({ uid })}

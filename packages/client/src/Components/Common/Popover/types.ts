@@ -5,4 +5,5 @@ export type PopoverProps = {
   label?: ReactNode;
   children?: ReactNode;
   className?: string;
+  z?: string;
 };

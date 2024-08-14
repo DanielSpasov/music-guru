@@ -2,9 +2,9 @@ import { FC } from 'react';
 
 import { PopoverProps } from './types';
 
-const Popover: FC<PopoverProps> = ({ open, label, children, className }) => {
+const Popover: FC<PopoverProps> = ({ open, label, children, className, z }) => {
   return (
-    <div className="relative z-50" data-testid="popover">
+    <div className={`relative ${z ?? 'z-50'}`} data-testid="popover">
       {label && (
         <div className="p-2" data-testid="popover-label">
           {label}
