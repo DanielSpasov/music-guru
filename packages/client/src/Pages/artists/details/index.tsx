@@ -7,6 +7,8 @@ import { AuthContext } from '../../../Contexts/Auth';
 import { Artist } from '../../../Types';
 import Api from '../../../Api';
 
+import css from './Details.module.css';
+
 export const defaultArtist: Artist = {
   created_at: new Date(),
   created_by: '',
@@ -86,8 +88,8 @@ const ArtistDetails = () => {
         }
       ]}
     >
-      <section className="flex mt-5">
-        <article className="flex flex-col items-center w-1/3 px-4">
+      <section className={css.wrapper}>
+        <article className={css.informationWrapper}>
           <div className="flex flex-col items-center">
             <Image
               src={artist.image}
@@ -100,14 +102,10 @@ const ArtistDetails = () => {
             <h2 className="py-2">{artist.name}</h2>
           </div>
 
-          {artist.about && (
-            <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
-              {artist.about}
-            </span>
-          )}
+          {artist.about && <span className={css.about}>{artist.about}</span>}
         </article>
 
-        <section className="flex flex-col w-2/3 gap-5">
+        <section className={css.discographyWrapper}>
           <article>
             <h2>Albums</h2>
             <List
