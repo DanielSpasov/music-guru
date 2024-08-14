@@ -64,12 +64,28 @@ const AlbumDetails = () => {
   }, [id]);
 
   const fetchArtist = useCallback(
-    () => Promise.resolve({ data: [album.artist] }),
+    () =>
+      Promise.resolve({
+        data: [album.artist],
+        pagination: {
+          totalItems: 1,
+          totalPages: 1,
+          currentPage: 0
+        }
+      }),
     [album]
   );
 
   const fetchSongs = useCallback(
-    () => Promise.resolve({ data: album.songs || [] }),
+    () =>
+      Promise.resolve({
+        data: album.songs || [],
+        pagination: {
+          totalItems: album.songs.length,
+          totalPages: 1,
+          currentPage: 0
+        }
+      }),
     [album]
   );
 
