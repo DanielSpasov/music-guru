@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 import { List, PageLayout, Image, IPen, Socials } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
+import { getSidebarLinks } from './sidebarLinks';
 import { Artist } from '../../../Types';
 import Api from '../../../Api';
 
@@ -59,16 +60,23 @@ const ArtistDetails = () => {
 
   const fetchAlbums = useCallback(
     () =>
-      Api.albums.fetch({ config: { params: { 'artist.uid': artist.uid } } }),
+      Api.albums.fetch({
+        config: { params: { 'artist.uid': artist.uid, limit: 5 } }
+      }),
     [artist.uid]
   );
   const fetchSongs = useCallback(
-    () => Api.songs.fetch({ config: { params: { 'artist.uid': artist.uid } } }),
+    () =>
+      Api.songs.fetch({
+        config: { params: { 'artist.uid': artist.uid, limit: 10 } }
+      }),
     [artist.uid]
   );
   const fetchFeatures = useCallback(
     () =>
-      Api.songs.fetch({ config: { params: { 'features.uid': artist.uid } } }),
+      Api.songs.fetch({
+        config: { params: { 'features.uid': artist.uid, limit: 10 } }
+      }),
     [artist.uid]
   );
 
@@ -78,6 +86,7 @@ const ArtistDetails = () => {
       heading={artist.name}
       loading={loading}
       footerContent={<Socials links={artist.links} />}
+      links={getSidebarLinks(id)}
       actions={[
         {
           type: 'icon',
@@ -107,7 +116,7 @@ const ArtistDetails = () => {
 
         <section className={css.discographyWrapper}>
           <article>
-            <h2>Albums</h2>
+            <h2>Discography</h2>
             <List
               favoriteFn={uid => Api.albums.favorite({ uid })}
               fetchFn={fetchAlbums}
