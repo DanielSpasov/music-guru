@@ -100,9 +100,9 @@ const Search: FC<SearchProps> = ({ models }) => {
                 className="w-full"
               >
                 <header className="flex items-center gap-2">
-                  <Icon className="w-6 h-6" />
+                  <Icon className="w-6 h-6 [&>path]:fill-black dark:[&>path]:fill-white" />
                   <h3 className="font-semibold">{capitalize(model)}</h3>
-                  <div className="bg-neutral-700 h-[1px] w-full" />
+                  <div className="bg-neutral-300 dark:bg-neutral-700 h-[1px] w-full" />
                 </header>
 
                 <article>
