@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { validationSchemas } from '../../Validations';
+import { editValidationSchemas } from '../../Validations';
 import { schemas } from '../../Schemas';
 import { Model } from '../../Types';
 
@@ -11,7 +11,7 @@ export default ({ model }: { model: Model }) =>
         .aggregate()
         .match({ uid: req.params.id });
 
-      const validationSchema = validationSchemas[model];
+      const validationSchema = editValidationSchemas[model];
       const validatedData = validationSchema.parse(req.body);
 
       await schemas[model].findOneAndUpdate(

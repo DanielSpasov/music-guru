@@ -9,3 +9,5 @@ export const ArtistSchema = z.object({
     .refine(val => val.filter(item => item.url !== null))
     .default([])
 });
+
+export const EditArtistSchema = ArtistSchema.omit({ favorites: true });

@@ -16,3 +16,5 @@ export const AlbumSchema = BaseAlbumSchema.extend({
   songs: z.array(z.string().uuid()).optional().default([]),
   type: z.string().uuid()
 });
+
+export const EditAlbumSchema = AlbumSchema.omit({ favorites: true });
