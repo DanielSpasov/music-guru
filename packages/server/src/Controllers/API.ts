@@ -12,8 +12,4 @@ router.use('/album', AlbumController);
 router.use('/song', SongController);
 router.use('/user', UserController);
 
-router.use('/test', (req, res) => {
-  res.status(200).json({ message: 'Success' });
-});
-
 export default router;
