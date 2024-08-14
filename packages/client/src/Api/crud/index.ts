@@ -3,6 +3,7 @@ import {
   DelProps,
   FetchProps,
   GetProps,
+  Pagination,
   PatchProps,
   PostProps,
   PutProps
@@ -30,7 +31,10 @@ export default class Crud<T, K> extends CrudBase {
     return get({ url: `${this.baseUrl}/${this.model}/${id}/`, config });
   }
 
-  fetch({ config }: FetchProps = fetchValues): Promise<{ data: K[] }> {
+  fetch({ config }: FetchProps = fetchValues): Promise<{
+    data: K[];
+    pagination: Pagination;
+  }> {
     return get({ url: `${this.baseUrl}/${this.model}/`, config });
   }
 

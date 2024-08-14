@@ -32,3 +32,9 @@ export type PutProps = {
   body: Body;
   config?: AxiosRequestConfig;
 };
+
+export type Pagination = {
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+};

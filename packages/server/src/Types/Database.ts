@@ -5,4 +5,5 @@ export type QueryProps = {
   serializer?: Serializer;
   limit?: string;
   sort?: string;
+  page?: string;
 } & Record<string, string>;
