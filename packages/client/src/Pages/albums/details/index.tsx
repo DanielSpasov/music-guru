@@ -137,19 +137,21 @@ const AlbumDetails = () => {
           <div>
             <h3 className="text-center">Artist</h3>
             <List
-              fetchFn={fetchArtist}
               favoriteFn={uid => Api.artists.favorite({ uid })}
-              model="artists"
+              fetchFn={fetchArtist}
               skeletonLength={1}
+              model="artists"
+              hideSearch
             />
           </div>
           <div>
             <h3 className="text-center">Songs</h3>
             <List
-              fetchFn={fetchSongs}
-              model="songs"
-              skeletonLength={3}
               favoriteFn={uid => Api.songs.favorite({ uid })}
+              fetchFn={fetchSongs}
+              skeletonLength={3}
+              model="songs"
+              hideSearch
             />
           </div>
         </div>

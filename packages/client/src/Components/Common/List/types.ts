@@ -10,11 +10,6 @@ export type ListState<T> = {
   favs: string[];
 };
 
-export type Filter = {
-  key: string;
-  label: string;
-  placeholder?: string;
-};
 export type Sorting = {
   key: string;
   label: string;
@@ -26,9 +21,13 @@ export type ListProps<T> = {
   ) => Promise<{ data: T[]; pagination: Pagination }>;
   favoriteFn?: FavoriteFn;
   model: CardModel;
-  filtersConfig?: Filter[];
-  sortingConfig?: Sorting[];
   skeletonLength?: number;
+  // Sorting props
+  sortingConfig?: Sorting[];
+  // Search Props
+  searchKey?: string;
+  hideSearch?: boolean;
+  searchPlaceholder?: string;
 };
 
 export type SkeletonProps = {

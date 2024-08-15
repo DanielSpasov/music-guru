@@ -31,18 +31,6 @@ const Albums = () => {
       ]}
     >
       <List
-        filtersConfig={[
-          {
-            key: 'name',
-            label: 'Name',
-            placeholder: 'Album name...'
-          },
-          {
-            key: 'artist.name',
-            label: 'Artist',
-            placeholder: 'Artist name...'
-          }
-        ]}
         sortingConfig={[
           { key: 'created_at', label: 'Latest' },
           { key: 'name', label: 'Name' },

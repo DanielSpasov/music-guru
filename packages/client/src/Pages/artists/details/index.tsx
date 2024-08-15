@@ -121,6 +121,7 @@ const ArtistDetails = () => {
               favoriteFn={uid => Api.albums.favorite({ uid })}
               fetchFn={fetchAlbums}
               model="albums"
+              hideSearch
             />
           </article>
 
@@ -130,6 +131,7 @@ const ArtistDetails = () => {
               favoriteFn={uid => Api.songs.favorite({ uid })}
               fetchFn={fetchSongs}
               model="songs"
+              hideSearch
             />
           </article>
 
@@ -139,6 +141,7 @@ const ArtistDetails = () => {
               favoriteFn={uid => Api.songs.favorite({ uid })}
               fetchFn={fetchFeatures}
               model="songs"
+              hideSearch
             />
           </article>
         </section>

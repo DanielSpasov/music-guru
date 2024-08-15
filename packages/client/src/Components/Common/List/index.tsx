@@ -8,14 +8,17 @@ import Api from '../../../Api';
 import { Card } from '../../';
 
 // Composables
-import Filters from './composables/Filters';
 import Sorting from './composables/Sorting';
+import Search from './composables/Search';
+import { useDebounce } from '../../../Hooks';
 
 const List = <T extends BaseModel>({
   model,
   fetchFn,
   favoriteFn,
-  filtersConfig = [],
+  searchKey = 'name',
+  searchPlaceholder,
+  hideSearch = false,
   sortingConfig = [],
   skeletonLength = 18
 }: ListProps<T>) => {
@@ -24,6 +27,9 @@ const List = <T extends BaseModel>({
   const [state, setState] = useState<ListState<T>>({ items: [], favs: [] });
   const [loading, setLoading] = useState(true);
   const [params, setPrams] = useState({});
+
+  const [value, setValue] = useState('');
+  const search = useDebounce({ value, delay: 500 });
 
   useEffect(() => {
     (async () => {
@@ -47,7 +53,12 @@ const List = <T extends BaseModel>({
     (async () => {
       try {
         setLoading(true);
-        const { data } = await fetchFn({ params });
+        const { data } = await fetchFn({
+          params: {
+            ...params,
+            [searchKey]: search
+          }
+        });
         if (!data) return;
         setState(prev => ({ ...prev, items: data }));
       } catch (err) {
@@ -56,15 +67,15 @@ const List = <T extends BaseModel>({
         setLoading(false);
       }
     })();
-  }, [params, fetchFn]);
+  }, [params, search, searchKey, fetchFn]);
 
   return (
     <section className="flex flex-col items-center" data-testid="list">
       <article className="flex justify-between items-center w-full mb-4">
-        {Boolean(filtersConfig.length) && (
-          <Filters
-            config={filtersConfig}
-            onApply={({ params }) => setPrams(prev => ({ ...prev, ...params }))}
+        {!hideSearch && (
+          <Search
+            setValue={setValue}
+            placeholder={searchPlaceholder ?? `Search ${model}...`}
           />
         )}
 
