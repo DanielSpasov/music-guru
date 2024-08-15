@@ -30,7 +30,6 @@ const MFA = () => {
     <PageLayout
       title="MFA"
       heading="Multi Factor Authentication"
-      hideRecent
       hideFooter
       links={sidebarLinks}
     >

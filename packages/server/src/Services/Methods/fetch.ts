@@ -13,17 +13,32 @@ export default ({ model }: { model: Model }) =>
         serializer = 'list',
         limit = '25',
         sort = 'created_at',
+        page = '1',
         ...query
       } = req.query as QueryProps;
 
-      const data = await schemas[model]
-        .aggregate(pipelines[model])
-        .match(useFilters(query))
-        .sort(useSorting(sort))
-        .project({ ...serializers?.[model]?.[serializer], _id: 0 })
-        .limit(Number(limit));
+      const filters = useFilters(query);
+      const sorting = useSorting(sort);
 
-      res.status(200).json({ data });
+      const [totalItems, data] = await Promise.all([
+        schemas[model].countDocuments(filters),
+        schemas[model]
+          .aggregate(pipelines[model])
+          .match(filters)
+          .sort(sorting)
+          .skip((Number(page) - 1) * Number(limit))
+          .limit(Number(limit))
+          .project({ ...serializers?.[model]?.[serializer], _id: 0 })
+      ]);
+
+      res.status(200).json({
+        data,
+        pagination: {
+          totalItems,
+          totalPages: Math.ceil(totalItems / Number(limit)),
+          currentPage: Number(page)
+        }
+      });
     } catch (err) {
       next(err);
     }

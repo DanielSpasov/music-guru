@@ -7,7 +7,7 @@ import css from './Socials.module.css';
 
 const Socials: FC<SocialsProps> = ({ links }) => {
   return (
-    <div className="flex justify-center gap-4">
+    <div className="flex justify-center gap-4 p-4">
       {links.map((link, i) => {
         const Icon = icons[link.name];
         return (

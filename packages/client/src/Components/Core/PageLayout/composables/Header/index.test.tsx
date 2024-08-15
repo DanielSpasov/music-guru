@@ -1,4 +1,4 @@
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, render, fireEvent, act } from '@testing-library/react';
 import { FC } from 'react';
 
 import { SVGProps } from '../../../../Common/SVG/helpers';
@@ -82,7 +82,7 @@ describe('Header', () => {
     expect(actionsEl.children.length).toEqual(4);
   });
 
-  test('renders correct button actions', () => {
+  test('renders correct button actions', async () => {
     render(<Header actions={btnActions} />);
 
     const headerEl = screen.getByTestId('header');
@@ -93,19 +93,23 @@ describe('Header', () => {
 
     const actionOneEl = screen.getByTestId('header-actions-0');
     expect(actionOneEl).toBeInTheDocument();
-    fireEvent.click(actionOneEl);
-    expect(btnActions[0].onClick).toBeCalled();
+    await act(async () => {
+      fireEvent.click(actionOneEl);
+      expect(btnActions[0].onClick).toBeCalled();
+    });
 
     const actionTwoEl = screen.getByTestId('header-actions-1');
     expect(actionTwoEl).toBeInTheDocument();
-    fireEvent.click(actionTwoEl);
-    expect(btnActions[1].onClick).not.toBeCalled();
+    await act(async () => {
+      fireEvent.click(actionTwoEl);
+      expect(btnActions[1].onClick).not.toBeCalled();
+    });
 
     const actionThreeEl = screen.queryByTestId('header-actions-2');
     expect(actionThreeEl).not.toBeInTheDocument();
   });
 
-  test('renders correct icon actions', () => {
+  test('renders correct icon actions', async () => {
     render(<Header actions={iconActions} />);
 
     const headerEl = screen.getByTestId('header');
@@ -116,13 +120,17 @@ describe('Header', () => {
 
     const actionOneEl = screen.getByTestId('header-actions-0');
     expect(actionOneEl).toBeInTheDocument();
-    fireEvent.click(actionOneEl);
-    expect(iconActions[0].onClick).toBeCalled();
+    await act(async () => {
+      fireEvent.click(actionOneEl);
+      expect(btnActions[0].onClick).toBeCalled();
+    });
 
     const actionTwoEl = screen.getByTestId('header-actions-1');
     expect(actionTwoEl).toBeInTheDocument();
-    fireEvent.click(actionTwoEl);
-    expect(iconActions[1].onClick).not.toBeCalled();
+    await act(async () => {
+      fireEvent.click(actionTwoEl);
+      expect(iconActions[1].onClick).not.toBeCalled();
+    });
 
     const actionThreeEl = screen.queryByTestId('header-actions-2');
     expect(actionThreeEl).not.toBeInTheDocument();

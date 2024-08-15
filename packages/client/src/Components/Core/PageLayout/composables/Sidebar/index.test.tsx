@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { LinkGroup } from '../../types';
 import Sidebar from '.';
-import { RecentItem } from './types';
 
 describe('Sidebar', () => {
   test('renders without crashing', () => {
@@ -20,9 +19,6 @@ describe('Sidebar', () => {
     const resourcesEl = screen.getByTestId('resources');
     expect(resourcesEl).toBeInTheDocument();
 
-    const recentEl = screen.getByTestId('recently-viewed');
-    expect(recentEl).toBeInTheDocument();
-
     const linksEl = screen.queryByTestId('links-0');
     expect(linksEl).not.toBeInTheDocument();
   });
@@ -38,7 +34,7 @@ describe('Sidebar', () => {
 
     render(
       <MemoryRouter>
-        <Sidebar hideNavbar hideRecent hideResourses links={links} />
+        <Sidebar hideNavbar hideResourses links={links} />
       </MemoryRouter>
     );
 
@@ -49,28 +45,7 @@ describe('Sidebar', () => {
     const resourcesEl = screen.queryByTestId('resources');
     expect(resourcesEl).not.toBeInTheDocument();
 
-    const recentEl = screen.queryByTestId('recently-viewed');
-    expect(recentEl).not.toBeInTheDocument();
-
     const linksEl = screen.queryByTestId('links-0');
     expect(linksEl).toBeInTheDocument();
-  });
-
-  test('renders recently viewed items', () => {
-    const recent: RecentItem[] = [{ name: 'Test', to: '/test' }];
-
-    localStorage.setItem('recently_viewed', JSON.stringify(recent));
-
-    render(
-      <MemoryRouter>
-        <Sidebar />
-      </MemoryRouter>
-    );
-
-    const sidebarEl = screen.getByTestId('sidebar');
-    expect(sidebarEl).toBeInTheDocument();
-
-    const recentEl = screen.getByTestId('recently-viewed');
-    expect(recentEl.children.length).toEqual(recent.length + 1); // + 1 Because of the title
   });
 });

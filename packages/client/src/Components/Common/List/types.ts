@@ -1,6 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 
 import { FavoriteFn } from '../../../Hooks/useFavorite/types';
+import { Pagination } from '../../../Api/crud/types';
 import { Model } from '../../../Api/types';
 import { CardModel } from '../Card/types';
 
@@ -9,18 +10,24 @@ export type ListState<T> = {
   favs: string[];
 };
 
-export type Filter = {
+export type Sorting = {
   key: string;
   label: string;
-  placeholder?: string;
 };
 
 export type ListProps<T> = {
-  fetchFn: (config?: AxiosRequestConfig) => Promise<{ data: T[] }>;
+  fetchFn: (
+    config?: AxiosRequestConfig
+  ) => Promise<{ data: T[]; pagination: Pagination }>;
   favoriteFn?: FavoriteFn;
   model: CardModel;
-  filtersConfig?: Filter[];
   skeletonLength?: number;
+  // Sorting props
+  sortingConfig?: Sorting[];
+  // Search Props
+  searchKey?: string;
+  hideSearch?: boolean;
+  searchPlaceholder?: string;
 };
 
 export type SkeletonProps = {

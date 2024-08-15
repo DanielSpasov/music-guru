@@ -45,3 +45,5 @@ export { IGoogle } from './IGoogle';
 export { IEmail } from './IEmail';
 export { IPhone } from './IPhone';
 export { IKey } from './IKey';
+export { ISortAsc } from './ISortAsc';
+export { ISortDesc } from './ISortDesc';

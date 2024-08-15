@@ -1,0 +1,32 @@
+@tailwind components;
+
+@layer components {
+  .wrapper {
+    @apply flex flex-col gap-4 mt-5;
+
+    /* Responsiveness */
+    @apply xl:flex-row;
+  }
+
+  .informationWrapper {
+    @apply flex flex-row items-start w-full px-4;
+
+    /* Responsiveness */
+    @apply xl:flex-col xl:w-1/3 xl:items-center;
+  }
+
+  .about {
+    @apply ml-3 p-3 w-full border-[1px] border-neutral-200 shadow-md;
+    @apply dark:border-neutral-700 dark:shadow-black rounded-md;
+
+    /* Responsiveness */
+    @apply xl:mt-3;
+  }
+
+  .discographyWrapper {
+    @apply flex flex-col w-full gap-5;
+
+    /* Responsiveness */
+    @apply xl:w-2/3;
+  }
+}

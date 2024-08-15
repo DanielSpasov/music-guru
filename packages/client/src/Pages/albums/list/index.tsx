@@ -31,15 +31,10 @@ const Albums = () => {
       ]}
     >
       <List
-        filtersConfig={[
-          {
-            key: 'name',
-            label: 'Name'
-          },
-          {
-            key: 'artist.name',
-            label: 'Artist'
-          }
+        sortingConfig={[
+          { key: 'created_at', label: 'Latest' },
+          { key: 'name', label: 'Name' },
+          { key: 'release_date', label: 'Release Date' }
         ]}
         fetchFn={config => Api.albums.fetch({ config })}
         favoriteFn={uid => Api.albums.favorite({ uid })}

@@ -36,4 +36,7 @@ export const SongSchema = BaseSongSchema.extend({
   editors: z.array(EditorSchema).optional().default([])
 });
 
-export const PatchSongSchema = BaseSongSchema.omit({ image: true });
+export const EditSongSchema = BaseSongSchema.omit({
+  image: true,
+  favorites: true
+});

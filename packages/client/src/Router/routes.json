@@ -32,6 +32,26 @@
             "path": "edit",
             "componentName": "ArtistsEdit",
             "protection": "editor"
+          },
+          {
+            "path": "albums",
+            "componentName": "ArtistsAlbums",
+            "protection": "none"
+          },
+          {
+            "path": "mixtapes",
+            "componentName": "ArtistsMixtapes",
+            "protection": "none"
+          },
+          {
+            "path": "songs",
+            "componentName": "ArtistsSongs",
+            "protection": "none"
+          },
+          {
+            "path": "features",
+            "componentName": "ArtistsFeatures",
+            "protection": "none"
           }
         ]
       }

@@ -52,6 +52,7 @@ const Navbar = () => {
           open={open}
           label={
             <IHamburger
+              className="m-2"
               data-testid="navbar-user-menu-icon"
               onClick={() => setOpen(prev => !prev)}
             />

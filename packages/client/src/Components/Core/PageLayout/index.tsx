@@ -1,6 +1,5 @@
 import { FC, useEffect } from 'react';
 
-import useRecentlyViewed from '../../../Hooks/useRecentlyViewed';
 import { PageLayoutProps } from './types';
 import { Loader } from '../../';
 
@@ -16,14 +15,12 @@ const PageLayout: FC<PageLayoutProps> = ({
   heading,
   children,
   loading = false,
-  dontSaveRecent = false,
   // Navbar
   hideNavbar = false,
   // Header
   hideHeader = false,
   actions = [],
   // Sidebar
-  hideRecent = false,
   hideSidebar = false,
   hideResourses = false,
   links = [],
@@ -31,15 +28,9 @@ const PageLayout: FC<PageLayoutProps> = ({
   hideFooter = false,
   footerContent
 }) => {
-  const { addCurrent } = useRecentlyViewed();
-
   useEffect(() => {
     document.title = loading ? 'Loading...' : title;
   }, [title, loading]);
-
-  useEffect(() => {
-    if (!loading && title && !dontSaveRecent) addCurrent();
-  }, [title, loading, dontSaveRecent, addCurrent]);
 
   return (
     <div data-testid="page" className="h-screen grid grid-rows-[auto_1fr]">
@@ -53,7 +44,6 @@ const PageLayout: FC<PageLayoutProps> = ({
           <Sidebar
             hideResourses={hideResourses}
             hideNavbar={hideNavbar}
-            hideRecent={hideRecent}
             links={links}
           />
         )}

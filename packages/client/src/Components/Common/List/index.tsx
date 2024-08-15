@@ -1,91 +1,91 @@
-import { memo, useCallback, useContext, useEffect, useState } from 'react';
-import { AxiosRequestConfig } from 'axios';
+import { memo, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { AuthContext } from '../../../Contexts';
 import { ListProps, ListState } from './types';
+import { useDebounce } from '../../../Hooks';
 import { BaseModel } from '../../../Types';
 import Api from '../../../Api';
 import { Card } from '../../';
 
 // Composables
-import Filters from './composables/Filters';
+import Sorting from './composables/Sorting';
+import Search from './composables/Search';
 
 const List = <T extends BaseModel>({
   model,
   fetchFn,
   favoriteFn,
-  filtersConfig = [],
-  skeletonLength = 18
+  skeletonLength = 18,
+  // Sorting
+  sortingConfig = [],
+  // Search
+  searchPlaceholder,
+  searchKey = 'name',
+  hideSearch = false
 }: ListProps<T>) => {
   const { uid, isAuthenticated } = useContext(AuthContext);
 
   const [state, setState] = useState<ListState<T>>({ items: [], favs: [] });
   const [loading, setLoading] = useState(true);
 
-  const fetchList = useCallback(
-    async (config: AxiosRequestConfig = {}) => {
-      try {
-        const { data } = await fetchFn(config);
-        return data;
-      } catch (err) {
-        toast.error('Failed to fetch items.');
-      }
-    },
-    [fetchFn]
-  );
+  const [search, setSearch] = useState('');
+  const searchValue = useDebounce({ value: search, delay: 500 });
 
-  const fetchFavs = useCallback(async () => {
-    try {
-      if (!uid) return [];
-      const { data } = await Api.users.get({ id: uid });
-      return data.favorites?.[model] || [];
-    } catch (err) {
-      toast.error('Failed to fetch favorites.');
-    }
-  }, [uid, model]);
+  const [sorting, setSorting] = useState('-created_at');
 
-  const onApplyFilters = useCallback(
-    async (config: AxiosRequestConfig = {}) => {
+  useEffect(() => {
+    (async () => {
       try {
+        if (!uid) return [];
+
         setLoading(true);
+        const { data } = await Api.users.get({ id: uid });
 
-        const items = await fetchList(config);
-        if (items) setState(prev => ({ ...prev, items }));
+        if (!data) return;
+        setState(prev => ({ ...prev, favs: data.favorites?.[model] || [] }));
       } catch (err) {
-        toast.error('Failed to apply filters.');
+        toast.error('Failed to fetch favorites.');
       } finally {
         setLoading(false);
       }
-    },
-    [fetchList]
-  );
-
-  const updateFavs = useCallback(
-    (newFavs: string[]) => setState(prev => ({ ...prev, favs: newFavs })),
-    []
-  );
+    })();
+  }, [model, uid]);
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-
-        const [items, favs] = await Promise.all([fetchList(), fetchFavs()]);
-        if (items && favs) setState({ items, favs });
+        const { data } = await fetchFn({
+          params: {
+            sort: sorting,
+            [searchKey]: searchValue
+          }
+        });
+        if (!data) return;
+        setState(prev => ({ ...prev, items: data }));
       } catch (err) {
         toast.error('Failed to fetch data.');
       } finally {
         setLoading(false);
       }
     })();
-  }, [fetchList, fetchFavs]);
+  }, [sorting, searchValue, searchKey, fetchFn]);
 
   return (
     <section className="flex flex-col items-center" data-testid="list">
-      {Boolean(filtersConfig.length) && (
-        <Filters config={filtersConfig} onApplyFilters={onApplyFilters} />
-      )}
+      <article className="flex justify-between items-center w-full mb-4">
+        {!hideSearch && (
+          <Search
+            setValue={setSearch}
+            placeholder={searchPlaceholder ?? `Search ${model}...`}
+          />
+        )}
+
+        {Boolean(sortingConfig.length) && (
+          <Sorting config={sortingConfig} setValue={setSorting} />
+        )}
+      </article>
 
       <div
         className="flex flex-wrap w-full items-start justify-start"
@@ -113,7 +113,9 @@ const List = <T extends BaseModel>({
               key={item.uid}
               model={model}
               favoriteFn={favoriteFn}
-              updateFavs={updateFavs}
+              updateFavs={(newFavs: string[]) => {
+                setState(prev => ({ ...prev, favs: newFavs }));
+              }}
               canFavorite={Boolean(isAuthenticated)}
               isFavorite={state.favs.includes(item.uid)}
             />

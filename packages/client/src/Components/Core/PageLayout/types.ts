@@ -42,7 +42,6 @@ export type PageLayoutProps = {
   heading?: string;
   loading?: boolean;
   children?: ReactNode;
-  dontSaveRecent?: boolean;
   // Navbar
   hideNavbar?: boolean;
   // Header
@@ -51,7 +50,6 @@ export type PageLayoutProps = {
   // Sidebar
   hideResourses?: boolean;
   hideSidebar?: boolean;
-  hideRecent?: boolean;
   links?: LinkGroup[];
   // Footer
   hideFooter?: boolean;
