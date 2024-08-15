@@ -1,8 +1,8 @@
-import { AxiosRequestConfig } from 'axios';
+import { Dispatch, SetStateAction } from 'react';
 
 import { Sorting } from '../../types';
 
 export type SortingProps = {
   config: Sorting[];
-  onApply: (config: AxiosRequestConfig) => void;
+  setValue: Dispatch<SetStateAction<string>>;
 };

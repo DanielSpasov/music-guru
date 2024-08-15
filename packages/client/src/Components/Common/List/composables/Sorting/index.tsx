@@ -1,63 +1,91 @@
 import { FC, memo, useCallback, useState } from 'react';
 
 import { Sorting as ISorting } from '../../types';
-import { ICheck, IDown, IUp } from '../../../..';
+import { ISortAsc, ISortDesc } from '../../../..';
 import { SortingProps } from './types';
 import Popover from '../../../Popover';
 
-import css from './Sorting.module.css';
+import css from './index.module.css';
 
-const Sorting: FC<SortingProps> = ({ config = [], onApply }) => {
+const Sorting: FC<SortingProps> = ({ config = [], setValue }) => {
+  const [selected, setSelected] = useState({ ...config[0], type: 'asc' });
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<ISorting>({
-    key: 'created_at',
-    label: 'Latest'
-  });
 
   const onOptionSelect = useCallback(
-    (option: ISorting) => {
-      const sort = selected.key === option.key ? `-${option.key}` : option.key;
-      onApply({ params: { sort } });
-      setSelected(option);
+    (option: ISorting, type: 'asc' | 'desc') => {
+      if (option.key === selected.key && type === selected.type) return;
+      setValue(`${type === 'asc' ? '-' : ''}${option.key}`);
+      setSelected({ ...option, type });
     },
-    [selected, onApply]
+    [setValue, selected]
   );
 
   return (
-    <div className="flex h-full px-2">
+    <article className="flex px-2" data-testid="list-sorting">
       <Popover
         open={open}
         z="z-[1]"
         label={
-          <div
-            data-testid="sort-menu-label"
+          <article
+            data-testid="sort-menu-button"
             onClick={() => setOpen(prev => !prev)}
             className={`${css.sortButton} ${open ? css.sortButtonHover : ''}`}
           >
-            {selected.label}
-            {selected.key.startsWith('-') ? <IDown /> : <IUp />}
-          </div>
+            <p data-testid="sort-menu-active-label">{selected.label}</p>
+            {selected.type === 'asc' ? (
+              <ISortAsc
+                className={css.icon}
+                data-testid="sort-menu-active-asc"
+              />
+            ) : (
+              <ISortDesc
+                className={css.icon}
+                data-testid="sort-menu-active-desc"
+              />
+            )}
+          </article>
         }
       >
-        <div className="flex flex-col gap-1">
+        <section
+          className="flex flex-col gap-1"
+          data-testid="sort-menu-content"
+        >
           {config.map(option => (
-            <p
+            <article
               key={option.key}
-              data-testid="sort-option"
-              className={`${css.sortOption} ${
-                option.key === selected.key ? css.sortOptionHover : ''
-              }`}
-              onClick={() => onOptionSelect(option)}
+              data-testid={`sort-option-${option.key}`}
+              className={css.sortOption}
             >
-              {option.label}
-              {option.key === selected.key && (
-                <ICheck className="w-6 h-6" color="[&>path]:fill-green-500" />
-              )}
-            </p>
+              <p data-testid={`sort-option-${option.key}-label`}>
+                {option.label}
+              </p>
+              <div className="flex">
+                <ISortAsc
+                  className={css.icon}
+                  data-testid={`sort-option-${option.key}-asc-icon`}
+                  onClick={() => onOptionSelect(option, 'asc')}
+                  color={
+                    option.key === selected.key && selected.type === 'asc'
+                      ? css.activeIcon
+                      : ''
+                  }
+                />
+                <ISortDesc
+                  className={css.icon}
+                  data-testid={`sort-option-${option.key}-desc-icon`}
+                  onClick={() => onOptionSelect(option, 'desc')}
+                  color={
+                    option.key === selected.key && selected.type === 'desc'
+                      ? css.activeIcon
+                      : ''
+                  }
+                />
+              </div>
+            </article>
           ))}
-        </div>
+        </section>
       </Popover>
-    </div>
+    </article>
   );
 };
 

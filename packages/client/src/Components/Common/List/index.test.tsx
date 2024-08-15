@@ -62,6 +62,44 @@ describe('List', () => {
     expect(fetchFn).toBeCalledTimes(1);
   });
 
+  test('renders no items message if the fetched data is an empty array', async () => {
+    const fetchFn = vi.fn().mockResolvedValue({ data: [] });
+    await act(async () => {
+      render(
+        <MemoryRouter>
+          <List fetchFn={fetchFn} model="songs" />
+        </MemoryRouter>
+      );
+    });
+
+    await waitFor(() => {
+      const element = screen.queryByTestId('song-card-skeleton');
+      expect(element).not.toBeInTheDocument();
+    });
+
+    const noItemsEl = screen.queryByTestId('list-no-items-message');
+    expect(noItemsEl).toBeInTheDocument();
+  });
+
+  test('renders items when the data is fetched', async () => {
+    const fetchFn = vi.fn().mockResolvedValue({ data: [defaultArtist] });
+    await act(async () => {
+      render(
+        <MemoryRouter>
+          <List fetchFn={fetchFn} model="artists" />
+        </MemoryRouter>
+      );
+    });
+
+    await waitFor(() => {
+      const element = screen.queryByTestId('artist-card-skeleton');
+      expect(element).not.toBeInTheDocument();
+    });
+
+    const cardEl = screen.queryByTestId('artist-card');
+    expect(cardEl).toBeInTheDocument();
+  });
+
   test("doesn't render search input if hideSearch is true", async () => {
     await act(async () => {
       render(
@@ -112,7 +150,9 @@ describe('List', () => {
     });
 
     await waitFor(() => {
-      expect(fetchFn).toHaveBeenCalledWith({ params: { name: value } });
+      expect(fetchFn).toHaveBeenCalledWith({
+        params: { name: value, sort: '-created_at' }
+      });
     });
   });
 
@@ -134,46 +174,45 @@ describe('List', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { [searchKey]: value }
+        params: { [searchKey]: value, sort: '-created_at' }
       });
     });
   });
 
-  test('renders no items message if the fetched data is an empty array', async () => {
-    const fetchFn = vi.fn().mockResolvedValue({ data: [] });
+  test('calls fetchFn with custom search key', async () => {
+    const fetchFn = vi.fn();
+    const config = [
+      {
+        key: 'release_date',
+        label: 'Release Date'
+      }
+    ];
     await act(async () => {
       render(
         <MemoryRouter>
-          <List fetchFn={fetchFn} model="songs" />
+          <List fetchFn={fetchFn} model="albums" sortingConfig={config} />
         </MemoryRouter>
       );
     });
 
-    await waitFor(() => {
-      const element = screen.queryByTestId('song-card-skeleton');
-      expect(element).not.toBeInTheDocument();
-    });
+    const sortingEl = screen.getByTestId('list-sorting');
+    expect(sortingEl).toBeInTheDocument();
 
-    const noItemsEl = screen.queryByTestId('list-no-items-message');
-    expect(noItemsEl).toBeInTheDocument();
-  });
+    const buttonEl = screen.getByTestId('sort-menu-button');
+    expect(buttonEl).toBeInTheDocument();
+    fireEvent.click(buttonEl);
 
-  test('renders items when the data is fetched', async () => {
-    const fetchFn = vi.fn().mockResolvedValue({ data: [defaultArtist] });
-    await act(async () => {
-      render(
-        <MemoryRouter>
-          <List fetchFn={fetchFn} model="artists" />
-        </MemoryRouter>
-      );
-    });
+    // Click descending option
+    const optionDescEl = screen.getByTestId(
+      `sort-option-${config[0].key}-desc-icon`
+    );
+    expect(optionDescEl).toBeInTheDocument();
+    fireEvent.click(optionDescEl);
 
     await waitFor(() => {
-      const element = screen.queryByTestId('artist-card-skeleton');
-      expect(element).not.toBeInTheDocument();
+      expect(fetchFn).toHaveBeenCalledWith({
+        params: { sort: config[0].key, name: '' }
+      });
     });
-
-    const cardEl = screen.queryByTestId('artist-card');
-    expect(cardEl).toBeInTheDocument();
   });
 });

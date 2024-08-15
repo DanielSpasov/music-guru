@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 
 import { AuthContext } from '../../../Contexts';
 import { ListProps, ListState } from './types';
+import { useDebounce } from '../../../Hooks';
 import { BaseModel } from '../../../Types';
 import Api from '../../../Api';
 import { Card } from '../../';
@@ -10,26 +11,28 @@ import { Card } from '../../';
 // Composables
 import Sorting from './composables/Sorting';
 import Search from './composables/Search';
-import { useDebounce } from '../../../Hooks';
 
 const List = <T extends BaseModel>({
   model,
   fetchFn,
   favoriteFn,
-  searchKey = 'name',
-  searchPlaceholder,
-  hideSearch = false,
+  skeletonLength = 18,
+  // Sorting
   sortingConfig = [],
-  skeletonLength = 18
+  // Search
+  searchPlaceholder,
+  searchKey = 'name',
+  hideSearch = false
 }: ListProps<T>) => {
   const { uid, isAuthenticated } = useContext(AuthContext);
 
   const [state, setState] = useState<ListState<T>>({ items: [], favs: [] });
   const [loading, setLoading] = useState(true);
-  const [params, setPrams] = useState({});
 
-  const [value, setValue] = useState('');
-  const search = useDebounce({ value, delay: 500 });
+  const [search, setSearch] = useState('');
+  const searchValue = useDebounce({ value: search, delay: 500 });
+
+  const [sorting, setSorting] = useState('-created_at');
 
   useEffect(() => {
     (async () => {
@@ -55,8 +58,8 @@ const List = <T extends BaseModel>({
         setLoading(true);
         const { data } = await fetchFn({
           params: {
-            ...params,
-            [searchKey]: search
+            sort: sorting,
+            [searchKey]: searchValue
           }
         });
         if (!data) return;
@@ -67,23 +70,20 @@ const List = <T extends BaseModel>({
         setLoading(false);
       }
     })();
-  }, [params, search, searchKey, fetchFn]);
+  }, [sorting, searchValue, searchKey, fetchFn]);
 
   return (
     <section className="flex flex-col items-center" data-testid="list">
       <article className="flex justify-between items-center w-full mb-4">
         {!hideSearch && (
           <Search
-            setValue={setValue}
+            setValue={setSearch}
             placeholder={searchPlaceholder ?? `Search ${model}...`}
           />
         )}
 
         {Boolean(sortingConfig.length) && (
-          <Sorting
-            config={sortingConfig}
-            onApply={({ params }) => setPrams(prev => ({ ...prev, ...params }))}
-          />
+          <Sorting config={sortingConfig} setValue={setSorting} />
         )}
       </article>
 

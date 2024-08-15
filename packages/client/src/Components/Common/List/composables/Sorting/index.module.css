@@ -2,11 +2,11 @@
 
 @layer components {
   .sortButton {
-    @apply flex items-center font-semibold rounded-full whitespace-nowrap cursor-pointer border-2 shadow-sm px-4 py-1;
+    @apply flex items-center font-semibold rounded-full whitespace-nowrap cursor-pointer shadow-sm px-4 py-1 border-2;
     @apply border-primary text-primary;
     @apply dark:border-neutral-900 dark:shadow-neutral-900;
 
-    &:hover .sortButtonHover {
+    &:hover {
       @apply bg-primary text-white dark:bg-neutral-900;
 
       & svg > path {
@@ -24,7 +24,7 @@
   }
 
   .sortOption {
-    @apply flex items-center justify-between gap-1 cursor-pointer rounded-lg p-2 whitespace-nowrap;
+    @apply flex items-center justify-between gap-1 rounded-lg p-2 whitespace-nowrap;
 
     &:hover {
       @apply bg-neutral-200 dark:bg-neutral-800;
@@ -33,5 +33,12 @@
 
   .sortOptionHover {
     @apply bg-neutral-200 dark:bg-neutral-800;
+  }
+
+  .icon {
+    @apply w-7 h-7;
+  }
+  .activeIcon {
+    @apply [&>path]:stroke-secondary dark:[&>path]:stroke-primary-dark;
   }
 }
