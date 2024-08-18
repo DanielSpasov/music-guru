@@ -63,7 +63,6 @@ const Settings: FC<SettingsProps> = ({ data }) => {
         ]}
         cols={[
           { key: 'username', label: 'Username' },
-          { key: 'email', label: 'Email' },
           { key: 'created_at', label: 'User Since', type: 'date' },
           { key: 'isEditor', label: 'Editor', type: 'boolean' }
         ]}

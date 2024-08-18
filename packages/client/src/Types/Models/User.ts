@@ -12,6 +12,5 @@ export type User = {
 export type ListUser = {
   uid: string;
   created_at: string;
-  email: string;
   username: string;
 };
