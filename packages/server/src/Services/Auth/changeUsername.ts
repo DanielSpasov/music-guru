@@ -7,15 +7,19 @@ import User from '../../Schemas/User';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const validUsername = UsernameSchema.parse(req.body.username);
+    let username = UsernameSchema.parse(req.body.username);
 
-    let username = validUsername;
-
-    if (!validUsername) {
+    if (!username) {
       const user = await User.findOne({ uid: res.locals.user.uid });
       if (!user) throw new APIError(404, 'Invalid User UID.');
-      username = user.email.split('@')[0];
+
+      const emailUsername = user.email.split('@')[0];
+      const discriminator = Math.floor(1000 + Math.random() * 9000);
+      username = `${emailUsername}${discriminator}`;
     }
+
+    const isUsedUsername = await User.findOne({ username });
+    if (isUsedUsername) throw new APIError(400, 'This username is taken.');
 
     await User.updateOne({ uid: res.locals.user.uid }, { $set: { username } });
 

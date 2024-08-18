@@ -10,8 +10,11 @@ import SendEmail from '../Email';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const emailUsername = req.body?.email?.split('@')[0];
+    const discriminator = Math.floor(1000 + Math.random() * 9000);
+    const defaultUsername = `${emailUsername}${discriminator}`;
+
     // VALIDATE WITH ZOD
-    const defaultUsername = req.body?.email?.split('@')[0];
     const { email, username, password } = SignUpSchema.parse({
       username: req.body?.username || defaultUsername,
       email: req.body?.email,
@@ -20,8 +23,12 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     });
 
     // CHECK IF THE EMAIL IS ALREADY SIGNED UP
-    const isUsed = await User.findOne({ email });
-    if (isUsed) throw new APIError(400, 'This email is alredy signed up.');
+    const isUsedEmail = await User.findOne({ email });
+    if (isUsedEmail) throw new APIError(400, 'This email is alredy signed up.');
+
+    // CHECK IF USERNAME IS USED
+    const isUsedUsername = await User.findOne({ username });
+    if (isUsedUsername) throw new APIError(400, 'This username is taken.');
 
     // HASHING THE PASSWORD
     const saltRounds = Number(process.env.SALT_ROUNDS);

@@ -5,7 +5,7 @@ import Album from './Album';
 
 const songSchema = new Schema<Song>({
   uid: { type: String, required: true, unique: true },
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
   about: { type: String, default: '' },
   image: { type: String, default: '' },
   favorites: { type: Number, required: true, default: 0 },
