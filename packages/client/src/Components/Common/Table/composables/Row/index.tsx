@@ -1,23 +1,29 @@
 import { memo, useCallback, useState } from 'react';
 
+import { ICheck } from '../../../../Icons/ICheck';
 import { BaseModel } from '../../../../../Types';
 import Loader from '../../../../Core/Loader';
-import { TableAction } from '../../types';
+import { TableRowAction } from '../../types';
 import { RowProps } from './types';
 
+import css from './index.module.css';
+
 // Composables
-import Data from '../Data';
+import Cell from '../Cell';
 
 const Row = <T extends BaseModel>({
   cols,
   item,
   index,
-  actions = []
+  actions = [],
+  bulkActions = [],
+  isSelected,
+  setSelected
 }: RowProps<T>) => {
   const [loading, setLoading] = useState(false);
 
   const onActionClick = useCallback(
-    async (action: TableAction<T>, uid: string) => {
+    async (action: TableRowAction<T>, uid: string) => {
       try {
         setLoading(true);
         await action.onClick(uid);
@@ -28,34 +34,72 @@ const Row = <T extends BaseModel>({
     []
   );
 
+  const onCheckboxClick = useCallback(() => {
+    if (isSelected) {
+      setSelected(prev => prev.filter(uid => uid !== item.uid));
+      return;
+    }
+    setSelected(prev => [...prev, item.uid]);
+  }, [isSelected, item.uid, setSelected]);
+
   return (
-    <tr className="relative border-b-[1px] border-neutral-200 dark:border-neutral-700">
+    <tr className={css.row} data-testid={`row-${index}`}>
+      {bulkActions.length ? (
+        <td
+          onClick={() => onCheckboxClick()}
+          className={css.checkboxCell}
+          data-testid={`row-${index}-checkbox`}
+        >
+          <div
+            className={`${css.checkbox} ${
+              isSelected ? css.selectedCheckbox : ''
+            }`}
+          >
+            {isSelected ? (
+              <ICheck
+                className={css.checkIcon}
+                data-testid={`row-${index}-checkbox-check`}
+              />
+            ) : null}
+          </div>
+        </td>
+      ) : null}
+
       {cols.map((col, i) => (
-        <Data<T>
+        <Cell<T>
           key={`row-${index}-col-${i}`}
           col={col}
+          index={i}
           item={item}
+          rowIndex={index}
           loading={loading}
         />
       ))}
 
       {actions.length ? (
-        <Data<T>
+        <Cell<T>
           key={`row-${index}-col-${cols.length + 1}`}
           col={{ key: 'actions', type: 'actions' }}
           item={item}
+          rowIndex={index}
+          index={cols.length}
           loading={loading}
           actions={actions.map(ac => ({
             ...ac,
             onClick: uid => onActionClick(ac, uid),
-            disableFn: item => loading || Boolean(ac?.disableFn?.(item))
+            disableFn: item =>
+              isSelected || loading || Boolean(ac?.disableFn?.(item))
           }))}
         />
       ) : null}
 
       {loading && (
         <td>
-          <Loader type="spinner" className="absolute m-auto inset-0" />
+          <Loader
+            type="spinner"
+            className={css.loader}
+            data-testid={`row-${index}-loader`}
+          />
         </td>
       )}
     </tr>

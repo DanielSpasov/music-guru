@@ -46,7 +46,7 @@ const Settings: FC<SettingsProps> = ({ data }) => {
     >
       <Table<Editor>
         fetchFn={fetchEditors}
-        allowSorting={['created_at', 'username']}
+        allowSorting={['created_at']}
         searchKey="username"
         actions={[
           {
@@ -60,6 +60,20 @@ const Settings: FC<SettingsProps> = ({ data }) => {
             label: 'Remove',
             onClick: editors.del,
             disableFn: item => !song.editors.includes(item.uid)
+          }
+        ]}
+        bulkActions={[
+          {
+            Icon: IPlus,
+            label: 'Add',
+            onClick: () => console.log('test123'),
+            disableFn: uids => !uids.every(uid => !song.editors.includes(uid))
+          },
+          {
+            Icon: IX,
+            label: 'Remove',
+            onClick: () => console.log('test123'),
+            disableFn: uids => uids.some(uid => !song.editors.includes(uid))
           }
         ]}
         cols={[

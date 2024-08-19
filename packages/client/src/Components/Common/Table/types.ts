@@ -14,19 +14,28 @@ export type Col<T> = {
   type?: Exclude<ColType, 'actions'>;
 };
 
-export type TableAction<T> = {
+export type TableRowAction<T> = {
   onClick: (uid: string) => Promise<void> | void;
   Icon: ElementType;
   label?: string;
   disableFn?: (item: T) => Promise<boolean> | boolean;
 };
 
+export type TableBulkAction = {
+  onClick: () => Promise<void> | void;
+  Icon: ElementType;
+  label?: string;
+  disableFn?: (uids: string[]) => Promise<boolean> | boolean;
+};
+
 export type TableProps<T> = {
   cols: Col<T>[];
   fetchFn: (config?: AxiosRequestConfig) => Promise<{ data: T[] }>;
-  actions?: TableAction<T>[];
+  // Actions
+  actions?: TableRowAction<T>[];
+  bulkActions?: TableBulkAction[];
   // Sorting
-  allowSorting: Extract<Col<T>['key'], keyof T>[];
+  allowSorting?: Extract<Col<T>['key'], keyof T>[];
   // Search
   searchPlaceholder?: string;
   searchKey?: string;

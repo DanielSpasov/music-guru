@@ -9,13 +9,18 @@ import { TableProps } from './types';
 import { IDown, IUp } from '../..';
 import Search from '../Search';
 
+import css from './index.module.css';
+
 // Composables
+import Action from './composables/Action';
 import Row from './composables/Row';
 
 const Table = <T extends BaseModel>({
   cols,
   fetchFn,
+  // Actions
   actions = [],
+  bulkActions = [],
   // Sorting
   allowSorting = [],
   // Search
@@ -23,12 +28,18 @@ const Table = <T extends BaseModel>({
   searchKey = 'name',
   hideSearch = false
 }: TableProps<T>) => {
+  // Items
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState<T[]>([]);
 
+  // Actions
+  const [selected, setSelected] = useState<string[]>([]);
+
+  // Search
   const [search, setSearch] = useState('');
   const searchValue = useDebounce({ value: search, delay: 500 });
 
+  // Sorting
   const [sorting, setSorting] = useState('-created_at');
 
   useEffect(() => {
@@ -78,19 +89,47 @@ const Table = <T extends BaseModel>({
   );
 
   return (
-    <>
+    <section data-testid="table-section">
       {!hideSearch && (
-        <Search setValue={setSearch} placeholder={searchPlaceholder} />
+        <article data-testid="table-search-box">
+          <Search setValue={setSearch} placeholder={searchPlaceholder} />
+        </article>
       )}
-      <table className="relative w-full">
-        <thead className="border-b-[1px] border-b-neutral-200 dark:border-b-neutral-700">
-          <tr>
+
+      {bulkActions.length ? (
+        <article
+          className={css.bulkActionsBox}
+          data-testid="table-bulk-actions"
+        >
+          {bulkActions.map((action, i) => (
+            <Action
+              key={i}
+              type="bulk"
+              disabled={
+                !selected.length || Boolean(action?.disableFn?.(selected))
+              }
+              onClick={action.onClick}
+              Icon={action.Icon}
+              label={action.label}
+            />
+          ))}
+        </article>
+      ) : null}
+
+      <table data-testid="table">
+        <thead>
+          <tr data-testid="table-head">
+            {bulkActions.length ? (
+              <th data-testid="table-bulk-actions-head" />
+            ) : null}
+
             {cols.map((col, i) => (
               <th
                 key={i}
-                className={`font-semibold text-start p-2 ${
+                data-testid={`table-head-${i}`}
+                className={
                   allowSorting.includes(col.key) ? 'cursor-pointer' : ''
-                }`}
+                }
                 onClick={() => onSort(col.key)}
               >
                 <div className="flex">
@@ -99,20 +138,30 @@ const Table = <T extends BaseModel>({
                 </div>
               </th>
             ))}
-            {actions.length ? <th /> : null}
+
+            {actions.length ? (
+              <th data-testid="table-row-actions-head" />
+            ) : null}
           </tr>
         </thead>
 
-        <tbody>
+        <tbody data-testid="table-body">
           {loading ? (
             <tr>
               <td>
-                <Loader type="spinner" className="absolute m-auto w-full" />
+                <Loader
+                  type="spinner"
+                  className={css.tableLoader}
+                  data-testid="table-loader"
+                />
               </td>
             </tr>
           ) : !items.length ? (
             <tr>
-              <td className="absolute m-auto w-full text-center font-semibold p-2">
+              <td
+                className={css.noItemsBox}
+                data-testid="table-no-items-message"
+              >
                 No items were found searching for &quot;{searchValue}&quot;.
               </td>
             </tr>
@@ -123,13 +172,16 @@ const Table = <T extends BaseModel>({
                 cols={cols}
                 item={item}
                 actions={actions}
+                bulkActions={bulkActions}
+                isSelected={selected.includes(item.uid)}
+                setSelected={setSelected}
                 index={i}
               />
             ))
           )}
         </tbody>
       </table>
-    </>
+    </section>
   );
 };
 
