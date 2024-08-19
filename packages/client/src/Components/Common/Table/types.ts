@@ -3,25 +3,16 @@ import { ElementType } from 'react';
 
 type ColType = 'string' | 'boolean' | 'date' | 'actions';
 
-export type SortingDir = 'asc' | 'desc' | null;
-
-export type Sorting<T> = {
-  key: keyof T | null;
-  direction: SortingDir;
-};
-
 export type ActionsCol = {
   key: 'actions';
   type: Extract<ColType, 'actions'>;
 };
 
-export type DataCol<T> = {
+export type Col<T> = {
   key: keyof T;
   label: string;
   type?: Exclude<ColType, 'actions'>;
 };
-
-export type Col<T> = DataCol<T>;
 
 export type TableAction<T> = {
   onClick: (uid: string) => Promise<void> | void;
@@ -34,6 +25,10 @@ export type TableProps<T> = {
   cols: Col<T>[];
   fetchFn: (config?: AxiosRequestConfig) => Promise<{ data: T[] }>;
   actions?: TableAction<T>[];
-  hideSearch?: boolean;
+  // Sorting
+  allowSorting: Extract<Col<T>['key'], keyof T>[];
+  // Search
+  searchPlaceholder?: string;
   searchKey?: string;
+  hideSearch?: boolean;
 };

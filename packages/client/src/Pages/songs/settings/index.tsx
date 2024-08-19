@@ -30,7 +30,7 @@ const Settings: FC<SettingsProps> = ({ data }) => {
       return {
         data: users.map(user => ({
           ...user,
-          isEditor: Boolean(data.editors.includes(user.uid)),
+          is_editor: Boolean(data.editors.includes(user.uid)),
           name: user.username
         }))
       };
@@ -46,6 +46,7 @@ const Settings: FC<SettingsProps> = ({ data }) => {
     >
       <Table<Editor>
         fetchFn={fetchEditors}
+        allowSorting={['created_at', 'username']}
         searchKey="username"
         actions={[
           {
@@ -64,7 +65,7 @@ const Settings: FC<SettingsProps> = ({ data }) => {
         cols={[
           { key: 'username', label: 'Username' },
           { key: 'created_at', label: 'User Since', type: 'date' },
-          { key: 'isEditor', label: 'Editor', type: 'boolean' }
+          { key: 'is_editor', label: 'Editor', type: 'boolean' }
         ]}
       />
     </PageLayout>

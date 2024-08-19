@@ -5,6 +5,6 @@ export type SettingsProps = {
 };
 
 export type Editor = ListUser & {
-  isEditor: boolean;
+  is_editor: boolean;
   name: string;
 };

@@ -6,10 +6,10 @@ describe('Search', () => {
   test('renders without crashing', () => {
     render(<Search setValue={vi.fn()} />);
 
-    const searchEl = screen.getByTestId('list-search');
+    const searchEl = screen.getByTestId('search-box');
     expect(searchEl).toBeInTheDocument();
 
-    const inputEl = screen.getByTestId('list-search-input');
+    const inputEl = screen.getByTestId('search-input');
     expect(inputEl).toBeInTheDocument();
     expect(inputEl).toHaveAttribute('placeholder', 'Search...');
   });
@@ -18,7 +18,7 @@ describe('Search', () => {
     const setValue = vi.fn();
     render(<Search setValue={setValue} />);
 
-    const inputEl = screen.getByTestId('list-search-input');
+    const inputEl = screen.getByTestId('search-input');
     fireEvent.change(inputEl, { target: { value: 'test' } });
     expect(setValue).toBeCalledWith('test');
   });
@@ -27,7 +27,7 @@ describe('Search', () => {
     const testPalceholder = 'testvalue';
     render(<Search setValue={vi.fn()} placeholder={testPalceholder} />);
 
-    const inputEl = screen.getByTestId('list-search-input');
+    const inputEl = screen.getByTestId('search-input');
     expect(inputEl).toHaveAttribute('placeholder', testPalceholder);
   });
 });

@@ -5,12 +5,12 @@ import { AuthContext } from '../../../Contexts';
 import { ListProps, ListState } from './types';
 import { useDebounce } from '../../../Hooks';
 import { BaseModel } from '../../../Types';
+import Search from '../Search';
 import Api from '../../../Api';
 import { Card } from '../../';
 
 // Composables
 import Sorting from './composables/Sorting';
-import Search from './composables/Search';
 
 const List = <T extends BaseModel>({
   model,

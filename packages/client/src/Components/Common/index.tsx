@@ -3,6 +3,7 @@ export { default as Details } from './Details';
 export { default as Popover } from './Popover';
 export { default as Socials } from './Socials';
 export { default as Button } from './Button';
+export { default as Search } from './Search';
 export { default as Image } from './Image';
 export { default as Table } from './Table';
 export { default as Card } from './Card';
