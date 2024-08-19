@@ -13,7 +13,7 @@ const Settings: FC<SettingsProps> = ({ data }) => {
 
   const { uid: userUID } = useContext(AuthContext);
 
-  const { editors } = useSong(uid, data);
+  const { editors, song } = useSong(uid, data);
 
   const fetchEditors = useCallback(
     async (config?: AxiosRequestConfig): Promise<{ data: Editor[] }> => {
@@ -30,12 +30,12 @@ const Settings: FC<SettingsProps> = ({ data }) => {
       return {
         data: users.map(user => ({
           ...user,
-          is_editor: Boolean(data.editors.includes(user.uid)),
+          is_editor: Boolean(song.editors.includes(user.uid)),
           name: user.username
         }))
       };
     },
-    [data.editors, userUID]
+    [userUID, song]
   );
 
   return (
@@ -53,13 +53,13 @@ const Settings: FC<SettingsProps> = ({ data }) => {
             Icon: IPlus,
             label: 'Add',
             onClick: editors.add,
-            disableFn: item => Boolean(data.editors.includes(item.uid))
+            disableFn: item => Boolean(song.editors.includes(item.uid))
           },
           {
             Icon: IX,
             label: 'Remove',
             onClick: editors.del,
-            disableFn: item => !data.editors.includes(item.uid)
+            disableFn: item => !song.editors.includes(item.uid)
           }
         ]}
         cols={[
