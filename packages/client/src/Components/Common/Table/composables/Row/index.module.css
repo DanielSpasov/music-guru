@@ -6,7 +6,7 @@
   }
 
   .checkboxCell {
-    @apply cursor-pointer;
+    @apply p-2 cursor-pointer;
 
     &:hover > .checkbox {
       @apply opacity-70;

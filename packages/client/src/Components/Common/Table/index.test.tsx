@@ -80,7 +80,7 @@ describe('Table', () => {
     expect(bulkActionsEl).toBeInTheDocument();
     expect(bulkActionsEl.children.length).toEqual(bulkActions.length);
 
-    const bulkActionsHeadEl = screen.queryByTestId('table-bulk-actions-head');
+    const bulkActionsHeadEl = screen.queryByTestId('table-head-bulk-actions');
     expect(bulkActionsHeadEl).toBeInTheDocument();
 
     const rowActionsHeadEl = screen.queryByTestId('table-row-actions-head');

@@ -5,10 +5,11 @@ import { AxiosError } from 'axios';
 import { TableBulkAction, TableProps } from './types';
 import { useDebounce } from '../../../Hooks';
 import { BaseModel } from '../../../Types';
+import { ICheck, IDown, IUp } from '../..';
 import Loader from '../../Core/Loader';
-import { IDown, IUp } from '../..';
 import Search from '../Search';
 
+import rowCss from './composables/Row/index.module.css';
 import css from './index.module.css';
 
 // Composables
@@ -89,6 +90,18 @@ const Table = <T extends BaseModel>({
     [allowSorting, sorting]
   );
 
+  const onSelectAll = useCallback(
+    (selected: string[]) => {
+      if (selected.length !== items.length) {
+        setSelected(items.map(x => x.uid));
+        return;
+      }
+
+      setSelected([]);
+    },
+    [items]
+  );
+
   const onBulkActionClick = useCallback(
     async (action: TableBulkAction) => {
       try {
@@ -136,8 +149,26 @@ const Table = <T extends BaseModel>({
       <table data-testid="table">
         <thead>
           <tr data-testid="table-head">
-            {bulkActions.length ? (
-              <th data-testid="table-bulk-actions-head" />
+            {!loading && bulkActions.length ? (
+              <th
+                data-testid="table-head-bulk-actions"
+                onClick={() => onSelectAll(selected)}
+              >
+                <div
+                  className={`${rowCss.checkbox} ${
+                    selected.length === items.length
+                      ? rowCss.selectedCheckbox
+                      : ''
+                  }`}
+                >
+                  {selected.length === items.length ? (
+                    <ICheck
+                      className={rowCss.checkIcon}
+                      data-testid={`table-head-checkbox-check`}
+                    />
+                  ) : null}
+                </div>
+              </th>
             ) : null}
 
             {cols.map((col, i) => (
