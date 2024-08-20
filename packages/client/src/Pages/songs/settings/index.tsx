@@ -4,11 +4,11 @@ import { AxiosRequestConfig } from 'axios';
 
 import { IPlus, IX, PageLayout, Table } from '../../../Components';
 import { AuthContext } from '../../../Contexts';
-import { Editor, SettingsProps } from './types';
+import { Editor, Song } from '../../../Types';
 import { useSong } from '../../../Hooks';
 import Api from '../../../Api';
 
-const Settings: FC<SettingsProps> = ({ data }) => {
+const Settings: FC<{ data: Song }> = ({ data }) => {
   const { id: uid = '0' } = useParams();
 
   const { uid: userUID } = useContext(AuthContext);
