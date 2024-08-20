@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 
 import { Album, ListAlbum } from '../../Types';
-import { get, post } from '../requests';
+import { get, post, patch } from '../requests';
 import Crud from '../crud';
 
 export default class AlbumsAPI extends Crud<Album, ListAlbum> {
@@ -52,4 +52,49 @@ export default class AlbumsAPI extends Crud<Album, ListAlbum> {
       config
     });
   }
+
+  editors = {
+    post: (
+      {
+        uid,
+        editorsUids,
+        config
+      }: {
+        uid: string;
+        editorsUids: string[];
+        config?: AxiosRequestConfig;
+      } = {
+        uid: '',
+        editorsUids: [],
+        config: {}
+      }
+    ) => {
+      return post({
+        url: `${this.baseUrl}/${this.model}/${uid}/editor/`,
+        body: { editorsUids },
+        config
+      });
+    },
+    patch: (
+      {
+        uid,
+        editorsUids,
+        config
+      }: {
+        uid: string;
+        editorsUids: string[];
+        config?: AxiosRequestConfig;
+      } = {
+        uid: '',
+        editorsUids: [],
+        config: {}
+      }
+    ) => {
+      return patch({
+        url: `${this.baseUrl}/${this.model}/${uid}/editor/`,
+        body: { editorsUids },
+        config
+      });
+    }
+  };
 }

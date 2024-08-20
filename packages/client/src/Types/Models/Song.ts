@@ -17,7 +17,6 @@ export type Song = BaseDetailedModel & {
   verses: Verse[];
   links: { name: keyof Socials; url: string }[];
   about: string;
-  editors: string[]; // Overwrites BaseDetailedModel's editors bcs they are optional
   favorites: number;
 };
 

@@ -86,6 +86,11 @@
             "path": "edit",
             "componentName": "AlbumsEdit",
             "protection": "editor"
+          },
+          {
+            "path": "settings",
+            "componentName": "AlbumsSettings",
+            "protection": "owner"
           }
         ]
       }

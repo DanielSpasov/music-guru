@@ -1,16 +1,15 @@
+import { BaseDetailedModel, BaseModel } from './Base';
 import { ListArtist } from './Artist';
-import { BaseModel } from './Base';
 import { ListSong } from './Song';
 
 export type AlbumType = BaseModel & {
   code: string;
 };
 
-export type Album = BaseModel & {
+export type Album = BaseDetailedModel & {
   type: AlbumType;
   image: string;
   created_at: Date;
-  created_by: string;
   release_date: string | null;
   artist: ListArtist;
   songs: ListSong[];

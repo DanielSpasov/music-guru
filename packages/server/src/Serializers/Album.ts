@@ -22,6 +22,7 @@ export const albumSerializers = {
     release_date: 1,
     created_at: 1,
     created_by: 1,
+    editors: 1,
     songs: songSerializers.list
   }
 };

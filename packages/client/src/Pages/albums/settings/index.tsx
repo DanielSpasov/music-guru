@@ -1,16 +1,16 @@
-import { FC, useCallback, useContext } from 'react';
+import { FC, useCallback, useContext, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
+import { toast } from 'react-toastify';
 
 import { IPlus, IX, PageLayout, Table } from '../../../Components';
 import { AuthContext } from '../../../Contexts';
-import { Editor, Song } from '../../../Types';
-import { useSong } from '../../../Hooks';
+import { Album, Editor } from '../../../Types';
 import Api from '../../../Api';
 
-const Settings: FC<{ data: Song }> = ({ data }) => {
+const Settings: FC<{ data: Album }> = ({ data }) => {
   const { uid: userUID } = useContext(AuthContext);
 
-  const { editors, song } = useSong(data.uid, data);
+  const [editors, setEditors] = useState(data.editors || []);
 
   const fetchEditors = useCallback(
     async (config?: AxiosRequestConfig): Promise<{ data: Editor[] }> => {
@@ -27,12 +27,38 @@ const Settings: FC<{ data: Song }> = ({ data }) => {
       return {
         data: users.map(user => ({
           ...user,
-          is_editor: Boolean(song.editors.includes(user.uid)),
+          is_editor: Boolean(editors.includes(user.uid)),
           name: user.username
         }))
       };
     },
-    [userUID, song]
+    [userUID, editors]
+  );
+
+  const postEditors = useCallback(
+    async (editorsUids: string[]) => {
+      try {
+        await Api.albums.editors.post({ editorsUids, uid: data.uid });
+        setEditors(prev => [...prev, ...editorsUids]);
+        toast.success('Editor added sucessfully');
+      } catch (err) {
+        toast.error('Failed to add editors.');
+      }
+    },
+    [data.uid]
+  );
+
+  const patchEditors = useCallback(
+    async (editorsUids: string[]) => {
+      try {
+        await Api.albums.editors.patch({ editorsUids, uid: data.uid });
+        setEditors(prev => prev.filter(x => !editorsUids.includes(x)));
+        toast.success('Editors removed sucessfully.');
+      } catch (err) {
+        toast.error('Failed to remove editors.');
+      }
+    },
+    [data.uid]
   );
 
   return (
@@ -49,28 +75,28 @@ const Settings: FC<{ data: Song }> = ({ data }) => {
           {
             Icon: IPlus,
             label: 'Add',
-            onClick: uid => editors.post([uid]),
-            disableFn: item => Boolean(song.editors.includes(item.uid))
+            onClick: uid => postEditors([uid]),
+            disableFn: item => Boolean(editors.includes(item.uid))
           },
           {
             Icon: IX,
             label: 'Remove',
-            onClick: uid => editors.patch([uid]),
-            disableFn: item => !song.editors.includes(item.uid)
+            onClick: uid => patchEditors([uid]),
+            disableFn: item => !editors.includes(item.uid)
           }
         ]}
         bulkActions={[
           {
             Icon: IPlus,
             label: 'Add',
-            onClick: editors.post,
-            disableFn: uids => !uids.every(uid => !song.editors.includes(uid))
+            onClick: postEditors,
+            disableFn: uids => !uids.every(uid => !editors.includes(uid))
           },
           {
             Icon: IX,
             label: 'Remove',
-            onClick: editors.patch,
-            disableFn: uids => uids.some(uid => !song.editors.includes(uid))
+            onClick: patchEditors,
+            disableFn: uids => uids.some(uid => !editors.includes(uid))
           }
         ]}
         cols={[

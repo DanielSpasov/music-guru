@@ -18,6 +18,7 @@ export const defaultArtist: Artist = {
   name: '',
   uid: '',
   about: '',
+  editors: [],
   links: []
 };
 
