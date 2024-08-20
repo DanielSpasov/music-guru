@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 
 import { ListSong, Song, Verse } from '../../Types';
-import { del, patch, post, get } from '../requests';
+import { del, patch, post } from '../requests';
 import { Body } from '../types';
 import Crud from '../crud';
 
@@ -102,66 +102,50 @@ export default class SongsAPI extends Crud<Song, ListSong> {
     });
   }
 
-  addEditor(
-    {
-      uid,
-      userUID,
-      config
-    }: {
-      uid: string;
-      userUID: string;
-      config?: AxiosRequestConfig;
-    } = {
-      uid: '',
-      userUID: '',
-      config: {}
+  editors = {
+    post: (
+      {
+        uid,
+        editorsUids,
+        config
+      }: {
+        uid: string;
+        editorsUids: string[];
+        config?: AxiosRequestConfig;
+      } = {
+        uid: '',
+        editorsUids: [],
+        config: {}
+      }
+    ) => {
+      return post({
+        url: `${this.baseUrl}/${this.model}/${uid}/editor/`,
+        body: { editorsUids },
+        config
+      });
+    },
+    patch: (
+      {
+        uid,
+        editorsUids,
+        config
+      }: {
+        uid: string;
+        editorsUids: string[];
+        config?: AxiosRequestConfig;
+      } = {
+        uid: '',
+        editorsUids: [],
+        config: {}
+      }
+    ) => {
+      return patch({
+        url: `${this.baseUrl}/${this.model}/${uid}/editor/`,
+        body: { editorsUids },
+        config
+      });
     }
-  ) {
-    return post({
-      url: `${this.baseUrl}/${this.model}/${uid}/editor/`,
-      body: { userUID },
-      config
-    });
-  }
-
-  delEditor(
-    {
-      uid,
-      userUID,
-      config
-    }: {
-      uid: string;
-      userUID: string;
-      config?: AxiosRequestConfig;
-    } = {
-      uid: '',
-      userUID: '',
-      config: {}
-    }
-  ) {
-    return del({
-      url: `${this.baseUrl}/${this.model}/${uid}/editor/${userUID}/`,
-      config
-    });
-  }
-
-  fetchAvailableEditors(
-    {
-      uid,
-      config
-    }: {
-      uid: string;
-      config?: AxiosRequestConfig;
-    } = {
-      uid: '',
-      config: {}
-    }
-  ) {
-    return get({
-      url: `${this.baseUrl}/${this.model}/${uid}/editors/available/`,
-      config
-    });
-  }
+  };
 
   favorite(
     { uid, config }: { uid: string; config?: AxiosRequestConfig } = {

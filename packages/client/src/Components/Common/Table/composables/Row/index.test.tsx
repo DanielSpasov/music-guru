@@ -32,6 +32,7 @@ describe('Table Row', () => {
             index={index}
             isSelected={false}
             item={item}
+            bulkLoading={false}
             setSelected={vi.fn()}
           />
         </tbody>
@@ -62,6 +63,7 @@ describe('Table Row', () => {
             isSelected={false}
             item={item}
             setSelected={setSelected}
+            bulkLoading={false}
             bulkActions={[{ Icon: () => <div />, onClick: vi.fn() }]}
           />
         </tbody>
@@ -93,6 +95,7 @@ describe('Table Row', () => {
             index={index}
             isSelected
             item={item}
+            bulkLoading={false}
             setSelected={setSelected}
             bulkActions={[{ Icon: () => <div />, onClick: vi.fn() }]}
           />
@@ -125,6 +128,7 @@ describe('Table Row', () => {
             item={item}
             isSelected={false}
             index={index}
+            bulkLoading={false}
             setSelected={vi.fn()}
             actions={[{ Icon: () => <div />, onClick }]}
           />
@@ -151,6 +155,34 @@ describe('Table Row', () => {
     });
   });
 
+  test('shows loader if bulkLoading is true', async () => {
+    const onClick = vi.fn();
+    render(
+      <table>
+        <tbody>
+          <Row
+            cols={cols}
+            item={item}
+            isSelected={false}
+            index={index}
+            bulkLoading={true}
+            setSelected={vi.fn()}
+            actions={[{ Icon: () => <div />, onClick }]}
+          />
+        </tbody>
+      </table>
+    );
+
+    const rowEl = screen.getByTestId(`row-${index}`);
+    expect(rowEl).toBeInTheDocument();
+
+    const actionEl = screen.getByTestId(`table-row-action`);
+    expect(actionEl).toBeInTheDocument();
+
+    const loaderEl = screen.queryByTestId(`row-${index}-loader`);
+    expect(loaderEl).toBeInTheDocument();
+  });
+
   test("doesn't call row action onClick if the item is bulk action selected (isSelected)", async () => {
     const onClick = vi.fn();
     render(
@@ -161,6 +193,7 @@ describe('Table Row', () => {
             item={item}
             isSelected
             index={index}
+            bulkLoading={false}
             setSelected={vi.fn()}
             actions={[{ Icon: () => <div />, onClick }]}
           />

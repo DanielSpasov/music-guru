@@ -1,7 +1,7 @@
 import { default as post } from './post';
-import { default as del } from './del';
+import { default as patch } from './patch';
 
 export const editors = {
   post,
-  del
+  patch
 };

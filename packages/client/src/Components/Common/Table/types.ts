@@ -22,7 +22,7 @@ export type TableRowAction<T> = {
 };
 
 export type TableBulkAction = {
-  onClick: () => Promise<void> | void;
+  onClick: (selectedUids: string[]) => Promise<void> | void;
   Icon: ElementType;
   label?: string;
   disableFn?: (uids: string[]) => Promise<boolean> | boolean;

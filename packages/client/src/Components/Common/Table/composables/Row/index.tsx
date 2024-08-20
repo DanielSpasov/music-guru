@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 
 import { ICheck } from '../../../../Icons/ICheck';
 import { BaseModel } from '../../../../../Types';
@@ -18,17 +18,18 @@ const Row = <T extends BaseModel>({
   actions = [],
   bulkActions = [],
   isSelected,
+  bulkLoading,
   setSelected
 }: RowProps<T>) => {
-  const [loading, setLoading] = useState(false);
+  const [loadingRow, setLoadingRow] = useState(false);
 
   const onActionClick = useCallback(
     async (action: TableRowAction<T>, uid: string) => {
       try {
-        setLoading(true);
+        setLoadingRow(true);
         await action.onClick(uid);
       } finally {
-        setLoading(false);
+        setLoadingRow(false);
       }
     },
     []
@@ -41,6 +42,11 @@ const Row = <T extends BaseModel>({
     }
     setSelected(prev => [...prev, item.uid]);
   }, [isSelected, item.uid, setSelected]);
+
+  const loading = useMemo(
+    () => loadingRow || bulkLoading,
+    [loadingRow, bulkLoading]
+  );
 
   return (
     <tr className={css.row} data-testid={`row-${index}`}>

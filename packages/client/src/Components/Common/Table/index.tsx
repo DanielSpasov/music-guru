@@ -2,10 +2,10 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 
+import { TableBulkAction, TableProps } from './types';
 import { useDebounce } from '../../../Hooks';
 import { BaseModel } from '../../../Types';
 import Loader from '../../Core/Loader';
-import { TableProps } from './types';
 import { IDown, IUp } from '../..';
 import Search from '../Search';
 
@@ -33,6 +33,7 @@ const Table = <T extends BaseModel>({
   const [items, setItems] = useState<T[]>([]);
 
   // Actions
+  const [bulkLoading, setBulkLoading] = useState<string[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
 
   // Search
@@ -88,6 +89,22 @@ const Table = <T extends BaseModel>({
     [allowSorting, sorting]
   );
 
+  const onBulkActionClick = useCallback(
+    async (action: TableBulkAction) => {
+      try {
+        setBulkLoading(selected);
+
+        await action.onClick(selected);
+        setSelected([]);
+      } catch (err) {
+        toast.error('Failed to execute action.');
+      } finally {
+        setBulkLoading([]);
+      }
+    },
+    [selected]
+  );
+
   return (
     <section data-testid="table-section">
       {!hideSearch && (
@@ -108,7 +125,7 @@ const Table = <T extends BaseModel>({
               disabled={
                 !selected.length || Boolean(action?.disableFn?.(selected))
               }
-              onClick={action.onClick}
+              onClick={() => onBulkActionClick(action)}
               Icon={action.Icon}
               label={action.label}
             />
@@ -174,6 +191,7 @@ const Table = <T extends BaseModel>({
                 actions={actions}
                 bulkActions={bulkActions}
                 isSelected={selected.includes(item.uid)}
+                bulkLoading={bulkLoading.includes(item.uid)}
                 setSelected={setSelected}
                 index={i}
               />

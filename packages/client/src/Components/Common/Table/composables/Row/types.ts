@@ -5,5 +5,6 @@ export type RowProps<T> = {
   item: T;
   index: number;
   isSelected: boolean;
+  bulkLoading: boolean;
   setSelected: Dispatch<SetStateAction<string[]>>;
 } & Pick<TableProps<T>, 'cols' | 'actions' | 'bulkActions'>;

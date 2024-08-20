@@ -24,22 +24,20 @@ export default ({ model }: { model: Model }) =>
       }
 
       const item = res.locals.item as BaseModel;
-      const alreadyEditors = editorsUids.filter(uid =>
-        item.editors.includes(uid)
-      );
-      if (alreadyEditors.length > 0) {
+      const notEditors = editorsUids.filter(uid => !item.editors.includes(uid));
+      if (notEditors.length > 0) {
         throw new APIError(
           400,
-          `Users are already editors: ${alreadyEditors.join(', ')}.`
+          `Users are not editors: ${notEditors.join(', ')}.`
         );
       }
 
       await schemas[model].updateOne(
-        { uid: item.uid },
-        { $addToSet: { editors: { $each: editorsUids } } }
+        { uid: req.params.id },
+        { $pull: { editors: { $in: editorsUids } } }
       );
 
-      res.status(200).json({ message: 'Editors added.' });
+      res.status(200).json({ message: 'Editors removed.' });
     } catch (err) {
       next(err);
     }

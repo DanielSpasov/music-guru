@@ -9,7 +9,8 @@ export type RowAction<T> = {
 
 export type BulkAction = {
   type: Extract<ActionType, 'bulk'>;
+  onClick: () => Promise<void> | void;
   disabled?: boolean;
-} & Omit<TableBulkAction, 'disableFn'>;
+} & Omit<TableBulkAction, 'disableFn' | 'onClick'>;
 
 export type ActionProps<T> = RowAction<T> | BulkAction;

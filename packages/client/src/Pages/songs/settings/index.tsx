@@ -52,13 +52,13 @@ const Settings: FC<SettingsProps> = ({ data }) => {
           {
             Icon: IPlus,
             label: 'Add',
-            onClick: editors.add,
+            onClick: uid => editors.post([uid]),
             disableFn: item => Boolean(song.editors.includes(item.uid))
           },
           {
             Icon: IX,
             label: 'Remove',
-            onClick: editors.del,
+            onClick: uid => editors.patch([uid]),
             disableFn: item => !song.editors.includes(item.uid)
           }
         ]}
@@ -66,13 +66,13 @@ const Settings: FC<SettingsProps> = ({ data }) => {
           {
             Icon: IPlus,
             label: 'Add',
-            onClick: () => console.log('test123'),
+            onClick: editors.post,
             disableFn: uids => !uids.every(uid => !song.editors.includes(uid))
           },
           {
             Icon: IX,
             label: 'Remove',
-            onClick: () => console.log('test123'),
+            onClick: editors.patch,
             disableFn: uids => uids.some(uid => !song.editors.includes(uid))
           }
         ]}
