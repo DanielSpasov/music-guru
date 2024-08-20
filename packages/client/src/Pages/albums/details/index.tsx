@@ -153,7 +153,7 @@ const AlbumDetails = () => {
         <Image
           src={album.image}
           alt={album.name}
-          editable={album.created_by === uid}
+          editable={isEditor}
           updateFn={updateImage}
           className="w-64 h-64"
         />

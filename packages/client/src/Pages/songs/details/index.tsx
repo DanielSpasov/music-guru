@@ -71,7 +71,7 @@ const SongDetails = () => {
               <Image
                 src={song?.image || ''}
                 alt={song.name}
-                editable={song.created_by === uid || song.editors.includes(uid)}
+                editable={isEditor}
                 updateFn={updateImage}
                 className="w-64 h-64"
               />
