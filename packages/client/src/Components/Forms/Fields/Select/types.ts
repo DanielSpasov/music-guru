@@ -1,10 +1,5 @@
+import { SelectHTMLAttributes } from 'react';
 import { AxiosRequestConfig } from 'axios';
-import {
-  Dispatch,
-  RefObject,
-  SelectHTMLAttributes,
-  SetStateAction
-} from 'react';
 
 type FetchFn<T> = ({
   config
@@ -20,16 +15,10 @@ export type SelectProps<T extends Option> = {
   multiple?: boolean;
 } & SelectHTMLAttributes<HTMLSelectElement>;
 
-export type InheritedProps<T extends Option> = Pick<
-  SelectProps<T>,
-  'fetchFn' | 'hideSearch'
->;
-
-export type DropdownProps<T extends Option> = InheritedProps<T> & {
+export type ResultsProps<T extends Option> = Pick<SelectProps<T>, 'fetchFn'> & {
   onOptionClick: (option: Option) => void;
-  searchRef: RefObject<HTMLInputElement>;
   selected: Option[];
-  open: boolean;
+  search: string;
 };
 
 type SelectType = 'single' | 'multi';
@@ -43,16 +32,11 @@ type MultiSelectDefaultValue = {
   onChange: (value: Option[]) => Promise<void>;
 };
 
-export type SelectComponentProps<
-  T extends SelectType,
-  K extends Option
-> = InheritedProps<K> &
-  Pick<SelectProps<K>, 'placeholder'> &
+export type SelectComponentProps<T extends SelectType, K extends Option> = Pick<
+  SelectProps<K>,
+  'placeholder' | 'fetchFn' | 'hideSearch'
+> &
   (T extends 'single' ? SingleSelectDefaultValue : MultiSelectDefaultValue);
-
-export type SearchProps<T extends Option> = {
-  setSearch: Dispatch<SetStateAction<string>>;
-} & Pick<DropdownProps<T>, 'searchRef'>;
 
 export type Option = {
   uid: string;

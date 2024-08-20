@@ -3,7 +3,7 @@ import { FC, memo } from 'react';
 import { IMagnifyingGlass } from '../../Icons/IMagnifyingGlass';
 import { SearchProps } from './types';
 
-const Search: FC<SearchProps> = ({ setValue, placeholder }) => {
+const Search: FC<SearchProps> = ({ setValue, placeholder, forwardRef }) => {
   return (
     <article
       data-testid="search-box"
@@ -16,6 +16,7 @@ const Search: FC<SearchProps> = ({ setValue, placeholder }) => {
         data-testid="search-input"
         className="bg-transparent outline-none w-full"
         placeholder={placeholder ?? `Search...`}
+        ref={forwardRef}
       />
     </article>
   );
