@@ -55,11 +55,11 @@ const Image: FC<ImageProps> = ({
     const dragStyles = editable && isDragging ? css.loading : '';
     const editableStyles = editable && !isDragging ? css.editable : '';
 
-    return `${loadingStyles} ${dragStyles} ${editableStyles} ${css[shape]}`;
-  }, [isDragging, loading, editable, shape]);
+    return `${loadingStyles} ${dragStyles} ${editableStyles} ${css[shape]} ${className}`;
+  }, [isDragging, loading, editable, shape, className]);
 
   return (
-    <div className={`${css.wrapper} ${className}`}>
+    <div className={css.wrapper}>
       <img
         src={src}
         alt={alt}
