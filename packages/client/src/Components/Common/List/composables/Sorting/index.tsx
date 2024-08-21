@@ -14,7 +14,7 @@ const Sorting: FC<SortingProps> = ({ config = [], setValue }) => {
   const onOptionSelect = useCallback(
     (option: ISorting, type: 'asc' | 'desc') => {
       if (option.key === selected.key && type === selected.type) return;
-      setValue(`${type === 'asc' ? '-' : ''}${option.key}`);
+      setValue(`${type === 'desc' ? '-' : ''}${option.key}`);
       setSelected({ ...option, type });
     },
     [setValue, selected]
