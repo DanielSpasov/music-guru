@@ -1,7 +1,13 @@
 import { Router } from 'express';
 
-import { authorization, editorship, get, upload } from '../Middlewares';
-import { methods, favorite, updateImage } from '../Services';
+import {
+  authorization,
+  editorship,
+  get,
+  ownership,
+  upload
+} from '../Middlewares';
+import { methods, favorite, updateImage, editors } from '../Services';
 
 const router = Router();
 
@@ -25,6 +31,18 @@ router.patch(
   '/:id',
   [get({ model: 'artists' }), authorization, editorship],
   methods.patch({ model: 'artists' })
+);
+
+// Editors
+router.post(
+  '/:id/editor',
+  [get({ model: 'artists' }), authorization, ownership],
+  editors.post({ model: 'artists' })
+);
+router.patch(
+  '/:id/editor',
+  [get({ model: 'artists' }), authorization, ownership],
+  editors.patch({ model: 'artists' })
 );
 
 export default router;

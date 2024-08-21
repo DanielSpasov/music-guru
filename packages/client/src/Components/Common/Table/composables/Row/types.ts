@@ -1,6 +1,10 @@
+import { Dispatch, SetStateAction } from 'react';
 import { TableProps } from '../../types';
 
 export type RowProps<T> = {
   item: T;
   index: number;
-} & Pick<TableProps<T>, 'cols' | 'actions'>;
+  isSelected: boolean;
+  bulkLoading: boolean;
+  setSelected: Dispatch<SetStateAction<string[]>>;
+} & Pick<TableProps<T>, 'cols' | 'actions' | 'bulkActions'>;

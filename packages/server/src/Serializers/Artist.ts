@@ -13,6 +13,7 @@ export const artistSerializers = {
     about: 1,
     created_at: 1,
     created_by: 1,
-    links: 1
+    links: 1,
+    editors: 1
   }
 };

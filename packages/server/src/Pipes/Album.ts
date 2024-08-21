@@ -68,6 +68,7 @@ const songs: PipelineStage[] = [
       release_date: { $first: '$release_date' },
       created_at: { $first: '$created_at' },
       created_by: { $first: '$created_by' },
+      editors: { $first: '$editors' },
       type: { $first: '$type' },
       songs: { $push: '$songs' },
       favorites: { $first: '$favorites' }

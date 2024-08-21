@@ -1,19 +1,16 @@
 import { FC, useCallback, useContext } from 'react';
-import { useParams } from 'react-router-dom';
 import { AxiosRequestConfig } from 'axios';
 
 import { IPlus, IX, PageLayout, Table } from '../../../Components';
 import { AuthContext } from '../../../Contexts';
-import { Editor, SettingsProps } from './types';
+import { Editor, Song } from '../../../Types';
 import { useSong } from '../../../Hooks';
 import Api from '../../../Api';
 
-const Settings: FC<SettingsProps> = ({ data }) => {
-  const { id: uid = '0' } = useParams();
-
+const Settings: FC<{ data: Song }> = ({ data }) => {
   const { uid: userUID } = useContext(AuthContext);
 
-  const { editors } = useSong(uid, data);
+  const { editors, song } = useSong(data.uid, data);
 
   const fetchEditors = useCallback(
     async (config?: AxiosRequestConfig): Promise<{ data: Editor[] }> => {
@@ -30,12 +27,12 @@ const Settings: FC<SettingsProps> = ({ data }) => {
       return {
         data: users.map(user => ({
           ...user,
-          isEditor: Boolean(data.editors.includes(user.uid)),
+          is_editor: Boolean(song.editors.includes(user.uid)),
           name: user.username
         }))
       };
     },
-    [data.editors, userUID]
+    [userUID, song]
   );
 
   return (
@@ -46,25 +43,40 @@ const Settings: FC<SettingsProps> = ({ data }) => {
     >
       <Table<Editor>
         fetchFn={fetchEditors}
+        allowSorting={['created_at']}
         searchKey="username"
         actions={[
           {
             Icon: IPlus,
             label: 'Add',
-            onClick: editors.add,
-            disableFn: item => Boolean(data.editors.includes(item.uid))
+            onClick: uid => editors.post([uid]),
+            disableFn: item => Boolean(song.editors.includes(item.uid))
           },
           {
             Icon: IX,
             label: 'Remove',
-            onClick: editors.del,
-            disableFn: item => !data.editors.includes(item.uid)
+            onClick: uid => editors.patch([uid]),
+            disableFn: item => !song.editors.includes(item.uid)
+          }
+        ]}
+        bulkActions={[
+          {
+            Icon: IPlus,
+            label: 'Add',
+            onClick: editors.post,
+            disableFn: uids => !uids.every(uid => !song.editors.includes(uid))
+          },
+          {
+            Icon: IX,
+            label: 'Remove',
+            onClick: editors.patch,
+            disableFn: uids => uids.some(uid => !song.editors.includes(uid))
           }
         ]}
         cols={[
           { key: 'username', label: 'Username' },
           { key: 'created_at', label: 'User Since', type: 'date' },
-          { key: 'isEditor', label: 'Editor', type: 'boolean' }
+          { key: 'is_editor', label: 'Editor', type: 'boolean' }
         ]}
       />
     </PageLayout>

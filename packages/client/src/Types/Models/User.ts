@@ -14,3 +14,8 @@ export type ListUser = {
   created_at: string;
   username: string;
 };
+
+export type Editor = ListUser & {
+  is_editor: boolean;
+  name: string;
+};

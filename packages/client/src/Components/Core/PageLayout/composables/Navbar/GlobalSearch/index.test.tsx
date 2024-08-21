@@ -25,7 +25,7 @@ describe('Search', () => {
   test('renders loader while fetching', async () => {
     render(<Search models={['albums']} />);
 
-    const inputEl = screen.getByTestId('navbar-search-input');
+    const inputEl = screen.getByTestId('search-input');
     fireEvent.change(inputEl, { target: { value: 'test' } });
 
     await waitFor(() => {
@@ -41,7 +41,7 @@ describe('Search', () => {
 
     render(<Search models={['artists']} />);
 
-    const inputEl = screen.getByTestId('navbar-search-input');
+    const inputEl = screen.getByTestId('search-input');
     fireEvent.change(inputEl, { target: { value: search } });
 
     await waitFor(() =>
@@ -67,7 +67,7 @@ describe('Search', () => {
       </MemoryRouter>
     );
 
-    const inputEl = screen.getByTestId('navbar-search-input');
+    const inputEl = screen.getByTestId('search-input');
     fireEvent.change(inputEl, { target: { value: search } });
 
     await waitFor(() =>

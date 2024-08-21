@@ -1,12 +1,16 @@
 import { AxiosRequestConfig } from 'axios';
 
 import { ListSong, Song, Verse } from '../../Types';
-import { del, patch, post, get } from '../requests';
+import { Editors, Favorite } from '../services';
+import { del, patch, post } from '../requests';
 import { Body } from '../types';
 import Crud from '../crud';
 
 export default class SongsAPI extends Crud<Song, ListSong> {
   model = 'song';
+
+  editors = new Editors(this.model);
+  favorite = new Favorite(this.model).favorite;
 
   constructor() {
     super();
@@ -98,80 +102,6 @@ export default class SongsAPI extends Crud<Song, ListSong> {
     return patch({
       url: `${this.baseUrl}/${this.model}/${uid}/verse/${number}/`,
       body: { verse },
-      config
-    });
-  }
-
-  addEditor(
-    {
-      uid,
-      userUID,
-      config
-    }: {
-      uid: string;
-      userUID: string;
-      config?: AxiosRequestConfig;
-    } = {
-      uid: '',
-      userUID: '',
-      config: {}
-    }
-  ) {
-    return post({
-      url: `${this.baseUrl}/${this.model}/${uid}/editor/`,
-      body: { userUID },
-      config
-    });
-  }
-
-  delEditor(
-    {
-      uid,
-      userUID,
-      config
-    }: {
-      uid: string;
-      userUID: string;
-      config?: AxiosRequestConfig;
-    } = {
-      uid: '',
-      userUID: '',
-      config: {}
-    }
-  ) {
-    return del({
-      url: `${this.baseUrl}/${this.model}/${uid}/editor/${userUID}/`,
-      config
-    });
-  }
-
-  fetchAvailableEditors(
-    {
-      uid,
-      config
-    }: {
-      uid: string;
-      config?: AxiosRequestConfig;
-    } = {
-      uid: '',
-      config: {}
-    }
-  ) {
-    return get({
-      url: `${this.baseUrl}/${this.model}/${uid}/editors/available/`,
-      config
-    });
-  }
-
-  favorite(
-    { uid, config }: { uid: string; config?: AxiosRequestConfig } = {
-      uid: '',
-      config: {}
-    }
-  ) {
-    return post({
-      url: `${this.baseUrl}/${this.model}/favorite/`,
-      body: { uid },
       config
     });
   }

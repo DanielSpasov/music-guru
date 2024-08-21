@@ -1,36 +1,45 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { EditorSchema } from '../../Validations';
-import { serializers } from '../../Serializers';
+import { EditorsSchema } from '../../Validations';
 import { BaseModel, Model } from '../../Types';
-import { APIError } from '../../Error';
 import { schemas } from '../../Schemas';
+import { APIError } from '../../Error';
 
 export default ({ model }: { model: Model }) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const item = res.locals.item as BaseModel;
-      const editorUID = EditorSchema.parse(req.body.userUID);
+      const editorsUids = EditorsSchema.parse(req.body.editorsUids);
 
-      const [data] = await schemas.users
-        .aggregate()
-        .match({ uid: editorUID })
-        .project({ ...serializers.users?.list, _id: 0 });
+      const editors = await schemas.users
+        .find({ uid: { $in: editorsUids } }, { uid: 1 })
+        .lean()
+        .distinct('uid');
 
-      if (!data) {
-        throw new APIError(404, 'User not found.');
+      const nonExistingUIDs = editorsUids.filter(uid => !editors.includes(uid));
+      if (nonExistingUIDs.length > 0) {
+        throw new APIError(
+          404,
+          `Users not found: ${nonExistingUIDs.join(', ')}.`
+        );
       }
 
-      if (item.editors.includes(editorUID)) {
-        throw new APIError(400, 'User is already an editor.');
+      const item = res.locals.item as BaseModel;
+      const alreadyEditors = editorsUids.filter(uid =>
+        item.editors.includes(uid)
+      );
+      if (alreadyEditors.length > 0) {
+        throw new APIError(
+          400,
+          `Users are already editors: ${alreadyEditors.join(', ')}.`
+        );
       }
 
       await schemas[model].updateOne(
         { uid: item.uid },
-        { $push: { editors: editorUID } }
+        { $addToSet: { editors: { $each: editorsUids } } }
       );
 
-      res.status(200).json({ data });
+      res.status(200).json({ message: 'Editors added.' });
     } catch (err) {
       next(err);
     }

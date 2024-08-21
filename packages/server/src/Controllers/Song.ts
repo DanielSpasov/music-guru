@@ -63,10 +63,10 @@ router.post(
   [get({ model: 'songs' }), authorization, ownership],
   editors.post({ model: 'songs' })
 );
-router.delete(
-  '/:id/editor/:editor',
+router.patch(
+  '/:id/editor',
   [get({ model: 'songs' }), authorization, ownership],
-  editors.del({ model: 'songs' })
+  editors.patch({ model: 'songs' })
 );
 
 export default router;

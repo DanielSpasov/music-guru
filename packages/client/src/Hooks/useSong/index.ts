@@ -124,11 +124,14 @@ export const useSong = (uid: string, inherit?: Song) => {
     [uid]
   );
 
-  const addEditor = useCallback(
-    async (userUID: string) => {
+  const postEditors = useCallback(
+    async (editorsUids: string[]) => {
       try {
-        const { data } = await Api.songs.addEditor({ uid, userUID });
-        setSong(prev => ({ ...prev, editors: [...prev.editors, data.uid] }));
+        await Api.songs.editors.post({ uid, editorsUids });
+        setSong(prev => ({
+          ...prev,
+          editors: [...prev.editors, ...editorsUids]
+        }));
         toast.success('Editor added sucessfully');
       } catch (err) {
         toast.error('Failed to add editor');
@@ -137,16 +140,17 @@ export const useSong = (uid: string, inherit?: Song) => {
     [uid]
   );
 
-  const delEditor = useCallback(
-    async (userUID: string) => {
+  const patchEditors = useCallback(
+    async (editorsUids: string[]) => {
       try {
-        await Api.songs.delEditor({ uid, userUID });
+        await Api.songs.editors.patch({ uid, editorsUids });
         setSong(prev => ({
           ...prev,
-          editors: prev.editors.filter(x => x !== userUID)
+          editors: prev.editors.filter(x => !editorsUids.includes(x))
         }));
         toast.success('Editor removed sucessfully');
       } catch (err) {
+        console.log(err);
         toast.error('Failed to remove editor');
       }
     },
@@ -160,8 +164,8 @@ export const useSong = (uid: string, inherit?: Song) => {
     del,
     updateImage,
     editors: {
-      add: addEditor,
-      del: delEditor
+      post: postEditors,
+      patch: patchEditors
     },
     verses: {
       add: addVerse,

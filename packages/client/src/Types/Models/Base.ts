@@ -7,5 +7,5 @@ export type BaseDetailedModel = {
   uid: string;
   name: string;
   created_by: string;
-  editors?: string[];
+  editors: string[];
 };

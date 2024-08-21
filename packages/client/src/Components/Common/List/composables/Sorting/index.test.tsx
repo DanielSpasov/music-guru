@@ -145,7 +145,7 @@ describe('Sorting', () => {
     expect(optionDescEl).toBeInTheDocument();
     fireEvent.click(optionDescEl);
 
-    expect(setValue).toBeCalledWith(config[1].key);
+    expect(setValue).toBeCalledWith(`-${config[1].key}`);
 
     // Click new option
     const optionAscEl = screen.getByTestId(
@@ -154,6 +154,6 @@ describe('Sorting', () => {
     expect(optionAscEl).toBeInTheDocument();
     fireEvent.click(optionAscEl);
 
-    expect(setValue).toBeCalledWith(`-${config[1].key}`);
+    expect(setValue).toBeCalledWith(config[1].key);
   });
 });

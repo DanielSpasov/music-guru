@@ -1,11 +1,13 @@
 import { useCallback, useRef, useState } from 'react';
 
 import { Option, SelectComponentProps } from './types';
+import { Popover, Search } from '../../../Common';
+import { useDebounce } from '../../../../Hooks';
 import { themeProps } from './styles';
 import { IX } from '../../../Icons';
 
 // Composables
-import Dropdown from './composables/Dropdown';
+import Results from './composables/Results';
 
 const Single = <T extends Option>({
   defaultValue = null,
@@ -20,6 +22,9 @@ const Single = <T extends Option>({
 
   const searchRef = useRef<HTMLInputElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
+
+  const [search, setSearch] = useState('');
+  const searchValue = useDebounce({ value: search, delay: 500 });
 
   const onOptionClick = useCallback(
     (option: Option) => {
@@ -44,7 +49,13 @@ const Single = <T extends Option>({
       onFocus={() => setOpen(true)}
       onBlur={() => {
         requestAnimationFrame(() => {
-          if (document.activeElement !== searchRef.current) setOpen(false);
+          if (
+            document.activeElement !== searchRef.current &&
+            document.activeElement !== fieldRef.current
+          ) {
+            setOpen(false);
+            setSearch('');
+          }
         });
       }}
       ref={fieldRef}
@@ -58,14 +69,16 @@ const Single = <T extends Option>({
         )}
       </p>
 
-      <Dropdown<T>
-        selected={selected ? [selected] : []}
-        onOptionClick={onOptionClick}
-        hideSearch={hideSearch}
-        searchRef={searchRef}
-        fetchFn={fetchFn}
-        open={open}
-      />
+      <Popover open={open} className="w-full">
+        {!hideSearch && <Search setValue={setSearch} forwardRef={searchRef} />}
+
+        <Results
+          fetchFn={fetchFn}
+          onOptionClick={onOptionClick}
+          search={searchValue}
+          selected={selected ? [selected] : []}
+        />
+      </Popover>
 
       {selected && (
         <IX

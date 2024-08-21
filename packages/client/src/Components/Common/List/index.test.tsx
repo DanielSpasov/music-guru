@@ -21,7 +21,7 @@ describe('List', () => {
     const listEl = screen.getByTestId('list');
     expect(listEl).toBeInTheDocument();
 
-    const searchEl = screen.getByTestId('list-search');
+    const searchEl = screen.getByTestId('search-box');
     expect(searchEl).toBeInTheDocument();
 
     const contentEl = screen.getByTestId('list-content');
@@ -109,7 +109,7 @@ describe('List', () => {
       );
     });
 
-    const searchEl = screen.queryByTestId('list-search');
+    const searchEl = screen.queryByTestId('search-box');
     expect(searchEl).not.toBeInTheDocument();
   });
 
@@ -127,7 +127,7 @@ describe('List', () => {
       );
     });
 
-    const searchEl = screen.getByTestId('list-search-input');
+    const searchEl = screen.getByTestId('search-input');
     expect(searchEl).toHaveAttribute('placeholder', searchPlaceholder);
   });
 
@@ -143,7 +143,7 @@ describe('List', () => {
 
     const value = 'testsearch';
 
-    const searchEl = screen.getByTestId('list-search-input');
+    const searchEl = screen.getByTestId('search-input');
     expect(searchEl).toBeInTheDocument();
     await act(async () => {
       fireEvent.change(searchEl, { target: { value } });
@@ -151,7 +151,7 @@ describe('List', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { name: value, sort: '-created_at' }
+        params: { name: value, sort: 'created_at' }
       });
     });
   });
@@ -168,18 +168,18 @@ describe('List', () => {
       );
     });
 
-    const searchEl = screen.getByTestId('list-search-input');
+    const searchEl = screen.getByTestId('search-input');
     expect(searchEl).toBeInTheDocument();
     fireEvent.change(searchEl, { target: { value } });
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { [searchKey]: value, sort: '-created_at' }
+        params: { [searchKey]: value, sort: 'created_at' }
       });
     });
   });
 
-  test('calls fetchFn with custom search key', async () => {
+  test('calls fetchFn with correct sorting key', async () => {
     const fetchFn = vi.fn();
     const config = [
       {
@@ -211,7 +211,7 @@ describe('List', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { sort: config[0].key, name: '' }
+        params: { sort: `-${config[0].key}`, name: '' }
       });
     });
   });

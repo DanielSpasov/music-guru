@@ -16,8 +16,8 @@ import {
 } from '../../../../';
 
 // Composables
+import GlobalSearch from './GlobalSearch';
 import DarkTheme from './DarkTheme';
-import Search from './Search';
 
 const Navbar = () => {
   const { isAuthenticated, data } = useContext(AuthContext);
@@ -44,7 +44,7 @@ const Navbar = () => {
       </section>
 
       <section className="flex items-center flex-1">
-        <Search models={['albums', 'artists', 'songs']} />
+        <GlobalSearch models={['albums', 'artists', 'songs']} />
       </section>
 
       <section className="flex items-center justify-end flex-1">

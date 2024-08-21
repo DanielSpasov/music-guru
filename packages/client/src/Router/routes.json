@@ -52,6 +52,11 @@
             "path": "features",
             "componentName": "ArtistsFeatures",
             "protection": "none"
+          },
+          {
+            "path": "settings",
+            "componentName": "ArtistsSettings",
+            "protection": "owner"
           }
         ]
       }
@@ -86,6 +91,11 @@
             "path": "edit",
             "componentName": "AlbumsEdit",
             "protection": "editor"
+          },
+          {
+            "path": "settings",
+            "componentName": "AlbumsSettings",
+            "protection": "owner"
           }
         ]
       }

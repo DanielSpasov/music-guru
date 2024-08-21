@@ -1,8 +1,15 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { List, PageLayout, Image, IPen, Socials } from '../../../Components';
+import {
+  List,
+  PageLayout,
+  Image,
+  IPen,
+  Socials,
+  ISettings
+} from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { getSidebarLinks } from './sidebarLinks';
 import { Artist } from '../../../Types';
@@ -18,6 +25,7 @@ export const defaultArtist: Artist = {
   name: '',
   uid: '',
   about: '',
+  editors: [],
   links: []
 };
 
@@ -80,6 +88,16 @@ const ArtistDetails = () => {
     [artist.uid]
   );
 
+  const isOwner = useMemo(
+    () => artist.created_by === uid,
+    [artist.created_by, uid]
+  );
+
+  const isEditor = useMemo(() => {
+    if (!uid) return false;
+    return Boolean(artist.editors.includes(uid)) || isOwner;
+  }, [artist.editors, uid, isOwner]);
+
   return (
     <PageLayout
       title={artist.name}
@@ -90,10 +108,17 @@ const ArtistDetails = () => {
       actions={[
         {
           type: 'icon',
+          Icon: ISettings,
+          onClick: () => navigate('settings'),
+          hidden: !isOwner,
+          disabled: !isOwner
+        },
+        {
+          type: 'icon',
           Icon: IPen,
           onClick: () => navigate('edit'),
           hidden: !isAuthenticated,
-          disabled: uid !== artist.created_by
+          disabled: !isEditor
         }
       ]}
     >
@@ -103,7 +128,7 @@ const ArtistDetails = () => {
             <Image
               src={artist.image}
               alt={artist.name}
-              editable={artist.created_by === uid}
+              editable={isEditor}
               updateFn={updateImage}
               shape="circle"
               className="w-64 h-64"

@@ -1,0 +1,14 @@
+@tailwind components;
+
+@layer components {
+  .actionCell {
+    @apply flex gap-1;
+  }
+
+  .checkIcon {
+    @apply w-7 h-7 [&>path]:fill-green-400;
+  }
+  .xIcon {
+    @apply w-7 h-7 [&>path]:fill-red-400;
+  }
+}

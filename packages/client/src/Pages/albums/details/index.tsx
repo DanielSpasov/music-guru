@@ -1,8 +1,15 @@
+import { useEffect, useState, useCallback, useContext, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState, useCallback, useContext } from 'react';
 import { toast } from 'react-toastify';
 
-import { IPen, ITrashBin, Image, List, PageLayout } from '../../../Components';
+import {
+  IPen,
+  ISettings,
+  ITrashBin,
+  Image,
+  List,
+  PageLayout
+} from '../../../Components';
 import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
 import { Album } from '../../../Types';
@@ -18,6 +25,7 @@ export const defaultAlbum: Album = {
   songs: [],
   artist: defaultArtist,
   favorites: 0,
+  editors: [],
   type: {
     name: '',
     code: '',
@@ -101,6 +109,16 @@ const AlbumDetails = () => {
     [album?.uid]
   );
 
+  const isOwner = useMemo(
+    () => album.created_by === uid,
+    [album.created_by, uid]
+  );
+
+  const isEditor = useMemo(() => {
+    if (!uid) return false;
+    return Boolean(album.editors.includes(uid)) || isOwner;
+  }, [album.editors, uid, isOwner]);
+
   return (
     <PageLayout
       title={album.name}
@@ -110,17 +128,24 @@ const AlbumDetails = () => {
       actions={[
         {
           type: 'icon',
+          Icon: ISettings,
+          onClick: () => navigate('settings'),
+          hidden: !isOwner,
+          disabled: !isOwner
+        },
+        {
+          type: 'icon',
           Icon: IPen,
           onClick: () => navigate('edit'),
           hidden: !isAuthenticated,
-          disabled: uid !== album.created_by
+          disabled: !isEditor
         },
         {
           type: 'icon',
           Icon: ITrashBin,
           onClick: deleteAlbum,
-          hidden: !isAuthenticated,
-          disabled: uid !== album.created_by
+          hidden: !isOwner,
+          disabled: !isOwner
         }
       ]}
     >
@@ -128,7 +153,7 @@ const AlbumDetails = () => {
         <Image
           src={album.image}
           alt={album.name}
-          editable={album.created_by === uid}
+          editable={isEditor}
           updateFn={updateImage}
           className="w-64 h-64"
         />
