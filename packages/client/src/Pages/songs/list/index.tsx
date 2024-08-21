@@ -39,7 +39,7 @@ const Songs = () => {
         model="songs"
         fetchFn={config => Api.songs.fetch({ config })}
         favoriteFn={uid => Api.songs.favorite({ uid })}
-        skeletonLength={54}
+        skeletonLength={56}
       />
     </PageLayout>
   );

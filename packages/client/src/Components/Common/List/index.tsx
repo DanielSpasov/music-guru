@@ -16,7 +16,7 @@ const List = <T extends BaseModel>({
   model,
   fetchFn,
   favoriteFn,
-  skeletonLength = 18,
+  skeletonLength = 24,
   // Sorting
   sortingConfig = [],
   // Search

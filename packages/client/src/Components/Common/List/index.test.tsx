@@ -25,7 +25,7 @@ describe('List', () => {
     expect(searchEl).toBeInTheDocument();
 
     const contentEl = screen.getByTestId('list-content');
-    expect(contentEl.children.length).toEqual(18);
+    expect(contentEl.children.length).toEqual(24);
   });
 
   test('renders a number of loading cards if skeletonLength is provided', async () => {

@@ -66,7 +66,7 @@ const ArtistAlbums = () => {
           fetchFn={fetchAlbums}
           model="albums"
           favoriteFn={uid => Api.albums.favorite({ uid })}
-          skeletonLength={10}
+          skeletonLength={24}
         />
       </section>
     </PageLayout>
