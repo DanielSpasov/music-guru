@@ -13,5 +13,6 @@ export type Album = Document &
     artist: Artist;
     songs: Song[];
     release_date: Date | null;
+    about: string;
     links: { name: string; url: string }[];
   };

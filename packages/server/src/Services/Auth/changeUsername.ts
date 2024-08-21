@@ -8,12 +8,9 @@ import User from '../../Schemas/User';
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     let username = UsernameSchema.parse(req.body.username);
-
+    console.log(res.locals.user);
     if (!username) {
-      const user = await User.findOne({ uid: res.locals.user.uid });
-      if (!user) throw new APIError(404, 'Invalid User UID.');
-
-      const emailUsername = user.email.split('@')[0];
+      const emailUsername = res.locals.user.email.split('@')[0];
       const discriminator = Math.floor(1000 + Math.random() * 9000);
       username = `${emailUsername}${discriminator}`;
     }

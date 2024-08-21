@@ -63,6 +63,8 @@ const songs: PipelineStage[] = [
       _id: '$_id',
       uid: { $first: '$uid' },
       name: { $first: '$name' },
+      about: { $first: '$about' },
+      links: { $first: '$links' },
       image: { $first: '$image' },
       artist: { $first: '$artist' },
       release_date: { $first: '$release_date' },

@@ -31,7 +31,7 @@ export const BaseSongSchema = z.object({
   features: z
     .array(SelectOptionSchema.superRefine(Require('Artist')))
     .optional(),
-  about: z.string().max(10000, 'Max length is 10000 characters')
+  about: z.string().max(5000, 'Max length is 5000 characters')
 });
 
 export const CreateSongSchema = BaseSongSchema.and(SocialsSchema);

@@ -74,7 +74,7 @@ const CreateArtist = () => {
           <Textarea label="About" name="about" />
         </Fieldset>
 
-        <Fieldset title="Socials" foldable>
+        <Fieldset title="Links" foldable>
           <Input label="Instagram" name="instagram" />
           <Input label="X" name="x" />
           <Input label="Facebook" name="facebook" />

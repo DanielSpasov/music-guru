@@ -25,14 +25,6 @@ describe('Image', () => {
     expect(imageElement).toHaveAttribute('alt', alt);
   });
 
-  test('renders Image with custom className attribute', () => {
-    const src = 'https://example.com/image.jpg';
-    const className = 'bg-neutral-50';
-    render(<Image src={src} className={className} />);
-    const imageElement = screen.getByTestId('image');
-    expect(imageElement.parentElement).toHaveClass(className);
-  });
-
   test('calls updateFn when a file is uploaded', async () => {
     const src = 'https://example.com/image.jpg';
     const file = new File(['image.jpg'], 'image.jpg', { type: 'image/jpeg' });

@@ -11,10 +11,16 @@ const artistSchema = new Schema<Artist>({
   links: [
     {
       name: { type: String, required: true },
-      url: { type: String, required: true }
+      url: { type: String, required: true },
+      _id: false
     }
   ],
-  editors: [{ type: String, required: true }],
+  editors: [
+    {
+      type: String,
+      required: true
+    }
+  ],
   created_by: { type: String, required: true },
   created_at: { type: Date, default: Date.now }
 });

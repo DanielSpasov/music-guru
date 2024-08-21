@@ -16,7 +16,7 @@ const List = <T extends BaseModel>({
   model,
   fetchFn,
   favoriteFn,
-  skeletonLength = 18,
+  skeletonLength = 24,
   // Sorting
   sortingConfig = [],
   // Search
@@ -27,6 +27,7 @@ const List = <T extends BaseModel>({
   const { uid, isAuthenticated } = useContext(AuthContext);
 
   const [state, setState] = useState<ListState<T>>({ items: [], favs: [] });
+  const [loadingFavs, setLoadingFavs] = useState(true);
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState('');
@@ -37,9 +38,12 @@ const List = <T extends BaseModel>({
   useEffect(() => {
     (async () => {
       try {
-        if (!uid) return [];
+        if (!uid) {
+          setLoadingFavs(false);
+          return;
+        }
 
-        setLoading(true);
+        setLoadingFavs(true);
         const { data } = await Api.users.get({ id: uid });
 
         if (!data) return;
@@ -47,7 +51,7 @@ const List = <T extends BaseModel>({
       } catch (err) {
         toast.error('Failed to fetch favorites.');
       } finally {
-        setLoading(false);
+        setLoadingFavs(false);
       }
     })();
   }, [model, uid]);
@@ -91,7 +95,7 @@ const List = <T extends BaseModel>({
         className="flex flex-wrap w-full items-start justify-start"
         data-testid="list-content"
       >
-        {loading ? (
+        {loading || loadingFavs ? (
           Array(skeletonLength)
             .fill(null)
             .map((_, i) => (

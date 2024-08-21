@@ -145,6 +145,7 @@ const ArtistDetails = () => {
             <List
               favoriteFn={uid => Api.albums.favorite({ uid })}
               fetchFn={fetchAlbums}
+              skeletonLength={5}
               model="albums"
               hideSearch
             />
@@ -155,6 +156,7 @@ const ArtistDetails = () => {
             <List
               favoriteFn={uid => Api.songs.favorite({ uid })}
               fetchFn={fetchSongs}
+              skeletonLength={10}
               model="songs"
               hideSearch
             />
@@ -165,6 +167,7 @@ const ArtistDetails = () => {
             <List
               favoriteFn={uid => Api.songs.favorite({ uid })}
               fetchFn={fetchFeatures}
+              skeletonLength={10}
               model="songs"
               hideSearch
             />

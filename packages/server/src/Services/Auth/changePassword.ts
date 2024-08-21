@@ -15,10 +15,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       throw new APIError(400, "Passwords doesn't match.");
     }
 
-    const [user] = await User.aggregate().match({ uid: res.locals.user.uid });
-    if (!user) throw new APIError(404, 'Invalid User UID.');
-
-    if (!user.verified) {
+    if (!res.locals.user.verified) {
       throw new APIError(
         400,
         'You need to verify your email before you can change your password.'
@@ -27,13 +24,13 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
     const currentPassMatch = await bcrypt.compare(
       validated.current_password,
-      user.password
+      res.locals.user.password
     );
     if (!currentPassMatch) throw new APIError(400, 'Wrong password.');
 
     const newPassMatch = await bcrypt.compare(
       validated.new_password,
-      user.password
+      res.locals.user.password
     );
     if (newPassMatch) {
       throw new APIError(400, 'New Password cannot be your old password.');
@@ -53,9 +50,9 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       .project({ ...serializers.users?.detailed, _id: 0 });
 
     await SendEmail({
-      to: user.email,
+      to: res.locals.user.email,
       template: 'PASSWORD_CHANGED',
-      data: { username: user.username }
+      data: { username: res.locals.user.username }
     });
 
     res.status(200).json({ data });
