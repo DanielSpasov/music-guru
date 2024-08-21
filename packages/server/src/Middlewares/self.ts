@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { APIError } from '../Error';
+import User from '../Schemas/User';
 
 const self = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -13,7 +14,9 @@ const self = async (req: Request, res: Response, next: NextFunction) => {
       process.env.JWT_SECRET || ''
     ) as JwtPayload;
 
-    if (req.params.id !== uid) throw new APIError(403, 'Permission denied.');
+    const [user] = await User.aggregate().match({ uid });
+
+    res.locals.user = user;
 
     next();
   } catch (err) {
