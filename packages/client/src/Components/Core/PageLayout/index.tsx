@@ -55,7 +55,12 @@ const PageLayout: FC<PageLayoutProps> = ({
           }`}
         >
           <main>
-            {!hideHeader && <Header heading={heading} actions={actions} />}
+            {!hideHeader && (
+              <Header
+                heading={loading ? 'Loading...' : heading}
+                actions={actions}
+              />
+            )}
 
             <div className="p-4">
               {loading ? (

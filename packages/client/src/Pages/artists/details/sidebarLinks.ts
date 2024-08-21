@@ -3,7 +3,7 @@ import { SidebarProps } from '../../../Components/Core/PageLayout/composables/Si
 
 export const getSidebarLinks = (uid: string): SidebarProps['links'] => [
   {
-    title: 'More',
+    title: 'Artist',
     links: [
       {
         label: 'Details',

@@ -52,6 +52,11 @@
             "path": "features",
             "componentName": "ArtistsFeatures",
             "protection": "none"
+          },
+          {
+            "path": "settings",
+            "componentName": "ArtistsSettings",
+            "protection": "owner"
           }
         ]
       }

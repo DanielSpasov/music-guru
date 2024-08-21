@@ -11,6 +11,7 @@ export const Components = {
   ArtistsMixtapes: lazy(() => import('../Pages/artists/details/mixtapes')),
   ArtistsSongs: lazy(() => import('../Pages/artists/details/songs')),
   ArtistsFeatures: lazy(() => import('../Pages/artists/details/features')),
+  ArtistsSettings: lazy(() => import('../Pages/artists/settings')),
   // Albums
   AlbumsList: lazy(() => import('../Pages/albums/list')),
   AlbumsCreate: lazy(() => import('../Pages/albums/create')),

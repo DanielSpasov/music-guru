@@ -11,6 +11,7 @@ const group: PipelineStage[] = [
       created_at: { $first: '$created_at' },
       created_by: { $first: '$created_by' },
       favorites: { $first: '$favorites' },
+      editors: { $first: '$editors' },
       links: { $first: '$links' }
     }
   }

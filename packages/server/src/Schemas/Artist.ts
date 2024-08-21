@@ -14,6 +14,7 @@ const artistSchema = new Schema<Artist>({
       url: { type: String, required: true }
     }
   ],
+  editors: [{ type: String, required: true }],
   created_by: { type: String, required: true },
   created_at: { type: Date, default: Date.now }
 });

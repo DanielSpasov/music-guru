@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 
 import { Artist, ListArtist } from '../../Types';
-import { post } from '../requests';
+import { patch, post } from '../requests';
 import Crud from '../crud';
 
 export default class ArtistsAPI extends Crud<Artist, ListArtist> {
@@ -45,4 +45,49 @@ export default class ArtistsAPI extends Crud<Artist, ListArtist> {
       config
     });
   }
+
+  editors = {
+    post: (
+      {
+        uid,
+        editorsUids,
+        config
+      }: {
+        uid: string;
+        editorsUids: string[];
+        config?: AxiosRequestConfig;
+      } = {
+        uid: '',
+        editorsUids: [],
+        config: {}
+      }
+    ) => {
+      return post({
+        url: `${this.baseUrl}/${this.model}/${uid}/editor/`,
+        body: { editorsUids },
+        config
+      });
+    },
+    patch: (
+      {
+        uid,
+        editorsUids,
+        config
+      }: {
+        uid: string;
+        editorsUids: string[];
+        config?: AxiosRequestConfig;
+      } = {
+        uid: '',
+        editorsUids: [],
+        config: {}
+      }
+    ) => {
+      return patch({
+        url: `${this.baseUrl}/${this.model}/${uid}/editor/`,
+        body: { editorsUids },
+        config
+      });
+    }
+  };
 }
