@@ -7,6 +7,7 @@ import { getSidebarLinks } from '../sidebarLinks';
 import { Artist } from '../../../../Types';
 import { defaultArtist } from '..';
 import Api from '../../../../Api';
+import { AxiosRequestConfig } from 'axios';
 
 const ArtistFeatures = () => {
   const { id = '0' } = useParams();
@@ -32,9 +33,15 @@ const ArtistFeatures = () => {
   }, [id]);
 
   const fetchFeatures = useCallback(
-    () =>
+    (config?: AxiosRequestConfig) =>
       Api.songs.fetch({
-        config: { params: { 'features.uid': artist.uid } }
+        ...config,
+        config: {
+          params: {
+            ...config?.params,
+            'features.uid': artist.uid
+          }
+        }
       }),
     [artist.uid]
   );
@@ -49,6 +56,11 @@ const ArtistFeatures = () => {
     >
       <section>
         <List
+          sortingConfig={[
+            { key: 'created_at', label: 'Date Added' },
+            { key: 'favorites', label: 'Favorites' },
+            { key: 'name', label: 'Name' }
+          ]}
           fetchFn={fetchFeatures}
           model="songs"
           favoriteFn={uid => Api.songs.favorite({ uid })}

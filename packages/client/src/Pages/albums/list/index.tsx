@@ -32,9 +32,10 @@ const Albums = () => {
     >
       <List
         sortingConfig={[
-          { key: 'created_at', label: 'Latest' },
-          { key: 'name', label: 'Name' },
-          { key: 'release_date', label: 'Release Date' }
+          { key: 'created_at', label: 'Date Added' },
+          { key: 'favorites', label: 'Favorites' },
+          { key: 'release_date', label: 'Release Date' },
+          { key: 'name', label: 'Name' }
         ]}
         fetchFn={config => Api.albums.fetch({ config })}
         favoriteFn={uid => Api.albums.favorite({ uid })}

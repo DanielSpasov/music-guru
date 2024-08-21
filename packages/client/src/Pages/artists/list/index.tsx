@@ -31,6 +31,11 @@ const Artists = () => {
       ]}
     >
       <List
+        sortingConfig={[
+          { key: 'created_at', label: 'Date Added' },
+          { key: 'favorites', label: 'Favorites' },
+          { key: 'name', label: 'Name' }
+        ]}
         fetchFn={config => Api.artists.fetch({ config })}
         favoriteFn={uid => Api.artists.favorite({ uid })}
         model="artists"

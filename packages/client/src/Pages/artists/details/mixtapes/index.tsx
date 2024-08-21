@@ -7,6 +7,7 @@ import { getSidebarLinks } from '../sidebarLinks';
 import { Artist } from '../../../../Types';
 import { defaultArtist } from '..';
 import Api from '../../../../Api';
+import { AxiosRequestConfig } from 'axios';
 
 const ArtistMixtapes = () => {
   const { id = '0' } = useParams();
@@ -32,9 +33,16 @@ const ArtistMixtapes = () => {
   }, [id]);
 
   const fetchMixtapes = useCallback(
-    () =>
+    (config?: AxiosRequestConfig) =>
       Api.albums.fetch({
-        config: { params: { 'artist.uid': artist.uid, 'type.code': 'M' } }
+        ...config,
+        config: {
+          params: {
+            ...config?.params,
+            'artist.uid': artist.uid,
+            'type.code': 'M'
+          }
+        }
       }),
     [artist.uid]
   );
@@ -49,6 +57,12 @@ const ArtistMixtapes = () => {
     >
       <section>
         <List
+          sortingConfig={[
+            { key: 'created_at', label: 'Date Added' },
+            { key: 'favorites', label: 'Favorites' },
+            { key: 'release_date', label: 'Release Date' },
+            { key: 'name', label: 'Name' }
+          ]}
           fetchFn={fetchMixtapes}
           model="albums"
           favoriteFn={uid => Api.albums.favorite({ uid })}
