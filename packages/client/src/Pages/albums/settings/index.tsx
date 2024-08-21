@@ -10,7 +10,7 @@ import Api from '../../../Api';
 const Settings: FC<{ data: Album }> = ({ data }) => {
   const { uid: userUID } = useContext(AuthContext);
 
-  const [editors, setEditors] = useState(data.editors || []);
+  const [editors, setEditors] = useState(data.editors);
 
   const fetchEditors = useCallback(
     async (config?: AxiosRequestConfig): Promise<{ data: Editor[] }> => {
