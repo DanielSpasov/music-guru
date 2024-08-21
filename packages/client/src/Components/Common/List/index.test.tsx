@@ -151,7 +151,7 @@ describe('List', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { name: value, sort: '-created_at' }
+        params: { name: value, sort: 'created_at' }
       });
     });
   });
@@ -174,7 +174,7 @@ describe('List', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { [searchKey]: value, sort: '-created_at' }
+        params: { [searchKey]: value, sort: 'created_at' }
       });
     });
   });
@@ -211,7 +211,7 @@ describe('List', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { sort: config[0].key, name: '' }
+        params: { sort: `-${config[0].key}`, name: '' }
       });
     });
   });
