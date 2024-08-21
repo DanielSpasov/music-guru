@@ -15,6 +15,7 @@ export const albumSerializers = {
   detailed: {
     uid: 1,
     name: 1,
+    about: 1,
     type: typeSerializer,
     artist: artistSerializers.list,
     image: 1,
@@ -23,6 +24,7 @@ export const albumSerializers = {
     created_at: 1,
     created_by: 1,
     editors: 1,
+    links: 1,
     songs: songSerializers.list
   }
 };

@@ -9,9 +9,14 @@ import {
   Input,
   Mask,
   PageLayout,
-  Select
+  Select,
+  Textarea
 } from '../../../Components';
-import { EditAlbumData, EditAlbumSchema } from '../../../Validations';
+import {
+  EditAlbumData,
+  EditAlbumSchema,
+  SocialsSchema
+} from '../../../Validations';
 import { SubmitFn } from '../../../Components/Forms/Form/types';
 import { EditAlbumProps } from './types';
 import Api from '../../../Api';
@@ -23,8 +28,27 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
   const onSubmit: SubmitFn<EditAlbumData> = useCallback(
     async formData => {
       try {
+        const socialsKeys = Object.keys(SocialsSchema.shape);
+        const socialsPayload = Object.entries(formData).reduce(
+          (data, [key, value]) => {
+            if (!value) return data;
+            if (socialsKeys.includes(key)) {
+              return {
+                ...data,
+                links: [...(data?.links || []), { name: key, url: value }]
+              };
+            }
+            return { ...data, [key]: value };
+          },
+          formData
+        );
+        Object.keys(socialsPayload).forEach(
+          key => socialsPayload[key] === undefined && delete socialsPayload[key]
+        );
+
         const payload = {
           ...formData,
+          ...socialsPayload,
           release_date: formData?.release_date
             ? moment(formData.release_date).toDate()
             : null,
@@ -56,7 +80,11 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
           ...data,
           release_date: data?.release_date
             ? moment(data?.release_date).format('MM/DD/yyyy')
-            : ''
+            : '',
+          ...data.links.reduce(
+            (acc, { name, url }) => ({ ...acc, [name]: url }),
+            {}
+          )
         }}
       >
         <Fieldset title="Details" foldable>
@@ -71,28 +99,31 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
             />
           </Fieldset>
 
-          <Fieldset>
-            <Fieldset className="flex gap-2">
-              <Mask
-                label="Release Date"
-                name="release_date"
-                mask="99/99/9999"
-              />
-              <Select
-                label="Artist"
-                name="artist"
-                required
-                fetchFn={({ config }) => Api.artists.fetch({ config })}
-              />
-            </Fieldset>
+          <Textarea label="About" name="about" />
 
+          <Fieldset className="flex gap-2">
+            <Mask label="Release Date" name="release_date" mask="99/99/9999" />
             <Select
-              label="Songs"
-              name="songs"
-              multiple
-              fetchFn={({ config }) => Api.songs.fetch({ config })}
+              label="Artist"
+              name="artist"
+              required
+              fetchFn={({ config }) => Api.artists.fetch({ config })}
             />
           </Fieldset>
+
+          <Select
+            label="Songs"
+            name="songs"
+            multiple
+            fetchFn={({ config }) => Api.songs.fetch({ config })}
+          />
+        </Fieldset>
+
+        <Fieldset title="Links" foldable>
+          <Input name="spotify" label="Spotify" />
+          <Input name="apple_music" label="Apple Music" />
+          <Input name="youtube" label="Youtube" />
+          <Input name="soundcloud" label="Soundcloud" />
         </Fieldset>
       </Form>
     </PageLayout>

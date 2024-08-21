@@ -8,7 +8,8 @@ import {
   ITrashBin,
   Image,
   List,
-  PageLayout
+  PageLayout,
+  Socials
 } from '../../../Components';
 import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
@@ -17,12 +18,14 @@ import Api from '../../../Api';
 
 export const defaultAlbum: Album = {
   uid: '',
+  about: '',
   created_at: new Date(),
   created_by: '',
   image: '',
   name: '',
   release_date: null,
   songs: [],
+  links: [],
   artist: defaultArtist,
   favorites: 0,
   editors: [],
@@ -124,7 +127,7 @@ const AlbumDetails = () => {
       title={album.name}
       heading={album.name}
       loading={loading}
-      hideFooter
+      footerContent={<Socials links={album.links} />}
       actions={[
         {
           type: 'icon',
@@ -157,6 +160,12 @@ const AlbumDetails = () => {
           updateFn={updateImage}
           className="w-64 h-64"
         />
+
+        {album.about && (
+          <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
+            {album.about}
+          </span>
+        )}
 
         <div className="flex justify-between w-full">
           <div>

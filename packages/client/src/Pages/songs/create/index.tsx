@@ -93,7 +93,7 @@ const CreateSong = () => {
           <Textarea name="about" label="About" />
         </Fieldset>
 
-        <Fieldset title="Socials" foldable>
+        <Fieldset title="Links" foldable>
           <Input name="spotify" label="Spotify" />
           <Input name="apple_music" label="Apple Music" />
           <Input name="youtube" label="Youtube" />

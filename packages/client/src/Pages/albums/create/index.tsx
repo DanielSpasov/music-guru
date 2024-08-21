@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { useCallback } from 'react';
 import moment from 'moment';
 
-import { BaseAlbumSchema, CreateAlbumData } from '../../../Validations';
 import { SubmitFn } from '../../../Components/Forms/Form/types';
 import Api from '../../../Api';
 import {
@@ -13,8 +12,14 @@ import {
   Input,
   PageLayout,
   Select,
-  Mask
+  Mask,
+  Textarea
 } from '../../../Components';
+import {
+  CreateAlbumSchema,
+  CreateAlbumData,
+  SocialsSchema
+} from '../../../Validations';
 
 const CreateAlbum = () => {
   const navigate = useNavigate();
@@ -22,8 +27,27 @@ const CreateAlbum = () => {
   const onSubmit: SubmitFn<CreateAlbumData> = useCallback(
     async formData => {
       try {
+        const socialsKeys = Object.keys(SocialsSchema.shape);
+        const socialsPayload = Object.entries(formData).reduce(
+          (data, [key, value]) => {
+            if (!value) return data;
+            if (socialsKeys.includes(key)) {
+              return {
+                ...data,
+                links: [...(data?.links || []), { name: key, url: value }]
+              };
+            }
+            return { ...data, [key]: value };
+          },
+          formData
+        );
+        Object.keys(socialsPayload).forEach(
+          key => socialsPayload[key] === undefined && delete socialsPayload[key]
+        );
+
         const payload = {
           ...formData,
+          ...socialsPayload,
           release_date: formData?.release_date
             ? moment(formData?.release_date, 'MM/DD/YYYY').toDate()
             : null,
@@ -31,6 +55,7 @@ const CreateAlbum = () => {
           artist: formData?.artist?.uid,
           songs: formData?.songs?.map(x => x?.uid)
         };
+
         const { data } = await Api.albums.post({
           body: payload,
           config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -50,7 +75,7 @@ const CreateAlbum = () => {
         onSubmit={onSubmit}
         className="m-auto"
         header="New Album"
-        validationSchema={BaseAlbumSchema}
+        validationSchema={CreateAlbumSchema}
       >
         <Fieldset title="Details" foldable>
           <Fieldset className="flex gap-2">
@@ -63,36 +88,39 @@ const CreateAlbum = () => {
             />
           </Fieldset>
 
-          <Fieldset>
-            <Fieldset className="flex gap-2">
-              <Mask
-                label="Release Date"
-                name="release_date"
-                mask="99/99/9999"
-              />
-              <Select
-                label="Type"
-                name="type"
-                required
-                hideSearch
-                fetchFn={({ config }) => Api.albums.fetchTypes({ config })}
-              />
-            </Fieldset>
+          <Textarea label="About" name="about" />
 
+          <Fieldset className="flex gap-2">
+            <Mask label="Release Date" name="release_date" mask="99/99/9999" />
             <Select
-              label="Artist"
-              name="artist"
+              label="Type"
+              name="type"
               required
-              fetchFn={({ config }) => Api.artists.fetch({ config })}
-            />
-
-            <Select
-              label="Songs"
-              name="songs"
-              multiple
-              fetchFn={({ config }) => Api.songs.fetch({ config })}
+              hideSearch
+              fetchFn={({ config }) => Api.albums.fetchTypes({ config })}
             />
           </Fieldset>
+
+          <Select
+            label="Artist"
+            name="artist"
+            required
+            fetchFn={({ config }) => Api.artists.fetch({ config })}
+          />
+
+          <Select
+            label="Songs"
+            name="songs"
+            multiple
+            fetchFn={({ config }) => Api.songs.fetch({ config })}
+          />
+        </Fieldset>
+
+        <Fieldset title="Links" foldable>
+          <Input name="spotify" label="Spotify" />
+          <Input name="apple_music" label="Apple Music" />
+          <Input name="youtube" label="Youtube" />
+          <Input name="soundcloud" label="Soundcloud" />
         </Fieldset>
       </Form>
     </PageLayout>

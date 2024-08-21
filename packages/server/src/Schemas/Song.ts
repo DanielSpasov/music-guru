@@ -10,11 +10,7 @@ const songSchema = new Schema<Song>({
   image: { type: String, default: '' },
   favorites: { type: Number, required: true, default: 0 },
   created_by: { type: String, required: true },
-  artist: {
-    type: String,
-    ref: 'Artist',
-    required: true
-  },
+  artist: { type: String, ref: 'Artist', required: true },
   features: [
     {
       type: String,
@@ -26,13 +22,15 @@ const songSchema = new Schema<Song>({
     {
       title: { type: String, required: true },
       lyrics: { type: String, required: true },
-      number: { type: Number, required: true }
+      number: { type: Number, required: true },
+      _id: false
     }
   ],
   links: [
     {
       name: { type: String, required: true },
-      url: { type: String, required: true }
+      url: { type: String, required: true },
+      _id: false
     }
   ],
   editors: [{ type: String, required: true }],

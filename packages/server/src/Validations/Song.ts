@@ -23,7 +23,7 @@ export const BaseSongSchema = z.object({
   release_date: DateSchema.optional().default(null),
   artist: z.string().uuid(),
   features: z.array(z.string().uuid()).optional().default([]),
-  about: z.string().max(10000, 'Max length is 10000 characters'),
+  about: z.string().max(5000, 'Max length is 5000 characters'),
   links: z
     .array(LinkSchema)
     .refine(link => link.filter(item => item.url !== null))
