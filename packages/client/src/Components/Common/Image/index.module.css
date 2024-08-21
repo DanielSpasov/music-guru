@@ -1,0 +1,48 @@
+@tailwind components;
+
+@layer components {
+  .wrapper {
+    @apply relative flex flex-shrink-0;
+  }
+
+  .icon,
+  .loader {
+    @apply absolute pointer-events-none top-[calc(50%-1.2em)] left-[calc(50%-1.2em)] w-[2.4rem] h-[2.4rem];
+  }
+
+  .loader {
+    @apply opacity-100;
+  }
+
+  .editIcon {
+    @apply opacity-0;
+  }
+
+  image {
+    @apply w-full h-full shadow-lg shadow-neutral-400 dark:shadow-neutral-900;
+  }
+
+  .editable {
+    @apply cursor-pointer;
+
+    &:hover {
+      @apply opacity-60;
+    }
+
+    &:hover + .editIcon {
+      @apply opacity-100;
+    }
+  }
+
+  .circle {
+    @apply rounded-full;
+  }
+
+  .square {
+    @apply rounded-lg;
+  }
+
+  .loading {
+    @apply opacity-60;
+  }
+}

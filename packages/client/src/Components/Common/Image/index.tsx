@@ -1,11 +1,13 @@
-import { ChangeEvent, FC, useCallback, useRef, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ZodError } from 'zod';
 
-import { hoverProps, imgProps, shapes } from './styles';
+import useDragAndDrop from '../../../Hooks/useDragAndDrop';
 import { FileSchema } from '../../../Validations';
-import { IPen, Loader } from '../../';
+import { IUpload, Loader } from '../../';
 import { ImageProps } from './types';
+
+import css from './index.module.css';
 
 const Image: FC<ImageProps> = ({
   src,
@@ -26,11 +28,10 @@ const Image: FC<ImageProps> = ({
   }, [editable, loading]);
 
   const onImageUpload = useCallback(
-    async (e: ChangeEvent<HTMLInputElement>) => {
+    async (files: FileList | null, e?: ChangeEvent<HTMLInputElement>) => {
       try {
         setLoading(true);
-        const input = e.target as HTMLInputElement;
-        const file = input.files?.[0];
+        const file = files?.[0];
         if (!file || !updateFn || !editable) return;
 
         const validatedFile = FileSchema.parse(file);
@@ -38,7 +39,7 @@ const Image: FC<ImageProps> = ({
         toast.success('Image updated successfully.');
       } catch (err) {
         if (err instanceof ZodError) toast.error(err.issues[0].message);
-        e.target.value = '';
+        if (e) e.target.value = '';
       } finally {
         setLoading(false);
       }
@@ -46,23 +47,36 @@ const Image: FC<ImageProps> = ({
     [updateFn, editable]
   );
 
+  const { isDragging, onDragEnter, onDragLeave, onDragOver, onDrop } =
+    useDragAndDrop(onImageUpload);
+
+  const styles = useMemo(() => {
+    const loadingStyles = loading ? css.loading : '';
+    const dragStyles = editable && isDragging ? css.loading : '';
+    const editableStyles = editable && !isDragging ? css.editable : '';
+
+    return `${loadingStyles} ${dragStyles} ${editableStyles} ${css[shape]}`;
+  }, [isDragging, loading, editable, shape]);
+
   return (
-    <div className={`relative flex flex-shrink-0 ${className}`}>
+    <div className={`${css.wrapper} ${className}`}>
       <img
         src={src}
         alt={alt}
         onClick={onImageClick}
-        className={`${loading && 'opacity-60'} ${editable && hoverProps} ${
-          shapes[shape]
-        } ${imgProps}`}
+        onDragEnter={onDragEnter}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
+        className={styles}
         data-testid="image"
         {...props}
       />
 
       {loading ? (
-        <Loader className="absolute animate-spin opacity-100 pointer-events-none top-[calc(50%-1.2em)] left-[calc(50%-1.2em)] w-[2.4em] h-[2.4em]" />
+        <Loader type="spinner" className={css.loader} />
       ) : (
-        <IPen className="absolute opacity-0 pointer-events-none top-[calc(50%-1.2em)] left-[calc(50%-1.2em)] w-[2.4em] h-[2.4em]" />
+        <IUpload className={`${css.icon} ${!isDragging && css.editIcon}`} />
       )}
 
       <input
@@ -71,7 +85,7 @@ const Image: FC<ImageProps> = ({
         accept="image/jpeg, image/png"
         data-testid="image-input"
         ref={inputRef}
-        onChange={onImageUpload}
+        onChange={e => onImageUpload(e.target.files, e)}
       />
     </div>
   );
