@@ -6,6 +6,7 @@ import { SocialsProps } from './types';
 import css from './index.module.css';
 
 const Socials: FC<SocialsProps> = ({ links }) => {
+  if (!links.length) return <div />;
   return (
     <div className="flex justify-center gap-4 p-4" data-testid="socials">
       {links.map((link, i) => {
