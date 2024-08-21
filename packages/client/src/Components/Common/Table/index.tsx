@@ -199,7 +199,7 @@ const Table = <T extends BaseModel>({
               <td>
                 <Loader
                   type="spinner"
-                  className={css.tableLoader}
+                  className="absolute w-full"
                   data-testid="table-loader"
                 />
               </td>

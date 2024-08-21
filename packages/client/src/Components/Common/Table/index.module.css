@@ -17,10 +17,6 @@
     }
   }
 
-  .tableLoader {
-    @apply absolute m-auto w-full;
-  }
-
   .noItemsBox {
     @apply absolute m-auto w-full text-center font-semibold p-2;
   }
