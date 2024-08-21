@@ -2,7 +2,7 @@
 
 @layer components {
   .sortButton {
-    @apply flex items-center font-semibold rounded-full whitespace-nowrap cursor-pointer shadow-sm px-4 py-1 border-2;
+    @apply flex items-center gap-1.5 font-semibold rounded-full whitespace-nowrap cursor-pointer shadow-sm px-4 py-1 border-2;
     @apply border-primary text-primary;
     @apply dark:border-neutral-900 dark:shadow-neutral-900;
 
