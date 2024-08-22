@@ -20,7 +20,7 @@ export default ({ model }: { model: Model }) =>
       const filters = useFilters(query);
       const sorting = useSorting(sort);
 
-      const [[count], data] = await Promise.all([
+      const [total, data] = await Promise.all([
         schemas[model]
           .aggregate(pipelines[model])
           .match(filters)
@@ -34,11 +34,13 @@ export default ({ model }: { model: Model }) =>
           .project({ ...serializers?.[model]?.[serializer], _id: 0 })
       ]);
 
+      const totalItems = total?.[0]?.totalDocuments ?? 0;
+
       res.status(200).json({
         data,
         pagination: {
-          totalItems: count.totalDocuments,
-          totalPages: Math.ceil(count.totalDocuments / Number(limit)),
+          totalItems,
+          totalPages: Math.ceil(totalItems / Number(limit)),
           currentPage: Number(page)
         }
       });
