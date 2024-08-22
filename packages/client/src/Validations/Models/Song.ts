@@ -21,7 +21,7 @@ const DateSchema = z.union([
   z.literal('')
 ]);
 
-const SelectOptionSchema = z.object({ uid: z.string().uuid() });
+const SelectOptionSchema = z.object({ uid: z.string().uuid() }).nullish();
 
 export const BaseSongSchema = z.object({
   name: z.string().min(1, 'Name is required.').max(128, 'Name is too long.'),
