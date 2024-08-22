@@ -47,3 +47,4 @@ export { IPhone } from './IPhone';
 export { IKey } from './IKey';
 export { ISortAsc } from './ISortAsc';
 export { ISortDesc } from './ISortDesc';
+export { IDisc } from './IDisc';

@@ -1,0 +1,16 @@
+@tailwind components;
+
+@layer components {
+  .wrapper {
+    @apply relative flex gap-4 mt-5 w-full;
+  }
+
+  .informationWrapper {
+    @apply flex flex-col items-start w-full px-4;
+  }
+
+  .about {
+    @apply mt-3 p-3 w-96 border-[1px] border-neutral-200 shadow-md rounded-md;
+    @apply dark:border-neutral-700 dark:shadow-black rounded-md;
+  }
+}

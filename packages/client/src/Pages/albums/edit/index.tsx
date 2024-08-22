@@ -52,9 +52,9 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
           release_date: formData?.release_date
             ? moment(formData.release_date).toDate()
             : null,
-          type: formData.type.uid,
-          artist: formData.artist.uid,
-          songs: formData.songs?.map(x => x.uid)
+          type: formData.type?.uid,
+          artist: formData.artist?.uid,
+          songs: formData.songs?.map(x => x?.uid)
         };
         await Api.albums.patch({
           id,

@@ -7,7 +7,7 @@ import {
   ISettings,
   ITrashBin,
   Image,
-  List,
+  Link,
   PageLayout,
   Socials
 } from '../../../Components';
@@ -15,6 +15,11 @@ import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
 import { Album } from '../../../Types';
 import Api from '../../../Api';
+
+import css from './index.module.css';
+
+// Composables
+import Discs from './composables/Disc';
 
 export const defaultAlbum: Album = {
   uid: '',
@@ -74,32 +79,6 @@ const AlbumDetails = () => {
     })();
   }, [id]);
 
-  const fetchArtist = useCallback(
-    () =>
-      Promise.resolve({
-        data: [album.artist],
-        pagination: {
-          totalItems: 1,
-          totalPages: 1,
-          currentPage: 0
-        }
-      }),
-    [album]
-  );
-
-  const fetchSongs = useCallback(
-    () =>
-      Promise.resolve({
-        data: album.songs || [],
-        pagination: {
-          totalItems: album.songs.length,
-          totalPages: 1,
-          currentPage: 0
-        }
-      }),
-    [album]
-  );
-
   const updateImage = useCallback(
     async (file: File) => {
       const { image } = await Api.albums.updateImage({
@@ -152,43 +131,31 @@ const AlbumDetails = () => {
         }
       ]}
     >
-      <section className="flex flex-col items-center text-white">
-        <Image
-          src={album.image}
-          alt={album.name}
-          editable={isEditor}
-          updateFn={updateImage}
-          className="w-64 h-64"
-        />
+      <section className={css.wrapper}>
+        <article className={css.informationWrapper}>
+          <Image
+            src={album.image}
+            alt={album.name}
+            editable={isEditor}
+            updateFn={updateImage}
+            className="w-96 h-96"
+          />
 
-        {album.about && (
-          <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
-            {album.about}
-          </span>
-        )}
+          <h2 className="font-semibold p-2">
+            {album.type.name} By:{' '}
+            <Link
+              type="link"
+              to={`/artists/${album.artist.uid}`}
+              className="font-semibold text-2xl underline"
+            >
+              {album.artist.name}
+            </Link>
+          </h2>
 
-        <div className="flex justify-between w-full">
-          <div>
-            <h3 className="text-center">Artist</h3>
-            <List
-              favoriteFn={uid => Api.artists.favorite({ uid })}
-              fetchFn={fetchArtist}
-              skeletonLength={1}
-              model="artists"
-              hideSearch
-            />
-          </div>
-          <div>
-            <h3 className="text-center">Songs</h3>
-            <List
-              favoriteFn={uid => Api.songs.favorite({ uid })}
-              fetchFn={fetchSongs}
-              skeletonLength={3}
-              model="songs"
-              hideSearch
-            />
-          </div>
-        </div>
+          {album.about && <span className={css.about}>{album.about}</span>}
+        </article>
+
+        <Discs discs={album.discs ?? []} artist={album.artist.uid} />
       </section>
     </PageLayout>
   );

@@ -1,4 +1,5 @@
 import { PipelineStage } from 'mongoose';
+import { serializers } from '../Serializers';
 
 const artist: PipelineStage[] = [
   {
@@ -29,38 +30,73 @@ const type: PipelineStage[] = [
 ];
 
 const songs: PipelineStage[] = [
+  { $unwind: { path: '$discs', preserveNullAndEmptyArrays: true } },
+  { $unwind: { path: '$discs.songs', preserveNullAndEmptyArrays: true } },
   {
     $lookup: {
       from: 'songs',
-      localField: 'songs',
+      localField: 'discs.songs.uid',
       foreignField: 'uid',
-      as: 'songs'
+      as: 'data',
+      pipeline: [
+        {
+          $project: {
+            ...serializers.songs?.list,
+            _id: 0,
+            artist: 1
+          }
+        }
+      ]
     }
   },
   {
-    $unwind: {
-      path: '$songs',
-      preserveNullAndEmptyArrays: true
+    $addFields: {
+      'discs.songs': {
+        $cond: {
+          if: { $gt: [{ $size: '$data' }, 0] },
+          then: {
+            $mergeObjects: [
+              { number: '$discs.songs.number', uid: '$discs.songs.uid' },
+              { $arrayElemAt: ['$data', 0] }
+            ]
+          },
+          else: {
+            number: '$discs.songs.number',
+            uid: '$discs.songs.uid',
+            name: null,
+            image: null,
+            artist: null
+          }
+        }
+      }
     }
   },
   {
     $lookup: {
       from: 'artists',
-      localField: 'songs.artist',
+      localField: 'discs.songs.artist',
       foreignField: 'uid',
-      as: 'songs.artist'
+      as: 'artistDetails',
+      pipeline: [
+        {
+          $project: {
+            ...serializers.artists?.list,
+            _id: 0
+          }
+        }
+      ]
     }
   },
   {
     $addFields: {
-      'songs.artist': {
-        $arrayElemAt: ['$songs.artist', 0]
+      'discs.songs.artist': {
+        $arrayElemAt: ['$artistDetails', 0] // Extract artist details
       }
     }
   },
   {
     $group: {
-      _id: '$_id',
+      _id: { albumId: '$_id', discNumber: '$discs.number' },
       uid: { $first: '$uid' },
       name: { $first: '$name' },
       about: { $first: '$about' },
@@ -72,17 +108,75 @@ const songs: PipelineStage[] = [
       created_by: { $first: '$created_by' },
       editors: { $first: '$editors' },
       type: { $first: '$type' },
-      songs: { $push: '$songs' },
-      favorites: { $first: '$favorites' }
+      discNumber: { $first: '$discs.number' },
+      songs: {
+        $push: {
+          $cond: [
+            {
+              $or: [
+                { $eq: ['$discs.songs.name', null] },
+                { $eq: ['$discs.songs.image', null] },
+                { $eq: ['$discs.songs.artist', null] }
+              ]
+            },
+            null,
+            '$discs.songs'
+          ]
+        }
+      }
     }
   },
   {
     $addFields: {
-      songs: {
+      discs: {
         $filter: {
-          input: '$songs',
-          as: 'song',
-          cond: { $ne: ['$$song', {}] }
+          input: {
+            $map: {
+              input: { $arrayElemAt: ['$discs', 0] },
+              as: 'disc',
+              in: {
+                number: '$disc.number',
+                songs: {
+                  $filter: {
+                    input: '$songs',
+                    as: 'song',
+                    cond: { $ne: ['$$song', null] }
+                  }
+                }
+              }
+            }
+          },
+          as: 'disc',
+          cond: { $gt: [{ $size: '$$disc.songs' }, 0] }
+        }
+      }
+    }
+  },
+  {
+    $group: {
+      _id: '$_id.albumId',
+      uid: { $first: '$uid' },
+      name: { $first: '$name' },
+      about: { $first: '$about' },
+      links: { $first: '$links' },
+      image: { $first: '$image' },
+      artist: { $first: '$artist' },
+      release_date: { $first: '$release_date' },
+      created_at: { $first: '$created_at' },
+      created_by: { $first: '$created_by' },
+      editors: { $first: '$editors' },
+      type: { $first: '$type' },
+      favorites: { $first: '$favorites' },
+      discs: {
+        $push: {
+          number: '$discNumber',
+          songs: {
+            $filter: {
+              input: '$songs',
+              as: 'song',
+              cond: { $ne: ['$$song', null] }
+            }
+          }
         }
       }
     }

@@ -18,6 +18,7 @@ export const albumSerializers = {
     about: 1,
     type: typeSerializer,
     artist: artistSerializers.list,
+    discs: 1,
     image: 1,
     favorites: 1,
     release_date: 1,

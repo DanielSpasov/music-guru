@@ -1,6 +1,12 @@
 import { Router } from 'express';
 
-import { methods, updateImage, favorite, editors } from '../Services';
+import {
+  methods,
+  updateImage,
+  favorite,
+  editors,
+  albumSongs
+} from '../Services';
 import {
   authorization,
   editorship,
@@ -39,6 +45,13 @@ router.patch(
   '/:id',
   [get({ model: 'albums' }), authorization, editorship],
   methods.patch({ model: 'albums' })
+);
+
+// Songs
+router.post(
+  '/:id/song',
+  [get({ model: 'albums' }), authorization, editorship],
+  albumSongs.post
 );
 
 // Editors
