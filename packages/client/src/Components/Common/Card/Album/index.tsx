@@ -74,9 +74,12 @@ const Skeleton = () => {
       className="flex flex-col items-center m-3 animate-pulse bg-neutral-200 dark:bg-neutral-900 rounded-md"
     >
       <div className="bg-neutral-300 dark:bg-neutral-700 w-40 h-40 m-2 rounded-md" />
-      <div className="bg-neutral-200 dark:bg-neutral-900 w-full h-14 pb-1 rounded-md">
-        <div className="bg-neutral-300 dark:bg-neutral-700 rounded-md w-24 h-5 mx-2 mb-2" />
-        <div className="bg-neutral-300 dark:bg-neutral-700 rounded-md w-16 h-5 mx-2 mb-2" />
+      <div className="bg-neutral-200 dark:bg-neutral-900 w-full rounded-md">
+        <div className="bg-neutral-300 dark:bg-neutral-700 rounded-md w-32 h-[1.125rem] mx-2 mb-2" />
+        <div className="flex px-2 gap-2">
+          <div className="bg-neutral-300 dark:bg-neutral-700 rounded-md w-16 h-[1.125rem] mb-2" />
+          <div className="bg-neutral-300 dark:bg-neutral-700 rounded-md w-16 h-[1.125rem] mb-2" />
+        </div>
       </div>
     </div>
   );
