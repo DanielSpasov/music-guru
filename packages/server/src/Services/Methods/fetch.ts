@@ -20,8 +20,11 @@ export default ({ model }: { model: Model }) =>
       const filters = useFilters(query);
       const sorting = useSorting(sort);
 
-      const [totalItems, data] = await Promise.all([
-        schemas[model].countDocuments(filters),
+      const [[count], data] = await Promise.all([
+        schemas[model]
+          .aggregate(pipelines[model])
+          .match(filters)
+          .count('totalDocuments'),
         schemas[model]
           .aggregate(pipelines[model])
           .match(filters)
@@ -34,8 +37,8 @@ export default ({ model }: { model: Model }) =>
       res.status(200).json({
         data,
         pagination: {
-          totalItems,
-          totalPages: Math.ceil(totalItems / Number(limit)),
+          totalItems: count.totalDocuments,
+          totalPages: Math.ceil(count.totalDocuments / Number(limit)),
           currentPage: Number(page)
         }
       });
