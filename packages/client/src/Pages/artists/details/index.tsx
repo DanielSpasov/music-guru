@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import {
-  List,
   PageLayout,
   Image,
   IPen,
@@ -16,6 +15,9 @@ import { Artist } from '../../../Types';
 import Api from '../../../Api';
 
 import css from './Details.module.css';
+
+// Composables
+import Sublist from './composables/Sublist';
 
 export const defaultArtist: Artist = {
   created_at: new Date(),
@@ -63,28 +65,6 @@ const ArtistDetails = () => {
       });
       setArtist(prev => ({ ...prev, image }));
     },
-    [artist.uid]
-  );
-
-  const fetchAlbums = useCallback(
-    () =>
-      Api.albums.fetch({
-        config: { params: { 'artist.uid': artist.uid, limit: 5 } }
-      }),
-    [artist.uid]
-  );
-  const fetchSongs = useCallback(
-    () =>
-      Api.songs.fetch({
-        config: { params: { 'artist.uid': artist.uid, limit: 10 } }
-      }),
-    [artist.uid]
-  );
-  const fetchFeatures = useCallback(
-    () =>
-      Api.songs.fetch({
-        config: { params: { 'features.uid': artist.uid, limit: 10 } }
-      }),
     [artist.uid]
   );
 
@@ -140,38 +120,24 @@ const ArtistDetails = () => {
         </article>
 
         <section className={css.discographyWrapper}>
-          <article>
-            <h2>Discography</h2>
-            <List
-              favoriteFn={uid => Api.albums.favorite({ uid })}
-              fetchFn={fetchAlbums}
-              skeletonLength={5}
-              model="albums"
-              hideSearch
-            />
-          </article>
-
-          <article>
-            <h2>Songs</h2>
-            <List
-              favoriteFn={uid => Api.songs.favorite({ uid })}
-              fetchFn={fetchSongs}
-              skeletonLength={10}
-              model="songs"
-              hideSearch
-            />
-          </article>
-
-          <article>
-            <h2>Features</h2>
-            <List
-              favoriteFn={uid => Api.songs.favorite({ uid })}
-              fetchFn={fetchFeatures}
-              skeletonLength={10}
-              model="songs"
-              hideSearch
-            />
-          </article>
+          <Sublist
+            fetchFnProps={{ 'artist.uid': artist.uid }}
+            label="Discography"
+            model="albums"
+            limit={5}
+          />
+          <Sublist
+            fetchFnProps={{ 'artist.uid': artist.uid }}
+            label="Songs"
+            model="songs"
+            limit={10}
+          />
+          <Sublist
+            fetchFnProps={{ 'features.uid': artist.uid }}
+            label="Features"
+            model="songs"
+            limit={10}
+          />
         </section>
       </section>
     </PageLayout>
