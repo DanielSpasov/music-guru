@@ -108,6 +108,7 @@ const songs: PipelineStage[] = [
       created_by: { $first: '$created_by' },
       editors: { $first: '$editors' },
       type: { $first: '$type' },
+      favorites: { $first: '$favorites' },
       discNumber: { $first: '$discs.number' },
       songs: {
         $push: {
