@@ -7,5 +7,9 @@ export type DiscProps = {
   isEditor: boolean;
   onDelete: (number: number) => Promise<void> | void;
   onAddSongs: (songs: string[], disc: number) => Promise<void> | void;
-  onRemoveSong: (songs: string[], disc: number) => Promise<void> | void;
+  onRemoveSongs: (songs: string[], disc: number) => Promise<void> | void;
+  onOrderSongs: (
+    songs: { number: number; uid: string }[],
+    disc: number
+  ) => Promise<void> | void;
 };

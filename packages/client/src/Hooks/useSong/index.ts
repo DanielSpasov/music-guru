@@ -150,7 +150,6 @@ export const useSong = (uid: string, inherit?: Song) => {
         }));
         toast.success('Editor removed sucessfully');
       } catch (err) {
-        console.log(err);
         toast.error('Failed to remove editor');
       }
     },

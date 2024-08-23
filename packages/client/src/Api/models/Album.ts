@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 
-import { del, get, patch, post } from '../requests';
+import { del, get, patch, post, put } from '../requests';
 import { Editors, Favorite } from '../services';
 import { Album, ListAlbum } from '../../Types';
 import Crud from '../crud';
@@ -88,6 +88,30 @@ export default class AlbumsAPI extends Crud<Album, ListAlbum> {
       }
     ) => {
       return patch({
+        url: `${this.baseUrl}/${this.model}/${uid}/song/`,
+        body: { songs, disc },
+        config
+      });
+    },
+    put: (
+      {
+        uid,
+        disc,
+        songs,
+        config
+      }: {
+        uid: string;
+        disc: number;
+        songs: { number: number; uid: string }[];
+        config?: AxiosRequestConfig;
+      } = {
+        uid: '',
+        disc: 0,
+        songs: [],
+        config: {}
+      }
+    ) => {
+      return put({
         url: `${this.baseUrl}/${this.model}/${uid}/song/`,
         body: { songs, disc },
         config

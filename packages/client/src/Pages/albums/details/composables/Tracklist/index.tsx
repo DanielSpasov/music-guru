@@ -60,7 +60,7 @@ const Tracklist: FC<DiscsProps> = ({
     [id, fetchDiscData]
   );
 
-  const removeSongs = useCallback(
+  const patchSongs = useCallback(
     async (songs: string[], disc: number) => {
       try {
         await Api.albums.songs.patch({ songs, disc, uid: id });
@@ -71,6 +71,13 @@ const Tracklist: FC<DiscsProps> = ({
       }
     },
     [id, fetchDiscData]
+  );
+
+  const putSongs = useCallback(
+    (songs: { number: number; uid: string }[], disc: number) => {
+      Api.albums.songs.put({ songs, disc, uid: id });
+    },
+    [id]
   );
 
   return (
@@ -107,7 +114,8 @@ const Tracklist: FC<DiscsProps> = ({
             artist={artist}
             onDelete={deleteDisc}
             onAddSongs={postSongs}
-            onRemoveSong={removeSongs}
+            onRemoveSongs={patchSongs}
+            onOrderSongs={putSongs}
             loading={loading}
             isEditor={isEditor}
             key={i}

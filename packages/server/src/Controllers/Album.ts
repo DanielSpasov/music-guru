@@ -59,6 +59,11 @@ router.patch(
   [get({ model: 'albums' }), authorization, editorship],
   albums.songs.patch
 );
+router.put(
+  '/:id/song',
+  [get({ model: 'albums' }), authorization, editorship],
+  albums.songs.put
+);
 
 // Editors
 router.post(

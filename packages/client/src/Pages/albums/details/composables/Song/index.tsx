@@ -1,21 +1,46 @@
-import { useNavigate } from 'react-router-dom';
+import { useSortable } from '@dnd-kit/sortable';
 import { FC, Fragment, memo } from 'react';
+import { CSS } from '@dnd-kit/utilities';
 
-import { ITrashBin, Link } from '../../../../../Components';
+import { IHamburger, IX } from '../../../../../Components';
 import { SongPrps } from './types';
 
 import css from './index.module.css';
 
-const Song: FC<SongPrps> = ({ song, isEditing, onRemove }) => {
-  const navigate = useNavigate();
+const Song: FC<SongPrps> = ({
+  song,
+  isEditing,
+  isSelected,
+  isOrdering,
+  onSelect
+}) => {
+  const { setNodeRef, attributes, listeners, transition, transform } =
+    useSortable({ id: song.uid, disabled: !isOrdering });
 
   return (
     <article
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={{
+        transition,
+        transform: CSS.Transform.toString(transform)
+      }}
       className={css.song}
-      onClick={() => navigate(`/songs/${song.uid}`)}
     >
       <section>
-        <p>{song.number}</p>
+        <div
+          className={`${css.checkbox} ${
+            isSelected ? css.selectedCheckbox : ''
+          }`}
+          onClick={e => {
+            e.stopPropagation();
+            if (isEditing) onSelect();
+          }}
+        >
+          {isEditing && isSelected && <IX />}
+          {!isEditing && <p className="font-semibold">{song.number}</p>}
+        </div>
 
         <img src={song.image} alt={song.name} />
 
@@ -23,30 +48,17 @@ const Song: FC<SongPrps> = ({ song, isEditing, onRemove }) => {
           <h3>{song.name}</h3>
 
           <p onClick={e => e.stopPropagation()}>
-            <Link type="link" to={`/artists/${song.artist.uid}`}>
-              {song.artist.name}
-            </Link>
+            <span>{song.artist.name}</span>
             {song.features.map(feature => (
               <Fragment key={feature.uid}>
-                ,{' '}
-                <Link type="link" to={`/artists/${feature.uid}`}>
-                  {feature.name}
-                </Link>
+                <span>, {feature.name}</span>
               </Fragment>
             ))}
           </p>
         </div>
       </section>
 
-      {isEditing && (
-        <ITrashBin
-          className="w-6 h-6"
-          onClick={e => {
-            e.stopPropagation();
-            onRemove();
-          }}
-        />
-      )}
+      {isOrdering && <IHamburger />}
     </article>
   );
 };

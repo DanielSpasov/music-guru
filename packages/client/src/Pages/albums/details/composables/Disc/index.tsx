@@ -1,7 +1,21 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
+import {
+  DndContext,
+  DragEndEvent,
+  UniqueIdentifier,
+  closestCorners
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy
+} from '@dnd-kit/sortable';
+import { toast } from 'react-toastify';
 
 import {
+  Button,
   IDisc,
+  IHamburger,
   IPlus,
   ISettings,
   ITrashBin,
@@ -24,10 +38,16 @@ const Disc: FC<DiscProps> = ({
   isEditor,
   onDelete,
   onAddSongs,
-  onRemoveSong
+  onRemoveSongs,
+  onOrderSongs
 }) => {
   const [openAddSongs, setOpenAddSongs] = useState(false);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [isOrdering, setIsOrdering] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [songs, setSongs] = useState(disc.songs);
+
+  useEffect(() => setSongs(disc.songs), [disc.songs]);
 
   const fetchArtistSongs = useCallback(() => {
     // const songsInAlbum = discs
@@ -44,6 +64,67 @@ const Disc: FC<DiscProps> = ({
     });
   }, [artist]);
 
+  const onSelect = useCallback(
+    (uid: string) => {
+      if (selected.includes(uid)) {
+        setSelected(prev => prev.filter(x => x !== uid));
+        return;
+      }
+      setSelected(prev => [...prev, uid]);
+    },
+    [selected]
+  );
+
+  const onSaveEdit = useCallback(async () => {
+    try {
+      await onRemoveSongs(selected, disc.number);
+
+      setIsEditing(false);
+      setSelected([]);
+
+      toast.success('Changes saved.');
+    } catch (err) {
+      toast.error('Failed to save changes.');
+    }
+  }, [selected, disc.number, onRemoveSongs]);
+
+  const onSaveOrder = useCallback(async () => {
+    try {
+      await onOrderSongs(
+        songs.map(x => ({ number: x.number, uid: x.uid })),
+        disc.number
+      );
+
+      setIsOrdering(false);
+
+      toast.success('Changes saved.');
+    } catch (err) {
+      toast.error('Failed to save changes.');
+    }
+  }, [songs, disc.number, onOrderSongs]);
+
+  const getSongPosition = useCallback(
+    (id?: UniqueIdentifier) => songs.findIndex(song => song.uid === id),
+    [songs]
+  );
+
+  const onDragEnd = useCallback(
+    (e: DragEndEvent) => {
+      if (e.active.id === e.over?.id) return;
+
+      setSongs(prev => {
+        const oldPosition = getSongPosition(e.active.id);
+        const newPosition = getSongPosition(e.over?.id);
+        const reorderedSongs = arrayMove(prev, oldPosition, newPosition);
+        return reorderedSongs.map((song, index) => ({
+          ...song,
+          number: index + 1
+        }));
+      });
+    },
+    [getSongPosition]
+  );
+
   return (
     <section className={css.disc}>
       <div className={css.discHeader}>
@@ -55,37 +136,75 @@ const Disc: FC<DiscProps> = ({
 
         {isEditor && (
           <div className="flex gap-1">
-            <IPlus onClick={() => setOpenAddSongs(true)} disabled={loading} />
-            <ISettings
-              onClick={() => setIsEditing(prev => !prev)}
-              disabled={loading}
+            <IPlus
+              onClick={() => setOpenAddSongs(true)}
+              disabled={loading || isEditing || isOrdering}
             />
             <ITrashBin
-              onClick={() => onDelete(disc.number)}
-              disabled={loading}
+              onClick={async () => {
+                await onDelete(disc.number);
+              }}
+              disabled={loading || isEditing || isOrdering}
+            />
+            <ISettings
+              onClick={() => {
+                setIsEditing(prev => !prev);
+                setSelected([]);
+              }}
+              disabled={loading || isOrdering}
+            />
+            <IHamburger
+              onClick={() => {
+                setIsOrdering(prev => !prev);
+              }}
+              disabled={loading || isEditing}
             />
           </div>
         )}
       </div>
 
-      {!disc.songs.length && (
+      {!songs.length && (
         <p className="p-1">
           This disc doesn&apos;t have any songs yet, add the first one.
         </p>
       )}
 
-      {disc.songs
-        .sort((songA, songB) => songA.number - songB.number)
-        .map(song => (
-          <Song
-            key={song.number}
-            song={song}
-            isEditing={isEditing}
-            onRemove={async () => {
-              await onRemoveSong([song.uid], disc.number);
-            }}
-          />
-        ))}
+      <DndContext collisionDetection={closestCorners} onDragEnd={onDragEnd}>
+        <SortableContext
+          items={songs.map(x => ({ ...x, id: x.uid }))}
+          strategy={verticalListSortingStrategy}
+        >
+          {songs.map(song => (
+            <Song
+              key={song.number}
+              song={song}
+              isEditing={isEditing}
+              isOrdering={isOrdering}
+              isSelected={selected.includes(song.uid)}
+              onSelect={() => onSelect(song.uid)}
+            />
+          ))}
+        </SortableContext>
+      </DndContext>
+
+      {isEditing && (
+        <Button
+          variant="outline"
+          className="w-1/3 self-end mt-1 justify-center"
+          onClick={() => onSaveEdit()}
+        >
+          Save Changes
+        </Button>
+      )}
+      {isOrdering && (
+        <Button
+          variant="outline"
+          className="w-1/3 self-end mt-1 justify-center"
+          onClick={() => onSaveOrder()}
+        >
+          Save Changes
+        </Button>
+      )}
 
       <Modal
         title={`Add Songs to Disc ${disc.number}`}

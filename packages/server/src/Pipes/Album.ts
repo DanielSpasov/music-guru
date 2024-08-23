@@ -68,7 +68,7 @@ const songs: PipelineStage[] = [
             name: null,
             image: null,
             artist: null,
-            features: []
+            features: null
           }
         }
       }
@@ -115,7 +115,9 @@ const songs: PipelineStage[] = [
   },
   {
     $addFields: {
-      'discs.songs.features': '$featuresDetails'
+      'discs.songs.features': {
+        $ifNull: ['$featuresDetails', []]
+      }
     }
   },
   {
@@ -184,35 +186,20 @@ const songs: PipelineStage[] = [
   {
     $addFields: {
       discs: {
-        $map: {
-          input: '$discs',
-          as: 'disc',
-          in: {
-            number: '$$disc.number',
-            songs: {
-              $ifNull: [
-                {
-                  $filter: {
-                    input: '$$disc.songs',
-                    as: 'song',
-                    cond: { $ne: ['$$song', null] }
-                  }
-                },
-                []
-              ]
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    $addFields: {
-      discs: {
         $filter: {
           input: '$discs',
           as: 'disc',
-          cond: { $gt: [{ $size: '$$disc.songs' }, 0] }
+          cond: {
+            $and: [
+              { $ne: ['$$disc.number', null] },
+              {
+                $or: [
+                  { $gt: [{ $size: '$$disc.songs' }, 0] },
+                  { $eq: [{ $size: '$$disc.songs' }, 0] }
+                ]
+              }
+            ]
+          }
         }
       }
     }
