@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 
-import { AlbumSongsSchema } from '../../Validations/Album';
-import { Album as IAlbum, Disc } from '../../Types';
-import Album from '../../Schemas/Album';
-import { schemas } from '../../Schemas';
-import { APIError } from '../../Error';
+import { AlbumSongsSchema } from '../../../Validations/Album';
+import { Album as IAlbum, Disc } from '../../../Types';
+import Album from '../../../Schemas/Album';
+import { schemas } from '../../../Schemas';
+import { APIError } from '../../../Error';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -44,7 +44,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
     await Album.updateOne(
       { uid: req.params.id },
-      { $set: { [`discs.${discNumber}.songs`]: updatedSongs } }
+      { $set: { [`discs.${discNumber - 1}.songs`]: updatedSongs } }
     );
 
     res.status(200).json({ message: 'Editors removed.' });

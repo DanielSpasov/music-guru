@@ -6,6 +6,7 @@ import {
   IDisc,
   IPlus,
   ISettings,
+  ITrashBin,
   Modal,
   Table
 } from '../../../../../Components';
@@ -63,14 +64,24 @@ const Disc: FC<DiscProps> = ({ disc, artist }) => {
     [id]
   );
 
+  const removeDisc = useCallback(
+    async (number: number) => {
+      try {
+        await Api.albums.discs.del({ number, uid: id });
+        toast.success('Disc deleted sucessfully');
+      } catch (err) {
+        toast.error('Failed to delete disc.');
+      }
+    },
+    [id]
+  );
+
   return (
     <section className="flex flex-col py-2">
       <div className="flex items-center gap-2">
         <IDisc className="w-7 h-7 flex flex-shrink-0" />
 
-        <h3 className="font-semibold whitespace-nowrap">
-          Disc {disc.number + 1}
-        </h3>
+        <h3 className="font-semibold whitespace-nowrap">Disc {disc.number}</h3>
 
         <div className="h-[1px] w-full bg-neutral-700" />
 
@@ -78,6 +89,10 @@ const Disc: FC<DiscProps> = ({ disc, artist }) => {
         <ISettings
           className="w-10 h-10"
           onClick={() => setIsEditing(prev => !prev)}
+        />
+        <ITrashBin
+          className="w-10 h-10"
+          onClick={() => removeDisc(disc.number)}
         />
       </div>
 
@@ -99,7 +114,7 @@ const Disc: FC<DiscProps> = ({ disc, artist }) => {
         ))}
 
       <Modal
-        title={`Add Songs to Disc ${disc.number + 1}`}
+        title={`Add Songs to Disc ${disc.number}`}
         open={openAddSongs}
         setOpen={setOpenAddSongs}
       >

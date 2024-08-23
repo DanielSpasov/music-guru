@@ -1,12 +1,6 @@
 import { Router } from 'express';
 
-import {
-  methods,
-  updateImage,
-  favorite,
-  editors,
-  albumSongs
-} from '../Services';
+import { methods, updateImage, favorite, editors, albums } from '../Services';
 import {
   authorization,
   editorship,
@@ -47,16 +41,23 @@ router.patch(
   methods.patch({ model: 'albums' })
 );
 
+// Discs
+router.delete(
+  '/:id/disc/:number',
+  [get({ model: 'albums' }), authorization, editorship],
+  albums.discs.del
+);
+
 // Songs
 router.post(
   '/:id/song',
   [get({ model: 'albums' }), authorization, editorship],
-  albumSongs.post
+  albums.songs.post
 );
 router.patch(
   '/:id/song',
   [get({ model: 'albums' }), authorization, editorship],
-  albumSongs.patch
+  albums.songs.patch
 );
 
 // Editors

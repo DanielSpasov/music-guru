@@ -19,7 +19,7 @@ const Discs: FC<DiscsProps> = ({ discs: _discs = [], artist }) => {
         <Button
           variant="outline"
           onClick={() =>
-            setDiscs(prev => [...prev, { number: prev.length, songs: [] }])
+            setDiscs(prev => [...prev, { number: prev.length + 1, songs: [] }])
           }
         >
           <IPlus />
@@ -35,8 +35,8 @@ const Discs: FC<DiscsProps> = ({ discs: _discs = [], artist }) => {
 
       {discs
         .sort((discA, discB) => discA.number - discB.number)
-        .map(disc => (
-          <Disc disc={disc} artist={artist} key={disc.number} />
+        .map((disc, i) => (
+          <Disc disc={disc} artist={artist} key={i} />
         ))}
     </article>
   );

@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-
-import { AlbumSongsSchema } from '../../Validations/Album';
-import { Album as IAlbum, Disc } from '../../Types';
-import { schemas } from '../../Schemas';
-import Album from '../../Schemas/Album';
-import { APIError } from '../../Error';
 import { z } from 'zod';
+
+import { AlbumSongsSchema } from '../../../Validations/Album';
+import { Album as IAlbum, Disc } from '../../../Types';
+import { schemas } from '../../../Schemas';
+import Album from '../../../Schemas/Album';
+import { APIError } from '../../../Error';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -44,7 +44,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         {
           $push: {
             discs: {
-              number: album.discs.length,
+              number: discNumber,
               songs: songsUids.map((uid, i) => ({
                 uid,
                 number: i
