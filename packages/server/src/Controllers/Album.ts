@@ -49,6 +49,11 @@ router.delete(
 );
 
 // Songs
+router.get(
+  '/:id/song',
+  [get({ model: 'albums' }), authorization, editorship],
+  albums.songs.fetch
+);
 router.post(
   '/:id/song',
   [get({ model: 'albums' }), authorization, editorship],

@@ -2,7 +2,6 @@ import { Disc } from '../../../../../Types';
 
 export type DiscProps = {
   disc: Disc;
-  artist: string;
   loading: boolean;
   isEditor: boolean;
   onDelete: (number: number) => Promise<void> | void;

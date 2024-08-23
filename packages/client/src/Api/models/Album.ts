@@ -116,6 +116,23 @@ export default class AlbumsAPI extends Crud<Album, ListAlbum> {
         body: { songs, disc },
         config
       });
+    },
+    fetch: (
+      {
+        uid,
+        config
+      }: {
+        uid: string;
+        config?: AxiosRequestConfig;
+      } = {
+        uid: '',
+        config: {}
+      }
+    ) => {
+      return get({
+        url: `${this.baseUrl}/${this.model}/${uid}/song/`,
+        config
+      });
     }
   };
 

@@ -150,7 +150,7 @@ const AlbumDetails = () => {
             <Link
               type="link"
               to={`/artists/${album.artist.uid}`}
-              className="font-semibold text-2xl underline"
+              className="text-[1.25rem] underline"
             >
               {album.artist.name}
             </Link>
@@ -166,11 +166,7 @@ const AlbumDetails = () => {
           {album.about && <span className={css.about}>{album.about}</span>}
         </article>
 
-        <Tracklist
-          isEditor={isEditor}
-          discs={album.discs}
-          artist={album.artist.uid}
-        />
+        <Tracklist isEditor={isEditor} discs={album.discs} />
       </section>
     </PageLayout>
   );

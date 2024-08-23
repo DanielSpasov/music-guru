@@ -11,6 +11,8 @@ import {
   verticalListSortingStrategy
 } from '@dnd-kit/sortable';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import { AxiosRequestConfig } from 'axios';
 
 import {
   Button,
@@ -33,7 +35,6 @@ import Song from '../Song';
 
 const Disc: FC<DiscProps> = ({
   disc,
-  artist,
   loading,
   isEditor,
   onDelete,
@@ -41,6 +42,8 @@ const Disc: FC<DiscProps> = ({
   onRemoveSongs,
   onOrderSongs
 }) => {
+  const { id = '0' } = useParams();
+
   const [openAddSongs, setOpenAddSongs] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [isOrdering, setIsOrdering] = useState(false);
@@ -49,20 +52,11 @@ const Disc: FC<DiscProps> = ({
 
   useEffect(() => setSongs(disc.songs), [disc.songs]);
 
-  const fetchArtistSongs = useCallback(() => {
-    // const songsInAlbum = discs
-    //   .map(disc => [...disc.songs.map(song => song.uid)])
-    //   .flat();
-
-    return Api.songs.fetch({
-      config: {
-        params: {
-          'artist.uid': artist
-          // '-uid': songsInAlbum.join(',') || null
-        }
-      }
-    });
-  }, [artist]);
+  const fetchArtistSongs = useCallback(
+    (config?: AxiosRequestConfig) =>
+      Api.albums.songs.fetch({ uid: id, config }),
+    [id]
+  );
 
   const onSelect = useCallback(
     (uid: string) => {

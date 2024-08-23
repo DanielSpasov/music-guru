@@ -12,11 +12,7 @@ import css from './index.module.css';
 // Composables
 import Disc from '../Disc';
 
-const Tracklist: FC<DiscsProps> = ({
-  discs: defaultValue = [],
-  artist,
-  isEditor
-}) => {
+const Tracklist: FC<DiscsProps> = ({ discs: defaultValue = [], isEditor }) => {
   const { id = '0' } = useParams();
 
   const [discs, setDiscs] = useState<IDisc[]>(defaultValue);
@@ -111,7 +107,6 @@ const Tracklist: FC<DiscsProps> = ({
         .map((disc, i) => (
           <Disc
             disc={disc}
-            artist={artist}
             onDelete={deleteDisc}
             onAddSongs={postSongs}
             onRemoveSongs={patchSongs}
