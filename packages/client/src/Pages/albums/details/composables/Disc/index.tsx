@@ -39,8 +39,7 @@ const Disc: FC<DiscProps> = ({
   isEditor,
   onDelete,
   onAddSongs,
-  onRemoveSongs,
-  onOrderSongs
+  onRemoveSongs
 }) => {
   const { id = '0' } = useParams();
 
@@ -84,10 +83,11 @@ const Disc: FC<DiscProps> = ({
 
   const onSaveOrder = useCallback(async () => {
     try {
-      await onOrderSongs(
-        songs.map(x => ({ number: x.number, uid: x.uid })),
-        disc.number
-      );
+      await Api.albums.songs.put({
+        songs: songs.map(x => ({ number: x.number, uid: x.uid })),
+        disc: disc.number,
+        uid: id
+      });
 
       setIsOrdering(false);
 
@@ -95,7 +95,7 @@ const Disc: FC<DiscProps> = ({
     } catch (err) {
       toast.error('Failed to save changes.');
     }
-  }, [songs, disc.number, onOrderSongs]);
+  }, [songs, disc.number, id]);
 
   const getSongPosition = useCallback(
     (id?: UniqueIdentifier) => songs.findIndex(song => song.uid === id),

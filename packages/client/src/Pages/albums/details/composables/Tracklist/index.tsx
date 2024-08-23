@@ -69,13 +69,6 @@ const Tracklist: FC<DiscsProps> = ({ discs: defaultValue = [], isEditor }) => {
     [id, fetchDiscData]
   );
 
-  const putSongs = useCallback(
-    (songs: { number: number; uid: string }[], disc: number) => {
-      Api.albums.songs.put({ songs, disc, uid: id });
-    },
-    [id]
-  );
-
   return (
     <article className={css.tracklist}>
       <div className={css.tracklistHeader}>
@@ -110,7 +103,6 @@ const Tracklist: FC<DiscsProps> = ({ discs: defaultValue = [], isEditor }) => {
             onDelete={deleteDisc}
             onAddSongs={postSongs}
             onRemoveSongs={patchSongs}
-            onOrderSongs={putSongs}
             loading={loading}
             isEditor={isEditor}
             key={i}
