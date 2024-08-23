@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useContext, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 import {
   IPen,
@@ -19,8 +20,7 @@ import Api from '../../../Api';
 import css from './index.module.css';
 
 // Composables
-import Discs from './composables/Discs';
-import moment from 'moment';
+import Tracklist from './composables/Tracklist';
 
 export const defaultAlbum: Album = {
   uid: '',
@@ -166,7 +166,7 @@ const AlbumDetails = () => {
           {album.about && <span className={css.about}>{album.about}</span>}
         </article>
 
-        <Discs
+        <Tracklist
           isEditor={isEditor}
           discs={album.discs}
           artist={album.artist.uid}

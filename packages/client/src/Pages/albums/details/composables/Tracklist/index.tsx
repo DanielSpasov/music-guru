@@ -12,7 +12,7 @@ import css from './index.module.css';
 // Composables
 import Disc from '../Disc';
 
-const Discs: FC<DiscsProps> = ({
+const Tracklist: FC<DiscsProps> = ({
   discs: defaultValue = [],
   artist,
   isEditor
@@ -74,9 +74,9 @@ const Discs: FC<DiscsProps> = ({
   );
 
   return (
-    <article className={css.discs}>
-      <div className={css.discsHeader}>
-        <h2>Discs</h2>
+    <article className={css.tracklist}>
+      <div className={css.tracklistHeader}>
+        <h2>Tracklist</h2>
         {isEditor && (
           <Button
             variant="outline"
@@ -117,4 +117,4 @@ const Discs: FC<DiscsProps> = ({
   );
 };
 
-export default memo(Discs);
+export default memo(Tracklist);

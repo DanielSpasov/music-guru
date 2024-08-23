@@ -1,11 +1,11 @@
 @tailwind components;
 
 @layer components {
-  .discs {
+  .tracklist {
     @apply w-full h-5;
   }
 
-  .discsHeader {
+  .tracklistHeader {
     @apply flex items-center justify-between;
   }
 }
