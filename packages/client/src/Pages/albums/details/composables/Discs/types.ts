@@ -1,6 +1,6 @@
 import { Disc } from '../../../../../Types';
 
-export type DiscProps = {
-  disc: Disc;
+export type DiscsProps = {
+  discs: Disc[];
   artist: string;
 };

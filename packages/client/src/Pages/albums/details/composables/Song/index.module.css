@@ -1,0 +1,23 @@
+@tailwind components;
+
+@layer components {
+  .song {
+    @apply flex justify-between items-center m-0.5 p-1 hover:bg-neutral-700 rounded-md cursor-pointer;
+
+    & section {
+      @apply flex items-center gap-2;
+
+      & img {
+        @apply w-14 h-14;
+      }
+
+      & div {
+        @apply flex flex-col;
+
+        & p {
+          @apply text-lg text-neutral-400;
+        }
+      }
+    }
+  }
+}

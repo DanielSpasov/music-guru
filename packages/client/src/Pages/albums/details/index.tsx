@@ -19,7 +19,7 @@ import Api from '../../../Api';
 import css from './index.module.css';
 
 // Composables
-import Discs from './composables/Disc';
+import Discs from './composables/Discs';
 
 export const defaultAlbum: Album = {
   uid: '',

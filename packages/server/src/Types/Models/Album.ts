@@ -6,9 +6,11 @@ import { Artist } from './Artist';
 import { Song } from './Song';
 import { User } from './User';
 
+export type DiscSong = Song & { number: number };
+
 export type Disc = {
   number: number;
-  songs: Song[];
+  songs: DiscSong[];
 };
 
 export type Album = Document &

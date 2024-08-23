@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
+import { z } from 'zod';
 
 import { AlbumSongsSchema } from '../../Validations/Album';
 import { Album as IAlbum, Disc } from '../../Types';
-import { schemas } from '../../Schemas';
 import Album from '../../Schemas/Album';
+import { schemas } from '../../Schemas';
 import { APIError } from '../../Error';
-import { z } from 'zod';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -29,47 +29,25 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const discsSongsArr = album.discs
       .map(disc => [...disc.songs.map(song => song.uid)])
       .flat();
-    const alreadyAdded = songsUids.filter(uid => discsSongsArr.includes(uid));
-    if (alreadyAdded.length > 0) {
+    const notInAlbum = songsUids.filter(uid => !discsSongsArr.includes(uid));
+    if (notInAlbum.length > 0) {
       throw new APIError(
         400,
-        `Songs are already in this album: ${alreadyAdded.join(', ')}.`
+        `Songs are not in this album: ${notInAlbum.join(', ')}.`
       );
     }
 
     const disc = album.discs.find((disc: Disc) => disc.number === discNumber);
-    if (!disc) {
-      await Album.updateOne(
-        { uid: req.params.id },
-        {
-          $push: {
-            discs: {
-              number: album.discs.length,
-              songs: songsUids.map((uid, i) => ({
-                uid,
-                number: i
-              }))
-            }
-          }
-        }
-      );
-    } else {
-      await Album.updateOne(
-        { uid: req.params.id },
-        {
-          $push: {
-            [`discs.${discNumber}.songs`]: {
-              $each: songsUids.map((uid, i) => ({
-                uid,
-                number: disc.songs.length + i
-              }))
-            }
-          }
-        }
-      );
-    }
+    const updatedSongs = disc?.songs
+      .filter(song => !songsUids.includes(song.uid))
+      .map((song, i) => ({ ...song, number: i }));
 
-    res.status(200).json({ message: 'Songs added.' });
+    await Album.updateOne(
+      { uid: req.params.id },
+      { $set: { [`discs.${discNumber}.songs`]: updatedSongs } }
+    );
+
+    res.status(200).json({ message: 'Editors removed.' });
   } catch (err) {
     next(err);
   }
