@@ -31,7 +31,7 @@ export const useSong = (uid: string, inherit?: Song) => {
         setSong(data);
 
         const { data: albums } = await Api.albums.fetch({
-          config: { params: { 'songs.uid': uid } }
+          config: { params: { 'discs.songs.uid': uid } }
         });
         setAlbums(albums);
       } catch (error) {
