@@ -22,5 +22,13 @@ export const songSerializers = {
     links: 1,
     editors: 1,
     favorites: 1
+  },
+  album: {
+    uid: 1,
+    name: 1,
+    image: 1,
+    artist: artistSerializers.list,
+    favorites: 1,
+    features: artistSerializers.list
   }
 };

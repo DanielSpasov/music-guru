@@ -14,7 +14,8 @@
       & div {
         @apply flex flex-col;
 
-        & p {
+        & p,
+        & p a {
           @apply text-lg text-neutral-400;
         }
       }

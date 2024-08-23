@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { FC, memo } from 'react';
+import { FC, Fragment, memo } from 'react';
 
-import { IHamburger, ITrashBin } from '../../../../../Components';
+import { IHamburger, ITrashBin, Link } from '../../../../../Components';
 import { SongPrps } from './types';
 
 import css from './index.module.css';
@@ -21,7 +21,20 @@ const Song: FC<SongPrps> = ({ song, isEditing, onRemove }) => {
 
         <div>
           <h3>{song.name}</h3>
-          <p>{song.artist.name}</p>
+
+          <p onClick={e => e.stopPropagation()}>
+            <Link type="link" to={`/artists/${song.artist.uid}`}>
+              {song.artist.name}
+            </Link>
+            {song.features.map(feature => (
+              <Fragment key={feature.uid}>
+                ,{' '}
+                <Link type="link" to={`/artists/${feature.uid}`}>
+                  {feature.name}
+                </Link>
+              </Fragment>
+            ))}
+          </p>
         </div>
       </section>
 

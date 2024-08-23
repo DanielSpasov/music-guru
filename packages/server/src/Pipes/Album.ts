@@ -1,4 +1,5 @@
 import { PipelineStage } from 'mongoose';
+
 import { serializers } from '../Serializers';
 
 const artist: PipelineStage[] = [
@@ -41,9 +42,10 @@ const songs: PipelineStage[] = [
       pipeline: [
         {
           $project: {
-            ...serializers.songs?.list,
+            ...serializers.songs?.album,
             _id: 0,
-            artist: 1
+            artist: 1,
+            features: 1
           }
         }
       ]
@@ -65,7 +67,8 @@ const songs: PipelineStage[] = [
             uid: '$discs.songs.uid',
             name: null,
             image: null,
-            artist: null
+            artist: null,
+            features: []
           }
         }
       }
@@ -95,6 +98,27 @@ const songs: PipelineStage[] = [
     }
   },
   {
+    $lookup: {
+      from: 'artists',
+      localField: 'discs.songs.features',
+      foreignField: 'uid',
+      as: 'featuresDetails',
+      pipeline: [
+        {
+          $project: {
+            ...serializers.artists?.list,
+            _id: 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    $addFields: {
+      'discs.songs.features': '$featuresDetails'
+    }
+  },
+  {
     $group: {
       _id: { albumId: '$_id', discNumber: '$discs.number' },
       uid: { $first: '$uid' },
@@ -117,7 +141,8 @@ const songs: PipelineStage[] = [
               $or: [
                 { $eq: ['$discs.songs.name', null] },
                 { $eq: ['$discs.songs.image', null] },
-                { $eq: ['$discs.songs.artist', null] }
+                { $eq: ['$discs.songs.artist', null] },
+                { $eq: ['$discs.songs.features', null] }
               ]
             },
             null,

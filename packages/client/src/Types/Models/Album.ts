@@ -7,7 +7,10 @@ export type AlbumType = BaseModel & {
   code: string;
 };
 
-export type DiscSong = ListSong & { number: number };
+export type DiscSong = ListSong & {
+  number: number;
+  features: ListArtist[];
+};
 
 export type Disc = {
   number: number;
