@@ -20,6 +20,7 @@ import css from './index.module.css';
 
 // Composables
 import Discs from './composables/Discs';
+import moment from 'moment';
 
 export const defaultAlbum: Album = {
   uid: '',
@@ -142,8 +143,10 @@ const AlbumDetails = () => {
             className="w-96 h-96"
           />
 
-          <h2 className="font-semibold p-2">
-            {album.type.name} By:{' '}
+          <p className="p-1">
+            <span className="font-semibold text-lg">
+              {album.type.name} By:{' '}
+            </span>
             <Link
               type="link"
               to={`/artists/${album.artist.uid}`}
@@ -151,7 +154,14 @@ const AlbumDetails = () => {
             >
               {album.artist.name}
             </Link>
-          </h2>
+          </p>
+
+          <p className="p-1">
+            <span className="font-semibold text-lg">Release Date: </span>
+            {album.release_date
+              ? moment(album.release_date).format('ddd MMM DD YYYY')
+              : 'TBA'}
+          </p>
 
           {album.about && <span className={css.about}>{album.about}</span>}
         </article>
