@@ -21,6 +21,7 @@ const Disc: FC<DiscProps> = ({
   disc,
   artist,
   loading,
+  isEditor,
   onDelete,
   onAddSongs,
   onRemoveSong
@@ -52,12 +53,19 @@ const Disc: FC<DiscProps> = ({
 
         <div className={css.horizontalLine} />
 
-        <IPlus onClick={() => setOpenAddSongs(true)} disabled={loading} />
-        <ISettings
-          onClick={() => setIsEditing(prev => !prev)}
-          disabled={loading}
-        />
-        <ITrashBin onClick={() => onDelete(disc.number)} disabled={loading} />
+        {isEditor && (
+          <div className="flex gap-1">
+            <IPlus onClick={() => setOpenAddSongs(true)} disabled={loading} />
+            <ISettings
+              onClick={() => setIsEditing(prev => !prev)}
+              disabled={loading}
+            />
+            <ITrashBin
+              onClick={() => onDelete(disc.number)}
+              disabled={loading}
+            />
+          </div>
+        )}
       </div>
 
       {!disc.songs.length && (

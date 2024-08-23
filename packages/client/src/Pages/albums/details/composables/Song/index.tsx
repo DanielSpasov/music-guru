@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { FC, Fragment, memo } from 'react';
 
-import { IHamburger, ITrashBin, Link } from '../../../../../Components';
+import { ITrashBin, Link } from '../../../../../Components';
 import { SongPrps } from './types';
 
 import css from './index.module.css';
@@ -37,8 +37,6 @@ const Song: FC<SongPrps> = ({ song, isEditing, onRemove }) => {
           </p>
         </div>
       </section>
-
-      {!isEditing && <IHamburger />}
 
       {isEditing && (
         <ITrashBin

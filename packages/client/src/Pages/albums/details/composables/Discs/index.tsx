@@ -11,7 +11,12 @@ import css from './index.module.css';
 
 // Composables
 import Disc from '../Disc';
-const Discs: FC<DiscsProps> = ({ discs: defaultValue = [], artist }) => {
+
+const Discs: FC<DiscsProps> = ({
+  discs: defaultValue = [],
+  artist,
+  isEditor
+}) => {
   const { id = '0' } = useParams();
 
   const [discs, setDiscs] = useState<IDisc[]>(defaultValue);
@@ -72,15 +77,20 @@ const Discs: FC<DiscsProps> = ({ discs: defaultValue = [], artist }) => {
     <article className={css.discs}>
       <div className={css.discsHeader}>
         <h2>Discs</h2>
-        <Button
-          variant="outline"
-          onClick={() =>
-            setDiscs(prev => [...prev, { number: prev.length + 1, songs: [] }])
-          }
-        >
-          <IPlus />
-          Add Disc
-        </Button>
+        {isEditor && (
+          <Button
+            variant="outline"
+            onClick={() =>
+              setDiscs(prev => [
+                ...prev,
+                { number: prev.length + 1, songs: [] }
+              ])
+            }
+          >
+            <IPlus />
+            Add Disc
+          </Button>
+        )}
       </div>
 
       {!discs.length && (
@@ -99,6 +109,7 @@ const Discs: FC<DiscsProps> = ({ discs: defaultValue = [], artist }) => {
             onAddSongs={postSongs}
             onRemoveSong={removeSongs}
             loading={loading}
+            isEditor={isEditor}
             key={i}
           />
         ))}

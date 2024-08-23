@@ -166,7 +166,11 @@ const AlbumDetails = () => {
           {album.about && <span className={css.about}>{album.about}</span>}
         </article>
 
-        <Discs discs={album.discs ?? []} artist={album.artist.uid} />
+        <Discs
+          isEditor={isEditor}
+          discs={album.discs}
+          artist={album.artist.uid}
+        />
       </section>
     </PageLayout>
   );
