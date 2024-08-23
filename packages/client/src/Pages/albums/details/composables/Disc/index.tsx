@@ -1,6 +1,4 @@
 import { FC, memo, useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import {
   IDisc,
@@ -14,12 +12,19 @@ import { ListSong } from '../../../../../Types';
 import Api from '../../../../../Api';
 import { DiscProps } from './types';
 
+import css from './index.module.css';
+
 // Composables
 import Song from '../Song';
 
-const Disc: FC<DiscProps> = ({ disc, artist }) => {
-  const { id = '0' } = useParams();
-
+const Disc: FC<DiscProps> = ({
+  disc,
+  artist,
+  loading,
+  onDelete,
+  onAddSongs,
+  onRemoveSong
+}) => {
   const [openAddSongs, setOpenAddSongs] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -38,62 +43,21 @@ const Disc: FC<DiscProps> = ({ disc, artist }) => {
     });
   }, [artist]);
 
-  const postSongs = useCallback(
-    async (songs: string[], disc: number) => {
-      try {
-        await Api.albums.songs.post({ songs, disc, uid: id });
-        toast.success('Songs added sucessfully');
-      } catch (err) {
-        toast.error('Failed to add songs.');
-      } finally {
-        setOpenAddSongs(false);
-      }
-    },
-    [id]
-  );
-
-  const patchSongs = useCallback(
-    async (songs: string[], disc: number) => {
-      try {
-        await Api.albums.songs.patch({ songs, disc, uid: id });
-        toast.success('Song removed sucessfully');
-      } catch (err) {
-        toast.error('Failed to removed song.');
-      }
-    },
-    [id]
-  );
-
-  const removeDisc = useCallback(
-    async (number: number) => {
-      try {
-        await Api.albums.discs.del({ number, uid: id });
-        toast.success('Disc deleted sucessfully');
-      } catch (err) {
-        toast.error('Failed to delete disc.');
-      }
-    },
-    [id]
-  );
-
   return (
-    <section className="flex flex-col py-2">
-      <div className="flex items-center gap-2">
-        <IDisc className="w-7 h-7 flex flex-shrink-0" />
+    <section className={css.disc}>
+      <div className={css.discHeader}>
+        <IDisc />
 
-        <h3 className="font-semibold whitespace-nowrap">Disc {disc.number}</h3>
+        <h3>Disc {disc.number}</h3>
 
-        <div className="h-[1px] w-full bg-neutral-700" />
+        <div className={css.horizontalLine} />
 
-        <IPlus className="w-10 h-10" onClick={() => setOpenAddSongs(true)} />
+        <IPlus onClick={() => setOpenAddSongs(true)} disabled={loading} />
         <ISettings
-          className="w-10 h-10"
           onClick={() => setIsEditing(prev => !prev)}
+          disabled={loading}
         />
-        <ITrashBin
-          className="w-10 h-10"
-          onClick={() => removeDisc(disc.number)}
-        />
+        <ITrashBin onClick={() => onDelete(disc.number)} disabled={loading} />
       </div>
 
       {!disc.songs.length && (
@@ -109,7 +73,9 @@ const Disc: FC<DiscProps> = ({ disc, artist }) => {
             key={song.number}
             song={song}
             isEditing={isEditing}
-            onRemove={() => patchSongs([song.uid], disc.number)}
+            onRemove={async () => {
+              await onRemoveSong([song.uid], disc.number);
+            }}
           />
         ))}
 
@@ -125,7 +91,10 @@ const Disc: FC<DiscProps> = ({ disc, artist }) => {
             {
               Icon: IPlus,
               label: 'Add',
-              onClick: songs => postSongs(songs, disc.number)
+              onClick: async songs => {
+                await onAddSongs(songs, disc.number);
+                setOpenAddSongs(false);
+              }
             }
           ]}
         />

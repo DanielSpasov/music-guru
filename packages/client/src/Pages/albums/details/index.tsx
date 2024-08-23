@@ -30,6 +30,7 @@ export const defaultAlbum: Album = {
   name: '',
   release_date: null,
   songs: [],
+  discs: [],
   links: [],
   artist: defaultArtist,
   favorites: 0,

@@ -1,20 +1,76 @@
-import { FC, memo, useState } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { Button, IPlus } from '../../../../../Components';
 import { Disc as IDisc } from '../../../../../Types';
 import { DiscsProps } from './types';
+import Api from '../../../../../Api';
 
-import css from './indeex.module.css';
+import css from './index.module.css';
 
 // Composables
 import Disc from '../Disc';
+const Discs: FC<DiscsProps> = ({ discs: defaultValue = [], artist }) => {
+  const { id = '0' } = useParams();
 
-const Discs: FC<DiscsProps> = ({ discs: _discs = [], artist }) => {
-  const [discs, setDiscs] = useState<IDisc[]>(_discs);
+  const [discs, setDiscs] = useState<IDisc[]>(defaultValue);
+  const [loading, setLoading] = useState(false);
+
+  const fetchDiscData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data } = await Api.albums.get({ id });
+      setDiscs(data.discs);
+    } catch (err) {
+      toast.error('Failed to fetch disc data.');
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
+  const deleteDisc = useCallback(
+    async (number: number) => {
+      try {
+        await Api.albums.discs.del({ number, uid: id });
+        await fetchDiscData();
+        toast.success('Disc deleted sucessfully');
+      } catch (err) {
+        toast.error('Failed to delete disc.');
+      }
+    },
+    [id, fetchDiscData]
+  );
+
+  const postSongs = useCallback(
+    async (songs: string[], disc: number) => {
+      try {
+        await Api.albums.songs.post({ songs, disc, uid: id });
+        await fetchDiscData();
+        toast.success('Songs added sucessfully');
+      } catch (err) {
+        toast.error('Failed to add songs.');
+      }
+    },
+    [id, fetchDiscData]
+  );
+
+  const removeSongs = useCallback(
+    async (songs: string[], disc: number) => {
+      try {
+        await Api.albums.songs.patch({ songs, disc, uid: id });
+        await fetchDiscData();
+        toast.success('Song removed sucessfully');
+      } catch (err) {
+        toast.error('Failed to removed song.');
+      }
+    },
+    [id, fetchDiscData]
+  );
 
   return (
-    <article className={css.discsWrapper}>
-      <div className="flex items-center justify-between">
+    <article className={css.discs}>
+      <div className={css.discsHeader}>
         <h2>Discs</h2>
         <Button
           variant="outline"
@@ -36,7 +92,15 @@ const Discs: FC<DiscsProps> = ({ discs: _discs = [], artist }) => {
       {discs
         .sort((discA, discB) => discA.number - discB.number)
         .map((disc, i) => (
-          <Disc disc={disc} artist={artist} key={i} />
+          <Disc
+            disc={disc}
+            artist={artist}
+            onDelete={deleteDisc}
+            onAddSongs={postSongs}
+            onRemoveSong={removeSongs}
+            loading={loading}
+            key={i}
+          />
         ))}
     </article>
   );

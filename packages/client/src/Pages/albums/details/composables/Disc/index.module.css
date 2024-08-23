@@ -1,0 +1,23 @@
+@tailwind components;
+
+@layer components {
+  .disc {
+    @apply flex flex-col py-2;
+  }
+
+  .discHeader {
+    @apply flex items-center gap-2;
+
+    & svg {
+      @apply w-7 h-7 flex-shrink-0;
+    }
+
+    & h3 {
+      @apply font-semibold whitespace-nowrap;
+    }
+  }
+
+  .horizontalLine {
+    @apply h-[1px] w-full bg-neutral-700;
+  }
+}
