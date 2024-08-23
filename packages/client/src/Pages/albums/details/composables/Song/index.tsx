@@ -2,7 +2,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { FC, Fragment, memo } from 'react';
 import { CSS } from '@dnd-kit/utilities';
 
-import { IHamburger, IX } from '../../../../../Components';
+import { IHamburger, IX, Link } from '../../../../../Components';
 import { SongPrps } from './types';
 
 import css from './index.module.css';
@@ -44,14 +44,21 @@ const Song: FC<SongPrps> = ({
 
         <img src={song.image} alt={song.name} />
 
-        <div>
-          <h3>{song.name}</h3>
+        <div onClick={e => e.stopPropagation()}>
+          <Link className="font-semibold" type="link" to={`/songs/${song.uid}`}>
+            {song.name}
+          </Link>
 
-          <p onClick={e => e.stopPropagation()}>
-            <span>{song.artist.name}</span>
+          <p>
+            <Link type="link" to={`/artists/${song.artist.uid}`}>
+              {song.artist.name}
+            </Link>
             {song.features.map(feature => (
               <Fragment key={feature.uid}>
-                <span>, {feature.name}</span>
+                ,{' '}
+                <Link type="link" to={`/artists/${feature.uid}`}>
+                  {feature.name}
+                </Link>
               </Fragment>
             ))}
           </p>
