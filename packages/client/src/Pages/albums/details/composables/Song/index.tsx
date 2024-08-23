@@ -15,7 +15,7 @@ const Song: FC<SongPrps> = ({ song, isEditing, onRemove }) => {
       onClick={() => navigate(`/songs/${song.uid}`)}
     >
       <section>
-        <p>{song.number + 1}</p>
+        <p>{song.number}</p>
 
         <img src={song.image} alt={song.name} />
 

@@ -128,38 +128,6 @@ const songs: PipelineStage[] = [
     }
   },
   {
-    $addFields: {
-      discs: {
-        $cond: {
-          if: { $eq: ['$songs', []] }, // If there are no songs, return an empty array
-          then: [],
-          else: {
-            $filter: {
-              input: {
-                $map: {
-                  input: [{ $arrayElemAt: ['$discs', 0] }],
-                  as: 'disc',
-                  in: {
-                    number: '$$disc.number',
-                    songs: {
-                      $filter: {
-                        input: '$songs',
-                        as: 'song',
-                        cond: { $ne: ['$$song', null] }
-                      }
-                    }
-                  }
-                }
-              },
-              as: 'disc',
-              cond: { $gt: [{ $size: '$$disc.songs' }, 0] }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
     $group: {
       _id: '$_id.albumId',
       uid: { $first: '$uid' },
@@ -191,10 +159,24 @@ const songs: PipelineStage[] = [
   {
     $addFields: {
       discs: {
-        $filter: {
+        $map: {
           input: '$discs',
           as: 'disc',
-          cond: { $gt: [{ $size: '$$disc.songs' }, 0] }
+          in: {
+            number: '$$disc.number',
+            songs: {
+              $ifNull: [
+                {
+                  $filter: {
+                    input: '$$disc.songs',
+                    as: 'song',
+                    cond: { $ne: ['$$song', null] }
+                  }
+                },
+                []
+              ]
+            }
+          }
         }
       }
     }
@@ -202,10 +184,10 @@ const songs: PipelineStage[] = [
   {
     $addFields: {
       discs: {
-        $cond: {
-          if: { $eq: [{ $size: '$discs' }, 0] },
-          then: [],
-          else: '$discs'
+        $filter: {
+          input: '$discs',
+          as: 'disc',
+          cond: { $gt: [{ $size: '$$disc.songs' }, 0] }
         }
       }
     }

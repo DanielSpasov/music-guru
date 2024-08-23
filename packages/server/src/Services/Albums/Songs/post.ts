@@ -47,7 +47,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
               number: discNumber,
               songs: songsUids.map((uid, i) => ({
                 uid,
-                number: i
+                number: i + 1
               }))
             }
           }
@@ -55,13 +55,13 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       );
     } else {
       await Album.updateOne(
-        { uid: req.params.id },
+        { uid: req.params.id, 'discs.number': discNumber },
         {
           $push: {
-            [`discs.${discNumber}.songs`]: {
+            [`discs.$.songs`]: {
               $each: songsUids.map((uid, i) => ({
                 uid,
-                number: disc.songs.length + i
+                number: disc.songs.length + 1 + i
               }))
             }
           }

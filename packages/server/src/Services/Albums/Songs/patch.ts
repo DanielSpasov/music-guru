@@ -40,7 +40,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const disc = album.discs.find((disc: Disc) => disc.number === discNumber);
     const updatedSongs = disc?.songs
       .filter(song => !songsUids.includes(song.uid))
-      .map((song, i) => ({ ...song, number: i }));
+      .map((song, i) => ({ ...song, number: i + 1 }));
 
     await Album.updateOne(
       { uid: req.params.id },
