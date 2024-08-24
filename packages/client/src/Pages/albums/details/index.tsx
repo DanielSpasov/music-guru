@@ -31,7 +31,6 @@ export const defaultAlbum: Album = {
   image: '',
   name: '',
   release_date: null,
-  songs: [],
   discs: [],
   links: [],
   artist: defaultArtist,

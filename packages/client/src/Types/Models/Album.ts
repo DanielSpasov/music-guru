@@ -24,7 +24,6 @@ export type Album = BaseDetailedModel & {
   created_at: Date;
   release_date: string | null;
   artist: ListArtist;
-  songs: ListSong[];
   discs: Disc[];
   favorites: number;
   links: { name: keyof Socials; url: string }[];

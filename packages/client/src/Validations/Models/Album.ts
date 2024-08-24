@@ -18,7 +18,6 @@ export const BaseAlbumSchema = z.object({
   about: z.string().max(5000, 'Max length is 5000 characters'),
   release_date: z.union([DateSchema, z.literal('')]).nullish(),
   artist: SelectOptionSchema.superRefine(Require('Artist')),
-  songs: z.array(SelectOptionSchema.superRefine(Require('Song'))).optional(),
   type: SelectOptionSchema.superRefine(Require('Type'))
 });
 
