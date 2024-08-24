@@ -169,7 +169,11 @@ const AlbumDetails = () => {
           {album.about && <p className={css.about}>{album.about}</p>}
         </article>
 
-        <Tracklist isEditor={isEditor} discs={album.discs} />
+        <Tracklist
+          isEditor={isEditor}
+          discs={album.discs}
+          hasLinks={Boolean(album.links.length)}
+        />
       </section>
     </PageLayout>
   );

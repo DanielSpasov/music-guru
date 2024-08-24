@@ -2,7 +2,7 @@
 
 @layer components {
   .tracklist {
-    @apply w-full;
+    @apply w-full overflow-y-scroll;
   }
 
   .tracklistHeader {

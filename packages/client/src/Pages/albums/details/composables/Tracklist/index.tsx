@@ -12,7 +12,11 @@ import css from './index.module.css';
 // Composables
 import Disc from '../Disc';
 
-const Tracklist: FC<DiscsProps> = ({ discs: defaultValue = [], isEditor }) => {
+const Tracklist: FC<DiscsProps> = ({
+  discs: defaultValue = [],
+  isEditor,
+  hasLinks
+}) => {
   const { id = '0' } = useParams();
 
   const [discs, setDiscs] = useState<IDisc[]>(defaultValue);
@@ -70,7 +74,11 @@ const Tracklist: FC<DiscsProps> = ({ discs: defaultValue = [], isEditor }) => {
   );
 
   return (
-    <article className={css.tracklist}>
+    <article
+      className={`${css.tracklist} ${
+        hasLinks ? 'h-[calc(100vh-260px)]' : 'h-[calc(100vh-170px)]'
+      }`}
+    >
       <div className={css.tracklistHeader}>
         <h2>Tracklist</h2>
         {isEditor && (
