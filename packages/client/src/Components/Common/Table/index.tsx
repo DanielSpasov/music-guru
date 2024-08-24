@@ -219,7 +219,9 @@ const Table = <T extends BaseModel>({
 
       {!loading && !items.length && (
         <p data-testid="table-no-items-message" className={css.noItemsBox}>
-          No items were found searching for &quot;{searchValue}&quot;.
+          {searchValue
+            ? `No items were found searching for "${searchValue}".`
+            : 'No items available.'}
         </p>
       )}
     </section>
