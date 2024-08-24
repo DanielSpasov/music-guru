@@ -17,7 +17,7 @@ export const Components = {
   AlbumsCreate: lazy(() => import('../Pages/albums/create')),
   AlbumsDetails: lazy(() => import('../Pages/albums/details')),
   AlbumsEdit: lazy(() => import('../Pages/albums/edit')),
-  AlbumsSettings: lazy(() => import('../Pages/albums/settings')),
+  AlbumsSettings: lazy(() => import('../Pages/albums/details/settings')),
   // Songs
   SongsList: lazy(() => import('../Pages/songs/list')),
   SongsCreate: lazy(() => import('../Pages/songs/create')),

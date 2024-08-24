@@ -14,6 +14,7 @@ import {
 } from '../../../Components';
 import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
+import { getSidebarLinks } from './sidebarLinks';
 import { Album } from '../../../Types';
 import Api from '../../../Api';
 
@@ -108,6 +109,7 @@ const AlbumDetails = () => {
       title={album.name}
       heading={album.name}
       loading={loading}
+      links={getSidebarLinks(id)}
       footerContent={<Socials links={album.links} />}
       actions={[
         {
