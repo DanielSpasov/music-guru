@@ -75,7 +75,10 @@ export const useSong = (uid: string, inherit?: Song) => {
     async formValues => {
       try {
         setVerseLoading(song.verses.length + 1);
-        const { data } = await Api.songs.addVerse({ uid, payload: formValues });
+        const { data } = await Api.songs.verses.post({
+          uid,
+          payload: formValues
+        });
         setSong(prev => ({ ...prev, verses: [...prev.verses, data] }));
         toast.success('Verse added sucessfully');
       } catch (err) {
@@ -91,7 +94,7 @@ export const useSong = (uid: string, inherit?: Song) => {
     async (number: number) => {
       try {
         setVerseLoading(number);
-        const { data } = await Api.songs.delVerse({ uid, number });
+        const { data } = await Api.songs.verses.del({ uid, number });
         setSong(prev => ({ ...prev, verses: data }));
         toast.success('Verse deleted sucessfully');
       } catch (err) {
@@ -107,7 +110,7 @@ export const useSong = (uid: string, inherit?: Song) => {
     async (number: number, verse: Verse) => {
       try {
         setVerseLoading(number);
-        const { data } = await Api.songs.editVerse({ uid, number, verse });
+        const { data } = await Api.songs.verses.patch({ uid, number, verse });
         setSong(prev => ({
           ...prev,
           verses: prev.verses.map(verse =>
