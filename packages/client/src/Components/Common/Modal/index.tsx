@@ -20,12 +20,12 @@ const Modal: FC<ModalProps> = ({
         onClick={() => (closeOnOutsideClick ? setOpen(false) : () => null)}
       />
 
-      <section className={css.content}>
-        <div className="border-b-[1px] border-b-neutral-700">
-          <h2 className="font-semibold p-1">{title}</h2>
+      <section className={css.contentWrapper}>
+        <div className={css.header}>
+          <h2>{title}</h2>
         </div>
 
-        <article>{children}</article>
+        <article className={css.content}>{children}</article>
       </section>
     </article>,
     document.getElementById('modal-root') as HTMLElement

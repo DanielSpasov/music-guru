@@ -13,11 +13,15 @@
     }
 
     & h3 {
-      @apply font-semibold whitespace-nowrap;
+      @apply text-neutral-600 font-semibold whitespace-nowrap;
     }
   }
 
+  .discIcon path {
+    @apply stroke-neutral-600;
+  }
+
   .horizontalLine {
-    @apply h-[1px] w-full bg-neutral-700;
+    @apply h-[1px] w-full bg-neutral-200 dark:bg-neutral-700;
   }
 }

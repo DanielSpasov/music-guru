@@ -52,8 +52,17 @@ const Disc: FC<DiscProps> = ({
   useEffect(() => setSongs(disc.songs), [disc.songs]);
 
   const fetchArtistSongs = useCallback(
-    (config?: AxiosRequestConfig) =>
-      Api.albums.songs.fetch({ uid: id, config }),
+    async (config?: AxiosRequestConfig) => {
+      const { data, pagination } = await Api.albums.songs.fetch({
+        uid: id,
+        config
+      });
+
+      return {
+        pagination,
+        data: data.map((x: ListSong) => ({ ...x, artistName: x.artist.name }))
+      };
+    },
     [id]
   );
 
@@ -122,7 +131,7 @@ const Disc: FC<DiscProps> = ({
   return (
     <section className={css.disc}>
       <div className={css.discHeader}>
-        <IDisc />
+        <IDisc className={css.discIcon} />
 
         <h3>Disc {disc.number}</h3>
 
@@ -205,8 +214,12 @@ const Disc: FC<DiscProps> = ({
         open={openAddSongs}
         setOpen={setOpenAddSongs}
       >
-        <Table<ListSong>
-          cols={[{ key: 'name', label: 'Name' }]}
+        <Table<ListSong & { artistName: string }>
+          cols={[
+            { key: 'name', label: 'Name' },
+            { key: 'artistName', label: 'Artist' },
+            { key: 'favorites', label: 'Favorites' }
+          ]}
           fetchFn={fetchArtistSongs}
           bulkActions={[
             {
