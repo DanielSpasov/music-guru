@@ -135,35 +135,37 @@ const AlbumDetails = () => {
     >
       <section className={css.wrapper}>
         <article className={css.informationWrapper}>
-          <Image
-            src={album.image}
-            alt={album.name}
-            editable={isEditor}
-            updateFn={updateImage}
-            className="w-96 h-96"
-          />
+          <div>
+            <Image
+              src={album.image}
+              alt={album.name}
+              editable={isEditor}
+              updateFn={updateImage}
+              className="w-96 h-96 shrink-0"
+            />
 
-          <p className="p-1">
-            <span className="font-semibold text-lg">
-              {album.type.name} By:{' '}
-            </span>
-            <Link
-              type="link"
-              to={`/artists/${album.artist.uid}`}
-              className="text-[1.25rem] underline"
-            >
-              {album.artist.name}
-            </Link>
-          </p>
+            <p className="p-1">
+              <span className="font-semibold text-lg">
+                {album.type.name} By:{' '}
+              </span>
+              <Link
+                type="link"
+                to={`/artists/${album.artist.uid}`}
+                className="text-[1.25rem] underline"
+              >
+                {album.artist.name}
+              </Link>
+            </p>
 
-          <p className="p-1">
-            <span className="font-semibold text-lg">Release Date: </span>
-            {album.release_date
-              ? moment(album.release_date).format('ddd MMM DD YYYY')
-              : 'TBA'}
-          </p>
+            <p className="p-1">
+              <span className="font-semibold text-lg">Release Date: </span>
+              {album.release_date
+                ? moment(album.release_date).format('ddd MMM DD YYYY')
+                : 'TBA'}
+            </p>
+          </div>
 
-          {album.about && <span className={css.about}>{album.about}</span>}
+          {album.about && <p className={css.about}>{album.about}</p>}
         </article>
 
         <Tracklist isEditor={isEditor} discs={album.discs} />

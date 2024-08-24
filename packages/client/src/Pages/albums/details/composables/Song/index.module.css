@@ -1,29 +1,27 @@
 @tailwind components;
 
 @layer components {
-  .song {
-    @apply duration-0 flex justify-between items-center gap-2 m-0.5 p-1 hover:bg-neutral-700 rounded-md cursor-pointer;
+  .songWrapper {
+    @apply flex w-full items-center h-16 cursor-default;
 
     & section {
-      @apply flex items-center gap-2;
+      @apply flex gap-2 items-center w-full  my-1;
 
       & img {
-        @apply w-14 h-14;
-      }
-
-      & div {
-        @apply flex flex-col;
-
-        & p,
-        & p a {
-          @apply text-lg text-neutral-400;
-        }
+        @apply w-14 h-14 shrink-0;
       }
     }
   }
 
+  .linksBox {
+    & a {
+      @apply whitespace-nowrap;
+    }
+  }
+
   .checkbox {
-    @apply flex justify-center items-center bg-neutral-700 border-[1px] border-neutral-800 shadow-md shadow-neutral-900 w-8 h-8 rounded-md p-1;
+    @apply flex justify-center items-center border-[1px] shadow-md w-8 h-8 rounded-md p-1 shrink-0;
+    @apply dark:bg-neutral-700 dark:border-neutral-800 dark:shadow-neutral-900;
   }
 
   .selectedCheckbox {

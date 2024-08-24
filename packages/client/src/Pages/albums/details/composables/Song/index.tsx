@@ -1,11 +1,21 @@
+import { CSS, Transform } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
 import { FC, Fragment, memo } from 'react';
-import { CSS } from '@dnd-kit/utilities';
 
 import { IHamburger, IX, Link } from '../../../../../Components';
 import { SongPrps } from './types';
 
 import css from './index.module.css';
+
+const limitXMovement = (transform: Transform | null): string | undefined => {
+  if (!transform) return undefined;
+  return CSS.Transform.toString({
+    scaleX: transform.scaleX,
+    scaleY: transform.scaleY,
+    y: transform.y,
+    x: 0
+  });
+};
 
 const Song: FC<SongPrps> = ({
   song,
@@ -24,9 +34,9 @@ const Song: FC<SongPrps> = ({
       {...listeners}
       style={{
         transition,
-        transform: CSS.Transform.toString(transform)
+        transform: limitXMovement(transform)
       }}
-      className={css.song}
+      className={css.songWrapper}
     >
       <section>
         <div
@@ -44,7 +54,7 @@ const Song: FC<SongPrps> = ({
 
         <img src={song.image} alt={song.name} />
 
-        <div onClick={e => e.stopPropagation()}>
+        <div onClick={e => e.stopPropagation()} className={css.linksBox}>
           <Link className="font-semibold" type="link" to={`/songs/${song.uid}`}>
             {song.name}
           </Link>
@@ -65,7 +75,7 @@ const Song: FC<SongPrps> = ({
         </div>
       </section>
 
-      {isOrdering && <IHamburger />}
+      {isOrdering && <IHamburger className="cursor-pointer" />}
     </article>
   );
 };

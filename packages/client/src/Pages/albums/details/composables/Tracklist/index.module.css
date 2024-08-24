@@ -2,7 +2,7 @@
 
 @layer components {
   .tracklist {
-    @apply w-full h-5;
+    @apply w-full;
   }
 
   .tracklistHeader {

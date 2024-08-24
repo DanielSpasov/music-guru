@@ -2,15 +2,18 @@
 
 @layer components {
   .wrapper {
-    @apply relative flex gap-4 mt-5 w-full;
+    @apply flex flex-col gap-4 w-full;
+
+    /* Responsiveness */
+    @apply lg:flex-row;
   }
 
   .informationWrapper {
-    @apply flex flex-col items-start w-full px-4;
+    @apply relative flex flex-col w-96 gap-4 shrink-0;
   }
 
   .about {
-    @apply mt-3 p-3 w-96 border-[1px] border-neutral-200 shadow-md rounded-md;
+    @apply p-3 border-[1px] border-neutral-200 shadow-md rounded-md;
     @apply dark:border-neutral-700 dark:shadow-black rounded-md;
   }
 }
