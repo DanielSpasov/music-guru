@@ -15,6 +15,7 @@ import { useSong } from '../../../Hooks';
 // Composables
 import Summary from './composables/Summary';
 import Lyrics from './composables/Lyrics';
+import { getSidebarLinks } from './sidebarLinks';
 
 const SongDetails = () => {
   const { uid, isAuthenticated } = useContext(AuthContext);
@@ -39,6 +40,7 @@ const SongDetails = () => {
       title={song.name}
       heading={song.name}
       loading={loading}
+      links={getSidebarLinks(id)}
       footerContent={<Socials links={song.links} />}
       actions={[
         {

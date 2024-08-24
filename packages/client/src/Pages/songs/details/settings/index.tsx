@@ -1,11 +1,12 @@
 import { FC, useCallback, useContext } from 'react';
 import { AxiosRequestConfig } from 'axios';
 
-import { IPlus, IX, PageLayout, Table } from '../../../Components';
-import { AuthContext } from '../../../Contexts';
-import { Editor, Song } from '../../../Types';
-import { useSong } from '../../../Hooks';
-import Api from '../../../Api';
+import { IPlus, IX, PageLayout, Table } from '../../../../Components';
+import { AuthContext } from '../../../../Contexts';
+import { Editor, Song } from '../../../../Types';
+import { useSong } from '../../../../Hooks';
+import Api from '../../../../Api';
+import { getSidebarLinks } from '../sidebarLinks';
 
 const Settings: FC<{ data: Song }> = ({ data }) => {
   const { uid: userUID } = useContext(AuthContext);
@@ -39,6 +40,7 @@ const Settings: FC<{ data: Song }> = ({ data }) => {
     <PageLayout
       title={`${data.name} Settings`}
       heading={`${data.name} Settings`}
+      links={getSidebarLinks(data.uid)}
       hideFooter
     >
       <Table<Editor>

@@ -11,7 +11,7 @@ export const Components = {
   ArtistsMixtapes: lazy(() => import('../Pages/artists/details/mixtapes')),
   ArtistsSongs: lazy(() => import('../Pages/artists/details/songs')),
   ArtistsFeatures: lazy(() => import('../Pages/artists/details/features')),
-  ArtistsSettings: lazy(() => import('../Pages/artists/settings')),
+  ArtistsSettings: lazy(() => import('../Pages/artists/details/settings')),
   // Albums
   AlbumsList: lazy(() => import('../Pages/albums/list')),
   AlbumsCreate: lazy(() => import('../Pages/albums/create')),
@@ -23,7 +23,7 @@ export const Components = {
   SongsCreate: lazy(() => import('../Pages/songs/create')),
   SongsDetails: lazy(() => import('../Pages/songs/details')),
   SongsEdit: lazy(() => import('../Pages/songs/edit')),
-  SongSettings: lazy(() => import('../Pages/songs/settings')),
+  SongSettings: lazy(() => import('../Pages/songs/details/settings')),
   // Account Settings
   SettingsAccount: lazy(() => import('../Pages/settings/account')),
   SettingsPassword: lazy(() => import('../Pages/settings/password')),
