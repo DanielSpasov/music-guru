@@ -14,18 +14,21 @@ const Modal: FC<ModalProps> = ({
 }) => {
   if (!open) return null;
   return createPortal(
-    <article className={css.wrapper}>
+    <article className={css.wrapper} data-testid="modal">
       <div
         className={css.background}
+        data-testid="modal-background"
         onClick={() => (closeOnOutsideClick ? setOpen(false) : () => null)}
       />
 
       <section className={css.contentWrapper}>
         <div className={css.header}>
-          <h2>{title}</h2>
+          <h2 data-testid="modal-title">{title}</h2>
         </div>
 
-        <article className={css.content}>{children}</article>
+        <article className={css.content} data-testid="modal-content">
+          {children}
+        </article>
       </section>
     </article>,
     document.getElementById('modal-root') as HTMLElement
