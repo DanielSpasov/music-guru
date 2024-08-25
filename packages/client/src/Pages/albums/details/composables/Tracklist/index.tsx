@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -21,6 +21,8 @@ const Tracklist: FC<DiscsProps> = ({
 
   const [discs, setDiscs] = useState<IDisc[]>(defaultValue);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => setDiscs(defaultValue), [defaultValue]);
 
   const fetchDiscData = useCallback(async () => {
     try {
