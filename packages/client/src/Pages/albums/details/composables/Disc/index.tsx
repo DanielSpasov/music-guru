@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   DndContext,
   DragEndEvent,
@@ -24,7 +24,7 @@ import {
   Modal,
   Table
 } from '../../../../../Components';
-import { ListSong } from '../../../../../Types';
+import { DiscSong, ListSong } from '../../../../../Types';
 import Api from '../../../../../Api';
 import { DiscProps } from './types';
 
@@ -43,11 +43,13 @@ const Disc: FC<DiscProps> = ({
 }) => {
   const { id = '0' } = useParams();
 
+  const [songs, setSongs] = useState<DiscSong[]>(disc.songs);
   const [openAddSongs, setOpenAddSongs] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [isOrdering, setIsOrdering] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [songs, setSongs] = useState(disc.songs);
+
+  const originalOrder = useRef<DiscSong[]>(disc.songs);
 
   useEffect(() => setSongs(disc.songs), [disc.songs]);
 
@@ -98,6 +100,7 @@ const Disc: FC<DiscProps> = ({
         uid: id
       });
 
+      originalOrder.current = songs;
       setIsOrdering(false);
 
       toast.success('Changes saved.');
@@ -158,6 +161,7 @@ const Disc: FC<DiscProps> = ({
             />
             <IHamburger
               onClick={() => {
+                if (isOrdering) setSongs(originalOrder.current);
                 setIsOrdering(prev => !prev);
               }}
               disabled={loading || isEditing}
