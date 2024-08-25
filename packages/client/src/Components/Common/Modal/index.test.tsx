@@ -24,11 +24,16 @@ describe('Modal', () => {
     const backgroundEl = screen.getByTestId('modal-background');
     expect(backgroundEl).toBeInTheDocument();
     fireEvent.click(backgroundEl);
-    expect(setOpen).toHaveBeenCalledOnce();
+    expect(setOpen).toHaveBeenCalledTimes(1);
 
     const titleEl = screen.getByTestId('modal-title');
     expect(titleEl).toBeInTheDocument();
     expect(titleEl.textContent).toEqual(title);
+
+    const closeButtonEl = screen.getByTestId('modal-close-button');
+    expect(closeButtonEl).toBeInTheDocument();
+    fireEvent.click(closeButtonEl);
+    expect(setOpen).toHaveBeenCalledTimes(2);
 
     const contentEl = screen.getByTestId('modal-content');
     expect(contentEl).toContainHTML('<div>test</div>');
