@@ -17,6 +17,11 @@
     & a {
       @apply whitespace-nowrap;
     }
+
+    & p,
+    & p a {
+      @apply text-neutral-400;
+    }
   }
 
   .checkbox {
