@@ -104,7 +104,7 @@ const ArtistDetails = () => {
     >
       <section className={css.wrapper}>
         <article className={css.informationWrapper}>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center shrink-0">
             <Image
               src={artist.image}
               alt={artist.name}
