@@ -24,6 +24,18 @@
     }
   }
 
+  .favoritesBox {
+    @apply flex items-center gap-1;
+
+    & svg {
+      @apply w-7 h-7;
+
+      & path {
+        @apply fill-red-500;
+      }
+    }
+  }
+
   .checkbox {
     @apply flex justify-center items-center border-[1px] shadow-md w-8 h-8 rounded-md p-1 shrink-0;
     @apply dark:bg-neutral-700 dark:border-neutral-800 dark:shadow-neutral-900;
