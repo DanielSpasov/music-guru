@@ -1,9 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
 
-import { ListSong, Song, Verse } from '../../Types';
-import { Editors, Favorite } from '../services';
-import { del, patch, post } from '../requests';
-import { Body } from '../types';
+import { Editors, Favorite, SongVerses } from '../services';
+import { ListSong, Song } from '../../Types';
+import { post } from '../requests';
 import Crud from '../crud';
 
 export default class SongsAPI extends Crud<Song, ListSong> {
@@ -11,6 +10,7 @@ export default class SongsAPI extends Crud<Song, ListSong> {
 
   editors = new Editors(this.model);
   favorite = new Favorite(this.model).favorite;
+  verses = new SongVerses();
 
   constructor() {
     super();
@@ -34,74 +34,6 @@ export default class SongsAPI extends Crud<Song, ListSong> {
     return post({
       url: `${this.baseUrl}/${this.model}/${uid}/image/`,
       body: { image },
-      config
-    });
-  }
-
-  addVerse(
-    {
-      uid,
-      payload,
-      config
-    }: {
-      uid: string;
-      payload: Body;
-      config?: AxiosRequestConfig;
-    } = {
-      uid: '',
-      payload: {},
-      config: {}
-    }
-  ) {
-    return post({
-      url: `${this.baseUrl}/${this.model}/${uid}/verse/`,
-      body: payload,
-      config
-    });
-  }
-
-  delVerse(
-    {
-      uid,
-      number,
-      config
-    }: {
-      uid: string;
-      number: number;
-      config?: AxiosRequestConfig;
-    } = {
-      uid: '',
-      number: 0,
-      config: {}
-    }
-  ) {
-    return del({
-      url: `${this.baseUrl}/${this.model}/${uid}/verse/${number}/`,
-      config
-    });
-  }
-
-  editVerse(
-    {
-      uid,
-      number,
-      verse,
-      config
-    }: {
-      uid: string;
-      number: number;
-      verse: Verse;
-      config?: AxiosRequestConfig;
-    } = {
-      uid: '',
-      number: 0,
-      verse: { lyrics: '', number: 0, title: '' },
-      config: {}
-    }
-  ) {
-    return patch({
-      url: `${this.baseUrl}/${this.model}/${uid}/verse/${number}/`,
-      body: { verse },
       config
     });
   }

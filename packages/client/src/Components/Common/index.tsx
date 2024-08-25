@@ -5,6 +5,7 @@ export { default as Socials } from './Socials';
 export { default as Button } from './Button';
 export { default as Search } from './Search';
 export { default as Image } from './Image';
+export { default as Modal } from './Modal';
 export { default as Table } from './Table';
 export { default as Card } from './Card';
 export { default as List } from './List';

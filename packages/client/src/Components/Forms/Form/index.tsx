@@ -63,7 +63,7 @@ const Form = <T extends FieldValues>({
           {children}
         </article>
 
-        <div className="flex justify-end gap-4 p-4">
+        <div className="flex justify-end gap-4 p-2">
           {!hideClose && (
             <Button
               variant="secondary"

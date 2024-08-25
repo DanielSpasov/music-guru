@@ -9,7 +9,7 @@
     @apply relative w-full;
 
     & thead {
-      @apply border-b-[1px] border-b-neutral-200 dark:border-b-neutral-700;
+      @apply border-b-[1px] border-b-neutral-200 dark:border-b-neutral-600;
 
       & th {
         @apply font-semibold text-start p-2;
@@ -18,6 +18,6 @@
   }
 
   .noItemsBox {
-    @apply absolute m-auto w-full text-center font-semibold p-2;
+    @apply m-auto w-full text-center font-semibold p-2;
   }
 }

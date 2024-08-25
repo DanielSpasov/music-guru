@@ -52,9 +52,8 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
           release_date: formData?.release_date
             ? moment(formData.release_date).toDate()
             : null,
-          type: formData.type.uid,
-          artist: formData.artist.uid,
-          songs: formData.songs?.map(x => x.uid)
+          type: formData.type?.uid,
+          artist: formData.artist?.uid
         };
         await Api.albums.patch({
           id,
@@ -110,13 +109,6 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
               fetchFn={({ config }) => Api.artists.fetch({ config })}
             />
           </Fieldset>
-
-          <Select
-            label="Songs"
-            name="songs"
-            multiple
-            fetchFn={({ config }) => Api.songs.fetch({ config })}
-          />
         </Fieldset>
 
         <Fieldset title="Links" foldable>

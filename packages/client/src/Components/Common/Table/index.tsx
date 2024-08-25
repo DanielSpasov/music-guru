@@ -156,12 +156,12 @@ const Table = <T extends BaseModel>({
               >
                 <div
                   className={`${rowCss.checkbox} ${
-                    selected.length === items.length
+                    selected.length === items.length && items.length !== 0
                       ? rowCss.selectedCheckbox
                       : ''
                   }`}
                 >
-                  {selected.length === items.length ? (
+                  {selected.length === items.length && items.length !== 0 ? (
                     <ICheck
                       className={rowCss.checkIcon}
                       data-testid={`table-head-checkbox-check`}
@@ -194,26 +194,7 @@ const Table = <T extends BaseModel>({
         </thead>
 
         <tbody data-testid="table-body">
-          {loading ? (
-            <tr>
-              <td>
-                <Loader
-                  type="spinner"
-                  className="absolute w-full"
-                  data-testid="table-loader"
-                />
-              </td>
-            </tr>
-          ) : !items.length ? (
-            <tr>
-              <td
-                className={css.noItemsBox}
-                data-testid="table-no-items-message"
-              >
-                No items were found searching for &quot;{searchValue}&quot;.
-              </td>
-            </tr>
-          ) : (
+          {!loading &&
             items.map((item, i) => (
               <Row<T>
                 key={`row-${i}`}
@@ -226,10 +207,23 @@ const Table = <T extends BaseModel>({
                 setSelected={setSelected}
                 index={i}
               />
-            ))
-          )}
+            ))}
         </tbody>
       </table>
+
+      {loading && (
+        <div className="w-full flex justify-center p-2">
+          <Loader type="spinner" data-testid="table-loader" />
+        </div>
+      )}
+
+      {!loading && !items.length && (
+        <p data-testid="table-no-items-message" className={css.noItemsBox}>
+          {searchValue
+            ? `No items were found searching for "${searchValue}".`
+            : 'No items available.'}
+        </p>
+      )}
     </section>
   );
 };

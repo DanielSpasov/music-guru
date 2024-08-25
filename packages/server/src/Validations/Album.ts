@@ -10,12 +10,16 @@ export const LinkSchema = z.object({
   url: z.string().url()
 });
 
+export const AlbumSongSchema = z.string().uuid();
+export const AlbumSongsSchema = z.array(AlbumSongSchema);
+
 export const BaseAlbumSchema = z.object({
   name: z.string(),
   release_date: DateSchema.optional().default(null),
   favorites: z.number().optional().default(0),
   artist: z.string().uuid(),
   songs: z.array(z.string().uuid()).optional().default([]),
+  discs: z.array(z.array(z.string().uuid())).optional().default([]),
   about: z.string().max(5000),
   links: z
     .array(LinkSchema)
@@ -25,4 +29,7 @@ export const BaseAlbumSchema = z.object({
 });
 
 export const AlbumSchema = BaseAlbumSchema.omit({ favorites: true });
-export const EditAlbumSchema = BaseAlbumSchema.omit({ favorites: true });
+export const EditAlbumSchema = BaseAlbumSchema.omit({
+  favorites: true,
+  discs: true
+});

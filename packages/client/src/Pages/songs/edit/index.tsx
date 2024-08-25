@@ -48,7 +48,7 @@ const EditSong: FC<EditSongProps> = ({ data }) => {
 
         const payload = {
           ...socialsPayload,
-          artist: formData.artist.uid,
+          artist: formData.artist?.uid,
           features: formData?.features?.map(x => x?.uid)
         };
         await Api.songs.patch({ id, body: payload });
