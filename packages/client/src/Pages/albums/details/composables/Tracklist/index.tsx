@@ -74,11 +74,7 @@ const Tracklist: FC<DiscsProps> = ({
   );
 
   return (
-    <article
-      className={`${css.tracklist} ${
-        hasLinks ? 'h-[calc(100vh-260px)]' : 'h-[calc(100vh-170px)]'
-      }`}
-    >
+    <article className={`${css.tracklistWrapper} `}>
       <div className={css.tracklistHeader}>
         <h2>Tracklist</h2>
         {isEditor && (
@@ -103,19 +99,25 @@ const Tracklist: FC<DiscsProps> = ({
         </p>
       )}
 
-      {discs
-        .sort((discA, discB) => discA.number - discB.number)
-        .map((disc, i) => (
-          <Disc
-            disc={disc}
-            onDelete={deleteDisc}
-            onAddSongs={postSongs}
-            onRemoveSongs={patchSongs}
-            loading={loading}
-            isEditor={isEditor}
-            key={i}
-          />
-        ))}
+      <div
+        className={`${css.tracklist} ${
+          hasLinks ? 'xl:h-[calc(100vh-310px)]' : 'xl:h-[calc(100vh-210px)]'
+        }`}
+      >
+        {discs
+          .sort((discA, discB) => discA.number - discB.number)
+          .map((disc, i) => (
+            <Disc
+              disc={disc}
+              onDelete={deleteDisc}
+              onAddSongs={postSongs}
+              onRemoveSongs={patchSongs}
+              loading={loading}
+              isEditor={isEditor}
+              key={i}
+            />
+          ))}
+      </div>
     </article>
   );
 };

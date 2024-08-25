@@ -1,11 +1,18 @@
 @tailwind components;
 
 @layer components {
-  .tracklist {
-    @apply w-full overflow-y-scroll p-2;
+  .tracklistWrapper {
+    @apply w-full;
   }
 
   .tracklistHeader {
     @apply flex items-center justify-between;
+  }
+
+  .tracklist {
+    @apply px-2;
+
+    /* Responsiveness */
+    @apply xl:overflow-y-scroll;
   }
 }

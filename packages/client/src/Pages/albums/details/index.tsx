@@ -136,15 +136,15 @@ const AlbumDetails = () => {
     >
       <section className={css.wrapper}>
         <article className={css.informationWrapper}>
-          <div>
-            <Image
-              src={album.image}
-              alt={album.name}
-              editable={isEditor}
-              updateFn={updateImage}
-              className="w-96 h-96 shrink-0"
-            />
+          <Image
+            src={album.image}
+            alt={album.name}
+            editable={isEditor}
+            updateFn={updateImage}
+            className={css.image}
+          />
 
+          <div className={css.dataWrapper}>
             <p className="p-1">
               <span className="font-semibold text-lg">
                 {album.type.name} By:{' '}
@@ -164,9 +164,13 @@ const AlbumDetails = () => {
                 ? moment(album.release_date).format('ddd MMM DD YYYY')
                 : 'TBA'}
             </p>
-          </div>
 
-          {album.about && <p className={css.about}>{album.about}</p>}
+            {album.about && (
+              <div>
+                <p className={css.about}>{album.about}</p>
+              </div>
+            )}
+          </div>
         </article>
 
         <Tracklist
