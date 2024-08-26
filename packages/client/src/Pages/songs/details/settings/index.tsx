@@ -2,11 +2,12 @@ import { FC, useCallback, useContext } from 'react';
 import { AxiosRequestConfig } from 'axios';
 
 import { IPlus, IX, PageLayout, Table } from '../../../../Components';
+import { Pagination } from '../../../../Api/crud/types';
 import { AuthContext } from '../../../../Contexts';
+import { getSidebarLinks } from '../sidebarLinks';
 import { Editor, Song } from '../../../../Types';
 import { useSong } from '../../../../Hooks';
 import Api from '../../../../Api';
-import { getSidebarLinks } from '../sidebarLinks';
 
 const Settings: FC<{ data: Song }> = ({ data }) => {
   const { uid: userUID } = useContext(AuthContext);
@@ -14,8 +15,10 @@ const Settings: FC<{ data: Song }> = ({ data }) => {
   const { editors, song } = useSong(data.uid, data);
 
   const fetchEditors = useCallback(
-    async (config?: AxiosRequestConfig): Promise<{ data: Editor[] }> => {
-      const { data: users } = await Api.users.fetch({
+    async (
+      config?: AxiosRequestConfig
+    ): Promise<{ data: Editor[]; pagination: Pagination }> => {
+      const { data: users, pagination } = await Api.users.fetch({
         config: {
           ...config,
           params: {
@@ -26,6 +29,7 @@ const Settings: FC<{ data: Song }> = ({ data }) => {
       });
 
       return {
+        pagination,
         data: users.map(user => ({
           ...user,
           is_editor: Boolean(song.editors.includes(user.uid)),

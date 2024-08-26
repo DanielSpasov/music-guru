@@ -1,6 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
 import { ElementType } from 'react';
 
+import { Pagination } from '../../../Api/crud/types';
+
 type ColType = 'string' | 'boolean' | 'date' | 'actions';
 
 export type ActionsCol = {
@@ -30,7 +32,10 @@ export type TableBulkAction = {
 
 export type TableProps<T> = {
   cols: Col<T>[];
-  fetchFn: (config?: AxiosRequestConfig) => Promise<{ data: T[] }>;
+  fetchFn: (
+    config?: AxiosRequestConfig
+  ) => Promise<{ data: T[]; pagination: Pagination }>;
+  perPage?: number;
   // Actions
   actions?: TableRowAction<T>[];
   bulkActions?: TableBulkAction[];

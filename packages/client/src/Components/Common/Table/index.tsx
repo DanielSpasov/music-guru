@@ -2,6 +2,7 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 
+import { Pagination as IPagination } from '../../../Api/crud/types';
 import { TableBulkAction, TableProps } from './types';
 import { useDebounce } from '../../../Hooks';
 import { BaseModel } from '../../../Types';
@@ -13,12 +14,14 @@ import rowCss from './composables/Row/index.module.css';
 import css from './index.module.css';
 
 // Composables
+import Pagination from './composables/Pagination';
 import Action from './composables/Action';
 import Row from './composables/Row';
 
 const Table = <T extends BaseModel>({
   cols,
   fetchFn,
+  perPage = 25,
   // Actions
   actions = [],
   bulkActions = [],
@@ -30,8 +33,14 @@ const Table = <T extends BaseModel>({
   hideSearch = false
 }: TableProps<T>) => {
   // Items
+  const [pagination, setPagination] = useState<IPagination>({
+    currentPage: 1,
+    totalItems: 0,
+    totalPages: 0
+  });
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState<T[]>([]);
+  const [page, setPage] = useState(1);
 
   // Actions
   const [bulkLoading, setBulkLoading] = useState<string[]>([]);
@@ -49,12 +58,15 @@ const Table = <T extends BaseModel>({
       try {
         setLoading(true);
 
-        const { data } = await fetchFn({
+        const { data, pagination } = await fetchFn({
           params: {
-            [searchKey]: searchValue,
-            sort: sorting
+            page,
+            limit: perPage,
+            sort: sorting,
+            [searchKey]: searchValue
           }
         });
+        setPagination(pagination);
         setItems(data);
       } catch (err) {
         if (err instanceof AxiosError) {
@@ -66,7 +78,7 @@ const Table = <T extends BaseModel>({
         setLoading(false);
       }
     })();
-  }, [fetchFn, searchValue, sorting, searchKey]);
+  }, [fetchFn, searchValue, sorting, searchKey, perPage, page]);
 
   const SortingIcon = useCallback(
     (key: keyof T) => {
@@ -86,6 +98,7 @@ const Table = <T extends BaseModel>({
     (key: keyof T) => {
       if (!allowSorting.includes(key)) return;
       setSorting(`${key === sorting ? '-' : ''}${key.toString()}`);
+      setPage(1);
     },
     [allowSorting, sorting]
   );
@@ -122,7 +135,13 @@ const Table = <T extends BaseModel>({
     <section data-testid="table-section">
       {!hideSearch && (
         <article data-testid="table-search-box">
-          <Search setValue={setSearch} placeholder={searchPlaceholder} />
+          <Search
+            setValue={value => {
+              setSearch(value);
+              setPage(1);
+            }}
+            placeholder={searchPlaceholder}
+          />
         </article>
       )}
 
@@ -224,6 +243,12 @@ const Table = <T extends BaseModel>({
             : 'No items available.'}
         </p>
       )}
+
+      <Pagination
+        currentItems={items.length}
+        pagination={pagination}
+        setPage={setPage}
+      />
     </section>
   );
 };
