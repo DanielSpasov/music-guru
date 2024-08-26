@@ -183,12 +183,7 @@ const ArtistDetails = () => {
               </Link>
             </div>
 
-            <List
-              fetchFn={fetchDiscog}
-              skeletonLength={5}
-              model="albums"
-              hideSearch
-            />
+            <List fetchFn={fetchDiscog} perPage={5} model="albums" hideSearch />
           </article>
 
           <article>
@@ -204,12 +199,7 @@ const ArtistDetails = () => {
               </Link>
             </div>
 
-            <List
-              fetchFn={fetchSongs}
-              skeletonLength={10}
-              model="songs"
-              hideSearch
-            />
+            <List fetchFn={fetchSongs} perPage={10} model="songs" hideSearch />
           </article>
 
           <article>
@@ -227,7 +217,7 @@ const ArtistDetails = () => {
 
             <List
               fetchFn={fetchFeatures}
-              skeletonLength={10}
+              perPage={10}
               model="songs"
               hideSearch
             />

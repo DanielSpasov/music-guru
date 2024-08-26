@@ -64,8 +64,8 @@ const ArtistAlbums = () => {
             { key: 'name', label: 'Name' }
           ]}
           fetchFn={fetchAlbums}
-          skeletonLength={24}
           model="albums"
+          perPage={24}
         />
       </section>
     </PageLayout>

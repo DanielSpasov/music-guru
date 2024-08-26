@@ -37,12 +37,7 @@ const Home = () => {
           </Link>
         </div>
 
-        <List
-          model="songs"
-          skeletonLength={20}
-          fetchFn={fetchSongs}
-          hideSearch
-        />
+        <List model="songs" perPage={20} fetchFn={fetchSongs} hideSearch />
       </article>
 
       <article>
@@ -58,12 +53,7 @@ const Home = () => {
           </Link>
         </div>
 
-        <List
-          model="albums"
-          skeletonLength={10}
-          fetchFn={fetchAlbums}
-          hideSearch
-        />
+        <List model="albums" perPage={10} fetchFn={fetchAlbums} hideSearch />
       </article>
     </PageLayout>
   );

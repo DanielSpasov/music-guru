@@ -47,7 +47,7 @@ const Songs = () => {
         ]}
         model="songs"
         fetchFn={fetchFn}
-        skeletonLength={56}
+        perPage={56}
       />
     </PageLayout>
   );

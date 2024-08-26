@@ -25,23 +25,19 @@ describe('List', () => {
     expect(searchEl).toBeInTheDocument();
 
     const contentEl = screen.getByTestId('list-content');
-    expect(contentEl.children.length).toEqual(24);
+    expect(contentEl.children.length).toEqual(25);
   });
 
-  test('renders a number of loading cards if skeletonLength is provided', async () => {
-    const skeletonLength = 9;
+  test('renders a number of loading cards if perPage is provided', async () => {
+    const perPage = 9;
     render(
       <MemoryRouter>
-        <List
-          fetchFn={vi.fn()}
-          model="albums"
-          skeletonLength={skeletonLength}
-        />
+        <List fetchFn={vi.fn()} model="albums" perPage={perPage} />
       </MemoryRouter>
     );
 
     const element = screen.getByTestId('list-content');
-    expect(element.children.length).toEqual(skeletonLength);
+    expect(element.children.length).toEqual(perPage);
   });
 
   test('calls fetchFn exactly 1 time', async () => {
@@ -151,7 +147,12 @@ describe('List', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { name: value, sort: 'created_at' }
+        params: {
+          name: value,
+          sort: 'created_at',
+          page: 1,
+          limit: 25
+        }
       });
     });
   });
@@ -174,7 +175,7 @@ describe('List', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { [searchKey]: value, sort: 'created_at' }
+        params: { [searchKey]: value, sort: 'created_at', page: 1, limit: 25 }
       });
     });
   });
@@ -211,8 +212,39 @@ describe('List', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { sort: `-${config[0].key}`, name: '' }
+        params: { sort: `-${config[0].key}`, name: '', page: 1, limit: 25 }
       });
     });
+  });
+
+  test('loads more data when "Show More" button is clicked', async () => {
+    const fetchFn = vi
+      .fn()
+      .mockReturnValueOnce({
+        data: [{ uid: '1234-1234-1234-1234', name: 'test123' }],
+        pagination: { currentPage: 1, totalPages: 2, totalItems: 100 }
+      })
+      .mockReturnValueOnce({
+        data: [{ uid: '1234-1234-1234-1235', name: 'test123' }],
+        pagination: { currentPage: 2, totalPages: 2, totalItems: 100 }
+      });
+
+    await act(async () => {
+      render(
+        <MemoryRouter>
+          <List fetchFn={fetchFn} model="artists" />
+        </MemoryRouter>
+      );
+    });
+
+    const buttonEl = screen.getByTestId('list-show-more-button');
+    expect(buttonEl).toBeInTheDocument();
+    await waitFor(async () => fireEvent.click(buttonEl));
+
+    const contentEl = screen.getByTestId('list-content');
+    expect(contentEl.children.length).toEqual(2);
+
+    const noButtonEl = screen.queryByTestId('list-show-more-button');
+    expect(noButtonEl).not.toBeInTheDocument();
   });
 });

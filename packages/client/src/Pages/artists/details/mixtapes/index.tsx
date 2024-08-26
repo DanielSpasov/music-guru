@@ -64,8 +64,8 @@ const ArtistMixtapes = () => {
             { key: 'name', label: 'Name' }
           ]}
           fetchFn={fetchMixtapes}
-          skeletonLength={24}
           model="albums"
+          perPage={24}
         />
       </section>
     </PageLayout>

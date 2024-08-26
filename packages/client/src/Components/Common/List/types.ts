@@ -19,7 +19,7 @@ export type ListProps<T> = {
     config?: AxiosRequestConfig
   ) => Promise<{ data: T[]; pagination: Pagination }>;
   model: CardModel;
-  skeletonLength?: number;
+  perPage?: number;
   // Sorting props
   sortingConfig?: Sorting[];
   // Search Props

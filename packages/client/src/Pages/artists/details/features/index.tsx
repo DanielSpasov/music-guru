@@ -63,8 +63,8 @@ const ArtistFeatures = () => {
             { key: 'name', label: 'Name' }
           ]}
           fetchFn={fetchFeatures}
-          skeletonLength={56}
           model="songs"
+          perPage={56}
         />
       </section>
     </PageLayout>
