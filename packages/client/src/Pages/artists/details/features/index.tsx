@@ -39,7 +39,8 @@ const ArtistFeatures = () => {
         config: {
           params: {
             ...config?.params,
-            'features.uid': artist.uid
+            'features.uid': artist.uid,
+            limit: 50
           }
         }
       }),
@@ -62,9 +63,8 @@ const ArtistFeatures = () => {
             { key: 'name', label: 'Name' }
           ]}
           fetchFn={fetchFeatures}
-          model="songs"
-          favoriteFn={uid => Api.songs.favorite({ uid })}
           skeletonLength={56}
+          model="songs"
         />
       </section>
     </PageLayout>

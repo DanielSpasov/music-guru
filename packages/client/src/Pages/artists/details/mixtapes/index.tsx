@@ -64,9 +64,8 @@ const ArtistMixtapes = () => {
             { key: 'name', label: 'Name' }
           ]}
           fetchFn={fetchMixtapes}
-          model="albums"
-          favoriteFn={uid => Api.albums.favorite({ uid })}
           skeletonLength={24}
+          model="albums"
         />
       </section>
     </PageLayout>

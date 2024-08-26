@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 
 import {
@@ -7,7 +8,9 @@ import {
   Image,
   IPen,
   Socials,
-  ISettings
+  ISettings,
+  Link,
+  List
 } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { getSidebarLinks } from './sidebarLinks';
@@ -17,7 +20,6 @@ import Api from '../../../Api';
 import css from './Details.module.css';
 
 // Composables
-import Sublist from './composables/Sublist';
 
 export const defaultArtist: Artist = {
   created_at: new Date(),
@@ -78,6 +80,54 @@ const ArtistDetails = () => {
     return Boolean(artist.editors.includes(uid)) || isOwner;
   }, [artist.editors, uid, isOwner]);
 
+  const fetchDiscog = useCallback(
+    (config?: AxiosRequestConfig) =>
+      Api.albums.fetch({
+        config: {
+          ...config,
+          params: {
+            ...config?.params,
+            'artist.uid': artist.uid,
+            sort: '-release_date',
+            limit: 5
+          }
+        }
+      }),
+    [artist.uid]
+  );
+
+  const fetchSongs = useCallback(
+    (config?: AxiosRequestConfig) =>
+      Api.songs.fetch({
+        config: {
+          ...config,
+          params: {
+            ...config?.params,
+            'artist.uid': artist.uid,
+            sort: '-release_date',
+            limit: 10
+          }
+        }
+      }),
+    [artist.uid]
+  );
+
+  const fetchFeatures = useCallback(
+    (config?: AxiosRequestConfig) =>
+      Api.songs.fetch({
+        config: {
+          ...config,
+          params: {
+            ...config?.params,
+            'features.uid': artist.uid,
+            sort: '-release_date',
+            limit: 10
+          }
+        }
+      }),
+    [artist.uid]
+  );
+
   return (
     <PageLayout
       title={artist.name}
@@ -120,24 +170,68 @@ const ArtistDetails = () => {
         </article>
 
         <section className={css.discographyWrapper}>
-          <Sublist
-            fetchFnProps={{ 'artist.uid': artist.uid }}
-            label="Discography"
-            model="albums"
-            limit={5}
-          />
-          <Sublist
-            fetchFnProps={{ 'artist.uid': artist.uid }}
-            label="Songs"
-            model="songs"
-            limit={10}
-          />
-          <Sublist
-            fetchFnProps={{ 'features.uid': artist.uid }}
-            label="Features"
-            model="songs"
-            limit={10}
-          />
+          <article>
+            <div className="flex justify-between items-center gap-2">
+              <h3>Albums</h3>
+              <div className="bg-neutral-200 dark:bg-neutral-700 w-full h-[1px]" />
+              <Link
+                type="link"
+                to="albums"
+                className="underline whitespace-nowrap"
+              >
+                See All
+              </Link>
+            </div>
+
+            <List
+              fetchFn={fetchDiscog}
+              skeletonLength={5}
+              model="albums"
+              hideSearch
+            />
+          </article>
+
+          <article>
+            <div className="flex justify-between items-center gap-2">
+              <h3>Songs</h3>
+              <div className="bg-neutral-200 dark:bg-neutral-700 w-full h-[1px]" />
+              <Link
+                type="link"
+                to="songs"
+                className="underline whitespace-nowrap"
+              >
+                See All
+              </Link>
+            </div>
+
+            <List
+              fetchFn={fetchSongs}
+              skeletonLength={10}
+              model="songs"
+              hideSearch
+            />
+          </article>
+
+          <article>
+            <div className="flex justify-between items-center gap-2">
+              <h3>Features</h3>
+              <div className="bg-neutral-200 dark:bg-neutral-700 w-full h-[1px]" />
+              <Link
+                type="link"
+                to="songs"
+                className="underline whitespace-nowrap"
+              >
+                See All
+              </Link>
+            </div>
+
+            <List
+              fetchFn={fetchFeatures}
+              skeletonLength={10}
+              model="songs"
+              hideSearch
+            />
+          </article>
         </section>
       </section>
     </PageLayout>

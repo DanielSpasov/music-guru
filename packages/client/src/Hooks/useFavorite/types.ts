@@ -7,16 +7,15 @@ export type UpdateFavsFn = (newFavs: string[]) => void;
 export type UseFavoriteHookProps = {
   uid: string;
   model: CardModel;
-  isFavorite: boolean;
   defaultCount: number;
-  favoriteFn?: FavoriteFn;
-  updateFavs?: UpdateFavsFn;
 };
 
 type UseFavoriteHookReturnProps = {
-  onFavorite: () => Promise<void>;
-  loadingFav: boolean;
-  favCount: number;
+  favorite: () => Promise<void>;
+  canFavorite: boolean;
+  isFavorite: boolean;
+  loading: boolean;
+  count: number;
 };
 
 export type UseFavoriteHook = (

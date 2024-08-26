@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
+import { AxiosRequestConfig } from 'axios';
 
 import { IPlus, List, PageLayout } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
@@ -9,6 +10,14 @@ const Songs = () => {
   const { isAuthenticated } = useContext(AuthContext);
 
   const navigate = useNavigate();
+
+  const fetchFn = useCallback(
+    (config?: AxiosRequestConfig) =>
+      Api.songs.fetch({
+        config: { ...config, params: { limit: 25, ...config?.params } }
+      }),
+    []
+  );
 
   return (
     <PageLayout
@@ -37,8 +46,7 @@ const Songs = () => {
           { key: 'name', label: 'Name' }
         ]}
         model="songs"
-        fetchFn={config => Api.songs.fetch({ config })}
-        favoriteFn={uid => Api.songs.favorite({ uid })}
+        fetchFn={fetchFn}
         skeletonLength={56}
       />
     </PageLayout>

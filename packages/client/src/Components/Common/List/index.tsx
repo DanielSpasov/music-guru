@@ -1,12 +1,10 @@
-import { memo, useContext, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { AuthContext } from '../../../Contexts';
-import { ListProps, ListState } from './types';
 import { useDebounce } from '../../../Hooks';
 import { BaseModel } from '../../../Types';
+import { ListProps } from './types';
 import Search from '../Search';
-import Api from '../../../Api';
 import { Card } from '../../';
 
 // Composables
@@ -15,7 +13,6 @@ import Sorting from './composables/Sorting';
 const List = <T extends BaseModel>({
   model,
   fetchFn,
-  favoriteFn,
   skeletonLength = 24,
   // Sorting
   sortingConfig = [],
@@ -24,37 +21,13 @@ const List = <T extends BaseModel>({
   searchKey = 'name',
   hideSearch = false
 }: ListProps<T>) => {
-  const { uid, isAuthenticated } = useContext(AuthContext);
-
-  const [state, setState] = useState<ListState<T>>({ items: [], favs: [] });
-  const [loadingFavs, setLoadingFavs] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState<T[]>([]);
 
   const [search, setSearch] = useState('');
   const searchValue = useDebounce({ value: search, delay: 500 });
 
   const [sorting, setSorting] = useState('created_at');
-
-  useEffect(() => {
-    (async () => {
-      try {
-        if (!uid) {
-          setLoadingFavs(false);
-          return;
-        }
-
-        setLoadingFavs(true);
-        const { data } = await Api.users.get({ id: uid });
-
-        if (!data) return;
-        setState(prev => ({ ...prev, favs: data.favorites?.[model] || [] }));
-      } catch (err) {
-        toast.error('Failed to fetch favorites.');
-      } finally {
-        setLoadingFavs(false);
-      }
-    })();
-  }, [model, uid]);
 
   useEffect(() => {
     (async () => {
@@ -67,7 +40,7 @@ const List = <T extends BaseModel>({
           }
         });
         if (!data) return;
-        setState(prev => ({ ...prev, items: data }));
+        setItems(data);
       } catch (err) {
         toast.error('Failed to fetch data.');
       } finally {
@@ -90,12 +63,11 @@ const List = <T extends BaseModel>({
           <Sorting config={sortingConfig} setValue={setSorting} />
         )}
       </article>
-
       <div
         className="flex flex-wrap w-full items-start justify-start"
         data-testid="list-content"
       >
-        {loading || loadingFavs ? (
+        {loading ? (
           Array(skeletonLength)
             .fill(null)
             .map((_, i) => (
@@ -106,24 +78,12 @@ const List = <T extends BaseModel>({
                 loading={true}
               />
             ))
-        ) : !state.items.length ? (
+        ) : !items.length ? (
           <h4 className="font-medium" data-testid="list-no-items-message">
             No items available.
           </h4>
         ) : (
-          state.items.map(item => (
-            <Card
-              data={item}
-              key={item.uid}
-              model={model}
-              favoriteFn={favoriteFn}
-              updateFavs={(newFavs: string[]) => {
-                setState(prev => ({ ...prev, favs: newFavs }));
-              }}
-              canFavorite={Boolean(isAuthenticated)}
-              isFavorite={state.favs.includes(item.uid)}
-            />
-          ))
+          items.map(item => <Card data={item} key={item.uid} model={model} />)
         )}
       </div>
     </section>

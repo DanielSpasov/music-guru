@@ -9,14 +9,7 @@ import css from './Song.module.css';
 // Composables
 import FavoritesCounter from '../composables/FavoritesConuter';
 
-const SongCard: FC<CardProps<ListSong>> = ({
-  data,
-  favoriteFn,
-  updateFavs,
-  canFavorite,
-  loading = false,
-  isFavorite = false
-}) => {
+const SongCard: FC<CardProps<ListSong>> = ({ data, loading = false }) => {
   const navigate = useNavigate();
 
   if (loading) return <Skeleton />;
@@ -42,12 +35,8 @@ const SongCard: FC<CardProps<ListSong>> = ({
 
         <div onClick={e => e.stopPropagation()}>
           <FavoritesCounter
-            model="songs"
             defaultCount={data.favorites}
-            canFavorite={canFavorite}
-            isFavorite={isFavorite}
-            favoriteFn={favoriteFn}
-            updateFavs={updateFavs}
+            model="songs"
             uid={data.uid}
           />
         </div>

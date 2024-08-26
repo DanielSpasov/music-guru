@@ -1,43 +1,62 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { AuthContext } from '../../Contexts';
 import { UseFavoriteHook } from './types';
+import Api from '../../Api';
 
-export const useFavorite: UseFavoriteHook = ({
-  uid,
-  model,
-  isFavorite,
-  favoriteFn,
-  updateFavs,
-  defaultCount
-}) => {
-  const [favCount, setFavCount] = useState(defaultCount);
-  const [loadingFav, setLoadingFav] = useState(false);
+export const useFavorite: UseFavoriteHook = ({ uid, model, defaultCount }) => {
+  const { isAuthenticated, data, dispatch } = useContext(AuthContext);
 
-  const onFavorite = useCallback(async () => {
-    try {
-      if (!favoriteFn || !updateFavs) return;
-      setLoadingFav(true);
+  const [count, setCount] = useState(defaultCount);
+  const [loading, setLoading] = useState(false);
 
-      const { favorites } = await favoriteFn(uid);
-      updateFavs(favorites?.[model] || []);
+  const isFavorite = useMemo(
+    () => Boolean(data?.favorites[model]?.includes(uid)),
+    [uid, data, model]
+  );
 
-      if (isFavorite) {
-        setFavCount(prev => prev - 1);
-        return;
+  const updateData = useCallback(() => {
+    if (!data) return;
+
+    setCount(prev => (isFavorite ? prev - 1 : prev + 1));
+    dispatch({
+      type: 'UPDATE',
+      payload: {
+        data: {
+          ...data,
+          uid: data?.uid,
+          favorites: {
+            ...data?.favorites,
+            [model]: isFavorite
+              ? data?.favorites[model]?.filter(x => x !== uid)
+              : [...(data?.favorites[model] || []), uid]
+          }
+        }
       }
+    });
+  }, [uid, model, data, dispatch, isFavorite]);
 
-      setFavCount(prev => prev + 1);
+  const favorite = useCallback(async () => {
+    try {
+      if (!isAuthenticated) return;
+
+      setLoading(true);
+      updateData();
+      await Api[model].favorite({ uid });
     } catch (err) {
-      toast.error('Failed to favorite.');
+      toast.error(`Failed to favorite ${model}.`);
+      updateData();
     } finally {
-      setLoadingFav(false);
+      setLoading(false);
     }
-  }, [favoriteFn, updateFavs, uid, isFavorite, model]);
+  }, [updateData, isAuthenticated, model, uid]);
 
   return {
-    loadingFav,
-    onFavorite,
-    favCount
+    canFavorite: Boolean(isAuthenticated),
+    isFavorite,
+    favorite,
+    loading,
+    count
   };
 };
