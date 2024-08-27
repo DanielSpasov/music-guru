@@ -43,7 +43,7 @@ const List = <T extends BaseModel>({
   const [search, setSearch] = useState('');
   const searchValue = useDebounce({ value: search, delay: 500 });
 
-  const [sorting, setSorting] = useState('created_at');
+  const [sorting, setSorting] = useState('favorites');
 
   useEffect(() => setPage(1), [searchValue, sorting]);
 

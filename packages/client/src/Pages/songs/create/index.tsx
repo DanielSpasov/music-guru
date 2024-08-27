@@ -61,7 +61,7 @@ const CreateSong = () => {
         toast.success('Successfully Created Song');
         navigate(`/songs/${data.uid}`);
       } catch (error) {
-        toast.success('Failed to Created Song');
+        toast.error('Failed to Created Song');
       }
     },
     [navigate]
