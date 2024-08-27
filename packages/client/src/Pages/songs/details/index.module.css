@@ -2,14 +2,14 @@
 
 @layer components {
   .wrapper {
-    @apply relative flex flex-col gap-4;
+    @apply relative flex justify-between flex-col gap-4;
 
     /* Responsiveness */
     @apply lg:flex-row;
   }
 
   .informationWrapper {
-    @apply relative flex flex-col items-center px-4 w-full;
+    @apply relative flex flex-col items-center px-4 w-min;
 
     /* Responsiveness */
     @apply md:items-start;
