@@ -17,8 +17,12 @@ const Link_ = <T extends BaseModel>({ value, linkType }: LinkProps<T>) => {
   );
 };
 
-const Links = <T extends BaseModel>({ value, linkType }: LinksProps<T>) => {
-  if (!value.length) return <MissingText />;
+const Links = <T extends BaseModel>({
+  value,
+  linkType,
+  missingText
+}: LinksProps<T>) => {
+  if (!value.length) return <MissingText message={missingText} />;
   return (
     <span className="text-lg">
       {value.map((item, i) => (

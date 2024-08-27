@@ -16,8 +16,20 @@ const Summary: FC<SummaryProps> = ({ song, albums }) => {
         linkType="artists"
         value={song.features}
       />
-      <Item label="Producers" type="links" linkType="artists" value={[]} />
-      <Item label="Writers" type="links" linkType="artists" value={[]} />
+      <Item
+        label="Producers"
+        type="links"
+        linkType="artists"
+        value={[]}
+        missingText="Coming Soon"
+      />
+      <Item
+        label="Writers"
+        type="links"
+        linkType="artists"
+        value={[]}
+        missingText="Coming Soon"
+      />
       <Item label="Albums" type="links" linkType="albums" value={albums} />
     </div>
   );

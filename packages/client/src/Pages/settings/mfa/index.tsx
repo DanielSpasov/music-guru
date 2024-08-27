@@ -55,8 +55,26 @@ const MFA = () => {
               loading: loadingEmail
             }}
           />
-          <TableRow Icon={IGoogle} label="Google Authenticator" value={false} />
-          <TableRow Icon={IPhone} label="Phone Number" value={false} />
+          <TableRow
+            Icon={IGoogle}
+            label="Google Authenticator"
+            value={false}
+            action={{
+              label: 'Coming Soon',
+              onClick: () => undefined,
+              disabled: true
+            }}
+          />
+          <TableRow
+            Icon={IPhone}
+            label="Phone Number"
+            value={false}
+            action={{
+              label: 'Coming Soon',
+              onClick: () => undefined,
+              disabled: true
+            }}
+          />
         </tbody>
       </table>
     </PageLayout>
