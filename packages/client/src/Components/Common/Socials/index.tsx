@@ -8,7 +8,7 @@ import css from './index.module.css';
 const Socials: FC<SocialsProps> = ({ links }) => {
   if (!links.length) return <div />;
   return (
-    <div className="flex justify-center gap-4 p-4" data-testid="socials">
+    <div className={css.wrapper} data-testid="socials">
       {links.map((link, i) => {
         const Icon = icons[link.name];
         return (

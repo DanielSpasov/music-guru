@@ -1,6 +1,10 @@
 @tailwind components;
 
 @layer components {
+  .wrapper {
+    @apply flex flex-wrap justify-center gap-4 p-4;
+  }
+
   .link {
     @apply relative cursor-pointer h-16 w-16 rounded-lg bg-neutral-300 dark:bg-neutral-700;
 
