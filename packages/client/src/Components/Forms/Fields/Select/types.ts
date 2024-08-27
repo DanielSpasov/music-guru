@@ -41,4 +41,5 @@ export type SelectComponentProps<T extends SelectType, K extends Option> = Pick<
 export type Option = {
   uid: string;
   name: string;
+  image?: string;
 };
