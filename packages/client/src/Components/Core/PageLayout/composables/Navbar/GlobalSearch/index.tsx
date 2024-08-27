@@ -98,12 +98,9 @@ const GlobalSearch: FC<SearchProps> = ({ models }) => {
                   <div className="bg-neutral-300 dark:bg-neutral-700 h-[1px] w-full" />
                 </header>
 
-                <article>
+                <article className="flex flex-col gap-1">
                   {results.map(result => (
-                    <div
-                      className="flex items-center gap-1 mb-1"
-                      key={result?.uid}
-                    >
+                    <div className="flex items-center gap-1" key={result?.uid}>
                       <img
                         className="w-10 h-10 shrink-0 rounded-md"
                         src={result.image}
@@ -123,7 +120,7 @@ const GlobalSearch: FC<SearchProps> = ({ models }) => {
                           type="link"
                           className="block pl-2 text-neutral-500"
                           onClick={() => setSearch('')}
-                          to={`/artist/${result?.artist?.uid}`}
+                          to={`/artists/${result?.artist?.uid}`}
                           data-testid={`results-${model}-${result?.uid}-artist`}
                         >
                           {result?.artist?.name}
