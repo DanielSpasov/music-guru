@@ -11,7 +11,7 @@ const Sidebar: FC<SidebarProps> = ({ hideResourses, hideNavbar, links }) => {
 
   return (
     <aside
-      className={`fixed top-0 left-0 h-full w-64 p-2 pl-4 border-r-[1px] overflow-y-scroll dark:border-r-neutral-700 ${
+      className={`fixed top-0 left-0 h-full w-20 md:w-64 p-2 pl-4 border-r-[1px] overflow-y-scroll dark:border-r-neutral-700 ${
         !hideNavbar ? 'mt-16' : ''
       }`}
       data-testid="sidebar"
@@ -25,7 +25,7 @@ const Sidebar: FC<SidebarProps> = ({ hideResourses, hideNavbar, links }) => {
                 ? activeIconColor['artists']
                 : iconColor['artists']
             }
-            type="dropdown-link"
+            type="sidebar-link"
             Icon={IArtist}
             to="/artists"
           >
@@ -34,7 +34,7 @@ const Sidebar: FC<SidebarProps> = ({ hideResourses, hideNavbar, links }) => {
           <Link
             isActive={pathname === '/albums'}
             iconColor={pathname === '/albums' ? activeIconColor['albums'] : ''}
-            type="dropdown-link"
+            type="sidebar-link"
             Icon={IAlbum}
             to="/albums"
           >
@@ -43,7 +43,7 @@ const Sidebar: FC<SidebarProps> = ({ hideResourses, hideNavbar, links }) => {
           <Link
             isActive={pathname === '/songs'}
             iconColor={pathname === '/songs' ? activeIconColor['songs'] : ''}
-            type="dropdown-link"
+            type="sidebar-link"
             Icon={ISong}
             to="/songs"
           >
@@ -70,7 +70,7 @@ const Sidebar: FC<SidebarProps> = ({ hideResourses, hideNavbar, links }) => {
                   : link?.iconColor ||
                     '[&>path]:fill-black dark:[&>path]:fill-white'
               }
-              type="dropdown-link"
+              type="sidebar-link"
               Icon={link.Icon}
               to={link.to}
             >

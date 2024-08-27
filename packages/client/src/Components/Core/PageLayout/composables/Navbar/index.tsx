@@ -39,7 +39,7 @@ const Navbar = () => {
             alt="Music Guru"
           />
 
-          <h1 className="whitespace-nowrap">Music Guru</h1>
+          <h1 className="whitespace-nowrap hidden md:block">Music Guru</h1>
         </Link>
       </section>
 

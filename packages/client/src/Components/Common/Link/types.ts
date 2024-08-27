@@ -1,13 +1,13 @@
 import { AnchorHTMLAttributes, ElementType, ReactNode } from 'react';
 
-export type LinkType = 'navlink' | 'link' | 'dropdown-link';
+export type LinkType = 'navlink' | 'link' | 'dropdown-link' | 'sidebar-link';
 
 export type NavlinkProps = {
   type: Extract<LinkType, 'navlink'>;
   isActive?: boolean;
 };
 export type DropdownLinkProps = {
-  type: Extract<LinkType, 'dropdown-link'>;
+  type: Extract<LinkType, 'dropdown-link'> | Extract<LinkType, 'sidebar-link'>;
   Icon: ElementType;
   iconColor?: string;
   isActive?: boolean;

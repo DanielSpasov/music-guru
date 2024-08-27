@@ -6,6 +6,11 @@ export const styles: Record<LinkType, Record<string, string>> = {
     activeIconProps: 'text-primary dark:text-primary-dark',
     iconProps: 'text-black dark:text-white'
   },
+  'sidebar-link': {
+    activeLabelProps: 'text-primary dark:text-primary-dark',
+    activeIconProps: 'text-primary dark:text-primary-dark',
+    iconProps: 'text-black dark:text-white'
+  },
   navlink: {
     activeProps: 'font-bold text-neutral-950 dark:text-primary-dark',
     hoverProps: 'hover:text-primary dark:hover:text-primary-dark',
