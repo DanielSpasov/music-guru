@@ -10,7 +10,7 @@ const Home = () => {
       Api.songs.fetch({
         config: {
           ...config,
-          params: { ...config?.params, sort: 'release_date', limit: 20 }
+          params: { ...config?.params, sort: 'favorites', limit: 20 }
         }
       }),
     []
@@ -20,7 +20,7 @@ const Home = () => {
       Api.albums.fetch({
         config: {
           ...config,
-          params: { ...config?.params, sort: 'release_date', limit: 10 }
+          params: { ...config?.params, sort: 'favorites', limit: 10 }
         }
       }),
     []
@@ -30,7 +30,7 @@ const Home = () => {
     <PageLayout title="Home" heading="Home" hideFooter>
       <article>
         <div className="flex justify-between items-center gap-2">
-          <h2 className="whitespace-nowrap">Songs: latest releases</h2>
+          <h2 className="whitespace-nowrap">Songs: most popular</h2>
           <div className="bg-neutral-200 dark:bg-neutral-700 w-full h-[1px]" />
           <Link type="link" to="/songs" className="underline whitespace-nowrap">
             See All
@@ -42,7 +42,7 @@ const Home = () => {
 
       <article>
         <div className="flex justify-between items-center gap-2">
-          <h2 className="whitespace-nowrap">Albums: latest releases</h2>
+          <h2 className="whitespace-nowrap">Albums: most popular</h2>
           <div className="bg-neutral-200 dark:bg-neutral-700 w-full h-[1px]" />
           <Link
             type="link"
