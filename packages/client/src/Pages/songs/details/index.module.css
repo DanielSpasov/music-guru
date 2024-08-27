@@ -2,7 +2,7 @@
 
 @layer components {
   .wrapper {
-    @apply relative flex flex-col gap-4 h-full;
+    @apply relative flex flex-col gap-4;
 
     /* Responsiveness */
     @apply lg:flex-row;

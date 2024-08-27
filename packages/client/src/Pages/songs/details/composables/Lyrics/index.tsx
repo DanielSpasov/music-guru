@@ -5,6 +5,8 @@ import { CreateVerseData, VerseSchema } from '../../../../../Validations';
 import { AuthContext } from '../../../../../Contexts';
 import { LyricsProps } from './types';
 
+import css from './index.module.css';
+
 // Composables
 import Header from './composables/Header';
 import Verse from './composables/Verse';
@@ -15,18 +17,20 @@ const Lyrics: FC<LyricsProps> = ({ song, verses, isEditor }) => {
   const { isAuthenticated } = useContext(AuthContext);
 
   return (
-    <section
-      className={`relative w-full rounded-md ${
-        song.links.length ? 'h-[calc(100vh-310px)]' : 'h-[calc(100vh-210px)]'
-      }`}
-    >
+    <section className={css.warpper}>
       <Header
         disableAdd={!isEditor}
         showAdd={Boolean(isAuthenticated)}
         setShowNewVerse={setShowNewVerse}
       />
 
-      <div className="h-full lg:overflow-y-scroll mt-1 px-2">
+      <div
+        className={`${css.versesWrapper} ${
+          song.links.length
+            ? 'lg:h-[calc(100vh-310px)]'
+            : 'lg:h-[calc(100vh-220px)]'
+        }`}
+      >
         {song.verses.length ? (
           song.verses
             .sort((a, b) => a.number - b.number)
@@ -45,7 +49,7 @@ const Lyrics: FC<LyricsProps> = ({ song, verses, isEditor }) => {
         )}
 
         {song.verses.length < verses.loading ? (
-          <div className="mt-4 p-4 bg-neutral-300 dark:bg-neutral-950 rounded-md">
+          <div className={css.loader}>
             <Loader type="vinyl" />
           </div>
         ) : null}
