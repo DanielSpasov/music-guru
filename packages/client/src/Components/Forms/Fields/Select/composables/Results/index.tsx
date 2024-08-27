@@ -19,7 +19,12 @@ const Results = <T extends Option>({
       try {
         setLoading(true);
         const { data } = await fetchFn({
-          config: { params: { name: search } }
+          config: {
+            params: {
+              name: search,
+              limit: 10
+            }
+          }
         });
         setResults(data);
       } finally {
