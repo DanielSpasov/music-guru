@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useCallback } from 'react';
+import moment from 'moment';
 
 import { SubmitFn } from '../../../Components/Forms/Form/types';
 import Api from '../../../Api';
@@ -46,6 +47,9 @@ const CreateSong = () => {
 
         const payload = {
           ...socialsPayload,
+          release_date: formData?.release_date
+            ? moment(formData.release_date, 'DD/MM/yyyy').toDate()
+            : null,
           artist: formData.artist?.uid,
           features: formData?.features?.map(x => x?.uid)
         };

@@ -49,7 +49,7 @@ const CreateAlbum = () => {
           ...formData,
           ...socialsPayload,
           release_date: formData?.release_date
-            ? moment(formData?.release_date, 'MM/DD/YYYY').toDate()
+            ? moment(formData?.release_date, 'DD/MM/yyyy').toDate()
             : null,
           type: formData?.type?.uid,
           artist: formData?.artist?.uid

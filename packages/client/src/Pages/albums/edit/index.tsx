@@ -50,7 +50,7 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
           ...formData,
           ...socialsPayload,
           release_date: formData?.release_date
-            ? moment(formData.release_date).toDate()
+            ? moment(formData.release_date, 'DD/MM/yyyy').toDate()
             : null,
           type: formData.type?.uid,
           artist: formData.artist?.uid
@@ -78,7 +78,7 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
         defaultValues={{
           ...data,
           release_date: data?.release_date
-            ? moment(data?.release_date).format('MM/DD/yyyy')
+            ? moment(data?.release_date).format('DD/MM/yyyy')
             : '',
           ...data.links.reduce(
             (acc, { name, url }) => ({ ...acc, [name]: url }),
