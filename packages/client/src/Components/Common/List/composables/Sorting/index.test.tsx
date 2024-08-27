@@ -17,7 +17,7 @@ describe('Sorting', () => {
 
   test('renders without crashing', async () => {
     await act(async () => {
-      render(<Sorting config={config} setValue={vi.fn()} />);
+      render(<Sorting config={config} value="created_at" setValue={vi.fn()} />);
     });
 
     const sortingEl = screen.getByTestId('list-sorting');
@@ -40,7 +40,7 @@ describe('Sorting', () => {
 
   test('renders content when the button is clicked', async () => {
     await act(async () => {
-      render(<Sorting config={config} setValue={vi.fn()} />);
+      render(<Sorting config={config} value="created_at" setValue={vi.fn()} />);
     });
 
     const sortingEl = screen.getByTestId('list-sorting');
@@ -57,7 +57,7 @@ describe('Sorting', () => {
 
   test('renders correct option', async () => {
     await act(async () => {
-      render(<Sorting config={config} setValue={vi.fn()} />);
+      render(<Sorting config={config} value="created_at" setValue={vi.fn()} />);
     });
 
     const sortingEl = screen.getByTestId('list-sorting');
@@ -82,7 +82,7 @@ describe('Sorting', () => {
 
   test('changes label if an option is clicked', async () => {
     await act(async () => {
-      render(<Sorting config={config} setValue={vi.fn()} />);
+      render(<Sorting config={config} value="created_at" setValue={vi.fn()} />);
     });
 
     const sortingEl = screen.getByTestId('list-sorting');
@@ -125,7 +125,9 @@ describe('Sorting', () => {
   test('calls setValue with correct key based on ascending or descending', async () => {
     const setValue = vi.fn();
     await act(async () => {
-      render(<Sorting config={config} setValue={setValue} />);
+      render(
+        <Sorting config={config} value="created_at" setValue={setValue} />
+      );
     });
 
     const sortingEl = screen.getByTestId('list-sorting');
