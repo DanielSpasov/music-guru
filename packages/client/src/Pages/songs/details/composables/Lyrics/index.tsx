@@ -15,14 +15,18 @@ const Lyrics: FC<LyricsProps> = ({ song, verses, isEditor }) => {
   const { isAuthenticated } = useContext(AuthContext);
 
   return (
-    <section className="w-1/2 relative h-full rounded-md">
+    <section
+      className={`relative w-full rounded-md ${
+        song.links.length ? 'h-[calc(100vh-310px)]' : 'h-[calc(100vh-210px)]'
+      }`}
+    >
       <Header
         disableAdd={!isEditor}
         showAdd={Boolean(isAuthenticated)}
         setShowNewVerse={setShowNewVerse}
       />
 
-      <div className="h-full overflow-y-scroll mt-1 px-2">
+      <div className="h-full lg:overflow-y-scroll mt-1 px-2">
         {song.verses.length ? (
           song.verses
             .sort((a, b) => a.number - b.number)

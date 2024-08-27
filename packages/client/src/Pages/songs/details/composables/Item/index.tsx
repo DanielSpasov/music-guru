@@ -11,7 +11,7 @@ const Item = <T extends BaseModel>({ label, type, ...props }: ItemProps<T>) => {
 
   return (
     <div>
-      <span className="font-semibold text-lg">{label}: </span>
+      <span className="font-semibold text-lg whitespace-nowrap">{label}: </span>
       {<ItemComponent {...props} />}
     </div>
   );
