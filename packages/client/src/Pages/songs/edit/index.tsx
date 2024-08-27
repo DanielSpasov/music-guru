@@ -48,7 +48,10 @@ const EditSong: FC<EditSongProps> = ({ data }) => {
 
         const payload = {
           ...socialsPayload,
-          artist: formData.artist.uid,
+          release_date: formData?.release_date
+            ? moment(formData.release_date, 'DD/MM/yyyy').toDate()
+            : null,
+          artist: formData.artist?.uid,
           features: formData?.features?.map(x => x?.uid)
         };
         await Api.songs.patch({ id, body: payload });
@@ -71,7 +74,7 @@ const EditSong: FC<EditSongProps> = ({ data }) => {
         defaultValues={{
           ...data,
           release_date: data.release_date
-            ? moment(data.release_date).format('MM/DD/yyyy')
+            ? moment(data.release_date).format('DD/MM/yyyy')
             : '',
           ...data.links.reduce(
             (acc, { name, url }) => ({ ...acc, [name]: url }),

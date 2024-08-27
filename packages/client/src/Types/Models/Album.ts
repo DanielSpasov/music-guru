@@ -7,6 +7,16 @@ export type AlbumType = BaseModel & {
   code: string;
 };
 
+export type DiscSong = ListSong & {
+  number: number;
+  features: ListArtist[];
+};
+
+export type Disc = {
+  number: number;
+  songs: DiscSong[];
+};
+
 export type Album = BaseDetailedModel & {
   type: AlbumType;
   image: string;
@@ -14,7 +24,7 @@ export type Album = BaseDetailedModel & {
   created_at: Date;
   release_date: string | null;
   artist: ListArtist;
-  songs: ListSong[];
+  discs: Disc[];
   favorites: number;
   links: { name: keyof Socials; url: string }[];
 };

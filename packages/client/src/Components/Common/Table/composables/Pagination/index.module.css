@@ -1,0 +1,33 @@
+@tailwind components;
+
+@layer components {
+  .wrapper {
+    @apply flex justify-between items-center gap-2 mt-2;
+  }
+
+  .cell {
+    @apply border-[1px] py-1.5 px-3 font-semibold;
+    @apply border-neutral-300 dark:border-neutral-700 text-neutral-400 dark:text-neutral-400;
+  }
+
+  .button {
+    @apply cursor-pointer;
+    @apply text-black dark:text-white;
+
+    &:hover {
+      @apply border-primary text-primary;
+      @apply dark:border-primary-dark dark:text-primary-dark;
+    }
+
+    &:focus {
+      @apply opacity-50;
+    }
+  }
+
+  .right {
+    @apply rounded-r-md;
+  }
+  .left {
+    @apply rounded-l-md;
+  }
+}

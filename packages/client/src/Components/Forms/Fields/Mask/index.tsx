@@ -26,7 +26,7 @@ const Mask: FC<MaskProps> = ({
 
       <InputMask
         {...register(name, { required })}
-        placeholder="mm/dd/yyyy"
+        placeholder="dd/mm/yyyy"
         defaultValue={defaultValue.current}
         maskChar={null}
         className={`w-full border-b-2 p-1 outline-none bg-transparent ${themeProps} ${className}`}

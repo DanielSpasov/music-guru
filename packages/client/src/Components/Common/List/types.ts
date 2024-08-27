@@ -1,6 +1,5 @@
 import { AxiosRequestConfig } from 'axios';
 
-import { FavoriteFn } from '../../../Hooks/useFavorite/types';
 import { Pagination } from '../../../Api/crud/types';
 import { Model } from '../../../Api/types';
 import { CardModel } from '../Card/types';
@@ -19,9 +18,8 @@ export type ListProps<T> = {
   fetchFn: (
     config?: AxiosRequestConfig
   ) => Promise<{ data: T[]; pagination: Pagination }>;
-  favoriteFn?: FavoriteFn;
   model: CardModel;
-  skeletonLength?: number;
+  perPage?: number;
   // Sorting props
   sortingConfig?: Sorting[];
   // Search Props

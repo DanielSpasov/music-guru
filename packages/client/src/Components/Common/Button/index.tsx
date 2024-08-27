@@ -13,7 +13,7 @@ const Button: FC<ButtonProps> = ({
   return (
     <button
       className={`${css.btn} ${css[variant]} ${className}`}
-      data-testid="button"
+      data-testid={HTMLButtonProps['data-testid'] ?? 'button'}
       {...HTMLButtonProps}
     >
       {children}

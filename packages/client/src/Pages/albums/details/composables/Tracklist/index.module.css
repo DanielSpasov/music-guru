@@ -1,0 +1,18 @@
+@tailwind components;
+
+@layer components {
+  .tracklistWrapper {
+    @apply w-full;
+  }
+
+  .tracklistHeader {
+    @apply flex items-center justify-between;
+  }
+
+  .tracklist {
+    @apply px-2;
+
+    /* Responsiveness */
+    @apply xl:overflow-y-scroll;
+  }
+}

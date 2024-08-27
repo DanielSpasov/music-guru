@@ -51,7 +51,7 @@ const PageLayout: FC<PageLayoutProps> = ({
         <div
           data-testid="page-content"
           className={`flex flex-col justify-between flex-1 overflow-auto bg-neutral-100 dark:bg-neutral-800 ${
-            !hideSidebar ? 'ml-64' : ''
+            !hideSidebar ? 'ml-20 md:ml-64' : ''
           }`}
         >
           <main>

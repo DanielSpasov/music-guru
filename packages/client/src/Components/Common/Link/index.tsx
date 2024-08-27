@@ -73,6 +73,45 @@ const CustomLink: FC<LinkProps> = ({
     );
   }
 
+  if (type === 'sidebar-link') {
+    const {
+      Icon,
+      isActive = false,
+      hide = false,
+      iconColor = '',
+      ...props
+    } = linkProps as DropdownLinkProps;
+
+    if (hide) return null;
+    return (
+      <Link
+        to={to}
+        data-testid={dataTestId}
+        className={`p-1 px-2 rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-800 ${className}`}
+        {...props}
+        type="link"
+      >
+        <div className="flex items-center gap-2">
+          <Icon
+            data-testid={`${dataTestId}-icon`}
+            color={iconColor}
+            className={`w-7 h-7 md:w-5 md:h-5 ${
+              isActive ? styles[type].activeIconProps : styles[type].iconProps
+            }`}
+          />
+          <span
+            className={`${
+              isActive && styles[type].activeLabelProps
+            } text-lg whitespace-nowrap hidden md:block`}
+            data-testid={`${dataTestId}-label`}
+          >
+            {children}
+          </span>
+        </div>
+      </Link>
+    );
+  }
+
   return (
     <Link
       to={to}

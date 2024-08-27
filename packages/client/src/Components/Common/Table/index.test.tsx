@@ -114,7 +114,10 @@ describe('Table', () => {
   });
 
   test('renders "No items message." if no data is fetched', async () => {
-    const fetchFn = vi.fn().mockReturnValue({ data: [] });
+    const fetchFn = vi.fn().mockReturnValue({
+      data: [],
+      pagination: { totalItems: 0, totalPages: 1, currentPage: 1 }
+    });
     await act(async () => {
       render(
         <Table
@@ -146,7 +149,10 @@ describe('Table', () => {
       { uid: '1234-1234-1234-1234', name: '1234' },
       { uid: '5678-5678-5678-5678', name: '5768' }
     ];
-    const fetchFn = vi.fn().mockReturnValue({ data });
+    const fetchFn = vi.fn().mockReturnValue({
+      data,
+      pagination: { totalItems: 2, totalPages: 1, currentPage: 1 }
+    });
     await act(async () => {
       render(
         <Table
@@ -236,7 +242,7 @@ describe('Table', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { sort: '-created_at', [key]: value }
+        params: { sort: '-created_at', [key]: value, limit: 25, page: 1 }
       });
     });
   });
@@ -271,7 +277,7 @@ describe('Table', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { sort: '-created_at', name: value }
+        params: { sort: '-created_at', name: value, limit: 25, page: 1 }
       });
     });
   });
@@ -311,15 +317,15 @@ describe('Table', () => {
 
       const [firstCallArgs, secondCallArgs, thirdCallArgs] = fetchFn.mock.calls;
       expect(firstCallArgs[0]).toEqual({
-        params: { sort: '-created_at', name: '' }
+        params: { sort: '-created_at', name: '', limit: 25, page: 1 }
       });
 
       expect(secondCallArgs[0]).toEqual({
-        params: { sort: 'name', name: '' }
+        params: { sort: 'name', name: '', limit: 25, page: 1 }
       });
 
       expect(thirdCallArgs[0]).toEqual({
-        params: { sort: '-name', name: '' }
+        params: { sort: '-name', name: '', limit: 25, page: 1 }
       });
     });
   });

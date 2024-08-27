@@ -1,20 +1,27 @@
 import { useEffect, useState, useCallback, useContext, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 import {
   IPen,
   ISettings,
   ITrashBin,
   Image,
-  List,
+  Link,
   PageLayout,
   Socials
 } from '../../../Components';
 import { defaultArtist } from '../../artists/details';
 import { AuthContext } from '../../../Contexts/Auth';
+import { getSidebarLinks } from './sidebarLinks';
 import { Album } from '../../../Types';
 import Api from '../../../Api';
+
+import css from './index.module.css';
+
+// Composables
+import Tracklist from './composables/Tracklist';
 
 export const defaultAlbum: Album = {
   uid: '',
@@ -24,7 +31,7 @@ export const defaultAlbum: Album = {
   image: '',
   name: '',
   release_date: null,
-  songs: [],
+  discs: [],
   links: [],
   artist: defaultArtist,
   favorites: 0,
@@ -74,32 +81,6 @@ const AlbumDetails = () => {
     })();
   }, [id]);
 
-  const fetchArtist = useCallback(
-    () =>
-      Promise.resolve({
-        data: [album.artist],
-        pagination: {
-          totalItems: 1,
-          totalPages: 1,
-          currentPage: 0
-        }
-      }),
-    [album]
-  );
-
-  const fetchSongs = useCallback(
-    () =>
-      Promise.resolve({
-        data: album.songs || [],
-        pagination: {
-          totalItems: album.songs.length,
-          totalPages: 1,
-          currentPage: 0
-        }
-      }),
-    [album]
-  );
-
   const updateImage = useCallback(
     async (file: File) => {
       const { image } = await Api.albums.updateImage({
@@ -127,6 +108,7 @@ const AlbumDetails = () => {
       title={album.name}
       heading={album.name}
       loading={loading}
+      links={getSidebarLinks(id)}
       footerContent={<Socials links={album.links} />}
       actions={[
         {
@@ -152,43 +134,50 @@ const AlbumDetails = () => {
         }
       ]}
     >
-      <section className="flex flex-col items-center text-white">
-        <Image
-          src={album.image}
-          alt={album.name}
-          editable={isEditor}
-          updateFn={updateImage}
-          className="w-64 h-64"
+      <section className={css.wrapper}>
+        <article className={css.informationWrapper}>
+          <Image
+            src={album.image}
+            alt={album.name}
+            editable={isEditor}
+            updateFn={updateImage}
+            className={css.image}
+          />
+
+          <div className={css.dataWrapper}>
+            <p className="p-1">
+              <span className="font-semibold text-lg">
+                {album.type.name} By:{' '}
+              </span>
+              <Link
+                type="link"
+                to={`/artists/${album.artist.uid}`}
+                className="text-[1.25rem] underline"
+              >
+                {album.artist.name}
+              </Link>
+            </p>
+
+            <p className="p-1">
+              <span className="font-semibold text-lg">Release Date: </span>
+              {album.release_date
+                ? moment(album.release_date).format('ddd MMM DD YYYY')
+                : 'TBA'}
+            </p>
+
+            {album.about && (
+              <div>
+                <p className={css.about}>{album.about}</p>
+              </div>
+            )}
+          </div>
+        </article>
+
+        <Tracklist
+          isEditor={isEditor}
+          discs={album.discs}
+          hasLinks={Boolean(album.links.length)}
         />
-
-        {album.about && (
-          <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
-            {album.about}
-          </span>
-        )}
-
-        <div className="flex justify-between w-full">
-          <div>
-            <h3 className="text-center">Artist</h3>
-            <List
-              favoriteFn={uid => Api.artists.favorite({ uid })}
-              fetchFn={fetchArtist}
-              skeletonLength={1}
-              model="artists"
-              hideSearch
-            />
-          </div>
-          <div>
-            <h3 className="text-center">Songs</h3>
-            <List
-              favoriteFn={uid => Api.songs.favorite({ uid })}
-              fetchFn={fetchSongs}
-              skeletonLength={3}
-              model="songs"
-              hideSearch
-            />
-          </div>
-        </div>
       </section>
     </PageLayout>
   );

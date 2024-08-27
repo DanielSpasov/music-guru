@@ -1,0 +1,34 @@
+@tailwind components;
+
+/* Z Index properties should be in order Wrapper -> Content -> Background */
+@layer components {
+  .wrapper {
+    @apply z-[99999] fixed inset-0 w-full flex items-center justify-center;
+  }
+
+  .contentWrapper {
+    @apply z-[99998] relative bg-neutral-100 rounded-md shadow-md max-h-[70vh];
+    @apply dark:bg-neutral-800 dark:shadow-neutral-900;
+  }
+
+  .header {
+    @apply flex justify-between items-center border-b-[1px] p-2 h-[5vh];
+    @apply dark:border-b-neutral-700;
+
+    & h2 {
+      @apply font-semibold p-1;
+    }
+
+    & svg {
+      @apply w-6 h-6;
+    }
+  }
+
+  .content {
+    @apply p-2 max-h-[65vh] overflow-y-scroll;
+  }
+
+  .background {
+    @apply z-[99997] absolute w-full h-full bg-black opacity-80;
+  }
+}

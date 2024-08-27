@@ -2,10 +2,12 @@ import { FC, useCallback, useContext, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 
-import { IPlus, IX, PageLayout, Table } from '../../../Components';
-import { AuthContext } from '../../../Contexts';
-import { Album, Editor } from '../../../Types';
-import Api from '../../../Api';
+import { IPlus, IX, PageLayout, Table } from '../../../../Components';
+import { Pagination } from '../../../../Api/crud/types';
+import { AuthContext } from '../../../../Contexts';
+import { Album, Editor } from '../../../../Types';
+import { getSidebarLinks } from '../sidebarLinks';
+import Api from '../../../../Api';
 
 const Settings: FC<{ data: Album }> = ({ data }) => {
   const { uid: userUID } = useContext(AuthContext);
@@ -13,8 +15,10 @@ const Settings: FC<{ data: Album }> = ({ data }) => {
   const [editors, setEditors] = useState(data.editors);
 
   const fetchEditors = useCallback(
-    async (config?: AxiosRequestConfig): Promise<{ data: Editor[] }> => {
-      const { data: users } = await Api.users.fetch({
+    async (
+      config?: AxiosRequestConfig
+    ): Promise<{ data: Editor[]; pagination: Pagination }> => {
+      const { data: users, pagination } = await Api.users.fetch({
         config: {
           ...config,
           params: {
@@ -25,6 +29,7 @@ const Settings: FC<{ data: Album }> = ({ data }) => {
       });
 
       return {
+        pagination,
         data: users.map(user => ({
           ...user,
           is_editor: Boolean(editors.includes(user.uid)),
@@ -65,6 +70,7 @@ const Settings: FC<{ data: Album }> = ({ data }) => {
     <PageLayout
       title={`${data.name} Settings`}
       heading={`${data.name} Settings`}
+      links={getSidebarLinks(data.uid)}
       hideFooter
     >
       <Table<Editor>

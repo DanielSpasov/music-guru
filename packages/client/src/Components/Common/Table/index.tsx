@@ -2,6 +2,7 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 
+import { Pagination as IPagination } from '../../../Api/crud/types';
 import { TableBulkAction, TableProps } from './types';
 import { useDebounce } from '../../../Hooks';
 import { BaseModel } from '../../../Types';
@@ -13,12 +14,14 @@ import rowCss from './composables/Row/index.module.css';
 import css from './index.module.css';
 
 // Composables
+import Pagination from './composables/Pagination';
 import Action from './composables/Action';
 import Row from './composables/Row';
 
 const Table = <T extends BaseModel>({
   cols,
   fetchFn,
+  perPage = 25,
   // Actions
   actions = [],
   bulkActions = [],
@@ -30,8 +33,14 @@ const Table = <T extends BaseModel>({
   hideSearch = false
 }: TableProps<T>) => {
   // Items
+  const [pagination, setPagination] = useState<IPagination>({
+    currentPage: 1,
+    totalItems: 0,
+    totalPages: 0
+  });
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState<T[]>([]);
+  const [page, setPage] = useState(1);
 
   // Actions
   const [bulkLoading, setBulkLoading] = useState<string[]>([]);
@@ -44,17 +53,22 @@ const Table = <T extends BaseModel>({
   // Sorting
   const [sorting, setSorting] = useState('-created_at');
 
+  useEffect(() => setPage(1), [searchValue, sorting]);
+
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
 
-        const { data } = await fetchFn({
+        const { data, pagination } = await fetchFn({
           params: {
-            [searchKey]: searchValue,
-            sort: sorting
+            page,
+            limit: perPage,
+            sort: sorting,
+            [searchKey]: searchValue
           }
         });
+        setPagination(pagination);
         setItems(data);
       } catch (err) {
         if (err instanceof AxiosError) {
@@ -66,7 +80,7 @@ const Table = <T extends BaseModel>({
         setLoading(false);
       }
     })();
-  }, [fetchFn, searchValue, sorting, searchKey]);
+  }, [fetchFn, searchValue, sorting, searchKey, perPage, page]);
 
   const SortingIcon = useCallback(
     (key: keyof T) => {
@@ -122,7 +136,10 @@ const Table = <T extends BaseModel>({
     <section data-testid="table-section">
       {!hideSearch && (
         <article data-testid="table-search-box">
-          <Search setValue={setSearch} placeholder={searchPlaceholder} />
+          <Search
+            setValue={value => setSearch(value)}
+            placeholder={searchPlaceholder}
+          />
         </article>
       )}
 
@@ -156,12 +173,12 @@ const Table = <T extends BaseModel>({
               >
                 <div
                   className={`${rowCss.checkbox} ${
-                    selected.length === items.length
+                    selected.length === items.length && items.length !== 0
                       ? rowCss.selectedCheckbox
                       : ''
                   }`}
                 >
-                  {selected.length === items.length ? (
+                  {selected.length === items.length && items.length !== 0 ? (
                     <ICheck
                       className={rowCss.checkIcon}
                       data-testid={`table-head-checkbox-check`}
@@ -194,26 +211,7 @@ const Table = <T extends BaseModel>({
         </thead>
 
         <tbody data-testid="table-body">
-          {loading ? (
-            <tr>
-              <td>
-                <Loader
-                  type="spinner"
-                  className="absolute w-full"
-                  data-testid="table-loader"
-                />
-              </td>
-            </tr>
-          ) : !items.length ? (
-            <tr>
-              <td
-                className={css.noItemsBox}
-                data-testid="table-no-items-message"
-              >
-                No items were found searching for &quot;{searchValue}&quot;.
-              </td>
-            </tr>
-          ) : (
+          {!loading &&
             items.map((item, i) => (
               <Row<T>
                 key={`row-${i}`}
@@ -226,10 +224,29 @@ const Table = <T extends BaseModel>({
                 setSelected={setSelected}
                 index={i}
               />
-            ))
-          )}
+            ))}
         </tbody>
       </table>
+
+      {loading && (
+        <div className="w-full flex justify-center p-2">
+          <Loader type="spinner" data-testid="table-loader" />
+        </div>
+      )}
+
+      {!loading && !items.length && (
+        <p data-testid="table-no-items-message" className={css.noItemsBox}>
+          {searchValue
+            ? `No items were found searching for "${searchValue}".`
+            : 'No items available.'}
+        </p>
+      )}
+
+      <Pagination
+        currentItems={items.length}
+        pagination={pagination}
+        setPage={setPage}
+      />
     </section>
   );
 };

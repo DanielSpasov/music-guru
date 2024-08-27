@@ -50,11 +50,10 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
           ...formData,
           ...socialsPayload,
           release_date: formData?.release_date
-            ? moment(formData.release_date).toDate()
+            ? moment(formData.release_date, 'DD/MM/yyyy').toDate()
             : null,
-          type: formData.type.uid,
-          artist: formData.artist.uid,
-          songs: formData.songs?.map(x => x.uid)
+          type: formData.type?.uid,
+          artist: formData.artist?.uid
         };
         await Api.albums.patch({
           id,
@@ -79,7 +78,7 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
         defaultValues={{
           ...data,
           release_date: data?.release_date
-            ? moment(data?.release_date).format('MM/DD/yyyy')
+            ? moment(data?.release_date).format('DD/MM/yyyy')
             : '',
           ...data.links.reduce(
             (acc, { name, url }) => ({ ...acc, [name]: url }),
@@ -110,13 +109,6 @@ const EditAlbum: FC<EditAlbumProps> = ({ data }) => {
               fetchFn={({ config }) => Api.artists.fetch({ config })}
             />
           </Fieldset>
-
-          <Select
-            label="Songs"
-            name="songs"
-            multiple
-            fetchFn={({ config }) => Api.songs.fetch({ config })}
-          />
         </Fieldset>
 
         <Fieldset title="Links" foldable>

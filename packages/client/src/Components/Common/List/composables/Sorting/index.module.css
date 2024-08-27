@@ -3,11 +3,19 @@
 @layer components {
   .sortButton {
     @apply flex items-center gap-1.5 font-semibold rounded-full whitespace-nowrap cursor-pointer shadow-sm px-4 py-1 border-2;
-    @apply border-primary text-primary;
+    @apply border-primary;
     @apply dark:border-neutral-900 dark:shadow-neutral-900;
 
+    & p {
+      @apply text-primary dark:text-white;
+    }
+
     &:hover {
-      @apply bg-primary text-white dark:bg-neutral-900;
+      @apply bg-primary dark:bg-neutral-900;
+
+      & p {
+        @apply text-white;
+      }
 
       & svg > path {
         @apply stroke-white;
@@ -16,7 +24,11 @@
   }
 
   .sortButtonHover {
-    @apply bg-primary text-white dark:bg-neutral-900;
+    @apply bg-primary dark:bg-neutral-900;
+
+    & p {
+      @apply text-white;
+    }
 
     & svg > path {
       @apply stroke-white;

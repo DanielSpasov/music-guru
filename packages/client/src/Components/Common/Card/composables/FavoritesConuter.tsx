@@ -1,25 +1,18 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import { UseFavoriteHookProps } from '../../../../Hooks/useFavorite/types';
-import { IHeart, IHeartOutline, Loader } from '../../../';
+import { IHeart, IHeartOutline } from '../../../';
 import { useFavorite } from '../../../../Hooks';
-import { CardModel } from '../types';
 
-export type FavoritesCounterProps = {
-  model: CardModel;
-  canFavorite?: boolean;
-} & UseFavoriteHookProps;
-
-const FavoritesCounter: FC<FavoritesCounterProps> = ({
+const FavoritesCounter: FC<UseFavoriteHookProps> = ({
+  defaultCount,
   model,
-  canFavorite = false,
-  isFavorite,
-  ...hookProps
+  uid
 }) => {
-  const { favCount, loadingFav, onFavorite } = useFavorite({
-    ...hookProps,
-    isFavorite,
-    model
+  const { count, loading, favorite, isFavorite, canFavorite } = useFavorite({
+    defaultCount,
+    model,
+    uid
   });
 
   return (
@@ -31,32 +24,26 @@ const FavoritesCounter: FC<FavoritesCounterProps> = ({
         className="text-sm p-0.5"
         data-testid={`${model}-card-favorites-count`}
       >
-        {favCount}
+        {count}
       </span>
 
-      {loadingFav ? (
-        <Loader
-          size="xsm"
-          color="[&>path]:fill-red-500"
-          data-testid={`${model}-card-spinner-svg`}
-        />
-      ) : isFavorite ? (
+      {isFavorite ? (
         <IHeart
           data-testid={`${model}-card-heart-svg`}
           className="w-4 h-4 [&>path]:fill-red-500"
-          disabled={!hookProps?.favoriteFn || !canFavorite}
-          onClick={() => onFavorite()}
+          disabled={!canFavorite || loading}
+          onClick={() => favorite()}
         />
       ) : (
         <IHeartOutline
           data-testid={`${model}-card-heart-outline-svg`}
           className="w-4 h-4 [&>path]:fill-red-500"
-          disabled={!hookProps?.favoriteFn || !canFavorite}
-          onClick={() => onFavorite()}
+          disabled={!canFavorite || loading}
+          onClick={() => favorite()}
         />
       )}
     </div>
   );
 };
 
-export default FavoritesCounter;
+export default memo(FavoritesCounter);

@@ -1,0 +1,35 @@
+@tailwind components;
+
+@layer components {
+  .wrapper {
+    @apply relative flex flex-col gap-4;
+
+    /* Responsiveness */
+    @apply lg:flex-row;
+  }
+
+  .informationWrapper {
+    @apply relative flex flex-col items-center px-4 w-full;
+
+    /* Responsiveness */
+    @apply md:items-start;
+  }
+
+  .summaryWrapper {
+    @apply flex flex-col gap-2 mb-2;
+
+    /* Responsiveness */
+    @apply md:flex-row;
+    @apply lg:flex-col;
+    @apply xl:flex-row;
+  }
+
+  .imageWrapper div {
+    @apply w-64 h-64 shrink-0;
+  }
+
+  .about {
+    @apply p-3 border-[1px] shadow-md rounded-md;
+    @apply border-neutral-200 dark:border-neutral-700 dark:shadow-black;
+  }
+}

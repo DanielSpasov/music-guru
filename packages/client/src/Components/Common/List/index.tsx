@@ -1,22 +1,27 @@
-import { memo, useContext, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { AuthContext } from '../../../Contexts';
-import { ListProps, ListState } from './types';
+import { Pagination } from '../../../Api/crud/types';
+import { Button, Card, Search } from '../../';
 import { useDebounce } from '../../../Hooks';
 import { BaseModel } from '../../../Types';
-import Search from '../Search';
-import Api from '../../../Api';
-import { Card } from '../../';
+import { CardModel } from '../Card/types';
+import { ListProps } from './types';
 
 // Composables
 import Sorting from './composables/Sorting';
 
+const renderSkeleton = (number: number, model: CardModel) =>
+  Array(number)
+    .fill(null)
+    .map((_, i) => (
+      <Card key={i} data={{ name: '', uid: '' }} model={model} loading={true} />
+    ));
+
 const List = <T extends BaseModel>({
   model,
   fetchFn,
-  favoriteFn,
-  skeletonLength = 24,
+  perPage = 25,
   // Sorting
   sortingConfig = [],
   // Search
@@ -24,10 +29,15 @@ const List = <T extends BaseModel>({
   searchKey = 'name',
   hideSearch = false
 }: ListProps<T>) => {
-  const { uid, isAuthenticated } = useContext(AuthContext);
+  const [pagination, setPagination] = useState<Pagination>({
+    currentPage: 1,
+    totalItems: 0,
+    totalPages: 0
+  });
+  const [items, setItems] = useState<T[]>([]);
+  const [page, setPage] = useState(1);
 
-  const [state, setState] = useState<ListState<T>>({ items: [], favs: [] });
-  const [loadingFavs, setLoadingFavs] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState('');
@@ -35,59 +45,77 @@ const List = <T extends BaseModel>({
 
   const [sorting, setSorting] = useState('created_at');
 
+  useEffect(() => setPage(1), [searchValue, sorting]);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const { data, pagination } = await fetchFn({
+        params: {
+          page,
+          limit: perPage,
+          sort: sorting,
+          [searchKey]: searchValue
+        }
+      });
+      setPagination(pagination);
+
+      return data;
+    } catch (err) {
+      toast.error(`Failed to fetch ${model}.`);
+      return [];
+    }
+  }, [fetchFn, model, perPage, searchKey, searchValue, sorting, page]);
+
+  const fetchFirstPage = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await fetchData();
+      setItems(data);
+    } finally {
+      setLoading(false);
+    }
+  }, [fetchData]);
+
+  const fetchMore = useCallback(async () => {
+    try {
+      setLoadingMore(true);
+      const data = await fetchData();
+      setItems(prev => [...prev, ...data]);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [fetchData]);
+
   useEffect(() => {
     (async () => {
       try {
-        if (!uid) {
-          setLoadingFavs(false);
+        if (page === 1) {
+          await fetchFirstPage();
           return;
         }
 
-        setLoadingFavs(true);
-        const { data } = await Api.users.get({ id: uid });
-
-        if (!data) return;
-        setState(prev => ({ ...prev, favs: data.favorites?.[model] || [] }));
+        await fetchMore();
       } catch (err) {
-        toast.error('Failed to fetch favorites.');
-      } finally {
-        setLoadingFavs(false);
+        toast.error(`Failed to fetch ${model}.`);
       }
     })();
-  }, [model, uid]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { data } = await fetchFn({
-          params: {
-            sort: sorting,
-            [searchKey]: searchValue
-          }
-        });
-        if (!data) return;
-        setState(prev => ({ ...prev, items: data }));
-      } catch (err) {
-        toast.error('Failed to fetch data.');
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [sorting, searchValue, searchKey, fetchFn]);
+  }, [fetchFirstPage, fetchMore, page, model]);
 
   return (
     <section className="flex flex-col items-center" data-testid="list">
       <article className="flex justify-between items-center w-full mb-4">
         {!hideSearch && (
           <Search
-            setValue={setSearch}
+            setValue={value => setSearch(value)}
             placeholder={searchPlaceholder ?? `Search ${model}...`}
           />
         )}
 
         {Boolean(sortingConfig.length) && (
-          <Sorting config={sortingConfig} setValue={setSorting} />
+          <Sorting
+            config={sortingConfig}
+            setValue={value => setSorting(value)}
+          />
         )}
       </article>
 
@@ -95,37 +123,30 @@ const List = <T extends BaseModel>({
         className="flex flex-wrap w-full items-start justify-start"
         data-testid="list-content"
       >
-        {loading || loadingFavs ? (
-          Array(skeletonLength)
-            .fill(null)
-            .map((_, i) => (
-              <Card
-                key={i}
-                data={{ name: '', uid: '' }}
-                model={model}
-                loading={true}
-              />
-            ))
-        ) : !state.items.length ? (
+        {loading ? (
+          renderSkeleton(perPage, model)
+        ) : !items.length ? (
           <h4 className="font-medium" data-testid="list-no-items-message">
-            No items available.
+            No {model} available.
           </h4>
         ) : (
-          state.items.map(item => (
-            <Card
-              data={item}
-              key={item.uid}
-              model={model}
-              favoriteFn={favoriteFn}
-              updateFavs={(newFavs: string[]) => {
-                setState(prev => ({ ...prev, favs: newFavs }));
-              }}
-              canFavorite={Boolean(isAuthenticated)}
-              isFavorite={state.favs.includes(item.uid)}
-            />
-          ))
+          items.map(item => <Card data={item} key={item.uid} model={model} />)
         )}
+
+        {loadingMore && renderSkeleton(perPage, model)}
       </div>
+
+      {pagination?.currentPage < pagination?.totalPages &&
+        !loading &&
+        !loadingMore && (
+          <Button
+            variant="outline"
+            onClick={() => setPage(prev => prev + 1)}
+            data-testid="list-show-more-button"
+          >
+            Show More
+          </Button>
+        )}
     </section>
   );
 };

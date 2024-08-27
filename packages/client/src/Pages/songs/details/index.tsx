@@ -10,7 +10,10 @@ import {
   Socials
 } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
+import { getSidebarLinks } from './sidebarLinks';
 import { useSong } from '../../../Hooks';
+
+import css from './index.module.css';
 
 // Composables
 import Summary from './composables/Summary';
@@ -39,6 +42,7 @@ const SongDetails = () => {
       title={song.name}
       heading={song.name}
       loading={loading}
+      links={getSidebarLinks(id)}
       footerContent={<Socials links={song.links} />}
       actions={[
         {
@@ -64,25 +68,22 @@ const SongDetails = () => {
         }
       ]}
     >
-      <section className="flex h-[calc(100vh-260px)]">
-        <div className="flex flex-col items-start w-1/2 px-4 text-white">
-          <div className="flex mb-10">
-            <Image
-              src={song?.image || ''}
-              alt={song.name}
-              editable={isEditor}
-              updateFn={updateImage}
-              className="w-64 h-64"
-            />
+      <section className={css.wrapper}>
+        <div className={css.informationWrapper}>
+          <div className={css.summaryWrapper}>
+            <div className={css.imageWrapper}>
+              <Image
+                src={song?.image || ''}
+                alt={song.name}
+                editable={isEditor}
+                updateFn={updateImage}
+              />
+            </div>
 
             <Summary song={song} albums={albums} />
           </div>
 
-          {song.about && (
-            <span className="mt-3 p-3 w-full border-[1px] border-neutral-200 dark:border-neutral-700 shadow-md dark:shadow-black rounded-md">
-              {song.about}
-            </span>
-          )}
+          {song.about && <span className={css.about}>{song.about}</span>}
         </div>
 
         <Lyrics song={song} verses={verses} isEditor={isEditor} />

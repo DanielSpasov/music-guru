@@ -11,21 +11,39 @@ const albumSchema = new Schema<Album>({
   type: { type: String, ref: 'Album_Types', required: true },
   created_by: { type: String, required: true },
   artist: { type: String, ref: 'Artist', required: true },
-  songs: [
-    {
-      type: String,
-      ref: 'Song',
-      required: true
-    }
-  ],
-  links: [
-    {
-      name: { type: String, required: true },
-      url: { type: String, required: true },
-      _id: false
-    }
-  ],
-  editors: [{ type: String, required: true }],
+  discs: {
+    type: [
+      {
+        number: { type: Number },
+        songs: {
+          type: [
+            {
+              number: { type: Number },
+              uid: { type: String, ref: 'Song' },
+              _id: false
+            }
+          ],
+          default: []
+        },
+        _id: false
+      }
+    ],
+    default: []
+  },
+  links: {
+    type: [
+      {
+        name: { type: String, required: true },
+        url: { type: String, required: true },
+        _id: false
+      }
+    ],
+    default: []
+  },
+  editors: {
+    type: [{ type: String }],
+    default: []
+  },
   release_date: { type: Date, default: null },
   created_at: { type: Date, default: Date.now }
 });

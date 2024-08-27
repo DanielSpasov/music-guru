@@ -6,12 +6,19 @@ import { Artist } from './Artist';
 import { Song } from './Song';
 import { User } from './User';
 
+export type DiscSong = Song & { number: number };
+
+export type Disc = {
+  number: number;
+  songs: DiscSong[];
+};
+
 export type Album = Document &
   BaseModel & {
     type: AlbumType;
     created_by: User;
     artist: Artist;
-    songs: Song[];
+    discs: Disc[];
     release_date: Date | null;
     about: string;
     links: { name: string; url: string }[];

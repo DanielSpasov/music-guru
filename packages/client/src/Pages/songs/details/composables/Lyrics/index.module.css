@@ -1,0 +1,19 @@
+@tailwind components;
+
+@layer components {
+  .wrapper {
+    @apply relative w-full;
+  }
+
+  .versesWrapper {
+    @apply mt-1 px-2;
+
+    /* Responsiveness */
+    @apply lg:overflow-y-scroll;
+  }
+
+  .loader {
+    @apply mt-4 p-4 rounded-md;
+    @apply bg-neutral-300 dark:bg-neutral-950;
+  }
+}

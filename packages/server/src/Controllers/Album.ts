@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { methods, updateImage, favorite, editors } from '../Services';
+import { methods, updateImage, favorite, editors, albums } from '../Services';
 import {
   authorization,
   editorship,
@@ -39,6 +39,35 @@ router.patch(
   '/:id',
   [get({ model: 'albums' }), authorization, editorship],
   methods.patch({ model: 'albums' })
+);
+
+// Discs
+router.delete(
+  '/:id/disc/:number',
+  [get({ model: 'albums' }), authorization, editorship],
+  albums.discs.del
+);
+
+// Songs
+router.get(
+  '/:id/song',
+  [get({ model: 'albums' }), authorization, editorship],
+  albums.songs.fetch
+);
+router.post(
+  '/:id/song',
+  [get({ model: 'albums' }), authorization, editorship],
+  albums.songs.post
+);
+router.patch(
+  '/:id/song',
+  [get({ model: 'albums' }), authorization, editorship],
+  albums.songs.patch
+);
+router.put(
+  '/:id/song',
+  [get({ model: 'albums' }), authorization, editorship],
+  albums.songs.put
 );
 
 // Editors

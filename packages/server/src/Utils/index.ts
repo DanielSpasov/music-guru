@@ -53,5 +53,5 @@ export const useFilters = (query: QueryProps) => {
 export const useSorting = (sort: string): Record<string, SortOrder> => {
   const isNegation = sort.startsWith('-');
   const fieldName = isNegation ? sort.substring(1) : sort;
-  return { [fieldName]: isNegation ? 1 : -1 };
+  return { [fieldName]: isNegation ? 1 : -1, name: 1 };
 };

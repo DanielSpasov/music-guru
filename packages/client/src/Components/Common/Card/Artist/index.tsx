@@ -9,14 +9,7 @@ import css from './Artist.module.css';
 // Composables
 import FavoritesCounter from '../composables/FavoritesConuter';
 
-const ArtistCard: FC<CardProps<ListArtist>> = ({
-  data,
-  favoriteFn,
-  updateFavs,
-  canFavorite,
-  loading = false,
-  isFavorite = false
-}) => {
+const ArtistCard: FC<CardProps<ListArtist>> = ({ data, loading = false }) => {
   const navigate = useNavigate();
 
   if (loading) return <Skeleton />;
@@ -35,10 +28,6 @@ const ArtistCard: FC<CardProps<ListArtist>> = ({
           <FavoritesCounter
             model="artists"
             defaultCount={data.favorites}
-            canFavorite={canFavorite}
-            isFavorite={isFavorite}
-            favoriteFn={favoriteFn}
-            updateFavs={updateFavs}
             uid={data.uid}
           />
         </div>
@@ -47,7 +36,7 @@ const ArtistCard: FC<CardProps<ListArtist>> = ({
   );
 };
 
-export default memo(ArtistCard);
+export default memo(ArtistCard) as typeof ArtistCard;
 
 const Skeleton = () => {
   return (

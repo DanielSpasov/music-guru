@@ -15,13 +15,13 @@ const Category: FC<CategoryProps> = ({
       className={`flex flex-col gap-1 ${className}`}
       {...props}
     >
-      {separate && (
-        <hr
-          data-testid="category-separator"
-          className="mt-1 dark:border-neutral-700"
-        />
-      )}
-      {title && <h4 className="text-neutral-500">{title}</h4>}
+      <hr
+        data-testid="category-separator"
+        className={`mt-1 dark:border-neutral-700 block ${
+          separate ? 'visible' : 'md:hidden'
+        }`}
+      />
+      {title && <h4 className="text-neutral-500 hidden md:block">{title}</h4>}
       {children}
     </section>
   );

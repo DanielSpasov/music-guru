@@ -15,13 +15,13 @@ const DateSchema = z.union([
   z
     .string()
     .regex(
-      /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/,
+      /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
       'Invalid date format, must be mm/dd/yyyy'
     ),
   z.literal('')
 ]);
 
-const SelectOptionSchema = z.object({ uid: z.string().uuid() });
+const SelectOptionSchema = z.object({ uid: z.string().uuid() }).nullish();
 
 export const BaseSongSchema = z.object({
   name: z.string().min(1, 'Name is required.').max(128, 'Name is too long.'),

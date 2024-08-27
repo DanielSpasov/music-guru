@@ -1,162 +1,133 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { MockedFunction } from 'vitest';
 
-import FavoritesCounter, { FavoritesCounterProps } from './FavoritesConuter';
+import { UseFavoriteHookProps } from '../../../../Hooks/useFavorite/types';
+import FavoritesCounter from './FavoritesConuter';
+import { useFavorite } from '../../../../Hooks';
+
+vi.mock('../../../../Hooks/useFavorite', () => ({
+  useFavorite: vi.fn()
+}));
 
 describe('Favorites Counter', () => {
-  describe('Rendering', () => {
-    test('renders without crashing', () => {
-      const model = 'artists';
-      render(
-        <FavoritesCounter
-          defaultCount={0}
-          isFavorite={false}
-          model={model}
-          uid="test123"
-          canFavorite
-          favoriteFn={vi.fn()}
-        />
-      );
-      const element = screen.getByTestId(`${model}-favorites-counter`);
-      expect(element).toBeInTheDocument();
+  const mockUseFavorite = useFavorite as MockedFunction<typeof useFavorite>;
+
+  const props: UseFavoriteHookProps = {
+    defaultCount: 0,
+    model: 'artists',
+    uid: 'test-artist-123'
+  };
+
+  test('renders without crashing', () => {
+    mockUseFavorite.mockReturnValue({
+      count: 0,
+      loading: false,
+      canFavorite: true,
+      favorite: vi.fn(),
+      isFavorite: true
     });
+
+    render(<FavoritesCounter {...props} />);
+
+    const wrapperEl = screen.getByTestId(`${props.model}-favorites-counter`);
+    expect(wrapperEl).toBeInTheDocument();
+
+    const counterEl = screen.getByTestId(`${props.model}-card-favorites-count`);
+    expect(Number(counterEl.textContent)).toEqual(props.defaultCount);
+
+    const heartEl = screen.getByTestId(`${props.model}-card-heart-svg`);
+    expect(heartEl).toBeInTheDocument();
+    const heartOutlineEl = screen.queryByTestId(
+      `${props.model}-card-heart-outline-svg`
+    );
+    expect(heartOutlineEl).not.toBeInTheDocument();
   });
 
-  describe('Component props', () => {
-    const props: FavoritesCounterProps = {
-      defaultCount: 0,
-      isFavorite: false,
-      model: 'artists',
-      uid: 'test123',
-      canFavorite: true
-    };
-
-    test('renders correct default favorites count', () => {
-      render(<FavoritesCounter {...props} />);
-      const element = screen.getByTestId(`${props.model}-card-favorites-count`);
-      expect(Number(element.textContent)).toEqual(props.defaultCount);
+  test('calls favorite when clicking the heart icon', () => {
+    const favoriteFn = vi.fn();
+    mockUseFavorite.mockReturnValue({
+      count: 0,
+      loading: false,
+      canFavorite: true,
+      favorite: favoriteFn,
+      isFavorite: true
     });
 
-    test('renders heart if isFavorite is true', () => {
-      render(<FavoritesCounter {...props} isFavorite />);
-      const element = screen.queryByTestId(`${props.model}-card-heart-svg`);
-      expect(element).toBeInTheDocument();
+    render(<FavoritesCounter {...props} />);
+
+    const wrapperEl = screen.getByTestId(`${props.model}-favorites-counter`);
+    expect(wrapperEl).toBeInTheDocument();
+
+    const heartEl = screen.getByTestId(`${props.model}-card-heart-svg`);
+    expect(heartEl).toBeInTheDocument();
+    fireEvent.click(heartEl);
+    expect(favoriteFn).toHaveBeenCalledOnce();
+  });
+
+  test('calls favorite when clicking the heart-outline icon', () => {
+    const favoriteFn = vi.fn();
+    mockUseFavorite.mockReturnValue({
+      count: 0,
+      loading: false,
+      canFavorite: true,
+      favorite: favoriteFn,
+      isFavorite: false
     });
 
-    test('renders heart outline if isFavorite is false', () => {
-      render(<FavoritesCounter {...props} />);
-      const element = screen.queryByTestId(
-        `${props.model}-card-heart-outline-svg`
-      );
-      expect(element).toBeInTheDocument();
+    render(<FavoritesCounter {...props} />);
+
+    const wrapperEl = screen.getByTestId(`${props.model}-favorites-counter`);
+    expect(wrapperEl).toBeInTheDocument();
+
+    const heartOutlineEl = screen.getByTestId(
+      `${props.model}-card-heart-outline-svg`
+    );
+    expect(heartOutlineEl).toBeInTheDocument();
+    fireEvent.click(heartOutlineEl);
+    expect(favoriteFn).toHaveBeenCalledOnce();
+  });
+
+  test('disables heart icon when loading', () => {
+    const favoriteFn = vi.fn();
+    mockUseFavorite.mockReturnValue({
+      count: 0,
+      loading: true,
+      canFavorite: true,
+      favorite: favoriteFn,
+      isFavorite: true
     });
 
-    test('calls favoriteFn when heart icon is clicked', async () => {
-      const favoriteFn = vi.fn();
-      const updateFavs = vi.fn();
-      render(
-        <FavoritesCounter
-          {...props}
-          isFavorite
-          favoriteFn={favoriteFn}
-          updateFavs={updateFavs}
-        />
-      );
-      const element = screen.getByTestId(`${props.model}-card-heart-svg`);
-      await act(async () => fireEvent.click(element));
-      expect(favoriteFn).toBeCalled();
+    render(<FavoritesCounter {...props} />);
+
+    const wrapperEl = screen.getByTestId(`${props.model}-favorites-counter`);
+    expect(wrapperEl).toBeInTheDocument();
+
+    const heartEl = screen.getByTestId(`${props.model}-card-heart-svg`);
+    expect(heartEl).toBeInTheDocument();
+    fireEvent.click(heartEl);
+    expect(favoriteFn).not.toHaveBeenCalled();
+  });
+
+  test('disables heart-outline icon when loading', () => {
+    const favoriteFn = vi.fn();
+    mockUseFavorite.mockReturnValue({
+      count: 0,
+      loading: true,
+      canFavorite: true,
+      favorite: favoriteFn,
+      isFavorite: false
     });
 
-    test('calls favoriteFn when heart outline icon is clicked', async () => {
-      const favoriteFn = vi.fn();
-      const updateFavs = vi.fn();
-      render(
-        <FavoritesCounter
-          {...props}
-          favoriteFn={favoriteFn}
-          updateFavs={updateFavs}
-        />
-      );
-      const element = screen.getByTestId(
-        `${props.model}-card-heart-outline-svg`
-      );
-      await act(async () => fireEvent.click(element));
-      expect(favoriteFn).toBeCalled();
-    });
+    render(<FavoritesCounter {...props} />);
 
-    test("doesn't call favoriteFn when heart icon is clicked if canFavorite is false", async () => {
-      const favoriteFn = vi.fn();
-      const updateFavs = vi.fn();
-      render(
-        <FavoritesCounter
-          defaultCount={0}
-          model="artists"
-          uid="test"
-          isFavorite
-          canFavorite={false}
-          favoriteFn={favoriteFn}
-          updateFavs={updateFavs}
-        />
-      );
-      const element = screen.getByTestId(`${props.model}-card-heart-svg`);
-      await act(async () => fireEvent.click(element));
-      expect(favoriteFn).not.toBeCalled();
-    });
+    const wrapperEl = screen.getByTestId(`${props.model}-favorites-counter`);
+    expect(wrapperEl).toBeInTheDocument();
 
-    test("doesn't call favoriteFn when heart outline icon is clicked if canFavorite is false", async () => {
-      const favoriteFn = vi.fn();
-      const updateFavs = vi.fn();
-      render(
-        <FavoritesCounter
-          defaultCount={0}
-          model="artists"
-          uid="test"
-          isFavorite={false}
-          canFavorite={false}
-          favoriteFn={favoriteFn}
-          updateFavs={updateFavs}
-        />
-      );
-      const element = screen.getByTestId(
-        `${props.model}-card-heart-outline-svg`
-      );
-      await act(async () => fireEvent.click(element));
-      expect(favoriteFn).not.toBeCalled();
-    });
-
-    test("doesn't call favoriteFn when heart icon is clicked if updateFavs is not provided", async () => {
-      const favoriteFn = vi.fn();
-      render(
-        <FavoritesCounter
-          defaultCount={0}
-          model="artists"
-          uid="test"
-          isFavorite
-          canFavorite={false}
-          favoriteFn={favoriteFn}
-        />
-      );
-      const element = screen.getByTestId(`${props.model}-card-heart-svg`);
-      await act(async () => fireEvent.click(element));
-      expect(favoriteFn).not.toBeCalled();
-    });
-
-    test("doesn't call favoriteFn when heart outline icon is clicked if updateFavs is not provided", async () => {
-      const favoriteFn = vi.fn();
-      render(
-        <FavoritesCounter
-          defaultCount={0}
-          model="artists"
-          uid="test"
-          isFavorite={false}
-          canFavorite={false}
-          favoriteFn={favoriteFn}
-        />
-      );
-      const element = screen.getByTestId(
-        `${props.model}-card-heart-outline-svg`
-      );
-      await act(async () => fireEvent.click(element));
-      expect(favoriteFn).not.toBeCalled();
-    });
+    const heartOutlineEl = screen.getByTestId(
+      `${props.model}-card-heart-outline-svg`
+    );
+    expect(heartOutlineEl).toBeInTheDocument();
+    fireEvent.click(heartOutlineEl);
+    expect(favoriteFn).not.toHaveBeenCalled();
   });
 });

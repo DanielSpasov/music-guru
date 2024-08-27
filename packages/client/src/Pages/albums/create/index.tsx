@@ -49,11 +49,10 @@ const CreateAlbum = () => {
           ...formData,
           ...socialsPayload,
           release_date: formData?.release_date
-            ? moment(formData?.release_date, 'MM/DD/YYYY').toDate()
+            ? moment(formData?.release_date, 'DD/MM/yyyy').toDate()
             : null,
           type: formData?.type?.uid,
-          artist: formData?.artist?.uid,
-          songs: formData?.songs?.map(x => x?.uid)
+          artist: formData?.artist?.uid
         };
 
         const { data } = await Api.albums.post({
@@ -106,13 +105,6 @@ const CreateAlbum = () => {
             name="artist"
             required
             fetchFn={({ config }) => Api.artists.fetch({ config })}
-          />
-
-          <Select
-            label="Songs"
-            name="songs"
-            multiple
-            fetchFn={({ config }) => Api.songs.fetch({ config })}
           />
         </Fieldset>
 

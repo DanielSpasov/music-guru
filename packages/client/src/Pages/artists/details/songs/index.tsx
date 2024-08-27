@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 
 import { List, PageLayout, Socials } from '../../../../Components';
@@ -7,7 +8,6 @@ import { getSidebarLinks } from '../sidebarLinks';
 import { Artist } from '../../../../Types';
 import { defaultArtist } from '..';
 import Api from '../../../../Api';
-import { AxiosRequestConfig } from 'axios';
 
 const ArtistSongs = () => {
   const { id = '0' } = useParams();
@@ -39,7 +39,8 @@ const ArtistSongs = () => {
         config: {
           params: {
             ...config?.params,
-            'artist.uid': artist.uid
+            'artist.uid': artist.uid,
+            limit: 50
           }
         }
       }),
@@ -63,8 +64,7 @@ const ArtistSongs = () => {
           ]}
           fetchFn={fetchSongs}
           model="songs"
-          favoriteFn={uid => Api.songs.favorite({ uid })}
-          skeletonLength={56}
+          perPage={56}
         />
       </section>
     </PageLayout>

@@ -1,21 +1,23 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 
 import {
-  List,
   PageLayout,
   Image,
   IPen,
   Socials,
-  ISettings
+  ISettings,
+  Link,
+  List
 } from '../../../Components';
 import { AuthContext } from '../../../Contexts/Auth';
 import { getSidebarLinks } from './sidebarLinks';
 import { Artist } from '../../../Types';
 import Api from '../../../Api';
 
-import css from './Details.module.css';
+import css from './index.module.css';
 
 export const defaultArtist: Artist = {
   created_at: new Date(),
@@ -66,28 +68,6 @@ const ArtistDetails = () => {
     [artist.uid]
   );
 
-  const fetchAlbums = useCallback(
-    () =>
-      Api.albums.fetch({
-        config: { params: { 'artist.uid': artist.uid, limit: 5 } }
-      }),
-    [artist.uid]
-  );
-  const fetchSongs = useCallback(
-    () =>
-      Api.songs.fetch({
-        config: { params: { 'artist.uid': artist.uid, limit: 10 } }
-      }),
-    [artist.uid]
-  );
-  const fetchFeatures = useCallback(
-    () =>
-      Api.songs.fetch({
-        config: { params: { 'features.uid': artist.uid, limit: 10 } }
-      }),
-    [artist.uid]
-  );
-
   const isOwner = useMemo(
     () => artist.created_by === uid,
     [artist.created_by, uid]
@@ -97,6 +77,54 @@ const ArtistDetails = () => {
     if (!uid) return false;
     return Boolean(artist.editors.includes(uid)) || isOwner;
   }, [artist.editors, uid, isOwner]);
+
+  const fetchDiscog = useCallback(
+    (config?: AxiosRequestConfig) =>
+      Api.albums.fetch({
+        config: {
+          ...config,
+          params: {
+            ...config?.params,
+            'artist.uid': artist.uid,
+            sort: '-release_date',
+            limit: 5
+          }
+        }
+      }),
+    [artist.uid]
+  );
+
+  const fetchSongs = useCallback(
+    (config?: AxiosRequestConfig) =>
+      Api.songs.fetch({
+        config: {
+          ...config,
+          params: {
+            ...config?.params,
+            'artist.uid': artist.uid,
+            sort: '-release_date',
+            limit: 10
+          }
+        }
+      }),
+    [artist.uid]
+  );
+
+  const fetchFeatures = useCallback(
+    (config?: AxiosRequestConfig) =>
+      Api.songs.fetch({
+        config: {
+          ...config,
+          params: {
+            ...config?.params,
+            'features.uid': artist.uid,
+            sort: '-release_date',
+            limit: 10
+          }
+        }
+      }),
+    [artist.uid]
+  );
 
   return (
     <PageLayout
@@ -124,50 +152,66 @@ const ArtistDetails = () => {
     >
       <section className={css.wrapper}>
         <article className={css.informationWrapper}>
-          <div className="flex flex-col items-center">
-            <Image
-              src={artist.image}
-              alt={artist.name}
-              editable={isEditor}
-              updateFn={updateImage}
-              shape="circle"
-              className="w-64 h-64"
-            />
-            <h2 className="py-2">{artist.name}</h2>
-          </div>
+          <Image
+            src={artist.image}
+            alt={artist.name}
+            editable={isEditor}
+            updateFn={updateImage}
+            shape="circle"
+          />
 
           {artist.about && <span className={css.about}>{artist.about}</span>}
         </article>
 
         <section className={css.discographyWrapper}>
           <article>
-            <h2>Discography</h2>
-            <List
-              favoriteFn={uid => Api.albums.favorite({ uid })}
-              fetchFn={fetchAlbums}
-              skeletonLength={5}
-              model="albums"
-              hideSearch
-            />
+            <div className="flex justify-between items-center gap-2">
+              <h3>Albums</h3>
+              <div className="bg-neutral-200 dark:bg-neutral-700 w-full h-[1px]" />
+              <Link
+                type="link"
+                to="albums"
+                className="underline whitespace-nowrap"
+              >
+                See All
+              </Link>
+            </div>
+
+            <List fetchFn={fetchDiscog} perPage={5} model="albums" hideSearch />
           </article>
 
           <article>
-            <h2>Songs</h2>
-            <List
-              favoriteFn={uid => Api.songs.favorite({ uid })}
-              fetchFn={fetchSongs}
-              skeletonLength={10}
-              model="songs"
-              hideSearch
-            />
+            <div className="flex justify-between items-center gap-2">
+              <h3>Songs</h3>
+              <div className="bg-neutral-200 dark:bg-neutral-700 w-full h-[1px]" />
+              <Link
+                type="link"
+                to="songs"
+                className="underline whitespace-nowrap"
+              >
+                See All
+              </Link>
+            </div>
+
+            <List fetchFn={fetchSongs} perPage={10} model="songs" hideSearch />
           </article>
 
           <article>
-            <h2>Features</h2>
+            <div className="flex justify-between items-center gap-2">
+              <h3>Features</h3>
+              <div className="bg-neutral-200 dark:bg-neutral-700 w-full h-[1px]" />
+              <Link
+                type="link"
+                to="songs"
+                className="underline whitespace-nowrap"
+              >
+                See All
+              </Link>
+            </div>
+
             <List
-              favoriteFn={uid => Api.songs.favorite({ uid })}
               fetchFn={fetchFeatures}
-              skeletonLength={10}
+              perPage={10}
               model="songs"
               hideSearch
             />
