@@ -149,7 +149,7 @@ describe('List', () => {
       expect(fetchFn).toHaveBeenCalledWith({
         params: {
           name: value,
-          sort: 'created_at',
+          sort: 'favorites',
           page: 1,
           limit: 25
         }
@@ -175,7 +175,7 @@ describe('List', () => {
 
     await waitFor(() => {
       expect(fetchFn).toHaveBeenCalledWith({
-        params: { [searchKey]: value, sort: 'created_at', page: 1, limit: 25 }
+        params: { [searchKey]: value, sort: 'favorites', page: 1, limit: 25 }
       });
     });
   });
