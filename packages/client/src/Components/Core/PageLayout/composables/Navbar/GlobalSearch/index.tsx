@@ -29,7 +29,9 @@ const GlobalSearch: FC<SearchProps> = ({ models }) => {
 
         const response = await Promise.all(
           models.map(model =>
-            Api[model].fetch({ config: { params: { name: searchValue } } })
+            Api[model].fetch({
+              config: { params: { name: searchValue, limit: 5 } }
+            })
           )
         );
 
@@ -96,18 +98,35 @@ const GlobalSearch: FC<SearchProps> = ({ models }) => {
                   <div className="bg-neutral-300 dark:bg-neutral-700 h-[1px] w-full" />
                 </header>
 
-                <article>
+                <article className="flex flex-col gap-1">
                   {results.map(result => (
-                    <Link
-                      type="link"
-                      key={result?.uid}
-                      className="block pl-2"
-                      onClick={() => setSearch('')}
-                      to={`/${model}/${result?.uid}`}
-                      data-testid={`results-${model}-${result?.uid}`}
-                    >
-                      {result?.name}
-                    </Link>
+                    <div className="flex items-center gap-1" key={result?.uid}>
+                      <img
+                        className="w-10 h-10 shrink-0 rounded-md"
+                        src={result.image}
+                        alt={result.name}
+                      />
+                      <Link
+                        type="link"
+                        className="block pl-2"
+                        onClick={() => setSearch('')}
+                        to={`/${model}/${result?.uid}`}
+                        data-testid={`results-${model}-${result?.uid}`}
+                      >
+                        {result?.name}
+                      </Link>
+                      {model !== 'artist' && (
+                        <Link
+                          type="link"
+                          className="block pl-2 text-neutral-500"
+                          onClick={() => setSearch('')}
+                          to={`/artists/${result?.artist?.uid}`}
+                          data-testid={`results-${model}-${result?.uid}-artist`}
+                        >
+                          {result?.artist?.name}
+                        </Link>
+                      )}
+                    </div>
                   ))}
                 </article>
               </section>

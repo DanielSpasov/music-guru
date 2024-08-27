@@ -57,7 +57,8 @@ const Results = <T extends Option>({
             onClick={() => onOptionClick(option)}
             className={`${css.option} ${isSelected && css.selected}`}
           >
-            <span className="px-2">{option.name}</span>
+            {option.image && <img src={option.image} alt={option.name} />}
+            <span>{option.name}</span>
           </div>
         );
       })}

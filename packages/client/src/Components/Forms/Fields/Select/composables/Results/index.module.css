@@ -2,10 +2,18 @@
 
 @layer components {
   .option {
-    @apply flex items-center rounded-md p-1 cursor-pointer;
+    @apply flex items-center rounded-md p-1 cursor-pointer gap-1;
 
     &:hover {
       @apply bg-neutral-200 dark:bg-neutral-800;
+    }
+
+    & img {
+      @apply w-10 h-10 shrink-0 rounded-md;
+    }
+
+    & span {
+      @apply text-lg px-2;
     }
   }
 
