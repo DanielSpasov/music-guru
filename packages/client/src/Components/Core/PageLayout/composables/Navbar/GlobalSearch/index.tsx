@@ -29,7 +29,9 @@ const GlobalSearch: FC<SearchProps> = ({ models }) => {
 
         const response = await Promise.all(
           models.map(model =>
-            Api[model].fetch({ config: { params: { name: searchValue } } })
+            Api[model].fetch({
+              config: { params: { name: searchValue, limit: 5 } }
+            })
           )
         );
 
@@ -98,16 +100,36 @@ const GlobalSearch: FC<SearchProps> = ({ models }) => {
 
                 <article>
                   {results.map(result => (
-                    <Link
-                      type="link"
+                    <div
+                      className="flex items-center gap-1 mb-1"
                       key={result?.uid}
-                      className="block pl-2"
-                      onClick={() => setSearch('')}
-                      to={`/${model}/${result?.uid}`}
-                      data-testid={`results-${model}-${result?.uid}`}
                     >
-                      {result?.name}
-                    </Link>
+                      <img
+                        className="w-10 h-10 shrink-0 rounded-md"
+                        src={result.image}
+                        alt={result.name}
+                      />
+                      <Link
+                        type="link"
+                        className="block pl-2"
+                        onClick={() => setSearch('')}
+                        to={`/${model}/${result?.uid}`}
+                        data-testid={`results-${model}-${result?.uid}`}
+                      >
+                        {result?.name}
+                      </Link>
+                      {model !== 'artist' && (
+                        <Link
+                          type="link"
+                          className="block pl-2 text-neutral-500"
+                          onClick={() => setSearch('')}
+                          to={`/artist/${result?.artist?.uid}`}
+                          data-testid={`results-${model}-${result?.uid}-artist`}
+                        >
+                          {result?.artist?.name}
+                        </Link>
+                      )}
+                    </div>
                   ))}
                 </article>
               </section>

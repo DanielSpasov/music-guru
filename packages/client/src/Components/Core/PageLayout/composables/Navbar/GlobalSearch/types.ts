@@ -5,4 +5,12 @@ export type SearchProps = {
   models: Model[];
 };
 
-export type Results = Partial<Record<Model, BaseModel[]>>;
+type SearchResult = BaseModel & {
+  image?: string;
+  artist?: {
+    uid?: string;
+    name?: string;
+  };
+};
+
+export type Results = Partial<Record<Model, SearchResult[]>>;
