@@ -17,9 +17,7 @@ import { getSidebarLinks } from './sidebarLinks';
 import { Artist } from '../../../Types';
 import Api from '../../../Api';
 
-import css from './Details.module.css';
-
-// Composables
+import css from './index.module.css';
 
 export const defaultArtist: Artist = {
   created_at: new Date(),
@@ -154,17 +152,13 @@ const ArtistDetails = () => {
     >
       <section className={css.wrapper}>
         <article className={css.informationWrapper}>
-          <div className="flex flex-col items-center shrink-0">
-            <Image
-              src={artist.image}
-              alt={artist.name}
-              editable={isEditor}
-              updateFn={updateImage}
-              shape="circle"
-              className="w-64 h-64"
-            />
-            <h2 className="py-2">{artist.name}</h2>
-          </div>
+          <Image
+            src={artist.image}
+            alt={artist.name}
+            editable={isEditor}
+            updateFn={updateImage}
+            shape="circle"
+          />
 
           {artist.about && <span className={css.about}>{artist.about}</span>}
         </article>
