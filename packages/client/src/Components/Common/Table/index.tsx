@@ -53,6 +53,8 @@ const Table = <T extends BaseModel>({
   // Sorting
   const [sorting, setSorting] = useState('-created_at');
 
+  useEffect(() => setPage(1), [searchValue, sorting]);
+
   useEffect(() => {
     (async () => {
       try {
@@ -98,7 +100,6 @@ const Table = <T extends BaseModel>({
     (key: keyof T) => {
       if (!allowSorting.includes(key)) return;
       setSorting(`${key === sorting ? '-' : ''}${key.toString()}`);
-      setPage(1);
     },
     [allowSorting, sorting]
   );
@@ -136,10 +137,7 @@ const Table = <T extends BaseModel>({
       {!hideSearch && (
         <article data-testid="table-search-box">
           <Search
-            setValue={value => {
-              setSearch(value);
-              setPage(1);
-            }}
+            setValue={value => setSearch(value)}
             placeholder={searchPlaceholder}
           />
         </article>

@@ -45,6 +45,8 @@ const List = <T extends BaseModel>({
 
   const [sorting, setSorting] = useState('created_at');
 
+  useEffect(() => setPage(1), [searchValue, sorting]);
+
   const fetchData = useCallback(async () => {
     try {
       const { data, pagination } = await fetchFn({
@@ -104,10 +106,7 @@ const List = <T extends BaseModel>({
       <article className="flex justify-between items-center w-full mb-4">
         {!hideSearch && (
           <Search
-            setValue={value => {
-              setSearch(value);
-              setPage(1);
-            }}
+            setValue={value => setSearch(value)}
             placeholder={searchPlaceholder ?? `Search ${model}...`}
           />
         )}
@@ -115,10 +114,7 @@ const List = <T extends BaseModel>({
         {Boolean(sortingConfig.length) && (
           <Sorting
             config={sortingConfig}
-            setValue={value => {
-              setSorting(value);
-              setPage(1);
-            }}
+            setValue={value => setSorting(value)}
           />
         )}
       </article>
