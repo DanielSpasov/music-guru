@@ -107,7 +107,10 @@ const Table = <T extends BaseModel>({
   const onSelectAll = useCallback(
     (selected: string[]) => {
       if (selected.length !== items.length) {
-        setSelected(items.map(x => x.uid));
+        setSelected(prev => [
+          ...prev,
+          ...items.filter(x => !prev.includes(x.uid)).map(x => x.uid)
+        ]);
         return;
       }
 
@@ -173,12 +176,12 @@ const Table = <T extends BaseModel>({
               >
                 <div
                   className={`${rowCss.checkbox} ${
-                    selected.length === items.length && items.length !== 0
+                    items.every(x => selected.includes(x.uid))
                       ? rowCss.selectedCheckbox
                       : ''
                   }`}
                 >
-                  {selected.length === items.length && items.length !== 0 ? (
+                  {items.every(x => selected.includes(x.uid)) ? (
                     <ICheck
                       className={rowCss.checkIcon}
                       data-testid={`table-head-checkbox-check`}
