@@ -16,7 +16,7 @@ describe('Category', () => {
     expect(categoryEl).toBeInTheDocument();
     expect(categoryEl).toContainHTML('<div>test</div>');
 
-    expect(separatorEl).not.toBeInTheDocument();
+    expect(separatorEl).toHaveClass('block md:hidden');
   });
 
   test('renders separator if separate is true', () => {

@@ -7,9 +7,19 @@ import Popover from '../../../Popover';
 
 import css from './index.module.css';
 
-const Sorting: FC<SortingProps> = ({ config = [], setValue }) => {
-  const [selected, setSelected] = useState({ ...config[0], type: 'asc' });
+const Sorting: FC<SortingProps> = ({ config = [], value, setValue }) => {
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(() => {
+    const key = value.startsWith('-')
+      ? value.substring(1, value.length)
+      : value;
+
+    return {
+      key,
+      label: config.find(x => x.key === key)?.label,
+      type: value.startsWith('-') ? 'desc' : 'asc'
+    };
+  });
 
   const onOptionSelect = useCallback(
     (option: ISorting, type: 'asc' | 'desc') => {

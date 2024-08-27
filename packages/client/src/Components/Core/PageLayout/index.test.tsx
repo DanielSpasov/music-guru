@@ -39,7 +39,7 @@ describe('PageLayout', () => {
 
     const pageContentEl = screen.getByTestId('page-content');
     expect(pageContentEl).toBeInTheDocument();
-    expect(pageContentEl).toHaveClass('ml-64');
+    expect(pageContentEl).toHaveClass('ml-20 md:ml-64');
     expect(pageContentEl).toContainHTML('<span>test</span>');
 
     const sidebarEl = screen.getByTestId('sidebar');

@@ -114,7 +114,8 @@ const List = <T extends BaseModel>({
         {Boolean(sortingConfig.length) && (
           <Sorting
             config={sortingConfig}
-            setValue={value => setSorting(value)}
+            value={sorting}
+            setValue={setSorting}
           />
         )}
       </article>
