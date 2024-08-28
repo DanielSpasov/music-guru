@@ -23,7 +23,7 @@ const Textarea: FC<TextareaProps> = ({
 
       <textarea
         {...register(name, { required })}
-        className={`w-full min-h-[80px] border-b-2 p-1 pr-16 outline-none resize-y bg-transparent ${themeProps} ${className}`}
+        className={`duration-0 w-full min-h-[80px] border-b-2 p-1 pr-16 outline-none resize-y bg-transparent ${themeProps} ${className}`}
         {...props}
       ></textarea>
 
