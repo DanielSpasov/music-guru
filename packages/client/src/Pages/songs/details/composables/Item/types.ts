@@ -7,4 +7,5 @@ import {
 
 export type ItemProps<T> = {
   label: string;
+  missingText?: string;
 } & (LinkProps<T> | LinksProps<T> | DateProps | TextProps);

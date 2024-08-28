@@ -2,11 +2,11 @@
 
 @layer components {
   .wrapper {
-    @apply relative w-full;
+    @apply relative;
   }
 
   .versesWrapper {
-    @apply mt-1 px-2;
+    @apply mt-1 px-2 w-full;
 
     /* Responsiveness */
     @apply lg:overflow-y-scroll;
