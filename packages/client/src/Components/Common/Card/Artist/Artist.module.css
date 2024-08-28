@@ -2,7 +2,7 @@
 
 @layer components {
   .artistCard {
-    @apply flex flex-col m-3 p-2 pb-1 rounded-md cursor-pointer;
+    @apply flex flex-col m-3 p-2 pb-1 rounded-md cursor-pointer w-44;
 
     &:hover {
       @apply bg-neutral-200 dark:hover:bg-neutral-700;

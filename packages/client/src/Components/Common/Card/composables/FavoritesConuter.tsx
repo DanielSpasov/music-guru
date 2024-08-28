@@ -3,6 +3,7 @@ import { FC, memo } from 'react';
 import { UseFavoriteHookProps } from '../../../../Hooks/useFavorite/types';
 import { IHeart, IHeartOutline } from '../../../';
 import { useFavorite } from '../../../../Hooks';
+import { formatConut } from './formatter';
 
 const FavoritesCounter: FC<UseFavoriteHookProps> = ({
   defaultCount,
@@ -24,7 +25,7 @@ const FavoritesCounter: FC<UseFavoriteHookProps> = ({
         className="text-sm p-0.5"
         data-testid={`${model}-card-favorites-count`}
       >
-        {count}
+        {formatConut(count)}
       </span>
 
       {isFavorite ? (
