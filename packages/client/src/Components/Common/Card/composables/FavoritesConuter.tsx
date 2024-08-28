@@ -3,7 +3,7 @@ import { FC, memo } from 'react';
 import { UseFavoriteHookProps } from '../../../../Hooks/useFavorite/types';
 import { IHeart, IHeartOutline } from '../../../';
 import { useFavorite } from '../../../../Hooks';
-import { formatConut } from './formatter';
+import { formatConut } from '../../../../Utils';
 
 const FavoritesCounter: FC<UseFavoriteHookProps> = ({
   defaultCount,
