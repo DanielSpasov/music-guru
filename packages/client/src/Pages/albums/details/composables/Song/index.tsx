@@ -11,6 +11,7 @@ import {
 } from '../../../../../Components';
 import { SongPrps } from './types';
 import { useFavorite } from '../../../../../Hooks';
+import { formatConut } from '../../../../../Utils';
 
 import css from './index.module.css';
 
@@ -90,7 +91,7 @@ const Song: FC<SongPrps> = ({
 
       {!isOrdering && (
         <div className={css.favoritesBox}>
-          <p>{count}</p>
+          <p>{formatConut(count)}</p>
           {isFavorite ? (
             <IHeart
               disabled={loading || !canFavorite}
